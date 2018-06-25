@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/player.png</file>
+        <file>res/bullet_white.png</file>
+        <file>res/enemy1.png</file>
+        <file>res/enemy2.png</file>
+        <file>res/enemy3.png</file>
+        <file>res/enemy4.png</file>
+        <file>res/enemy4_2.png</file>
+        <file>res/bullet_red.png</file>
+        <file>res/bullet_yellow.png</file>
+        <file>res/enemy5.png</file>
+        <file>res/bullet_pink.png</file>
+        <file>res/bullet_blue.png</file>
+        <file>res/bullet_purple.png</file>
+        <file>res/bullet_black.png</file>
+        <file>res/shield1.png</file>
+        <file>res/shield2.png</file>
+        <file>res/lightball.png</file>
+        <file>res/dot.png</file>
+        <file>res/bg_normal.png</file>
+        <file>res/bg_boss.png</file>
+        <file>res/laser_blue.png</file>
+        <file>res/laser_black.png</file>
+        <file>res/laser_purple.png</file>
+        <file>res/title1.png</file>
+        <file>res/title2.png</file>
+    </qresource>
+</RCC>
