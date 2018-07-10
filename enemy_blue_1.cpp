@@ -7,6 +7,7 @@ Enemy_Blue_1::Enemy_Blue_1(QString img, int img_w, int img_h, int show_w, int sh
 {
     clockwise=false;
     setDisappearTime(2000);
+    bullet_fast=false;
 }
 void Enemy_Blue_1::skill() {
     //second phase
@@ -45,9 +46,8 @@ std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
         Bullet* new_bullet;
         //bullet v, a
         t = (shoot_timer-shoot_cd)/interval;
-        bullet_v = 0.5;
         bullet_a = 0.000015;
-        bullet_count = 15;
+        bullet_count = 20;
         bullet_radius = 8;
         if(shoot_timer==shoot_cd) {
             sincostoxy(sina,cosa,player->getX(),player->getY());
@@ -55,18 +55,23 @@ std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
         }
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
+            bullet_fast=!bullet_fast;
+            bullet_v = (bullet_fast)?1:0.5;
+            QString str = (bullet_fast)?":/res/bullet_purple.png":":/res/bullet_black.png";
             cosb = std::cos(2*i*M_PI/bullet_count);
             sinb = std::sin(2*i*M_PI/bullet_count);
             cos = cosa*cosb-sina*sinb;
             sin = sina*cosb+cosa*sinb;
             cosp = std::cos(5*M_PI/3);
             sinp = std::sin(((clockwise)?1:-1)*5*M_PI/3);
-            new_bullet = new Bullet_Bounce(QString(":/res/bullet_purple.png"),3,bullet_radius,x+(radius-40)*(cos*cosp-sin*sinp)+25*cos*t,y+(radius-40)*(sin*cosp+cos*sinp)+25*sin*t,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-            new_bullet->fadein(1500);
+            new_bullet = new Bullet_Bounce(str,3,bullet_radius,x+(radius-40)*(cos*cosp-sin*sinp)+25*cos*t,y+(radius-40)*(sin*cosp+cos*sinp)+25*sin*t,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet->fadein((bullet_fast)?1500:3000);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
-        if(shoot_timer==shoot_cd+interval*(total_t-1)) shoot_timer = 0;
+        if(shoot_timer==shoot_cd+interval*(total_t-1)) {
+            shoot_timer = 0;
+        }
         return new_bullets;
     }
     return NULL;

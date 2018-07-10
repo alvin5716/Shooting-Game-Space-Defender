@@ -14,6 +14,7 @@ public:
     Effect* disappear() const;
 private:
     bool clockwise;
+    bool bullet_fast;
 };
 
 #endif // ENEMY_BLUE_1_H
