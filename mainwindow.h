@@ -20,6 +20,7 @@
 #include "enemy_blue_5.h"
 #include "enemy_2_green.h"
 #include "enemy_2_red.h"
+#include "enemy_2_yellow.h"
 #include <QKeyEvent>
 #include <vector>
 #include "flash.h"
@@ -53,7 +54,7 @@ private:
     QGraphicsScene *scene;
     QTimer *timer;
     QTimer *freezeTimer;
-    unsigned int tick, gametime;
+    unsigned int tick, gametime, boss_tick;
     bool ticking;
     bool left, right, up, down, use_skill;
     Player *player;

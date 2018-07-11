@@ -111,12 +111,23 @@ void MainWindow::start() {
     ui->stackedWidget->setCurrentIndex(GamePage::Playing);
     //game state
     gamestate=GameState::Playing;
+    //boss tick
+    switch(level) {
+    case 1:
+        boss_tick=Game::BossTick1;
+        break;
+    case 2:
+        boss_tick=Game::BossTick2;
+        break;
+    default:
+        boss_tick=Game::BossTick1;
+    }
 }
 void MainWindow::doTick() {
     //focus
     setFocus();
     //bg
-    if(tick<7304) {
+    if(tick<boss_tick) {
         int init = (450-172)-(gametime/7+1);
         while(init<0) init+=450;
         QPainter merger(cutImg);
@@ -127,7 +138,7 @@ void MainWindow::doTick() {
             merger.drawPixmap(QRect(0,0,150,172),*oriImg,QRect(0,init,150,172));
         }
     } else {
-        if(tick==7304) {
+        if(tick==boss_tick) {
             oriImg2 = new QPixmap(150,450);
             QPixmap *temp = new QPixmap(":/res/bg_boss.png");
             QPainter merger(oriImg2);
@@ -135,7 +146,7 @@ void MainWindow::doTick() {
             merger.drawPixmap(QRect(0,(450-172),150,172),*cutImg,QRect(0,0,150,172));
         }
         QPainter merger(cutImg);
-        int init = (450-172)-((tick-7304)/4+1);
+        int init = (450-172)-((tick-boss_tick)/4+1);
         if(init<0) init = 0;
         if(oriImg2!=NULL) merger.drawPixmap(QRect(0,0,150,172),*oriImg2,QRect(0,init,150,172));
         else merger.drawPixmap(QRect(0,0,150,172),QPixmap(":/res/bg_boss.png"),QRect(0,0,150,172));
@@ -257,6 +268,7 @@ void MainWindow::doTick() {
     }
     //spawn
     switch(level) {
+    //level 1
     case 1:
         if(tickCheck(500,125,7)) { //500+125i, 7 times
             for(int i=0;i<2;++i) {
@@ -462,10 +474,11 @@ void MainWindow::doTick() {
             gamestate=GameState::Won;
         }
         break;
+    //level 2
     case 2:
         if(tickCheck(500,200,7)) { //500+175i, 7 times
             for(int i=0;i<2;++i) {
-                new_enemy = new Enemy_2_Green(QString(":/res/enemy6.png"),35,35,70,70,player,3,35,300,200,(i==0)?-34:Game::FrameWidth+34,250,(i==0)?1.2:-1.2,-0.5,0,0.001);
+                new_enemy = new Enemy_2_Green(QString(":/res/enemy6.png"),35,35,70,70,player,3,35,300,200,(i==0)?-35:Game::FrameWidth+35,250,(i==0)?1.2:-1.2,-0.5,0,0.001);
                 newEnemyInit(new_enemy);
             }
         } else if(tickCheck(2450)) {
@@ -476,15 +489,17 @@ void MainWindow::doTick() {
             tickFreeze();
         } else if(tickCheck(2625,400,5)) {
             for(int i=0;i<2;++i) {
-                new_boss = new Enemy_2_Red(QString(":/res/enemy7.png"),35,35,70,70,player,5,35,220,150,(i==0)?-35:Game::FrameWidth+35,170,(i==0)?1.2:-1.2,0.5,(i==0)?-0.002:0.002,-0.0015);
+                new_boss = new Enemy_2_Red(QString(":/res/enemy7.png"),35,35,70,70,player,5,35,220,150,(i==0)?-30:Game::FrameWidth+30,170,(i==0)?1.2:-1.2,0.5,(i==0)?-0.002:0.002,-0.0015);
                 newEnemyInit(new_boss);
-                new_enemy = new Enemy_2_Green(QString(":/res/enemy6.png"),35,35,70,70,player,5,35,345,150,(i==0)?-35:Game::FrameWidth+35,80,(i==0)?1.2:-1.2,0.5,(i==0)?-0.002:0.002,-0.0015);
+                new_enemy = new Enemy_2_Green(QString(":/res/enemy6.png"),35,35,60,60,player,5,30,345,150,(i==0)?-30:Game::FrameWidth+30,110,(i==0)?1.2:-1.2,0.5,(i==0)?-0.002:0.002,-0.0015);
                 newEnemyInit(new_enemy);
                 new_enemy->setInvulnerable();
-                new_effect = new_enemy->showShield();
-                newEffectInit(new_effect);
                 connect(new_boss,SIGNAL(deadSignal()),new_enemy,SLOT(killItself()));
             }
+        } else if(tickCheck(5200)) {
+            new_enemy = new Enemy_2_Yellow(QString(":/res/enemy8.png"),35,35,90,90,player,45,45,150,150,Game::FrameWidth/2,-45,0,3,0,-0.015,false,true);
+            newEnemyInit(new_enemy);
+            tickFreeze();
         }
         break;
     }

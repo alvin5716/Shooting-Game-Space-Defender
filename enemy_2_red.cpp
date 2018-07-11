@@ -23,7 +23,7 @@ std::vector<Bullet*>* Enemy_2_Red::shoot() {
         sinb = std::sin(((((t+3)/7%2==0)?((t+3)%7):7-((t+3)%7))-3)*M_PI/80);
         cos = cosa*cosb-sina*sinb;
         sin = sina*cosb+cosa*sinb;
-        new_bullet = new Bullet(QString(":/res/bullet_2_red.png"),6,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+        new_bullet = new Bullet(QString(":/res/bullet_2_red.png"),6,x,y+radius*3/4,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
         new_bullets->push_back(new_bullet);
         if(shoot_timer==shoot_cd+180) shoot_timer = 0;
