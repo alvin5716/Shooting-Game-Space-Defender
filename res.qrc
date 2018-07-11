@@ -27,5 +27,13 @@
         <file>res/title2.png</file>
         <file>res/enemy6.png</file>
         <file>res/enemy10.png</file>
+        <file>res/bullet_2_green.png</file>
+        <file>res/bullet_2_blue.png</file>
+        <file>res/bullet_2_pink.png</file>
+        <file>res/bullet_2_red.png</file>
+        <file>res/bullet_2_yellow.png</file>
+        <file>res/enemy7.png</file>
+        <file>res/enemy8.png</file>
+        <file>res/enemy9.png</file>
     </qresource>
 </RCC>

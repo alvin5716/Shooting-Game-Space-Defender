@@ -463,10 +463,27 @@ void MainWindow::doTick() {
         }
         break;
     case 2:
-        if(tickCheck(500,125,7)) { //500+125i, 7 times
+        if(tickCheck(500,200,7)) { //500+175i, 7 times
             for(int i=0;i<2;++i) {
-                new_enemy = new Enemy(QString(":/res/enemy6.png"),35,35,70,70,player,3,35,0,0,(i==0)?120:Game::FrameWidth-120,-34,0,0.8,(i==0)?0.0012:-0.0012,0.001);
+                new_enemy = new Enemy_2_Green(QString(":/res/enemy6.png"),35,35,70,70,player,3,35,300,200,(i==0)?-34:Game::FrameWidth+34,250,(i==0)?1.2:-1.2,-0.5,0,0.001);
                 newEnemyInit(new_enemy);
+            }
+        } else if(tickCheck(2450)) {
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_2_Red(QString(":/res/enemy7.png"),35,35,90,90,player,15,45,200,200,(i==0)?-45:Game::FrameWidth+45,80,(i==0)?1.2:-1.2,0,(i==0)?-0.002:0.002,0,false,true);
+                newEnemyInit(new_enemy);
+            }
+            tickFreeze();
+        } else if(tickCheck(2625,400,5)) {
+            for(int i=0;i<2;++i) {
+                new_boss = new Enemy_2_Red(QString(":/res/enemy7.png"),35,35,70,70,player,5,35,220,150,(i==0)?-35:Game::FrameWidth+35,170,(i==0)?1.2:-1.2,0.5,(i==0)?-0.002:0.002,-0.0015);
+                newEnemyInit(new_boss);
+                new_enemy = new Enemy_2_Green(QString(":/res/enemy6.png"),35,35,70,70,player,5,35,345,150,(i==0)?-35:Game::FrameWidth+35,80,(i==0)?1.2:-1.2,0.5,(i==0)?-0.002:0.002,-0.0015);
+                newEnemyInit(new_enemy);
+                new_enemy->setInvulnerable();
+                new_effect = new_enemy->showShield();
+                newEffectInit(new_effect);
+                connect(new_boss,SIGNAL(deadSignal()),new_enemy,SLOT(killItself()));
             }
         }
         break;
@@ -611,6 +628,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
             break;
         case Qt::Key_Z:
             if(gamestate!=GameState::Menu) player->setShooting(true);
+            Player::speed=2;
             break;
         case Qt::Key_X:
             use_skill=true;
@@ -688,6 +706,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e) {
             break;
         case Qt::Key_Z:
             if(gamestate!=GameState::Menu) player->setShooting(false);
+            Player::speed=3.5;
             break;
         case Qt::Key_X:
             use_skill=false;

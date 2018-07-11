@@ -18,7 +18,7 @@ public:
     void coolDown();
     void gameEndSetting();
     void setHealthTo999();
-    static constexpr double speed=2.5;
+    static double speed;
 signals:
     void healthColorChange(QString);
 public slots:
@@ -30,5 +30,4 @@ private:
     int shoot_timer, shoot_cd, skill_timer, skill_cd;
     QTimer *invulnerable_timer;
 };
-
 #endif // PLAYER_H

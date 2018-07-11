@@ -18,6 +18,8 @@
 #include "enemy_blue_3.h"
 #include "enemy_blue_4.h"
 #include "enemy_blue_5.h"
+#include "enemy_2_green.h"
+#include "enemy_2_red.h"
 #include <QKeyEvent>
 #include <vector>
 #include "flash.h"

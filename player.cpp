@@ -2,7 +2,7 @@
 #include "bullet.h"
 #include <QDebug>
 #include "game.h"
-
+double Player::speed=3.5;
 Player::Player(int health, int radius, int shoot_cd, double x, double y, double xv, double yv, double xa, double ya)
     :Character(QString(":/res/player.png"),42,32,50,40,health,radius,x,y,xv,yv,xa,ya)
 {
