@@ -68,7 +68,7 @@ private:
     QPixmap *oriImg2, *cutImg, *oriImg;
     QGraphicsOpacityEffect* bossSkillOpacityEff;
     QPropertyAnimation* bossSkillFadeinAni, *bossSkillMoveInAni;
-    int gamestate;
+    int gamestate, level;
 
 private slots:
     void start();

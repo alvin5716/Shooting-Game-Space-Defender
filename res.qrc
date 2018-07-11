@@ -25,5 +25,7 @@
         <file>res/laser_purple.png</file>
         <file>res/title1.png</file>
         <file>res/title2.png</file>
+        <file>res/enemy6.png</file>
+        <file>res/enemy10.png</file>
     </qresource>
 </RCC>
