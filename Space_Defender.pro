@@ -49,7 +49,9 @@ SOURCES += \
     laser.cpp \
     enemy_2_green.cpp \
     enemy_2_red.cpp \
-    enemy_2_yellow.cpp
+    enemy_2_yellow.cpp \
+    enemy_2_pink.cpp \
+    enemy_2_blue.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -79,7 +81,10 @@ HEADERS += \
     game.h \
     enemy_2_green.h \
     enemy_2_red.h \
-    enemy_2_yellow.h
+    enemy_2_yellow.h \
+    enemy_2_pink.h \
+    enemy_2_green_tri.h \
+    enemy_2_blue.h
 
 FORMS += \
         mainwindow.ui

@@ -12,7 +12,7 @@ void Bullet_Rotate::move() {
     double sin, cos, phi;
     sincostoxy(sin,cos,xc,yc);
     phi = (clockwise)?(-M_PI/2):(M_PI/2);
-    setAcceleration(ac*(cos*std::cos(phi)-sin*std::sin(phi)),ac*(sin*std::cos(phi)+cos*std::sin(phi)));
     setSpeed(xv+xa,yv+ya);
     setPosition(x+xv,y+yv);
+    setAcceleration(ac*(cos*std::cos(phi)-sin*std::sin(phi)),ac*(sin*std::cos(phi)+cos*std::sin(phi)));
 }

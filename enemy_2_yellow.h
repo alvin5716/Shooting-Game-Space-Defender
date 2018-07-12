@@ -10,6 +10,7 @@ public:
     std::vector<Bullet*>* shoot();
 private:
     double cosa, sina;
+    bool mode;
 };
 
 #endif // ENEMY_2_YELLOW_H

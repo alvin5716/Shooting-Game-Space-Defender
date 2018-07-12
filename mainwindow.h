@@ -21,6 +21,9 @@
 #include "enemy_2_green.h"
 #include "enemy_2_red.h"
 #include "enemy_2_yellow.h"
+#include "enemy_2_pink.h"
+#include "enemy_2_green_tri.h"
+#include "enemy_2_blue.h"
 #include <QKeyEvent>
 #include <vector>
 #include "flash.h"
