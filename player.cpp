@@ -17,10 +17,10 @@ void Player::move() {
     setPosition(x+xv,y+yv);
     setSpeed(xv+xa,yv+ya);
     //don't go out of frame
-    if(x<0+radius) setPosition(0+radius,y);
-    else if(x>Game::FrameWidth-radius) setPosition(Game::FrameWidth-radius,y);
-    if(y<0+radius) setPosition(x,0+radius);
-    else if(y>Game::FrameHeight-radius) setPosition(x,Game::FrameHeight-radius);
+    if(x<0+radius+5) setPosition(0+radius+5,y);
+    else if(x>Game::FrameWidth-radius-5) setPosition(Game::FrameWidth-radius-5,y);
+    if(y<0+radius+5) setPosition(x,0+radius+5);
+    else if(y>Game::FrameHeight-radius-5) setPosition(x,Game::FrameHeight-radius-5);
     //attack cool down
     if(shoot_timer<shoot_cd) ++shoot_timer;
     //skill cool down

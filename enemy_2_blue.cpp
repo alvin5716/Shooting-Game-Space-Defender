@@ -2,61 +2,58 @@
 #include "laser.h"
 #include <QDebug>
 #include <cmath>
-#include "bullet_terminal.h"
+#include "bullet_rotate.h"
 
 Enemy_2_Blue::Enemy_2_Blue(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
-    mode=false;
     point=10;
     boss=true;
     connect(this,SIGNAL(useSkill(QString)),this,SIGNAL(killItsBullets()));
     connect(this,SIGNAL(deadSignal()),this,SIGNAL(killItsBullets()));
     connect(this,SIGNAL(deadSignal()),this,SLOT(deadSet()));
+    fadein(250);
 }
 void Enemy_2_Blue::deadSet() {
     emit deadSignal(x,y);
     emit useSkill("");
 }
 std::vector<Bullet*>* Enemy_2_Blue::shoot() {
-    static double tana=0, cosa=0, sina=0;
-    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%8==0) {
-        double bullet_v, bullet_a, cosb, sinb, cos, sin;
-        int bullet_radius, t;
+    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%200==0) {
+        double bullet_v, bullet_count, cosb, sinb, cos, sin, theta;
+        int t, bullet_radius;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
-        //bullet v, a
-        t = (shoot_timer-shoot_cd)/8;
-        bullet_radius = 9;
+        //bullet v, a and count
+        t = (shoot_timer-shoot_cd)/200;
+        bullet_v = 0.8;
+        bullet_count = 30;
+        bullet_radius = 8;
         if(shoot_timer==shoot_cd) {
-            tana = (y-player->getY()) / (x-player->getX());
-            if(std::isinf(tana)) cosa = 0;
-            else cosa = ((player->getX()>x)?1:-1)/ sqrt(tana*tana+1);
-            if(std::isinf(tana)) sina = 1;
-            else sina = tana*cosa;
+            theta=qrand()%360*M_PI/360;
+            cosa=std::cos(theta);
+            sina=std::sin(theta);
         }
         //shoot
-        for(int i=-3;i<=3;++i) {
-            bullet_v = mode?1:1.5;
-            bullet_a = mode?(i+2)*0.0006:i*0.0005;
-            cosb = std::cos(i*M_PI/24+(mode?-1:1)*t*M_PI/15.7);
-            sinb = std::sin(i*M_PI/24+(mode?-1:1)*t*M_PI/15.7);
-            cos = cosa*cosb-sina*sinb;
-            sin = sina*cosb+cosa*sinb;
-            new_bullet = new Bullet(rainbowBullet(i),bullet_radius,x,y+radius*3/4,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-            connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
-            new_bullet->fadein(1600);
-            new_bullets->push_back(new_bullet);
+        for(int j=0;j<2;++j) {
+            for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
+                cosb = std::cos(i*M_PI/(bullet_count/2)+t*M_PI/30);
+                sinb = std::sin(i*M_PI/(bullet_count/2)+t*M_PI/30);
+                cos = cosa*cosb-sina*sinb;
+                sin = sina*cosb+cosa*sinb;
+                new_bullet = new Bullet_Rotate(QString(":/res/bullet_2_blue.png"),x,y+radius,0.001,j==0,bullet_radius,x,y+radius*3/4,bullet_v*cos,bullet_v*sin);
+                connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+                new_bullets->push_back(new_bullet);
+            }
         }
-        if(shoot_timer==shoot_cd+800) {
+        if(shoot_timer==shoot_cd+200) {
             shoot_timer = 0;
-            mode=!mode;
         }
         return new_bullets;
     }
     return NULL;
 }
-QString Enemy_2_Blue::rainbowBullet(int i) {
+QString Enemy_2_Blue::rainbowBullet(int i) const{
     QString str;
     switch(i) {
     case -3:

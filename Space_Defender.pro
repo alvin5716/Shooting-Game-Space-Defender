@@ -51,7 +51,10 @@ SOURCES += \
     enemy_2_red.cpp \
     enemy_2_yellow.cpp \
     enemy_2_pink.cpp \
-    enemy_2_blue.cpp
+    enemy_2_blue.cpp \
+    enemy_2_blue_1.cpp \
+    bullet_wall.cpp \
+    enemy_2_blue_2.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -84,7 +87,10 @@ HEADERS += \
     enemy_2_yellow.h \
     enemy_2_pink.h \
     enemy_2_green_tri.h \
-    enemy_2_blue.h
+    enemy_2_blue.h \
+    enemy_2_blue_1.h \
+    bullet_wall.h \
+    enemy_2_blue_2.h
 
 FORMS += \
         mainwindow.ui

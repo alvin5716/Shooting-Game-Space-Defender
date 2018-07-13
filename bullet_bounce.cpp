@@ -12,7 +12,7 @@ void Bullet_Bounce::move() {
     setSpeed(xv+xa,yv+ya);
     //bounce
     if(!already_enter && (x>0+radius && x<Game::FrameWidth-radius && y>0+radius && y<Game::FrameHeight-radius)) already_enter=true;
-    if(already_enter && bounce_time>0) {
+    if(already_enter && bounce_time!=0) {
         if(x<0+radius || x>Game::FrameWidth-radius || y<0+radius) {
             if(x<0+radius || x>Game::FrameWidth-radius) {
                 xv *= -1;

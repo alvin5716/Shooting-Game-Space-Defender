@@ -55,7 +55,7 @@ void Character::sincostoxy(double &sin, double &cos, double aim_x, double aim_y)
     double tan = (y-aim_y) / (x-aim_x);
     if(std::isnan(tan)||std::isinf(tan)) { //tan is 0/0 or k/0
         cos=0;
-        sin=((aim_x>=x)?1:-1);
+        sin=((aim_x>x)?1:-1);
     } else {
         cos=((aim_x>x)?1:-1)/ sqrt(tan*tan+1);
         sin=tan*cos;

@@ -14,9 +14,10 @@ public:
     std::vector<Bullet*>* shoot();
 public slots:
     void deadSet();
+protected:
+    QString rainbowBullet(int i) const;
 private:
-    QString rainbowBullet(int i);
-    bool mode;
+    double cosa, sina;
 };
 
 #endif // ENEMY_2_BLUE_H

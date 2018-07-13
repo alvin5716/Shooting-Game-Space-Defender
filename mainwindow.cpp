@@ -597,11 +597,18 @@ void MainWindow::doTick() {
         } else if(tickCheck(14046)) {
             ui->BossLives->show();
             ui->BossHealth->setGeometry(100,40,690,30);
-            new_boss = new Enemy_2_Blue(QString(":/res/enemy10.png"),35,35,130,130,player,360,60,350,400,Game::FrameWidth/2,-59,0,0,0,0,false,true);
+            new_boss = new Enemy_2_Blue_1(QString(":/res/enemy10.png"),35,35,130,130,player,360,60,400,400,Game::FrameWidth/2,-59,0,0,0,0,false,true);
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             new_boss->moveTo(Game::FrameWidth/2,200,330);
             newBossInit(new_boss);
             ui->BossLives->setText("5");
+            tickFreeze();
+        } else if(tickCheck(14048)) {
+            ui->BossLives->setText("4");
+        } else if(tickCheck(14296)) {
+            new_boss = new Enemy_2_Blue_2(QString(":/res/enemy10.png"),35,35,130,130,player,400,60,400,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+            newBossInit(new_boss);
             tickFreeze();
         }
         break;
