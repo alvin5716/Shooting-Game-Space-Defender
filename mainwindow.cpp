@@ -597,7 +597,7 @@ void MainWindow::doTick() {
         } else if(tickCheck(14046)) {
             ui->BossLives->show();
             ui->BossHealth->setGeometry(100,40,690,30);
-            new_boss = new Enemy_2_Blue_1(QString(":/res/enemy10.png"),35,35,130,130,player,360,60,400,400,Game::FrameWidth/2,-59,0,0,0,0,false,true);
+            new_boss = new Enemy_2_Blue_1(QString(":/res/enemy10.png"),35,35,130,130,player,360,60,100,400,Game::FrameWidth/2,-59,0,0,0,0,false,true);
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             new_boss->moveTo(Game::FrameWidth/2,200,330);
             newBossInit(new_boss);
@@ -606,10 +606,39 @@ void MainWindow::doTick() {
         } else if(tickCheck(14048)) {
             ui->BossLives->setText("4");
         } else if(tickCheck(14296)) {
-            new_boss = new Enemy_2_Blue_2(QString(":/res/enemy10.png"),35,35,130,130,player,400,60,400,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            new_boss = new Enemy_2_Blue_2(QString(":/res/enemy10.png"),35,35,130,130,player,410,60,300,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             newBossInit(new_boss);
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_2_Green(QString(":/res/enemy6.png"),35,35,60,60,player,5,30,445,400,Game::FrameWidth/2,200,(i==0)?-1.2:1.2,0.9,0,-0.005,true);
+                newEnemyInit(new_enemy);
+                new_enemy->setInvulnerable();
+                new_enemy->fadein(1000);
+                new_effect = new_enemy->showShield();
+                newEffectInit(new_effect);
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SIGNAL(killItsBullets()));
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SLOT(killItself()));
+            }
             tickFreeze();
+        } else if(tickCheck(14298)) {
+            ui->BossLives->setText("3");
+        } else if(tickCheck(14546)) {
+            new_boss = new Enemy_2_Blue_3(QString(":/res/enemy10.png"),35,35,130,130,player,440,60,300,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+            newBossInit(new_boss);
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_2_Red(QString(":/res/enemy7.png"),35,35,60,60,player,5,30,445,400,Game::FrameWidth/2,200,(i==0)?-0.8:0.8,-1.2,0,0.005,true,true);
+                newEnemyInit(new_enemy);
+                new_enemy->setInvulnerable();
+                new_enemy->fadein(1000);
+                new_effect = new_enemy->showShield();
+                newEffectInit(new_effect);
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SIGNAL(killItsBullets()));
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SLOT(killItself()));
+            }
+            tickFreeze();
+        } else if(tickCheck(14548)) {
+            ui->BossLives->setText("2");
         }
         break;
     }

@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "game.h"
 
-Laser::Laser(QString img, int radius, double angle, double omega, int lifetime, double x, double y)
+Laser::Laser(QString img, int radius, double angle, double omega, int lifetime, double x, double y, int prepare_time)
     :Bullet(img,radius,x,y)
 {
     this->setInvulnerable();
@@ -17,8 +17,9 @@ Laser::Laser(QString img, int radius, double angle, double omega, int lifetime, 
     this->show_h=1000;
     setOpacity(0.3);
     fadein();
-    this->prepare_timer=150;
+    this->prepare_timer=prepare_time;
     preparing=true;
+    this->setZValue(-1);
 }
 Character* Laser::testAttackedBy(Character* attacker) {
     if(preparing) return NULL;

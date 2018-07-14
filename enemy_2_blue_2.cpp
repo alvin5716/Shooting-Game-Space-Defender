@@ -1,13 +1,14 @@
 #include "enemy_2_blue_2.h"
 #include <QDebug>
 #include "bullet_bounce.h"
-#include "bullet_terminal.h"
+#include "laser.h"
 #include "bullet_wall.h"
 
 Enemy_2_Blue_2::Enemy_2_Blue_2(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_2_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     aim_summoned=false;
+    shoot_count=-20;
 }
 void Enemy_2_Blue_2::skill() {
     //second phase
@@ -17,7 +18,7 @@ void Enemy_2_Blue_2::skill() {
         shoot_timer = -420;
         shoot_cd = 40;
         skill_timer = -200;
-        emit useSkill("虹彩光雨");
+        emit useSkill("光彩雨");
     }
     if(secPhase) {
         //skill
@@ -35,14 +36,13 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
             aim[i]->setOpacity(0);
             connect(this,SIGNAL(killItsBullets()),aim[i],SLOT(killItself()));
             new_bullets->push_back(aim[i]);
-            qDebug() << "hi";
         }
         aim_summoned=true;
         return new_bullets;
     }
     if(shoot_timer==shoot_cd) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
-        Bullet* new_bullet;
+        Bullet* new_bullet, *new_laser;
         double bullet_v, bullet_a, cos, sin;
         int bullet_radius;
         //bullet v, a
@@ -58,6 +58,20 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
             new_bullets->push_back(new_bullet);
         }
         shoot_timer = 0;
+        if(++shoot_count>=15) {
+            new_laser = new Laser(QString(":/res/laser_purple.png"),14,-M_PI/2,0,200,0,(player->getY()>Game::FrameHeight-15)?Game::FrameHeight-15:player->getY(),200);
+            connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
+            new_bullets->push_back(new_laser);
+            for(int i=0;i<2;++i) {
+                new_bullet = new Bullet(":/res/bullet_2_purple.png",30,i*Game::FrameWidth,new_laser->getY());
+                new_bullet->setInvulnerable();
+                new_bullet->fadein(1000);
+                connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+                connect(new_laser,SIGNAL(deadSignal()),new_bullet,SLOT(killItself()));
+                new_bullets->push_back(new_bullet);
+            }
+            shoot_count=0;
+        }
         return new_bullets;
     }
     return NULL;

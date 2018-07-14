@@ -15,6 +15,7 @@ public:
 private:
     bool mode, aim_summoned;
     Bullet_Bounce* aim[7];
+    int shoot_count;
 };
 
 #endif // ENEMY_2_BLUE_2_H
