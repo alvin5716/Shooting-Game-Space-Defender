@@ -39,15 +39,15 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         else sina = tana*cosa;
         //bullet v, a
         bullet_v = 1.2;
-        bullet_a = 0.00008;
+        bullet_a = 0.00007;
         bullet_count = 16;
-        bullet_count_2 = 36;
+        bullet_count_2 = 32;
         //shoot
         switch (shoot_count) {
         case 15:
             for(int j=2;j<=3;++j) {
                 for(int i=-(bullet_count_2/2);i<=(bullet_count_2/2-1);++i) {
-                    if(i>=-7 && i<=4) continue;
+                    if(i>=-8 && i<=5) continue;
                     cosb = std::cos((i+j*0.5+0.25)*M_PI/(bullet_count_2/2));
                     sinb = std::sin((i+j*0.5+0.25)*M_PI/(bullet_count_2/2));
                     cos = cosa*cosb-sina*sinb;

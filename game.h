@@ -6,7 +6,7 @@ namespace Game {
     static const int FrameHeight = 860;
     static const int StartTick = 0;
     static const unsigned int BossTick1 = 7304;
-    static const unsigned int BossTick2 = 12800;
+    static const unsigned int BossTick2 = 11502;
 }
 namespace GameState {
     static const int Menu = 0;
