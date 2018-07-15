@@ -16,7 +16,7 @@ void Enemy_2_Blue_1::skill() {
         shoot_timer = -420;
         shoot_cd = 100;
         skill_timer = -200;
-        emit useSkill("炫彩流");
+        emit useSkill("炫彩洪流");
     }
     if(secPhase) {
         //skill

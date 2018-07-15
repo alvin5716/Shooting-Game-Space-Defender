@@ -40,8 +40,7 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         //bullet v, a
         bullet_v = 1.2;
         bullet_a = 0.00007;
-        bullet_count = 16;
-        bullet_count_2 = 32;
+        bullet_count = 18; bullet_count_2 = 34; //BANG
         //shoot
         switch (shoot_count) {
         case 15:
