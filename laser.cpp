@@ -14,7 +14,7 @@ Laser::Laser(QString img, int radius, double angle, double omega, int lifetime, 
     this->lifetimer=lifetime;
     this->img_w=38;
     this->img_h=500;
-    this->show_h=1000;
+    this->show_h=1150;
     setOpacity(0.3);
     fadein();
     this->prepare_timer=prepare_time;
@@ -83,4 +83,7 @@ void Laser::img_move() {
 
     //rotate image
     setTransform(QTransform().translate(show_w/2, 0).rotate((angle-M_PI/2)/M_PI*180).translate(-show_w/2, 0));//martrix transform
+}
+double Laser::getAngle() const{
+    return angle;
 }

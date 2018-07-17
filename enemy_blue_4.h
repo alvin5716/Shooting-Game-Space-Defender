@@ -1,7 +1,6 @@
 #ifndef ENEMY_BLUE_4_H
 #define ENEMY_BLUE_4_H
 
-
 #include "enemy_blue.h"
 #include <QString>
 #include <vector>

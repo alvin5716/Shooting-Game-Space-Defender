@@ -23,6 +23,7 @@ public:
     bool isDead() const;
     bool isInvulnerable() const;
     void sincostoxy(double &sin, double &cos, double aim_x, double aim_y) const;
+    void sincostoxy(double &sin, double &cos, double aim_x, double aim_y, double self_x, double self_y) const;
     virtual Character* testAttackedBy(std::vector<Character*> & attackers);
     virtual Character* testAttackedBy(Character* attacker);
     virtual void attacked();

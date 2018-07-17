@@ -73,7 +73,7 @@ void MainWindow::start() {
     //warning bar
     ui->WarningBar->hide();
     //skill times
-    skill_times=10;
+    skill_times=5;
     ui->PlayerSkill->display(skill_times);
     //point
     ui->PlayerPoint->display(0);
@@ -88,7 +88,7 @@ void MainWindow::start() {
     oriImg = new QPixmap(":/res/bg_normal.png");
     //player
     if(player!=NULL) delete player;
-    player = new Player(10,5,15,Game::FrameWidth/2,Game::FrameHeight/2);
+    player = new Player(5,5,15,Game::FrameWidth/2,Game::FrameHeight/2);
     ui->PlayerLife->display(player->getHealth());
     scene->addItem(player);
     connect(this,SIGNAL(doMove()),player,SLOT(move()));
@@ -121,6 +121,7 @@ void MainWindow::start() {
         break;
     default:
         boss_tick=Game::BossTick1;
+        qDebug() << "error: can't get what level is selected";
     }
 }
 void MainWindow::doTick() {
@@ -168,7 +169,7 @@ void MainWindow::doTick() {
         //player skill
         if(use_skill && !player->isUsingSkill() && skill_times>0 && !player->isInvulnerable()) { //init
             player->coolDown();
-            new_effect = new Shield(QString(":/res/shield1.png"),70,70,400,400,player,375,player->getX(),player->getY());
+            new_effect = new Shield(QString(":/res/shield1.png"),70,70,500,500,player,375,player->getX(),player->getY());
             new_effect->fadein();
             newEffectInit(new_effect);
             --skill_times;
@@ -176,7 +177,7 @@ void MainWindow::doTick() {
         }
         if(player->isUsingSkill()) {
             for(int i=0;i<(int)enemy_bullets.size();++i) { //continuous
-                if(sqrt(pow(enemy_bullets.at(i)->getX()-player->getX(),2)+pow(enemy_bullets.at(i)->getY()-player->getY(),2))<=200 && !enemy_bullets.at(i)->isInvulnerable())
+                if(sqrt(pow(enemy_bullets.at(i)->getX()-player->getX(),2)+pow(enemy_bullets.at(i)->getY()-player->getY(),2))<=250 && !enemy_bullets.at(i)->isInvulnerable())
                     enemy_bullets.at(i)->killItself();
             }
         }
@@ -466,7 +467,7 @@ void MainWindow::doTick() {
             ui->PlayerSkill_list->display(ui->PlayerSkill->value());
             ui->PlayerSkill_listBonus->display(3);
             //Total
-            ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*3);
+            ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
             //List
             ui->EndList->setCurrentIndex(EndListPage::Won);
             ui->EndList->show();
@@ -623,7 +624,7 @@ void MainWindow::doTick() {
         } else if(tickCheck(13000)) {
             ui->BossLives->setText("3");
         } else if(tickCheck(13248)) {
-            new_boss = new Enemy_2_Blue_3(QString(":/res/enemy10.png"),35,35,130,130,player,440,60,300,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            new_boss = new Enemy_2_Blue_3(QString(":/res/enemy10.png"),35,35,130,130,player,400,60,300,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             newBossInit(new_boss);
             for(int i=0;i<2;++i) {
@@ -639,6 +640,23 @@ void MainWindow::doTick() {
             tickFreeze();
         } else if(tickCheck(13250)) {
             ui->BossLives->setText("2");
+        } else if(tickCheck(13498)) {
+            new_boss = new Enemy_2_Blue_4(QString(":/res/enemy10.png"),35,35,130,130,player,450,60,300,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+            newBossInit(new_boss);
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_2_Yellow(QString(":/res/enemy8.png"),35,35,60,60,player,5,30,250,400,Game::FrameWidth/2,200,(i==0)?-0.8:0.8,-1.2,0,0.005,true,true);
+                newEnemyInit(new_enemy);
+                new_enemy->setInvulnerable();
+                new_enemy->fadein(1000);
+                new_effect = new_enemy->showShield();
+                newEffectInit(new_effect);
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SIGNAL(killItsBullets()));
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SLOT(killItself()));
+            }
+            tickFreeze();
+        } else if(tickCheck(13500)) {
+            ui->BossLives->setText("1");
         }
         break;
     }
@@ -782,7 +800,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
             break;
         case Qt::Key_Z:
             if(gamestate!=GameState::Menu) player->setShooting(true);
-            Player::speed=2;
+            Player::speed=1.8;
             break;
         case Qt::Key_X:
             use_skill=true;

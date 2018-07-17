@@ -16,7 +16,7 @@ void Enemy_2_Blue_3::skill() {
         shoot_timer = -120;
         shoot_cd = 125;
         skill_timer = -200;
-        emit useSkill("幻彩環");
+        emit useSkill("幻彩色波紋疾走");
     }
     if(secPhase) {
         //skill
@@ -40,7 +40,8 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         //bullet v, a
         bullet_v = 1.2;
         bullet_a = 0.00007;
-        bullet_count = 18; bullet_count_2 = 34; //BANG
+        bullet_count = 16;
+        bullet_count_2 = 34;
         //shoot
         switch (shoot_count) {
         case 15:

@@ -8,6 +8,7 @@ class Laser : public Bullet
 public:
     Laser(QString img, int radius, double angle, double omega=0, int lifetime=125, double x=0, double y=0, int prepare_time=150);
     Character* testAttackedBy(Character* attacker);
+    double getAngle() const;
 public slots:
     void move();
     void img_move();

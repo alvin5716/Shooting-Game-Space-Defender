@@ -61,6 +61,16 @@ void Character::sincostoxy(double &sin, double &cos, double aim_x, double aim_y)
         sin=tan*cos;
     }
 }
+void Character::sincostoxy(double &sin, double &cos, double aim_x, double aim_y, double self_x, double self_y) const {
+    double tan = (self_y-aim_y) / (self_x-aim_x);
+    if(std::isnan(tan)||std::isinf(tan)) { //tan is 0/0 or k/0
+        cos=0;
+        sin=((aim_x>self_x)?1:-1);
+    } else {
+        cos=((aim_x>self_x)?1:-1)/ sqrt(tan*tan+1);
+        sin=tan*cos;
+    }
+}
 Character* Character::testAttackedBy(std::vector<Character*> & attackers) {
     if(x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius) {
         dead=true;

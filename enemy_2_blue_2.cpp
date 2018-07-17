@@ -16,7 +16,7 @@ void Enemy_2_Blue_2::skill() {
         secPhase = true;
         img=":/res/enemy10_2.png";
         shoot_timer = -420;
-        shoot_cd = 40;
+        shoot_cd = 35;
         skill_timer = -200;
         emit useSkill("七色光雨");
     }
@@ -58,8 +58,8 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
             new_bullets->push_back(new_bullet);
         }
         shoot_timer = 0;
-        if(++shoot_count>=15) {
-            new_laser = new Laser(QString(":/res/laser_purple.png"),14,-M_PI/2,0,200,0,(player->getY()>Game::FrameHeight-15)?Game::FrameHeight-15:player->getY(),200);
+        if(++shoot_count>=20) {
+            new_laser = new Laser(QString(":/res/laser_purple.png"),14,-M_PI/2,0,150,0,(player->getY()>Game::FrameHeight-15)?Game::FrameHeight-15:player->getY(),200);
             connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
             new_bullets->push_back(new_laser);
             for(int i=0;i<2;++i) {

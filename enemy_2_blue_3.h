@@ -1,7 +1,6 @@
 #ifndef ENEMY_2_BLUE_3_H
 #define ENEMY_2_BLUE_3_H
 
-
 #include "enemy_2_blue.h"
 #include <QString>
 #include <vector>
@@ -15,4 +14,5 @@ public:
 private:
     int shoot_count;
 };
+
 #endif // ENEMY_2_BLUE_3_H
