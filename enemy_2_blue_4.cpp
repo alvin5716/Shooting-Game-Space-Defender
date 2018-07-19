@@ -15,14 +15,14 @@ void Enemy_2_Blue_4::skill() {
     if(health<=250 && !secPhase) {
         secPhase = true;
         img=":/res/enemy10_2.png";
-        shoot_timer = 320;
-        shoot_cd = 690;
-        skill_timer = -200;
+        shoot_timer = 270;
+        shoot_cd = 700;
+        skill_timer = -150;
         emit useSkill("祖靈的彩虹橋");
     }
     if(secPhase) {
         //skill
-        if(skill_timer==0) moveTo(Game::FrameWidth/2+150,105,240);
+        if(skill_timer==0) moveTo(Game::FrameWidth/2+80,105,240);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     }
@@ -56,7 +56,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
             }
             return new_bullets;
         }
-    } else if(shoot_timer>300&&shoot_timer<shoot_cd&&(shoot_timer-300)%5==0) {
+    } else if(shoot_timer>300&&shoot_timer<700&&(shoot_timer-300)%5==0) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         for(int i=0;i<2;++i) {
@@ -75,10 +75,10 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                         bullet_a = 0.002;
                         cos = std::cos(j*2*M_PI/7);
                         sin = std::sin(j*2*M_PI/7);
-                        new_bullet = new Bullet_Terminal(rainbowBullet(j),7,0.7,rainbowSpawnpoint[i]->getX(),rainbowSpawnpoint[i]->getY(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                        new_bullet = new Bullet_Terminal(rainbowBullet(j),8,0.7,rainbowSpawnpoint[i]->getX(),rainbowSpawnpoint[i]->getY(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                         new_bullets->push_back(new_bullet);
-                        new_bullet = new Bullet_Terminal(rainbowBullet(j),7,0.7,rainbowSpawnpoint[i]->getX()+300*((i==0)?-1:1)*std::cos(bullet_angle+M_PI/2),rainbowSpawnpoint[i]->getY()+300*((i==0)?-1:1)*std::sin(bullet_angle+M_PI/2),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                        new_bullet = new Bullet_Terminal(rainbowBullet(j),8,0.7,rainbowSpawnpoint[i]->getX()+310*((i==0)?-1:1)*std::cos(bullet_angle+M_PI/2),rainbowSpawnpoint[i]->getY()+310*((i==0)?-1:1)*std::sin(bullet_angle+M_PI/2),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                         new_bullets->push_back(new_bullet);
                     }
@@ -95,18 +95,21 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
         shoot_timer = 0;
         switch(shoot_count) {
         case 0:
+            shoot_timer=50;
+            shoot_cd=1050;
             is_laser_used=true;
-            shoot_timer=250;
         case 2:
             sincostoxy(sin,cos,player->getX(),player->getY(),75,75);
             angle = (cos>0)?std::asin(sin):M_PI-std::asin(sin);
             for(int i=0;i<2;++i) {
-                Laser *new_laser_temp = new Laser(":/res/laser_purple.png",10,(player->getX()+player->getY()<=150)?-M_PI/5:(angle-M_PI/2+((shoot_count==0)?0:((angle>M_PI/4)?((angle<5*M_PI/16&&player->getY()<Game::FrameHeight/2)?M_PI/15:-M_PI/7):M_PI/6))),0,375,(i==0)?0:150,(i==0)?150:0,(shoot_count==0)?50:300);
+                Laser *new_laser_temp = new Laser(":/res/laser_purple.png",10,(player->getX()+player->getY()<=150)?-M_PI/5:(angle-M_PI/2+((shoot_count==0)?0:((angle>M_PI/4)?((angle<5*M_PI/16&&player->getY()<Game::FrameHeight/2)?M_PI/15:-M_PI/7):M_PI/6))),0,(shoot_count==0)?525:375,(i==0)?0:150,(i==0)?150:0,(shoot_count==0)?100:300);
                 bullet_angle = new_laser_temp->getAngle();
                 new_laser = new_laser_temp;
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
                 new_bullets->push_back(new_laser);
                 new_bullet = new Bullet(":/res/bullet_2_purple.png",18,(i==0)?0:150,(i==0)?150:0);
+                new_bullet->setInvulnerable();
+                new_bullet->fadein(1000);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
                 connect(new_laser,SIGNAL(deadSignal()),new_bullet,SLOT(killItself()));
@@ -114,6 +117,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
             shoot_count=1;
             break;
         case 1:
+            shoot_cd=700;
             sincostoxy(sin,cos,player->getX(),player->getY(),Game::FrameWidth-75,75);
             angle = (cos>0)?std::asin(sin):M_PI-std::asin(sin);
             for(int i=0;i<2;++i) {
@@ -123,6 +127,8 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
                 new_bullets->push_back(new_laser);
                 new_bullet = new Bullet(":/res/bullet_2_purple.png",18,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0);
+                new_bullet->setInvulnerable();
+                new_bullet->fadein(1000);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
                 connect(new_laser,SIGNAL(deadSignal()),new_bullet,SLOT(killItself()));

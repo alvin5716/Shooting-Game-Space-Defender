@@ -7,10 +7,11 @@ Enemy_2_Blue_3::Enemy_2_Blue_3(QString img, int img_w, int img_h, int show_w, in
     :Enemy_2_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     shoot_count=0;
+    rotater=0;
 }
 void Enemy_2_Blue_3::skill() {
     //second phase
-    if(health<=260 && !secPhase) {
+    if(health<=350 && !secPhase) {
         secPhase = true;
         img=":/res/enemy10_2.png";
         shoot_timer = -120;
@@ -41,31 +42,30 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         bullet_v = 1.2;
         bullet_a = 0.00007;
         bullet_count = 16;
-        bullet_count_2 = 34;
+        bullet_count_2 = 38;
         //shoot
         switch (shoot_count) {
         case 15:
             for(int j=2;j<=3;++j) {
-                for(int i=-(bullet_count_2/2);i<=(bullet_count_2/2-1);++i) {
-                    if(i>=-8 && i<=5) continue;
-                    cosb = std::cos((i+j*0.5+0.25)*M_PI/(bullet_count_2/2));
-                    sinb = std::sin((i+j*0.5+0.25)*M_PI/(bullet_count_2/2));
-                    cos = cosa*cosb-sina*sinb;
-                    sin = sina*cosb+cosa*sinb;
+                for(int i=-(bullet_count_2/2);i<=(bullet_count_2/2-((bullet_count_2%2==0)?1:0));++i) {
+                    if(i>=-12 && i<=10) continue;
+                    cos = std::cos((i+j*0.5-0.25)*M_PI/bullet_count_2*2+M_PI/2);
+                    sin = std::sin((i+j*0.5-0.25)*M_PI/bullet_count_2*2+M_PI/2);
                     new_bullet = new Bullet_Bounce(rainbowBullet(j),1,9,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
                 }
             }
+            if(++rotater>3) rotater=-3;
         case 14:
         case 13:
         case 12:
         case 11:
         case 10:
             for(int j=0;j<=1;++j) {
-                for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-                    cos = std::cos((i+j*0.5+0.25)*M_PI/(bullet_count/2));
-                    sin = std::sin((i+j*0.5+0.25)*M_PI/(bullet_count/2));
+                for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
+                    cos = std::cos((i+j*0.5+0.25)*M_PI/bullet_count*2);
+                    sin = std::sin((i+j*0.5+0.25)*M_PI/bullet_count*2);
                     new_bullet = new Bullet(rainbowBullet(j),8,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
@@ -76,9 +76,9 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         case 7:
         case 6:
         case 5:
-            for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-                cosb = std::cos(i*M_PI/(bullet_count/2));
-                sinb = std::sin(i*M_PI/(bullet_count/2));
+            for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
+                cosb = std::cos(i*M_PI/bullet_count*2);
+                sinb = std::sin(i*M_PI/bullet_count*2);
                 cos = cosa*cosb-sina*sinb;
                 sin = sina*cosb+cosa*sinb;
                 new_bullet = new Bullet(rainbowBullet(-1),7,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
@@ -92,9 +92,9 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         case 0:
             angle = qrand()%180*M_PI/180;
             for(int j=-3;j<=-2;++j) {
-                for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-                    cos = std::cos(angle+i*M_PI/(bullet_count/2));
-                    sin = std::sin(angle+i*M_PI/(bullet_count/2));
+                for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
+                    cos = std::cos(angle+i*M_PI/bullet_count*2);
+                    sin = std::sin(angle+i*M_PI/bullet_count*2);
                     new_bullet = new Bullet_Rotate(rainbowBullet(j),x,y+radius,0.0015,j==-3,6,x,y+radius,bullet_v*cos,bullet_v*sin);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);

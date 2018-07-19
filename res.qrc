@@ -38,5 +38,10 @@
         <file>res/bullet_2_indigo.png</file>
         <file>res/bullet_2_purple.png</file>
         <file>res/enemy10_2.png</file>
+        <file>res/laser_green.png</file>
+        <file>res/laser_indigo.png</file>
+        <file>res/laser_pink.png</file>
+        <file>res/laser_red.png</file>
+        <file>res/laser_yellow.png</file>
     </qresource>
 </RCC>

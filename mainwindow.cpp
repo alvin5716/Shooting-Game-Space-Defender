@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(GamePage::Menu);
     //level
-    level = 2;
+    level = 1;
     //scene
     scene = new QGraphicsScene(0,0,Game::FrameWidth,Game::FrameHeight);
     ui->graphicsView->setScene(scene);
@@ -31,8 +31,10 @@ MainWindow::MainWindow(QWidget *parent) :
     //qrand
     qsrand(time(NULL));
     //button
-    connect(ui->startButton,SIGNAL(clicked(bool)),this,SLOT(start()));
+    connect(ui->startButton,SIGNAL(clicked(bool)),this,SLOT(levelSelect()));
     connect(ui->QuitButton,SIGNAL(clicked(bool)),qApp,SLOT(quit()));
+    connect(ui->LevelButton_1,SIGNAL(clicked(bool)),this,SLOT(start1()));
+    connect(ui->LevelButton_2,SIGNAL(clicked(bool)),this,SLOT(start2()));
     //focus policy
     setFocusPolicy(Qt::NoFocus);
     //flash
@@ -57,6 +59,17 @@ MainWindow::MainWindow(QWidget *parent) :
     bossSkillMoveInAni->setEasingCurve(QEasingCurve::OutCubic);
     //game state
     gamestate=GameState::Menu;
+}
+void MainWindow::levelSelect() {
+    ui->stackedWidget->setCurrentIndex(GamePage::LevelSelecting);
+}
+void MainWindow::start1() {
+    level=1;
+    start();
+}
+void MainWindow::start2() {
+    level=2;
+    start();
 }
 void MainWindow::start() {
     //boss lives count
@@ -315,9 +328,9 @@ void MainWindow::doTick() {
             tickFreeze();
         } else if(tickCheck(3700,180,10)) { //3700+300i, 10 times
             if(tickCheck(3700,360,5)) //left
-                new_enemy = new Enemy_Yellow(QString(":/res/enemy3.png"),40,37,80,74,player,18,37,600,270,160,-36,0,2.2,0,-0.008);
+                new_enemy = new Enemy_Yellow(QString(":/res/enemy3.png"),40,37,80,74,player,12,37,600,270,160,-36,0,2.2,0,-0.008);
             else //right
-                new_enemy = new Enemy_Yellow(QString(":/res/enemy3.png"),40,37,80,74,player,18,37,600,270,Game::FrameWidth-160,-36,0,2.2,0,-0.008);
+                new_enemy = new Enemy_Yellow(QString(":/res/enemy3.png"),40,37,80,74,player,12,37,600,270,Game::FrameWidth-160,-36,0,2.2,0,-0.008);
             newEnemyInit(new_enemy);
         } else if(tickCheck(5800)) { //5800
             new_boss = new Enemy_Pink(QString(":/res/enemy5.png"),40,37,100,92.5,player,90,46.25,500,450,Game::FrameWidth/2,-36,0,1,0,-0.004,false,true);
@@ -343,7 +356,7 @@ void MainWindow::doTick() {
             tickFreeze();
         } else if(tickCheck(6600)) { //6600
             for(int i=0;i<3;++i) {
-                new_enemy = new Enemy_Pink(QString(":/res/enemy5.png"),40,37,80,74,player,(i==1)?60:40,37,250,(i==1)?200:325,100+(Game::FrameWidth/2-100)*i,-27,0,(i==1)?1:1.3,0,-0.004,false,true);
+                new_enemy = new Enemy_Pink(QString(":/res/enemy5.png"),40,37,80,74,player,(i==1)?40:20,37,250,(i==1)?200:325,100+(Game::FrameWidth/2-100)*i,-27,0,(i==1)?1:1.3,0,-0.004,false,true);
                 newEnemyInit(new_enemy);
             }
             tickFreeze();
@@ -465,7 +478,7 @@ void MainWindow::doTick() {
             ui->PlayerLife_listBonus->display(5);
             //Shield
             ui->PlayerSkill_list->display(ui->PlayerSkill->value());
-            ui->PlayerSkill_listBonus->display(3);
+            ui->PlayerSkill_listBonus->display(2);
             //Total
             ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
             //List
@@ -624,7 +637,7 @@ void MainWindow::doTick() {
         } else if(tickCheck(13000)) {
             ui->BossLives->setText("3");
         } else if(tickCheck(13248)) {
-            new_boss = new Enemy_2_Blue_3(QString(":/res/enemy10.png"),35,35,130,130,player,400,60,300,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            new_boss = new Enemy_2_Blue_5(QString(":/res/enemy10.png"),35,35,130,130,player,360,60,300,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             newBossInit(new_boss);
             for(int i=0;i<2;++i) {
@@ -645,7 +658,7 @@ void MainWindow::doTick() {
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             newBossInit(new_boss);
             for(int i=0;i<2;++i) {
-                new_enemy = new Enemy_2_Yellow(QString(":/res/enemy8.png"),35,35,60,60,player,5,30,250,400,Game::FrameWidth/2,200,(i==0)?-0.8:0.8,-1.2,0,0.005,true,true);
+                new_enemy = new Enemy_2_Yellow(QString(":/res/enemy8.png"),35,35,60,60,player,5,30,250,500,Game::FrameWidth/2,200,(i==0)?-0.8:0.8,-1.2,0,0.005,true,true);
                 newEnemyInit(new_enemy);
                 new_enemy->setInvulnerable();
                 new_enemy->fadein(1000);
@@ -657,6 +670,41 @@ void MainWindow::doTick() {
             tickFreeze();
         } else if(tickCheck(13500)) {
             ui->BossLives->setText("1");
+        } else if(tickCheck(13748)) {
+            new_boss = new Enemy_2_Blue_3(QString(":/res/enemy10.png"),35,35,130,130,player,520,60,400,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            newBossInit(new_boss);
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_2_Pink(QString(":/res/enemy9.png"),35,35,60,60,player,5,30,300,300,Game::FrameWidth/2,200,(i==0)?-0.8:0.8,-1.2,0,0.005,true,true);
+                newEnemyInit(new_enemy);
+                new_enemy->setInvulnerable();
+                new_enemy->fadein(1000);
+                new_effect = new_enemy->showShield();
+                newEffectInit(new_effect);
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SIGNAL(killItsBullets()));
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SLOT(killItself()));
+            }
+            tickFreeze();
+        } else if(tickCheck(13750)) { //13750, END
+            ui->BossLives->hide();
+            ui->BossSkill->hide();
+            if(player!=NULL) player->gameEndSetting();
+        } else if(tickCheck(14000)) { //14000, WIN LIST
+            ticking=false;
+            //Point
+            ui->PlayerPoint_list->display(ui->PlayerPoint->value());
+            //Health
+            ui->PlayerLife_list->display(ui->PlayerLife->value());
+            ui->PlayerLife_listBonus->display(5);
+            //Shield
+            ui->PlayerSkill_list->display(ui->PlayerSkill->value());
+            ui->PlayerSkill_listBonus->display(2);
+            //Total
+            ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
+            //List
+            ui->EndList->setCurrentIndex(EndListPage::Won);
+            ui->EndList->show();
+            //game state
+            gamestate=GameState::Won;
         }
         break;
     }

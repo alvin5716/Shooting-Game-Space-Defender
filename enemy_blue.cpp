@@ -18,12 +18,11 @@ void Enemy_Blue::deadSet() {
 }
 std::vector<Bullet*>* Enemy_Blue::shoot() {
     static double tana=0, cosa=0, sina=0;
-    static int count=0;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%40==0) {
         double bullet_v, bullet_a, cosb, sinb, cos, sin;
         int bullet_radius, bullet_count, t;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
-        Bullet* new_bullet, *new_laser;
+        Bullet* new_bullet;
         //bullet v, a
         t = (shoot_timer-shoot_cd)/40;
         bullet_v = (t==3)?2:0.2;
@@ -38,34 +37,16 @@ std::vector<Bullet*>* Enemy_Blue::shoot() {
             else sina = tana*cosa;
         }
         //shoot
-        if(count==0) {
-            //shoot bullet
-            for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-                cosb = std::cos(i*M_PI/(bullet_count/2)+((t==3)?M_PI/bullet_count:0));
-                sinb = std::sin(i*M_PI/(bullet_count/2)+((t==3)?M_PI/bullet_count:0));
-                cos = cosa*cosb-sina*sinb;
-                sin = sina*cosb+cosa*sinb;
-                new_bullet = new Bullet(QString(":/res/bullet_blue.png"),bullet_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-                connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
-                new_bullets->push_back(new_bullet);
-            }
-        } else if(shoot_timer==shoot_cd) {
-            //shoot laser
-            int k = (qrand()%2==0)?1:-1;
-            for(int i=-3;i<=2;++i) {
-                new_laser = new Laser(QString(":/res/laser_blue.png"),15,asin(sina)+i*M_PI/3,k*M_PI/1200,250,x,y);
-                connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
-                new_bullets->push_back(new_laser);
-            }
-            new_bullet = new Bullet(":/res/bullet_blue.png",30,x,y);
-            new_bullet->setInvulnerable();
-            new_bullet->fadein(1000);
+        for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
+            cosb = std::cos(i*M_PI/(bullet_count/2)+((t==3)?M_PI/bullet_count:0));
+            sinb = std::sin(i*M_PI/(bullet_count/2)+((t==3)?M_PI/bullet_count:0));
+            cos = cosa*cosb-sina*sinb;
+            sin = sina*cosb+cosa*sinb;
+            new_bullet = new Bullet(QString(":/res/bullet_blue.png"),bullet_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
-            connect(new_laser,SIGNAL(deadSignal()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
         if(shoot_timer==shoot_cd+120) shoot_timer = 0;
-        if(t==3) if(++count>=2) count=0;
         return new_bullets;
     }
     return NULL;

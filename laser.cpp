@@ -19,7 +19,6 @@ Laser::Laser(QString img, int radius, double angle, double omega, int lifetime, 
     fadein();
     this->prepare_timer=prepare_time;
     preparing=true;
-    this->setZValue(-1);
 }
 Character* Laser::testAttackedBy(Character* attacker) {
     if(preparing) return NULL;
@@ -59,14 +58,13 @@ void Laser::move() {
         fadein(1);
         preparing=false;
     }
+    //move object
+    setPosition(x+xv,y+yv);
+    setSpeed(xv+xa,yv+ya);
+    angle+=omega;
+    while(angle>=2*M_PI) angle-=2*M_PI;
+    while(angle<0) angle+=2*M_PI;
     if(!preparing) {
-        //move object
-        setPosition(x+xv,y+yv);
-        setSpeed(xv+xa,yv+ya);
-        angle+=omega;
-        while(angle>=2*M_PI) angle-=2*M_PI;
-        while(angle<0) angle+=2*M_PI;
-
         //lifetimer
         if(lifetimer!=-1) --lifetimer; //if lifetime is -1, it won't die
         if(lifetimer==0) {

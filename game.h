@@ -18,6 +18,7 @@ namespace GameState {
 namespace GamePage {
     static const int Menu = 0;
     static const int Playing = 1;
+    static const int LevelSelecting = 2;
 }
 namespace EndListPage {
     static const int Won = 0;

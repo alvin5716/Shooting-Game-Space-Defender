@@ -58,7 +58,7 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
                 sinb = std::sin(2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
                 cos = cosa*cosb-sina*sinb;
                 sin = sina*cosb+cosa*sinb;
-                new_bullet = new Bullet_Rotate(QString(":/res/bullet_purple.png"),x,y,0.014,clockwise,bullet_radius,x+(double)radius*2/3*cos,y+(double)radius*2/3*sin,bullet_v*cos,bullet_v*sin);
+                new_bullet = new Bullet_Rotate(QString(":/res/bullet_purple.png"),x,y,0.011,clockwise,bullet_radius,x+(double)radius*2/3*cos,y+(double)radius*2/3*sin,bullet_v*cos,bullet_v*sin);
                 new_bullet->fadein(500);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);

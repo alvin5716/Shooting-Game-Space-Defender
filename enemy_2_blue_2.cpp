@@ -62,6 +62,7 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
             new_laser = new Laser(QString(":/res/laser_purple.png"),14,-M_PI/2,0,150,0,(player->getY()>Game::FrameHeight-15)?Game::FrameHeight-15:player->getY(),200);
             connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
             new_bullets->push_back(new_laser);
+            new_laser->setZValue(-1);
             for(int i=0;i<2;++i) {
                 new_bullet = new Bullet(":/res/bullet_2_purple.png",30,i*Game::FrameWidth,new_laser->getY());
                 new_bullet->setInvulnerable();

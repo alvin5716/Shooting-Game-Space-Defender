@@ -27,6 +27,7 @@
 #include "enemy_2_blue_2.h"
 #include "enemy_2_blue_3.h"
 #include "enemy_2_blue_4.h"
+#include "enemy_2_blue_5.h"
 #include <QKeyEvent>
 #include <vector>
 #include "flash.h"
@@ -80,7 +81,10 @@ private:
     int gamestate, level;
 
 private slots:
+    void levelSelect();
     void start();
+    void start1();
+    void start2();
     void doTick();
     void tickContinueCheck();
     void pointAdd(int);

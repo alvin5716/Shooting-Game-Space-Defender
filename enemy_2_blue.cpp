@@ -80,3 +80,30 @@ QString Enemy_2_Blue::rainbowBullet(int i) const{
     }
     return str;
 }
+QString Enemy_2_Blue::rainbowLaser(int i) const{
+    QString str;
+    switch(i) {
+    case -3:
+        str=":/res/laser_pink.png";
+        break;
+    case -2:
+        str=":/res/laser_red.png";
+        break;
+    case -1:
+        str=":/res/laser_yellow.png";
+        break;
+    case 0:
+        str=":/res/laser_green.png";
+        break;
+    case 1:
+        str=":/res/laser_blue.png";
+        break;
+    case 2:
+        str=":/res/laser_indigo.png";
+        break;
+    case 3:
+        str=":/res/laser_purple.png";
+        break;
+    }
+    return str;
+}

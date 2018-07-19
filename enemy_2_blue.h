@@ -16,6 +16,7 @@ public slots:
     void deadSet();
 protected:
     QString rainbowBullet(int i) const;
+    QString rainbowLaser(int i) const;
 private:
     double cosa, sina;
 };

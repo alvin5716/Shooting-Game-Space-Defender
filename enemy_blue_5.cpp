@@ -7,7 +7,7 @@
 Enemy_Blue_5::Enemy_Blue_5(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
-
+    first_time=true;
 }
 void Enemy_Blue_5::skill() {
     //second phase
@@ -30,27 +30,7 @@ std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
     static double phi;
     static bool clockwise;
     std::vector<Bullet*>* new_bullets = new std::vector<Bullet*>;
-    Bullet* new_bullet, *new_laser;
-    //laser
-    if(shoot_timer==-450) {
-        new_laser = new Laser(":/res/laser_purple.png",20,-M_PI/2,0,700,0,21);
-        connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
-        new_bullets->push_back(new_laser);
-        return new_bullets;
-    } else if(shoot_timer==-325) {
-        new_laser = new Laser(":/res/laser_purple.png",20,0,0,700,21,0);
-        connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
-        new_bullets->push_back(new_laser);
-        new_laser = new Laser(":/res/laser_purple.png",20,0,0,700,Game::FrameWidth-21,0);
-        connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
-        new_bullets->push_back(new_laser);
-        return new_bullets;
-    } else if(shoot_timer==-200) {
-        new_laser = new Laser(":/res/laser_purple.png",20,-M_PI/2,0,700,0,Game::FrameHeight-21);
-        connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
-        new_bullets->push_back(new_laser);
-        return new_bullets;
-    }
+    Bullet* new_bullet;
     //purple bullets
     int bullet_count = 28;
     if(attack2_count==3 && (shoot_timer==0 || shoot_timer==160)) phi = (qrand()%5)*2*M_PI/bullet_count/5;
@@ -85,8 +65,12 @@ std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
         sincostoxy(sina,cosa,player->getX(),player->getY());
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-            cos = std::cos(2*i*M_PI/bullet_count+((attack2_count==0)?M_PI/bullet_count:0))*cosa-std::sin(2*i*M_PI/bullet_count+((attack2_count==0)?M_PI/bullet_count:0))*sina;
-            sin = std::cos(2*i*M_PI/bullet_count+((attack2_count==0)?M_PI/bullet_count:0))*sina+std::sin(2*i*M_PI/bullet_count+((attack2_count==0)?M_PI/bullet_count:0))*cosa;
+            if(first_time && i==0) {
+                first_time=false;
+                continue;
+            }
+            cos = std::cos(2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0))*cosa-std::sin(2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0))*sina;
+            sin = std::cos(2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0))*sina+std::sin(2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0))*cosa;
             new_bullet = new Bullet_Nether(QString(":/res/bullet_black.png"),bullet_radius,this,2000,x+950*cos,y+950*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

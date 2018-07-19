@@ -12,7 +12,7 @@ public:
     void skill();
     std::vector<Bullet*>* shoot2();
 private:
-    int shoot_count;
+    int shoot_count, rotater;
 };
 
 #endif // ENEMY_2_BLUE_3_H
