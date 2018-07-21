@@ -14,14 +14,14 @@ void Enemy_2_Blue_3::skill() {
     if(health<=350 && !secPhase) {
         secPhase = true;
         img=":/res/enemy10_2.png";
-        shoot_timer = -120;
-        shoot_cd = 125;
+        shoot_timer = -150;
+        shoot_cd = 120;
         skill_timer = -200;
         emit useSkill("幻彩色波紋疾走");
     }
     if(secPhase) {
         //skill
-        if(skill_timer==0) moveTo(Game::FrameWidth/2,140,240);
+        if(skill_timer==0) moveTo(Game::FrameWidth/2,110,240);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     }
@@ -39,7 +39,7 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         if(std::isinf(tana)) sina = 1;
         else sina = tana*cosa;
         //bullet v, a
-        bullet_v = 1.2;
+        bullet_v = 1.8;
         bullet_a = 0.00007;
         bullet_count = 16;
         bullet_count_2 = 38;
@@ -49,8 +49,8 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
             for(int j=2;j<=3;++j) {
                 for(int i=-(bullet_count_2/2);i<=(bullet_count_2/2-((bullet_count_2%2==0)?1:0));++i) {
                     if(i>=-12 && i<=10) continue;
-                    cos = std::cos((i+j*0.5-0.25)*M_PI/bullet_count_2*2+M_PI/2);
-                    sin = std::sin((i+j*0.5-0.25)*M_PI/bullet_count_2*2+M_PI/2);
+                    cos = std::cos((i+j*0.5-0.25+rotater*0.15)*M_PI/bullet_count_2*2+M_PI/2);
+                    sin = std::sin((i+j*0.5-0.25+rotater*0.15)*M_PI/bullet_count_2*2+M_PI/2);
                     new_bullet = new Bullet_Bounce(rainbowBullet(j),1,9,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
@@ -95,7 +95,7 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
                 for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
                     cos = std::cos(angle+i*M_PI/bullet_count*2);
                     sin = std::sin(angle+i*M_PI/bullet_count*2);
-                    new_bullet = new Bullet_Rotate(rainbowBullet(j),x,y+radius,0.0015,j==-3,6,x,y+radius,bullet_v*cos,bullet_v*sin);
+                    new_bullet = new Bullet_Rotate(rainbowBullet(j),x,y+radius,0.0025,j==-3,6,x,y+radius,bullet_v*cos,bullet_v*sin);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
                 }

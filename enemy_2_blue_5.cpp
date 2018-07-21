@@ -63,7 +63,7 @@ std::vector<Bullet*>* Enemy_2_Blue_5::shoot2() {
             mode=!mode;
             for(int i=-3;i<=3;++i) {
                 angle = i*2*M_PI/7+(mode?M_PI/7:0)-M_PI/2+((cosa>0)?std::asin(sina):M_PI-std::asin(sina));
-                new_laser = new Laser(rainbowLaser(i),8,angle,mode?M_PI/775:-M_PI/775,125,x,y+radius,200);
+                new_laser = new Laser(rainbowLaser(i),8,angle,mode?M_PI/775:-M_PI/775,150,x,y+radius,200);
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
                 new_bullets->push_back(new_laser);
             }

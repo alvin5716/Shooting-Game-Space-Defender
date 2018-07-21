@@ -16,7 +16,7 @@ void Enemy_2_Blue_2::skill() {
         secPhase = true;
         img=":/res/enemy10_2.png";
         shoot_timer = -420;
-        shoot_cd = 35;
+        shoot_cd = 38;
         skill_timer = -200;
         emit useSkill("七色光雨");
     }

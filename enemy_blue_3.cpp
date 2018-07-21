@@ -28,9 +28,7 @@ void Enemy_Blue_3::skill() {
         //skill
         if(skill_timer>=0) {
             if(skill_timer>=500*3) skill_timer=0;
-            if(skill_timer==500*0+280) {
-                usinglaser = false;
-            } else if(skill_timer==500*0+370) {
+            if(skill_timer==500*0+370) {
                 moveTo(180,120);
                 shoot_timer = 40;
                 shoot_cd = 70;
@@ -42,7 +40,6 @@ void Enemy_Blue_3::skill() {
             } else if(skill_timer==500*2) {
                 moveTo(Game::FrameWidth/2,300,375);
             } else if(skill_timer==500*2+375) {
-                shoot_timer = 0;
                 usinglaser = true;
                 count=0;
             }
@@ -81,6 +78,7 @@ std::vector<Bullet*>* Enemy_Blue_3::shoot2() {
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             connect(new_laser,SIGNAL(deadSignal()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
+            if(count==3) usinglaser=false;
         }
         ++count;
         shoot_timer = 0;

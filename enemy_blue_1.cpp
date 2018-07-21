@@ -56,7 +56,7 @@ std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
             bullet_fast=!bullet_fast;
-            bullet_v = (bullet_fast)?1:0.5;
+            bullet_v = (bullet_fast)?0.8:0.3;
             QString str = (bullet_fast)?":/res/bullet_purple.png":":/res/bullet_black.png";
             cosb = std::cos(2*i*M_PI/bullet_count);
             sinb = std::sin(2*i*M_PI/bullet_count);
