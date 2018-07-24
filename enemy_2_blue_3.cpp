@@ -2,32 +2,36 @@
 #include <QDebug>
 #include "bullet_rotate.h"
 #include "bullet_bounce.h"
+#include "effect_shaking.h"
 
 Enemy_2_Blue_3::Enemy_2_Blue_3(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_2_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     shoot_count=0;
     rotater=0;
+    setDisappearTime(5000);
 }
 void Enemy_2_Blue_3::skill() {
     //second phase
-    if(health<=350 && !secPhase) {
+    if(health<=340 && !secPhase) {
         secPhase = true;
+        invulnerable=true;
         img=":/res/enemy10_2.png";
-        shoot_timer = -150;
+        shoot_timer = -170;
         shoot_cd = 120;
         skill_timer = -200;
         emit useSkill("幻彩色波紋疾走");
     }
     if(secPhase) {
         //skill
-        if(skill_timer==0) moveTo(Game::FrameWidth/2,110,240);
+        if(skill_timer==0) moveTo(Game::FrameWidth/2,190,75);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     }
 }
 std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
     if(shoot_timer==shoot_cd) {
+        invulnerable=false;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         double bullet_v, bullet_a, tana, sina, cosa, sinb, cosb, sin, cos, angle;
@@ -39,8 +43,8 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         if(std::isinf(tana)) sina = 1;
         else sina = tana*cosa;
         //bullet v, a
-        bullet_v = 1.8;
-        bullet_a = 0.00007;
+        bullet_v = 1.6;
+        bullet_a = 0.00017;
         bullet_count = 16;
         bullet_count_2 = 38;
         //shoot
@@ -95,7 +99,7 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
                 for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
                     cos = std::cos(angle+i*M_PI/bullet_count*2);
                     sin = std::sin(angle+i*M_PI/bullet_count*2);
-                    new_bullet = new Bullet_Rotate(rainbowBullet(j),x,y+radius,0.0025,j==-3,6,x,y+radius,bullet_v*cos,bullet_v*sin);
+                    new_bullet = new Bullet_Rotate(rainbowBullet(j),x,y+radius,0.0032,j==-3,6,x,y+radius,bullet_v*cos,bullet_v*sin);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
                 }
@@ -110,4 +114,9 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         return new_bullets;
     }
     return NULL;
+}
+Effect* Enemy_2_Blue_3::disappear() const {
+    Effect* corpse = new Effect_Shaking(":/res/enemy10_3.png",img_w,img_h,show_w,show_h,disappearTime/8,x,y);
+    corpse->fadeout(disappearTime);
+    return corpse;
 }

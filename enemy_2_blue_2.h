@@ -5,6 +5,7 @@
 #include <QString>
 #include <vector>
 #include "bullet_bounce.h"
+#include "bullet_wall_stick.h"
 
 class Enemy_2_Blue_2 : public Enemy_2_Blue
 {
@@ -15,6 +16,7 @@ public:
 private:
     bool mode, aim_summoned;
     Bullet_Bounce* aim[7];
+    Bullet_Wall_Stick* stick[2];
     int shoot_count;
 };
 

@@ -10,8 +10,9 @@ Enemy_2_Blue_5::Enemy_2_Blue_5(QString img, int img_w, int img_h, int show_w, in
 }
 void Enemy_2_Blue_5::skill() {
     //second phase
-    if(health<=190 && !secPhase) {
+    if(health<=170 && !secPhase) {
         secPhase = true;
+        invulnerable=true;
         img=":/res/enemy10_2.png";
         shoot_timer = -120;
         shoot_cd = 350;
@@ -43,6 +44,7 @@ std::vector<Bullet*>* Enemy_2_Blue_5::shoot2() {
         }
         //shoot
         if(shoot_timer==shoot_cd) {
+            invulnerable=false;
             for(int k=-1;k<=1;++k) {
                 for(int j=0;j<7;++j) {
                     for(int i=-3;i<=3;++i) {

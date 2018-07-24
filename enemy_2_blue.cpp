@@ -7,7 +7,8 @@
 Enemy_2_Blue::Enemy_2_Blue(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
-    point=10;
+    invulnerable=true;
+    point=15;
     boss=true;
     connect(this,SIGNAL(useSkill(QString)),this,SIGNAL(killItsBullets()));
     connect(this,SIGNAL(deadSignal()),this,SIGNAL(killItsBullets()));
@@ -30,6 +31,7 @@ std::vector<Bullet*>* Enemy_2_Blue::shoot() {
         bullet_count = 30;
         bullet_radius = 8;
         if(shoot_timer==shoot_cd) {
+            invulnerable=false;
             theta=qrand()%360*M_PI/360;
             cosa=std::cos(theta);
             sina=std::sin(theta);

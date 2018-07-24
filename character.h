@@ -30,6 +30,7 @@ public:
     void moveTo(double x, double y, double t=125);
     void fadein(int time=800);
     void fadeout(int time=500);
+    void whiteize(int time=60);
 signals:
     void deadSignal();
     void deadSignal(int, int);
@@ -41,11 +42,12 @@ public slots:
     virtual void img_move();
     virtual void setVulnerable();
     virtual void setInvulnerable();
+    void whiteizedFinish();
     void killItself();
 protected:
     int radius, health, img_w, img_h, show_w, show_h, img_timer;
     double x, y, xv, yv, xa, ya;
-    bool dead, invulnerable;
+    bool dead, invulnerable, whiteized;
     QString img;
 };
 

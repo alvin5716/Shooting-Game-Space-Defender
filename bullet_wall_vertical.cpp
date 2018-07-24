@@ -1,13 +1,13 @@
-#include "bullet_wall.h"
+#include "bullet_wall_vertical.h"
 #include "game.h"
 #include <QDebug>
 
-Bullet_Wall::Bullet_Wall(QString img, int radius, int bounce_time, double vt, double at, double x, double y, double xv, double yv, double xa, double ya)
+Bullet_Wall_Vertical::Bullet_Wall_Vertical(QString img, int radius, int bounce_time, double vt, double at, double x, double y, double xv, double yv, double xa, double ya)
     :Bullet(img,radius,x,y,xv,yv,xa,ya),bounce_time(bounce_time),vt(vt),at(at)
 {
 
 }
-void Bullet_Wall::move() {
+void Bullet_Wall_Vertical::move() {
     //move object
     setPosition(x+xv,y+yv);
     setSpeed(xv+xa,yv+ya);

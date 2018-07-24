@@ -53,11 +53,13 @@ SOURCES += \
     enemy_2_pink.cpp \
     enemy_2_blue.cpp \
     enemy_2_blue_1.cpp \
-    bullet_wall.cpp \
     enemy_2_blue_2.cpp \
     enemy_2_blue_3.cpp \
     enemy_2_blue_4.cpp \
-    enemy_2_blue_5.cpp
+    enemy_2_blue_5.cpp \
+    effect_shaking.cpp \
+    bullet_wall_vertical.cpp \
+    bullet_wall_stick.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -69,7 +71,6 @@ HEADERS += \
     enemy_yellow.h \
     enemy_yellow_tri.h \
     enemy_pink.h \
-    enemy_red_line.h \
     enemy_blue.h \
     enemy_blue_1.h \
     enemy_blue_2.h \
@@ -92,11 +93,13 @@ HEADERS += \
     enemy_2_green_tri.h \
     enemy_2_blue.h \
     enemy_2_blue_1.h \
-    bullet_wall.h \
     enemy_2_blue_2.h \
     enemy_2_blue_3.h \
     enemy_2_blue_4.h \
-    enemy_2_blue_5.h
+    enemy_2_blue_5.h \
+    effect_shaking.h \
+    bullet_wall_vertical.h \
+    bullet_wall_stick.h
 
 FORMS += \
         mainwindow.ui

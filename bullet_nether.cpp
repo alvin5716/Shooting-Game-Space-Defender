@@ -31,14 +31,7 @@ void Bullet_Nether::move() {
 Character* Bullet_Nether::testAttackedBy(std::vector<Character*> & attackers) {
     for(int i=0;i<(int)attackers.size();++i) {
         if(sqrt(pow(attackers.at(i)->getX() - x,2)+pow(attackers.at(i)->getY() - y,2)) <= attackers.at(i)->getRadius() + radius) {
-            if(health>0 && !invulnerable) {
-                health-=1;
-                emit healthChanged(health);
-            }
-            if(health<=0) {
-                dead=true;
-                emit deadSignal();
-            }
+            attacked();
             return attackers.at(i);
         }
     }
@@ -46,14 +39,7 @@ Character* Bullet_Nether::testAttackedBy(std::vector<Character*> & attackers) {
 }
 Character* Bullet_Nether::testAttackedBy(Character* attacker) {
     if(sqrt(pow(attacker->getX() - x,2)+pow(attacker->getY() - y,2)) <= attacker->getRadius() + radius) {
-        if(health>0 && !invulnerable) {
-            health-=1;
-            emit healthChanged(health);
-        }
-        if(health<=0) {
-            dead=true;
-            emit deadSignal();
-        }
+        attacked();
         return attacker;
     }
     return NULL;

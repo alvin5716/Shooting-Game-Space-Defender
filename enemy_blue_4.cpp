@@ -8,8 +8,9 @@ Enemy_Blue_4::Enemy_Blue_4(QString img, int img_w, int img_h, int show_w, int sh
 }
 void Enemy_Blue_4::skill() {
     //second phase
-    if(health<=170 && !secPhase) {
+    if(health<=140 && !secPhase) {
         secPhase = true;
+        invulnerable=true;
         img=":/res/enemy4_2.png";
         shoot_timer = -225;
         shoot_cd = 1;
@@ -64,6 +65,7 @@ std::vector<Bullet*>* Enemy_Blue_4::shoot2() {
             }
             //black ,left and right
             if(t>=40&&(t-40)%10==0) {
+                if(t==40) invulnerable=false;
                 for(int j=0;j<6;++j) {
                     int init_y = ((t-40)/10*25)%180+60;
                     new_bullet = new Bullet(QString(":/res/bullet_black.png"),bullet_radius,((i==0)?0-bullet_radius+1:Game::FrameWidth+bullet_radius-1),init_y+160*j,(i==0)?0.25:-0.25,0,(i==0)?0.0015:-0.0015,-0.0001);

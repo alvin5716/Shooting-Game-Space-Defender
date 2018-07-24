@@ -11,10 +11,11 @@ Enemy_Blue_5::Enemy_Blue_5(QString img, int img_w, int img_h, int show_w, int sh
 }
 void Enemy_Blue_5::skill() {
     //second phase
-    if(health<=250 && !secPhase) {
+    if(health<=220 && !secPhase) {
         secPhase = true;
+        invulnerable=true;
         img=":/res/enemy4_2.png";
-        shoot_timer = -500;
+        shoot_timer = -400;
         shoot_cd = 360;
         skill_timer = -425;
         emit useSkill("扭曲虛空");
@@ -23,6 +24,7 @@ void Enemy_Blue_5::skill() {
     if(secPhase) {
         //skill timer
         if(skill_timer<=0) ++skill_timer;
+        if(skill_timer==0) invulnerable=false;
     }
 }
 std::vector<Bullet*>* Enemy_Blue_5::shoot2() {

@@ -3,13 +3,14 @@
 #include <QGraphicsPixmapItem>
 #include <QDebug>
 #include <cmath>
+#include <QTimer>
 #include "game.h"
 
 Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya)
     :radius(radius), health(health),
       img_w(img_w), img_h(img_h), show_w(show_w), show_h(show_h), img_timer(0),
       x(x), y(y), xv(xv), yv(yv), xa(xa), ya(ya),
-      dead(false), invulnerable(false), img(img)
+      dead(false), invulnerable(false), whiteized(false), img(img)
 {
     setPos(x-show_w/2,y-show_h/2);
     QRect cutFrame(0,0,img_w,img_h);
@@ -77,14 +78,7 @@ Character* Character::testAttackedBy(std::vector<Character*> & attackers) {
     }
     for(int i=0;i<(int)attackers.size();++i) {
         if(sqrt(pow(attackers.at(i)->getX() - x,2)+pow(attackers.at(i)->getY() - y,2)) <= attackers.at(i)->getRadius() + radius) {
-            if(health>0 && !invulnerable) {
-                health-=1;
-                emit healthChanged(health);
-            }
-            if(health<=0) {
-                dead=true;
-                emit deadSignal();
-            }
+            attacked();
             return attackers.at(i);
         }
     }
@@ -96,14 +90,7 @@ Character* Character::testAttackedBy(Character* attacker) {
     }
     if(attacker!=NULL) {
         if(sqrt(pow(attacker->getX() - x,2)+pow(attacker->getY() - y,2)) <= attacker->getRadius() + radius) {
-            if(health>0 && !invulnerable) {
-                health-=1;
-                emit healthChanged(health);
-            }
-            if(health<=0) {
-                dead=true;
-                emit deadSignal();
-            }
+            attacked();
             return attacker;
         }
     }
@@ -112,6 +99,7 @@ Character* Character::testAttackedBy(Character* attacker) {
 void Character::attacked() {
     if(health>0 && !invulnerable) {
         health-=1;
+        if(health>0) whiteize();
         emit healthChanged(health);
     }
     if(health<=0) {
@@ -142,6 +130,25 @@ void Character::fadeout(int time) {
     fadeoutAni->setEndValue(0);
     fadeoutAni->setEasingCurve(QEasingCurve::InCubic);
     fadeoutAni->start(QAbstractAnimation::DeleteWhenStopped);
+}
+void Character::whiteize(int time) {
+    if(whiteized) return;
+    whiteized=true;
+    //effect
+    QGraphicsColorizeEffect *eff = new QGraphicsColorizeEffect(this);
+    this->setGraphicsEffect(eff);
+    //whiteize
+    eff->setColor(QColor(Qt::white));
+    QPropertyAnimation *whiteizeAni = new QPropertyAnimation(eff,"strength");
+    whiteizeAni->setDuration(time);
+    whiteizeAni->setStartValue(0.3);
+    whiteizeAni->setEndValue(0);
+    whiteizeAni->setEasingCurve(QEasingCurve::InBack);
+    connect(whiteizeAni,SIGNAL(finished()),this,SLOT(whiteizedFinish()));
+    whiteizeAni->start(QAbstractAnimation::DeleteWhenStopped);
+}
+void Character::whiteizedFinish() {
+    whiteized=false;
 }
 void Character::setInvulnerable() {
     invulnerable=true;

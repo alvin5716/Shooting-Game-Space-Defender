@@ -11,12 +11,13 @@ Enemy_Blue_3::Enemy_Blue_3(QString img, int img_w, int img_h, int show_w, int sh
 }
 void Enemy_Blue_3::skill() {
     //second phase
-    if(health<=220 && !secPhase) {
+    if(health<=200 && !secPhase) {
         phi=0;
         usinglaser = true;
         count=0;
         bullet_count=24;
         secPhase = true;
+        invulnerable=true;
         img=":/res/enemy4_2.png";
         shoot_timer = -200;
         shoot_cd = 90;
@@ -34,8 +35,9 @@ void Enemy_Blue_3::skill() {
                 shoot_cd = 70;
                 bullet_count = 32;
                 bullet_v_t = 2;
-                shootingbullet = true;
+                invulnerable=false;
             } else if(skill_timer==500*1) {
+                shootingbullet = true;
                 moveTo(Game::FrameWidth-180,120,375);
             } else if(skill_timer==500*2) {
                 moveTo(Game::FrameWidth/2,300,375);

@@ -11,7 +11,6 @@
 #include "enemy_red.h"
 #include "enemy_yellow.h"
 #include "enemy_yellow_tri.h"
-#include "enemy_red_line.h"
 #include "enemy_pink.h"
 #include "enemy_blue_1.h"
 #include "enemy_blue_2.h"
@@ -79,6 +78,7 @@ private:
     QGraphicsOpacityEffect* bossSkillOpacityEff;
     QPropertyAnimation* bossSkillFadeinAni, *bossSkillMoveInAni;
     int gamestate, level;
+    QString strBossBG;
 
 private slots:
     void levelSelect();

@@ -43,5 +43,8 @@
         <file>res/laser_pink.png</file>
         <file>res/laser_red.png</file>
         <file>res/laser_yellow.png</file>
+        <file>res/enemy10_3.png</file>
+        <file>res/enemy4_3.png</file>
+        <file>res/bg_boss_2.png</file>
     </qresource>
 </RCC>

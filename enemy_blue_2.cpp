@@ -9,8 +9,9 @@ Enemy_Blue_2::Enemy_Blue_2(QString img, int img_w, int img_h, int show_w, int sh
 }
 void Enemy_Blue_2::skill() {
     //second phase
-    if(health<=140 && !secPhase) {
+    if(health<=130 && !secPhase) {
         secPhase = true;
+        invulnerable=true;
         img=":/res/enemy4_2.png";
         shoot_timer = -175;
         shoot_cd = 250;
@@ -19,7 +20,7 @@ void Enemy_Blue_2::skill() {
     }
     if(secPhase) {
         //skill
-        if(skill_timer==0) moveTo(Game::FrameWidth/2,350);
+        if(skill_timer==0) moveTo(Game::FrameWidth/2,330,250);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     }
@@ -38,6 +39,7 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
         bullet_v = 0.4;
         bullet_count = 24;
         if(shoot_timer==shoot_cd) {
+            invulnerable=false;
             sincostoxy(sina,cosa,player->getX(),player->getY());
             clockwise=!clockwise;
         }
@@ -52,6 +54,7 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
         }
         //rotate bullets
         if(t<4) {
+            if(t==0) invulnerable=false;
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                 int bullet_radius=((i+(bullet_count/2))%4)*5+12;
                 cosb = std::cos(2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
@@ -70,7 +73,7 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
                     sinb = std::sin(2*i*M_PI/bullet_count+M_PI/bullet_count);
                     cos = cosa*cosb-sina*sinb;
                     sin = sina*cosb+cosa*sinb;
-                    new_bullet = new Bullet_Rotate(QString(":/res/bullet_purple.png"),(j==0)?220:Game::FrameWidth-220,200,0.01,clockwise,12,(j==0)?220:Game::FrameWidth-220,200,bullet_v*cos,bullet_v*sin);
+                    new_bullet = new Bullet_Rotate(QString(":/res/bullet_purple.png"),(j==0)?220:Game::FrameWidth-220,200,0.007,clockwise,12,(j==0)?220:Game::FrameWidth-220,200,bullet_v*cos,bullet_v*sin);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
                 }
