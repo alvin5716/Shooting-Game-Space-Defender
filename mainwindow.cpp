@@ -891,7 +891,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
         switch (e->key()) {
         case Qt::Key_Up:
             if(secret==0 || secret==1) ++secret;
-            else secret=0;
+            else if(secret!=2) secret=0;
             break;
         case Qt::Key_Down:
             if(secret==2 || secret==3) ++secret;
