@@ -38,11 +38,10 @@ void Enemy_Blue_1::skill() {
     }
 }
 std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
-    static double cosa, sina;
     const int total_t = 3;
     const int interval = 5;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
-        double bullet_v, bullet_a, cosb, sinb, cos, sin, cosp, sinp;
+        double bullet_v, bullet_a, cos, sin, cosp, sinp;
         int bullet_radius, bullet_count, t;
         std::vector<Bullet*>* new_bullets = new std::vector<Bullet*>;
         Bullet* new_bullet;
@@ -53,7 +52,7 @@ std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
         bullet_radius = 8;
         if(shoot_timer==shoot_cd) {
             invulnerable=false;
-            sincostoxy(sina,cosa,player->getX(),player->getY());
+            angle=angleofvector(player->getX()-x,player->getY()-y);
             clockwise=!clockwise;
         }
         //shoot
@@ -61,10 +60,8 @@ std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
             bullet_fast=!bullet_fast;
             bullet_v = (bullet_fast)?0.8:0.3;
             QString str = (bullet_fast)?":/res/bullet_purple.png":":/res/bullet_black.png";
-            cosb = std::cos(2*i*M_PI/bullet_count);
-            sinb = std::sin(2*i*M_PI/bullet_count);
-            cos = cosa*cosb-sina*sinb;
-            sin = sina*cosb+cosa*sinb;
+            cos = std::cos(angle+2*i*M_PI/bullet_count);
+            sin = std::sin(angle+2*i*M_PI/bullet_count);
             cosp = std::cos(5*M_PI/3);
             sinp = std::sin(((clockwise)?1:-1)*5*M_PI/3);
             new_bullet = new Bullet_Bounce(str,(bullet_fast)?3:1,bullet_radius,x+(radius-40)*(cos*cosp-sin*sinp)+25*cos*t,y+(radius-40)*(sin*cosp+cos*sinp)+25*sin*t,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);

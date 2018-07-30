@@ -27,14 +27,13 @@ void Enemy_2_Blue_1::skill() {
     }
 }
 std::vector<Bullet*>* Enemy_2_Blue_1::shoot2() {
-    static double tana=0, cosa=0, sina=0;
     const int interval=12;
     if(shoot_timer==shoot_cd+200) {
         if(mode) moveTo(Game::FrameWidth/2-180,200,620);
         else moveTo(Game::FrameWidth/2+180,200,620);
     }
     if((shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0)||(shoot_timer==shoot_cd+interval*110+200)) {
-        double bullet_v, bullet_a, cosb, sinb, cos, sin;
+        double bullet_v, bullet_a, cos, sin;
         int bullet_radius, t;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
@@ -43,21 +42,15 @@ std::vector<Bullet*>* Enemy_2_Blue_1::shoot2() {
         bullet_radius = 9;
         if(shoot_timer==shoot_cd) {
             invulnerable=false;
-            tana = (y-player->getY()) / (x-player->getX());
-            if(std::isinf(tana)) cosa = 0;
-            else cosa = ((player->getX()>x)?1:-1)/ sqrt(tana*tana+1);
-            if(std::isinf(tana)) sina = 1;
-            else sina = tana*cosa;
+            angle = angleofvector(player->getX()-x,player->getY()-y);
         }
         //shoot
         if(shoot_timer<=shoot_cd+interval*110) {
             for(int i=-3;i<=3;++i) {
                 bullet_v = mode?0.9:1.4;
                 bullet_a = mode?(i+2)*0.00062:i*0.00055-0.0001;
-                cosb = std::cos(i*M_PI/24+(mode?-1:1)*t*M_PI/17.7);
-                sinb = std::sin(i*M_PI/24+(mode?-1:1)*t*M_PI/17.7);
-                cos = cosa*cosb-sina*sinb;
-                sin = sina*cosb+cosa*sinb;
+                cos = std::cos(angle+i*M_PI/24+(mode?-1:1)*t*M_PI/17.7);
+                sin = std::sin(angle+i*M_PI/24+(mode?-1:1)*t*M_PI/17.7);
                 new_bullet = new Bullet_Terminal(rainbowBullet(i),bullet_radius,0.6,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullet->fadein(1800);

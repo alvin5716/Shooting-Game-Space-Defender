@@ -21,7 +21,7 @@ void Enemy_2_Blue::deadSet() {
 }
 std::vector<Bullet*>* Enemy_2_Blue::shoot() {
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%200==0) {
-        double bullet_v, bullet_count, cosb, sinb, cos, sin, theta;
+        double bullet_v, bullet_count, cos, sin;
         int t, bullet_radius;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
@@ -32,17 +32,13 @@ std::vector<Bullet*>* Enemy_2_Blue::shoot() {
         bullet_radius = 8;
         if(shoot_timer==shoot_cd) {
             invulnerable=false;
-            theta=qrand()%360*M_PI/360;
-            cosa=std::cos(theta);
-            sina=std::sin(theta);
+            angle=qrand()%360*M_PI/360;
         }
         //shoot
         for(int j=0;j<2;++j) {
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-                cosb = std::cos(i*M_PI/(bullet_count/2)+t*M_PI/30);
-                sinb = std::sin(i*M_PI/(bullet_count/2)+t*M_PI/30);
-                cos = cosa*cosb-sina*sinb;
-                sin = sina*cosb+cosa*sinb;
+                cos = std::cos(angle+i*M_PI/(bullet_count/2)+t*M_PI/30);
+                sin = std::sin(angle+i*M_PI/(bullet_count/2)+t*M_PI/30);
                 new_bullet = new Bullet_Rotate(QString(":/res/bullet_2_blue.png"),x,y,0.001,j==0,bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);

@@ -9,7 +9,7 @@ Enemy_2_Green::Enemy_2_Green(QString img, int img_w, int img_h, int show_w, int 
 
 std::vector<Bullet*>* Enemy_2_Green::shoot() {
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%11==0) {
-        double bullet_v, bullet_a, bullet_count, cosb, sinb, cos, sin, t;
+        double bullet_v, bullet_a, bullet_count, cos, sin, t;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a and count
@@ -17,13 +17,11 @@ std::vector<Bullet*>* Enemy_2_Green::shoot() {
         bullet_v = 1.2;
         bullet_a = 0.001+t*0.00005;
         bullet_count = 16;
-        if(shoot_timer==shoot_cd) sincostoxy(sina,cosa,player->getX(),player->getY());
+        if(shoot_timer==shoot_cd) angle = angleofvector(player->getX()-x,player->getY()-y);
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-            cosb = std::cos(i*M_PI/(bullet_count/2));
-            sinb = std::sin(i*M_PI/(bullet_count/2));
-            cos = cosa*cosb-sina*sinb;
-            sin = sina*cosb+cosa*sinb;
+            cos = std::cos(angle+i*M_PI/(bullet_count/2));
+            sin = std::sin(angle+i*M_PI/(bullet_count/2));
             new_bullet = new Bullet(QString(":/res/bullet_2_green.png"),8,x,y+radius*3/4,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

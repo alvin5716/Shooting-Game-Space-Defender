@@ -10,7 +10,7 @@ Enemy_Yellow::Enemy_Yellow(QString img, int img_w, int img_h, int show_w, int sh
 
 std::vector<Bullet*>* Enemy_Yellow::shoot() {
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%25==0) {
-        double bullet_v, bullet_a, bullet_count, cosb, sinb, cos, sin, t;
+        double bullet_v, bullet_a, bullet_count, cos, sin, t;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a and count
@@ -18,13 +18,11 @@ std::vector<Bullet*>* Enemy_Yellow::shoot() {
         bullet_v = 1.2;
         bullet_a = 0.001+t*0.00005;
         bullet_count = 20;
-        if(shoot_timer==shoot_cd) sincostoxy(sina,cosa,player->getX(),player->getY());
+        if(shoot_timer==shoot_cd) angle=angleofvector(player->getX()-x,player->getY()-y);
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-            cosb = std::cos(i*M_PI/(bullet_count/2)+t*M_PI/(bullet_count*4));
-            sinb = std::sin(i*M_PI/(bullet_count/2)+t*M_PI/(bullet_count*4));
-            cos = cosa*cosb-sina*sinb;
-            sin = sina*cosb+cosa*sinb;
+            cos = std::cos(angle+i*M_PI/(bullet_count/2)+t*M_PI/(bullet_count*4));
+            sin = std::sin(angle+i*M_PI/(bullet_count/2)+t*M_PI/(bullet_count*4));
             new_bullet = new Bullet(QString(":/res/bullet_yellow.png"),16,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

@@ -46,5 +46,12 @@
         <file>res/enemy10_3.png</file>
         <file>res/enemy4_3.png</file>
         <file>res/bg_boss_2.png</file>
+        <file>res/enemy11.png</file>
+        <file>res/bg_boss_3.png</file>
+        <file>res/enemy12.png</file>
+        <file>res/enemy13.png</file>
+        <file>res/enemy14.png</file>
+        <file>res/magic.png</file>
+        <file>res/bullet_green.png</file>
     </qresource>
 </RCC>

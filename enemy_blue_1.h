@@ -13,8 +13,8 @@ public:
     std::vector<Bullet*>* shoot2();
     Effect* disappear() const;
 private:
-    bool clockwise;
-    bool bullet_fast;
+    bool clockwise, bullet_fast;
+    double angle;
 };
 
 #endif // ENEMY_BLUE_1_H

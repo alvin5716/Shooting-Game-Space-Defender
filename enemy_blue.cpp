@@ -18,9 +18,8 @@ void Enemy_Blue::deadSet() {
     emit useSkill("");
 }
 std::vector<Bullet*>* Enemy_Blue::shoot() {
-    static double tana=0, cosa=0, sina=0;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%40==0) {
-        double bullet_v, bullet_a, cosb, sinb, cos, sin;
+        double bullet_v, bullet_a, cos, sin;
         int bullet_radius, bullet_count, t;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
@@ -32,18 +31,12 @@ std::vector<Bullet*>* Enemy_Blue::shoot() {
         bullet_radius = (t==3)?9:18;
         if(shoot_timer==shoot_cd) {
             invulnerable=false;
-            tana = (y-player->getY()) / (x-player->getX());
-            if(std::isinf(tana)) cosa = 0;
-            else cosa = ((player->getX()>x)?1:-1)/ sqrt(tana*tana+1);
-            if(std::isinf(tana)) sina = 1;
-            else sina = tana*cosa;
+            angle=angleofvector(player->getX()-x,player->getY()-y);
         }
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-            cosb = std::cos(i*M_PI/(bullet_count/2)+((t==3)?M_PI/bullet_count:0));
-            sinb = std::sin(i*M_PI/(bullet_count/2)+((t==3)?M_PI/bullet_count:0));
-            cos = cosa*cosb-sina*sinb;
-            sin = sina*cosb+cosa*sinb;
+            cos = std::cos(angle+i*M_PI/(bullet_count/2)+((t==3)?M_PI/bullet_count:0));
+            sin = std::sin(angle+i*M_PI/(bullet_count/2)+((t==3)?M_PI/bullet_count:0));
             new_bullet = new Bullet(QString(":/res/bullet_blue.png"),bullet_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

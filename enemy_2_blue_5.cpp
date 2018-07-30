@@ -27,32 +27,23 @@ void Enemy_2_Blue_5::skill() {
     }
 }
 std::vector<Bullet*>* Enemy_2_Blue_5::shoot2() {
-    static double tana=0, cosa=0, sina=0;
     if(shoot_timer==shoot_cd || shoot_timer==2*shoot_cd) {
-        double bullet_v, cosb, sinb, cos, sin, angle;
+        double bullet_v, cos, sin, phi;
         int bullet_radius;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet, *new_laser;
         //bullet v, a
         bullet_radius = 8;
-        if(shoot_timer==shoot_cd) {
-            tana = (y-player->getY()) / (x-player->getX());
-            if(std::isinf(tana)) cosa = 0;
-            else cosa = ((player->getX()>x)?1:-1)/ sqrt(tana*tana+1);
-            if(std::isinf(tana)) sina = 1;
-            else sina = tana*cosa;
-        }
         //shoot
         if(shoot_timer==shoot_cd) {
+            angle = angleofvector(player->getX()-x,player->getY()-y);
             invulnerable=false;
             for(int k=-1;k<=1;++k) {
                 for(int j=0;j<7;++j) {
                     for(int i=-3;i<=3;++i) {
                         bullet_v = 0.15+0.25*j;
-                        cosb = std::cos(i*2*M_PI/7+(mode?M_PI/7:0)+k*M_PI/14);
-                        sinb = std::sin(i*2*M_PI/7+(mode?M_PI/7:0)+k*M_PI/14);
-                        cos = cosa*cosb-sina*sinb;
-                        sin = sina*cosb+cosa*sinb;
+                        cos = std::cos(angle+i*2*M_PI/7+(mode?M_PI/7:0)+k*M_PI/14);
+                        sin = std::sin(angle+i*2*M_PI/7+(mode?M_PI/7:0)+k*M_PI/14);
                         new_bullet = new Bullet_Rotate(rainbowBullet(i),x,y+radius,0.003+0.00085*j,mode,bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin);
                         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                         new_bullet->fadein(1200);
@@ -64,8 +55,8 @@ std::vector<Bullet*>* Enemy_2_Blue_5::shoot2() {
             shoot_timer = 0;
             mode=!mode;
             for(int i=-3;i<=3;++i) {
-                angle = i*2*M_PI/7+(mode?M_PI/7:0)-M_PI/2+((cosa>0)?std::asin(sina):M_PI-std::asin(sina));
-                new_laser = new Laser(rainbowLaser(i),8,angle,mode?M_PI/775:-M_PI/775,150,x,y+radius,200);
+                phi = i*2*M_PI/7+(mode?M_PI/7:0)-M_PI/2+angle;
+                new_laser = new Laser(rainbowLaser(i),8,phi,mode?M_PI/775:-M_PI/775,150,x,y+radius,200);
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
                 new_bullets->push_back(new_laser);
             }

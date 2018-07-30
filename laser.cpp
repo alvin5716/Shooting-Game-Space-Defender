@@ -26,18 +26,13 @@ Character* Laser::testAttackedBy(Character* attacker) {
         dead=true;
     }
     if(attacker!=NULL) {
-        double x0=attacker->getX(), y0=attacker->getY(), slope=tan(angle), sin, cos;
-        sincostoxy(sin,cos,x0,y0);
-        double angle_dif=angle-((y0<y)?acos(cos):2*M_PI-acos(cos));
-        if(angle_dif>M_PI) angle_dif-=2*M_PI;
-        else if(angle_dif<-M_PI) angle_dif+=2*M_PI;
-        if((angle/M_PI*180>90&&angle/M_PI*180<=180)||(angle/M_PI*180>270&&angle/M_PI*180<=360)) angle_dif*=-1;
-        if(((int)round(angle/M_PI*180))%180==0) angle_dif+=M_PI/2;
-        if(((int)round(angle/M_PI*180)+90)%180==0) angle_dif-=M_PI/2;
-        if(angle_dif>M_PI) angle_dif-=2*M_PI;
-        else if(angle_dif<-M_PI) angle_dif+=2*M_PI;
+        double x0=attacker->getX(), y0=attacker->getY(), slope=tan(angle), theta;
+        theta = angleofvector(x0-x,y0-y);
+        double angle_dif=angle-theta;
+        while(angle_dif>M_PI) angle_dif-=2*M_PI;
+        while(angle_dif<-M_PI) angle_dif+=2*M_PI;
         if((abs((slope*x0-y0-slope*x+y)/sqrt(pow(slope,2)+1)) <= attacker->getRadius() + radius)
-                && (angle_dif<=M_PI) && (angle_dif>=0))
+                && (angle_dif<=M_PI/2) && (angle_dif>=-M_PI/2))
         {
             if(health>0 && !invulnerable) {
                 health-=1;

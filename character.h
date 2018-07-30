@@ -22,8 +22,8 @@ public:
     int getHealth() const;
     bool isDead() const;
     bool isInvulnerable() const;
-    void sincostoxy(double &sin, double &cos, double aim_x, double aim_y) const;
-    void sincostoxy(double &sin, double &cos, double aim_x, double aim_y, double self_x, double self_y) const;
+    double angleofsincos(double sin, double cos) const;
+    double angleofvector(double x, double y) const;
     virtual Character* testAttackedBy(std::vector<Character*> & attackers);
     virtual Character* testAttackedBy(Character* attacker);
     virtual void attacked();
@@ -31,6 +31,8 @@ public:
     void fadein(int time=800);
     void fadeout(int time=500);
     void whiteize(int time=60);
+    void setCanBeMirrored(bool canBeMirrored=true);
+    void setFaceToLeft(bool face_to_left=true);
 signals:
     void deadSignal();
     void deadSignal(int, int);
@@ -47,7 +49,7 @@ public slots:
 protected:
     int radius, health, img_w, img_h, show_w, show_h, img_timer;
     double x, y, xv, yv, xa, ya;
-    bool dead, invulnerable, whiteized;
+    bool dead, invulnerable, whiteized, face_to_left, canBeMirrored;
     QString img;
 };
 

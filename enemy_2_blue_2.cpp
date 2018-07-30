@@ -46,7 +46,7 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
         invulnerable=false;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet, *new_laser;
-        double bullet_v, bullet_a, cos, sin;
+        double bullet_v, bullet_a, cos, sin, angle;
         int bullet_radius;
         //bullet v, a
         bullet_radius = 6;
@@ -54,7 +54,9 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
         bullet_a = 0;
         //shoot
         for(int i=-3;i<=3;++i) {
-            sincostoxy(sin,cos,aim[i+3]->getX(),aim[i+3]->getY()-radius);
+            angle = angleofvector(aim[i+3]->getX()-x,aim[i+3]->getY()-radius-y);
+            sin = std::sin(angle);
+            cos = std::cos(angle);
             new_bullet = new Bullet_Wall_Vertical(rainbowBullet(i),bullet_radius,1,0.05*(qrand()%40),0.0025,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullet->fadein(1800);
@@ -63,7 +65,9 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
         switch (++shoot_count) {
         case 14:
             for(int i=0;i<2;++i) {
-                sincostoxy(sin,cos,i*Game::FrameWidth,((player->getY()>Game::FrameHeight-17)?Game::FrameHeight-17:player->getY())-radius);
+                angle = angleofvector(i*Game::FrameWidth-x,((player->getY()>Game::FrameHeight-17)?Game::FrameHeight-17:player->getY())-radius-y);
+                sin = std::sin(angle);
+                cos = std::cos(angle);
                 stick[i] = new Bullet_Wall_Stick(":/res/bullet_2_purple.png",25,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 stick[i]->setInvulnerable();
                 stick[i]->fadein(500);

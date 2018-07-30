@@ -79,6 +79,7 @@ bool Enemy::isSecPhase() const{
 }
 Effect* Enemy::disappear() const {
     Effect* corpse = new Effect(img,img_w,img_h,show_w,show_h,disappearTime/8,x,y,xv,yv,xa,ya);
+    if(canBeMirrored&&face_to_left) corpse->setCanBeMirrored();
     corpse->fadeout(disappearTime);
     return corpse;
 }

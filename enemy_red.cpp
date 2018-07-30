@@ -13,19 +13,12 @@ std::vector<Bullet*>* Enemy_Red::shoot() {
         shoot_timer = 0;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
-        double bullet_v, bullet_a;
-        double tana, cosa, sina, cosb, sinb, cos, sin;
-        tana = (y-player->getY()) / (x-player->getX());
-        if(std::isinf(tana)) cosa = 0;
-        else cosa = ((player->getX()>x)?1:-1)/ sqrt(tana*tana+1);
-        if(std::isinf(tana)) sina = 1;
-        else sina = tana*cosa;
+        double bullet_v, bullet_a, cos, sin, angle;
+        angle=angleofvector(player->getX()-x,player->getY()-y);
         for(int i=-1;i<=1;++i) {
             for(int j=0;j<3;++j) {
-                cosb = std::cos(i*M_PI/15);
-                sinb = std::sin(i*M_PI/15);
-                cos = cosa*cosb - sina*sinb;
-                sin = sina*cosb + cosa*sinb;
+                cos = std::cos(angle+i*M_PI/15);
+                sin = std::sin(angle+i*M_PI/15);
                 bullet_v = 0.25;
                 bullet_a = 0.01+0.001*j;
                 new_bullet = new Bullet_Terminal(QString(":/res/bullet_red.png"),8,3.5,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);

@@ -52,7 +52,9 @@ std::vector<Bullet*>* Enemy_Blue_4::shoot2() {
         for(int i=0;i<2;++i) {
             //purple, left up and right up
             if(t<total_t-15) {
-                sincostoxy(sin,cos,(i==0)?0+radius:Game::FrameWidth-radius,0);
+                double angle=angleofvector(((i==0)?0+radius:Game::FrameWidth-radius)-x,-y);
+                sin=std::sin(angle);
+                cos=std::cos(angle);
                 new_bullet = new Bullet(QString(":/res/bullet_purple.png"),bullet_radius,(i==0)?x-radius:x+radius,y,bullet_v*cos,bullet_v*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);

@@ -14,5 +14,7 @@ public:
     std::vector<Bullet*>* shoot();
 public slots:
     void deadSet();
+private:
+    double angle;
 };
 #endif // ENEMY_BLUE_H

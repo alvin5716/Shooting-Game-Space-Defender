@@ -27,6 +27,8 @@
 #include "enemy_2_blue_3.h"
 #include "enemy_2_blue_4.h"
 #include "enemy_2_blue_5.h"
+#include "enemy_3_green.h"
+#include "enemy_3_red.h"
 #include <QKeyEvent>
 #include <vector>
 #include "flash.h"
@@ -85,6 +87,7 @@ private slots:
     void start();
     void start1();
     void start2();
+    void start3();
     void doTick();
     void tickContinueCheck();
     void pointAdd(int);

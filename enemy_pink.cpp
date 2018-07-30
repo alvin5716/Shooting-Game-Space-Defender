@@ -17,10 +17,11 @@ std::vector<Bullet*>* Enemy_Pink::shoot() {
         bullet_v = 0.5;
         bullet_a = 0.0005+t*0.00001;
         bullet_count = 4;
+        if(shoot_timer==shoot_cd) angle=angleofvector(player->getX()-x,player->getY()-y);
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-            cos = std::cos(i*M_PI/(bullet_count/2)-t*M_PI/(bullet_count*4));
-            sin = std::sin(i*M_PI/(bullet_count/2)-t*M_PI/(bullet_count*4));
+            cos = std::cos(angle+i*M_PI/(bullet_count/2)-t*M_PI/(bullet_count*4));
+            sin = std::sin(angle+i*M_PI/(bullet_count/2)-t*M_PI/(bullet_count*4));
             new_bullet = new Bullet(QString(":/res/bullet_pink.png"),16,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

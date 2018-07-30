@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->QuitButton,SIGNAL(clicked(bool)),qApp,SLOT(quit()));
     connect(ui->LevelButton_1,SIGNAL(clicked(bool)),this,SLOT(start1()));
     connect(ui->LevelButton_2,SIGNAL(clicked(bool)),this,SLOT(start2()));
+    connect(ui->LevelButton_3,SIGNAL(clicked(bool)),this,SLOT(start3()));
     //focus policy
     setFocusPolicy(Qt::NoFocus);
     //flash
@@ -71,6 +72,10 @@ void MainWindow::start1() {
 }
 void MainWindow::start2() {
     level=2;
+    start();
+}
+void MainWindow::start3() {
+    level=3;
     start();
 }
 void MainWindow::start() {
@@ -148,6 +153,10 @@ void MainWindow::start() {
     case 2:
         boss_tick=Game::BossTick2;
         strBossBG=":/res/bg_boss_2.png";
+        break;
+    case 3:
+        boss_tick=Game::BossTick3;
+        strBossBG=":/res/bg_boss_3.png";
         break;
     default:
         boss_tick=Game::BossTick1;
@@ -529,8 +538,8 @@ void MainWindow::doTick() {
                 connect(new_boss,SIGNAL(deadSignal()),new_enemy,SLOT(killItself()));
             }
         } else if(tickCheck(5200)) {
-            new_boss = new Enemy_2_Yellow(QString(":/res/enemy8.png"),35,35,90,90,player,55,45,200,200,Game::FrameWidth/2,-45,0,3,0,-0.015,false,true);
-            newBossInit(new_boss);
+            new_enemy = new Enemy_2_Yellow(QString(":/res/enemy8.png"),35,35,90,90,player,55,45,200,200,Game::FrameWidth/2,-45,0,3,0,-0.015,false,true);
+            newEnemyInit(new_enemy);
             tickFreeze();
         } else if(tickCheck(5500,600,4)) {
             for(int i=0;i<2;++i) {
@@ -572,8 +581,8 @@ void MainWindow::doTick() {
             connect(new_boss,SIGNAL(deadSignal()),new_enemy,SLOT(killItself()));
             tickFreeze();
         } else if(tickCheck(8800)) {
-            new_boss = new Enemy_2_Pink(QString(":/res/enemy9.png"),35,35,90,90,player,55,45,150,150,Game::FrameWidth/2,-45,0,3,0,-0.015,false,true);
-            newBossInit(new_boss);
+            new_enemy = new Enemy_2_Pink(QString(":/res/enemy9.png"),35,35,90,90,player,55,45,150,150,Game::FrameWidth/2,-45,0,3,0,-0.015,false,true);
+            newEnemyInit(new_enemy);
             tickFreeze();
         } else if(tickCheck(9100,550,3)) {
             new_enemy = new Enemy_2_Pink(QString(":/res/enemy9.png"),35,35,60,60,player,11,30,40,60,80,-30,0,1.2);
@@ -725,6 +734,70 @@ void MainWindow::doTick() {
             gamestate=GameState::Won;
         }
         break;
+    //level 3
+    case 3:
+        if(tickCheck(500,250,5)) { //500+250i, 5 times
+            for(int i=0;i<2;++i) {
+                new_effect = new Effect(QString(":/res/magic.png"),50,50,120,120,350,(i==0)?300-60*((tick-500)/250):Game::FrameWidth-300+60*((tick-500)/250),80+100*((tick-500)/250),0,0,0,0,true);
+                new_effect->setOpacity(0.6);
+                new_effect->fadein();
+                newEffectInit(new_effect);
+            }
+        } else if(tickCheck(700,250,5)) { //700+250i, 5 times
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_3_Green(QString(":/res/enemy11.png"),54,43,100,80,player,3,40,280,50,(i==0)?300-60*((tick-700)/250):Game::FrameWidth-300+60*((tick-700)/250),80+100*((tick-700)/250),(i==0)?0.1:-0.1,0,0,-0.0006);
+                new_enemy->fadein();
+                newEnemyInit(new_enemy);
+            }
+        } else if(tickCheck(2700)) { //2700
+            for(int i=0;i<2;++i) {
+                new_effect = new Effect(QString(":/res/magic.png"),50,50,150,150,350,(i==0)?180:Game::FrameWidth-180,150,0,0,0,0,true);
+                new_effect->setOpacity(0.6);
+                new_effect->fadein();
+                newEffectInit(new_effect);
+            }
+        } else if(tickCheck(2900)) { //2900
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_3_Red(QString(":/res/enemy12.png"),54,43,125,100,player,14,50,250,120,(i==0)?180:Game::FrameWidth-180,150,(i==0)?0:-0.001,0,(i==0)?0:0.001,0,false,true);
+                new_enemy->fadein();
+                newEnemyInit(new_enemy);
+            }
+        } else if(tickCheck(3800)) { //3800
+            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,725,Game::FrameWidth/2,220,0,0,0,0,true);
+            new_effect->setOpacity(0.6);
+            new_effect->fadein();
+            newEffectInit(new_effect);
+            for(int t=0;t<2;++t) {
+                for(int i=0;i<2;++i) {
+                    new_effect = new Effect(QString(":/res/magic.png"),50,50,120,120,725,(i==0)?300-80*t:Game::FrameWidth-300+80*t,80+100*t,0,0,0,0,true);
+                    new_effect->setOpacity(0.6);
+                    new_effect->fadein();
+                    newEffectInit(new_effect);
+                }
+            }
+        }  else if(tickCheck(4000)) { //4000
+            new_boss = new Enemy_3_Green(QString(":/res/enemy11.png"),54,43,150,120,player,45,60,50,375,Game::FrameWidth/2,220);
+            new_boss->setInvulnerable();
+            new_boss->fadein();
+            newBossInit(new_boss);
+        } else if(tickCheck(4125,125,2)) { //4125+125i, 2 times
+            int t=(tick-4125)/125;
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_3_Red(QString(":/res/enemy12.png"),54,43,100,80,player,5,40,250,100+175*(1-t),(i==0)?300-80*t:Game::FrameWidth-300+80*t,80+100*t);
+                new_enemy->setInvulnerable();
+                new_effect = new_enemy->showShield();
+                newEffectInit(new_effect);
+                connect(new_boss,SIGNAL(deadSignal()),new_enemy,SLOT(killItself()));
+                new_enemy->fadein();
+                newEnemyInit(new_enemy);
+            }
+        } else if(tickCheck(4251)) {
+            tickFreeze();
+            new_boss->setVulnerable();
+        }
+        break;
+    default:
+        qDebug() << "error: can't get what level is selected";
     }
     //draw
     if(gamestate!=GameState::Paused) emit doImgMove();

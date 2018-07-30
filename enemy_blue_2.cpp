@@ -26,11 +26,10 @@ void Enemy_Blue_2::skill() {
     }
 }
 std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
-    static double cosa, sina;
     const int total_t = 7;
     const int interval = 125;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
-        double bullet_v, cosb, sinb, cos, sin;
+        double bullet_v, cos, sin;
         int bullet_count, t;
         std::vector<Bullet*>* new_bullets = new std::vector<Bullet*>;
         Bullet* new_bullet;
@@ -40,7 +39,7 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
         bullet_count = 24;
         if(shoot_timer==shoot_cd) {
             invulnerable=false;
-            sincostoxy(sina,cosa,player->getX(),player->getY());
+            angle=angleofvector(player->getX()-x,player->getY()-y);
             clockwise=!clockwise;
         }
         //shoot
@@ -57,10 +56,8 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
             if(t==0) invulnerable=false;
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                 int bullet_radius=((i+(bullet_count/2))%4)*5+12;
-                cosb = std::cos(2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
-                sinb = std::sin(2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
-                cos = cosa*cosb-sina*sinb;
-                sin = sina*cosb+cosa*sinb;
+                cos = std::cos(angle+2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
+                sin = std::sin(angle+2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
                 new_bullet = new Bullet_Rotate(QString(":/res/bullet_purple.png"),x,y,0.011,clockwise,bullet_radius,x+(double)radius*2/3*cos,y+(double)radius*2/3*sin,bullet_v*cos,bullet_v*sin);
                 new_bullet->fadein(500);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -69,10 +66,8 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
         } else if(t==4) {
             for(int j=0;j<2;++j) {
                 for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-                    cosb = std::cos(2*i*M_PI/bullet_count+M_PI/bullet_count);
-                    sinb = std::sin(2*i*M_PI/bullet_count+M_PI/bullet_count);
-                    cos = cosa*cosb-sina*sinb;
-                    sin = sina*cosb+cosa*sinb;
+                    cos = std::cos(angle+2*i*M_PI/bullet_count+M_PI/bullet_count);
+                    sin = std::sin(angle+2*i*M_PI/bullet_count+M_PI/bullet_count);
                     new_bullet = new Bullet_Rotate(QString(":/res/bullet_purple.png"),(j==0)?220:Game::FrameWidth-220,200,0.007,clockwise,12,(j==0)?220:Game::FrameWidth-220,200,bullet_v*cos,bullet_v*sin);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);

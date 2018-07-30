@@ -34,14 +34,8 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         invulnerable=false;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
-        double bullet_v, bullet_a, tana, sina, cosa, sinb, cosb, sin, cos, angle;
+        double bullet_v, bullet_a, sin, cos, angle;
         int bullet_count, bullet_count_2;
-        //angle
-        tana = (y-player->getY()) / (x-player->getX());
-        if(std::isinf(tana)) cosa = 0;
-        else cosa = ((player->getX()>x)?1:-1)/ sqrt(tana*tana+1);
-        if(std::isinf(tana)) sina = 1;
-        else sina = tana*cosa;
         //bullet v, a
         bullet_v = 1.6;
         bullet_a = 0.00017;
@@ -80,11 +74,10 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         case 7:
         case 6:
         case 5:
+            angle = angleofvector(player->getX()-x,player->getY()-y);
             for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
-                cosb = std::cos(i*M_PI/bullet_count*2);
-                sinb = std::sin(i*M_PI/bullet_count*2);
-                cos = cosa*cosb-sina*sinb;
-                sin = sina*cosb+cosa*sinb;
+                cos = std::cos(angle+i*M_PI/bullet_count*2);
+                sin = std::sin(angle+i*M_PI/bullet_count*2);
                 new_bullet = new Bullet(rainbowBullet(-1),7,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);

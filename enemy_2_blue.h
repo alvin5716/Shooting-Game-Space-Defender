@@ -18,7 +18,7 @@ protected:
     QString rainbowBullet(int i) const;
     QString rainbowLaser(int i) const;
 private:
-    double cosa, sina;
+    double angle;
 };
 
 #endif // ENEMY_2_BLUE_H

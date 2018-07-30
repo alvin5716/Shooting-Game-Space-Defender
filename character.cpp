@@ -17,6 +17,8 @@ Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, 
     QPixmap oriImg(img);
     QPixmap cutImg = oriImg.copy(cutFrame);
     setPixmap(cutImg.scaled(show_w,show_h));
+    face_to_left=false;
+    canBeMirrored=false;
 }
 void Character::setPosition(double x, double y) {
     this->x=x;
@@ -36,41 +38,31 @@ void Character::move() {
     setSpeed(xv+xa,yv+ya);
 }
 void Character::img_move() {
-    //move image
-    setPos(x-show_w/2,y-show_h/2);
+    //image move
     if(img_timer%30==0) {
         if(img_timer>=30*4) img_timer=0;
-        QRect cutFrame(img_w*(img_timer/30),0,img_w,img_h);
-        QPixmap oriImg(img);
-        QPixmap cutImg = oriImg.copy(cutFrame);
-        setPixmap(cutImg.scaled(show_w,show_h));
+        if(!canBeMirrored) {
+            QRect cutFrame(img_w*(img_timer/30),0,img_w,img_h);
+            QPixmap oriImg(img);
+            QPixmap cutImg = oriImg.copy(cutFrame);
+            setPixmap(cutImg.scaled(show_w,show_h));
+        } else { // image can be mirrored by direction of speed
+            if(face_to_left&&xv>0) face_to_left=false;
+            else if((!face_to_left)&&xv<0) face_to_left=true;
+            QImage oriImg(img);
+            QRect cutFrame((face_to_left)?oriImg.width()-img_w*(img_timer/30+1):img_w*(img_timer/30),0,img_w,img_h);
+            QPixmap mirroredImg = QPixmap::fromImage((face_to_left)?oriImg.mirrored(true,false):oriImg);
+            QPixmap cutImg = mirroredImg.copy(cutFrame);
+            setPixmap(cutImg.scaled(show_w,show_h));
+        }
     }
+    setPos(x-show_w/2,y-show_h/2);
     ++img_timer;
 }
 void Character::moveTo(double x, double y, double t) {
     //use physics formula
     setAcceleration((2*(this->x-x))/(t*t),(2*(this->y-y))/(t*t));
     setSpeed(((x>this->x)?1:-1) * sqrt(2*(-this->xa)*(x-this->x)),((y>this->y)?1:-1) * sqrt(2*(-this->ya)*(y-this->y)));
-}
-void Character::sincostoxy(double &sin, double &cos, double aim_x, double aim_y) const {
-    double tan = (y-aim_y) / (x-aim_x);
-    if(std::isnan(tan)||std::isinf(tan)) { //tan is 0/0 or k/0
-        cos=0;
-        sin=((aim_x>x)?1:-1);
-    } else {
-        cos=((aim_x>x)?1:-1)/ sqrt(tan*tan+1);
-        sin=tan*cos;
-    }
-}
-void Character::sincostoxy(double &sin, double &cos, double aim_x, double aim_y, double self_x, double self_y) const {
-    double tan = (self_y-aim_y) / (self_x-aim_x);
-    if(std::isnan(tan)||std::isinf(tan)) { //tan is 0/0 or k/0
-        cos=0;
-        sin=((aim_x>self_x)?1:-1);
-    } else {
-        cos=((aim_x>self_x)?1:-1)/ sqrt(tan*tan+1);
-        sin=tan*cos;
-    }
 }
 Character* Character::testAttackedBy(std::vector<Character*> & attackers) {
     if(x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius) {
@@ -177,4 +169,20 @@ bool Character::isDead() const {
 }
 bool Character::isInvulnerable() const {
     return invulnerable;
+}
+double Character::angleofsincos(double sin, double cos) const {
+    return (cos>0)?std::asin(sin):M_PI-std::asin(sin);
+}
+double Character::angleofvector(double x, double y) const {
+    if(x==0) return ((y>0)?M_PI/2:3*M_PI/2); //tan is 0/0 or k/0
+    if(y==0) return ((x>0)?0:M_PI);
+    if(x<0) return std::atan(y/x)+M_PI; //2,3
+    if(y>0) return std::atan(y/x); //1
+    return std::atan(y/x)+2*M_PI; //4
+}
+void Character::setCanBeMirrored(bool canBeMirrored) {
+    this->canBeMirrored=canBeMirrored;
+}
+void Character::setFaceToLeft(bool face_to_left) {
+    this->face_to_left=face_to_left;
 }
