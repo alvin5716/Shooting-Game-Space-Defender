@@ -775,13 +775,13 @@ void MainWindow::doTick() {
                     newEffectInit(new_effect);
                 }
             }
-        }  else if(tickCheck(4000)) { //4000
+        } else if(tickCheck(4000)) { //4000
             new_boss = new Enemy_3_Green(QString(":/res/enemy11.png"),54,43,150,120,player,45,60,50,375,Game::FrameWidth/2,220);
             new_boss->setInvulnerable();
             new_boss->fadein();
             newBossInit(new_boss);
         } else if(tickCheck(4125,125,2)) { //4125+125i, 2 times
-            int t=(tick-4125)/125;
+            const int t=(tick-4125)/125;
             for(int i=0;i<2;++i) {
                 new_enemy = new Enemy_3_Red(QString(":/res/enemy12.png"),54,43,100,80,player,5,40,250,100+175*(1-t),(i==0)?300-80*t:Game::FrameWidth-300+80*t,80+100*t);
                 new_enemy->setInvulnerable();
@@ -794,6 +794,123 @@ void MainWindow::doTick() {
         } else if(tickCheck(4251)) {
             tickFreeze();
             new_boss->setVulnerable();
+        } else if(tickCheck(4500)) { //4500
+            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,250,0,0,0,0,true);
+            new_effect->setOpacity(0.6);
+            new_effect->fadein();
+            newEffectInit(new_effect);
+        } else if(tickCheck(4700)) { //4700
+            new_enemy = new Enemy_3_Yellow(QString(":/res/enemy13.png"),54,43,150,120,player,30,60,250,120,Game::FrameWidth/2,250);
+            new_enemy->fadein();
+            newEnemyInit(new_enemy);
+            tickFreeze();
+        } else if(tickCheck(4950,250,8)) {
+            const int t=(tick-4950)/250;
+            new_enemy = new Enemy_3_Yellow(QString(":/res/enemy13.png"),54,43,100,80,player,9,40,500,50,(t%2==0)?-40:Game::FrameWidth+40,50+60*((t>=4)?7-t:t),(t%2==0)?1.5:-1.5,0,0,0,true);
+            newEnemyInit(new_enemy);
+            if(t==7) tickFreeze();
+        } else if(tickCheck(7000)) { //7000
+            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,100,0,0,0,0,true);
+            new_effect->setOpacity(0.6);
+            new_effect->fadein();
+            newEffectInit(new_effect);
+            for(int i=0;i<2;++i) {
+                new_effect = new Effect(QString(":/res/magic.png"),50,50,120,120,350,(i==0)?80:Game::FrameWidth-80,Game::FrameHeight-70,0,0,0,0,true);
+                new_effect->setOpacity(0.6);
+                new_effect->fadein();
+                newEffectInit(new_effect);
+            }
+        } else if(tickCheck(7200)) { //7200
+            new_boss = new Enemy_3_Yellow(QString(":/res/enemy13.png"),54,43,150,120,player,60,60,300,50,Game::FrameWidth/2,100);
+            new_boss->fadein();
+            newBossInit(new_boss);
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_3_Green(QString(":/res/enemy11.png"),54,43,100,80,player,5,40,250,120,(i==0)?80:Game::FrameWidth-80,Game::FrameHeight-70,(i==0)?1.3:-1.3,0,0,0,true);
+                new_enemy->setInvulnerable();
+                new_effect = new_enemy->showShield();
+                newEffectInit(new_effect);
+                connect(new_boss,SIGNAL(deadSignal()),new_enemy,SLOT(killItself()));
+                new_enemy->fadein();
+                newEnemyInit(new_enemy);
+            }
+            tickFreeze();
+        } else if(tickCheck(7500)) { //7500
+            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,250,0,0,0,0,true);
+            new_effect->setOpacity(0.6);
+            new_effect->fadein();
+            newEffectInit(new_effect);
+        } else if(tickCheck(7700)) { //7700
+            new_enemy = new Enemy_3_Pink(QString(":/res/enemy14.png"),54,43,150,120,player,40,60,120,100,Game::FrameWidth/2,250);
+            new_enemy->fadein();
+            newEnemyInit(new_enemy);
+            tickFreeze();
+        } else if(tickCheck(7900,375,4)) { //7900
+            for(int i=-1;i<=1;++i) {
+                new_enemy = new Enemy_3_Pink(QString(":/res/enemy14.png"),54,43,100,80,player,(i==0)?6:3,40,400,150,Game::FrameWidth/2+i*(Game::FrameWidth/2+40),-40+std::abs(i)*100);
+                new_enemy->moveTo(Game::FrameWidth/2+i*100,240+std::abs(i)*87,400);
+                newEnemyInit(new_enemy);
+            }
+            if(tickCheck(9025)) tickFreeze();
+        } else if(tickCheck(9275)) { //9275
+            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,100,0,0,0,0,true);
+            new_effect->setOpacity(0.6);
+            new_effect->fadein();
+            newEffectInit(new_effect);
+            for(int i=0;i<2;++i) {
+                new_effect = new Effect(QString(":/res/magic.png"),50,50,120,120,350,(i==0)?80:Game::FrameWidth-80,70,0,0,0,0,true);
+                new_effect->setOpacity(0.6);
+                new_effect->fadein();
+                newEffectInit(new_effect);
+            }
+        } else if(tickCheck(9475)) { //9475
+            new_boss = new Enemy_3_Pink_Cross(QString(":/res/enemy14.png"),54,43,150,120,player,35,60,80,50,Game::FrameWidth/2,100);
+            new_boss->fadein();
+            newBossInit(new_boss);
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_3_Green(QString(":/res/enemy11.png"),54,43,100,80,player,5,40,130,150,(i==0)?80:Game::FrameWidth-80,70);
+                new_enemy->setInvulnerable();
+                new_effect = new_enemy->showShield();
+                newEffectInit(new_effect);
+                connect(new_boss,SIGNAL(deadSignal()),new_enemy,SLOT(killItself()));
+                new_enemy->fadein();
+                newEnemyInit(new_enemy);
+            }
+            tickFreeze();
+        } else if(tickCheck(9578,361,3)) { //9578+361i, 3 times, warning bar fade in
+            QGraphicsOpacityEffect *fadein = new QGraphicsOpacityEffect(this);
+            ui->WarningBar->setGraphicsEffect(fadein);
+            QPropertyAnimation *fadeinAni = new QPropertyAnimation(fadein,"opacity");
+            fadeinAni->setDuration(1400);
+            fadeinAni->setStartValue(0);
+            fadeinAni->setEndValue(1);
+            fadeinAni->setEasingCurve(QEasingCurve::InQuad);
+            fadeinAni->start(QPropertyAnimation::DeleteWhenStopped);
+            ui->WarningBar->show();
+        } else if(tickCheck(9763,361,3)) { //9763+361i, 3 times, warning bar fade out
+            QGraphicsOpacityEffect *fadeout = new QGraphicsOpacityEffect(this);
+            ui->WarningBar->setGraphicsEffect(fadeout);
+            QPropertyAnimation *fadeoutAni = new QPropertyAnimation(fadeout,"opacity");
+            fadeoutAni->setDuration(1400);
+            fadeoutAni->setStartValue(1);
+            fadeoutAni->setEndValue(0);
+            fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
+            fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
+        } else if(tickCheck(10725)) { //10725
+            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,160,0,0,0,0,true);
+            new_effect->setOpacity(0.6);
+            new_effect->fadein();
+            newEffectInit(new_effect);
+        } else if(tickCheck(10925)) { //10925
+            ui->BossLives->show();
+            ui->BossHealth->setGeometry(100,40,690,30);
+            new_boss = new Enemy_3_Blue(QString(":/res/enemy15.png"),54,55,160,160,player,380,80,30,400,Game::FrameWidth/2,160,0,0,0,0,0,true);
+            connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+            new_boss->fadein(1500);
+            newBossInit(new_boss);
+            ui->BossLives->setText("5");
+            tickFreeze();
+        } else if(tickCheck(11175)) { //11175
+            ui->BossLives->setText("4");
         }
         break;
     default:
