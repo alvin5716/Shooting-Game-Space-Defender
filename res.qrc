@@ -53,5 +53,6 @@
         <file>res/enemy14.png</file>
         <file>res/magic.png</file>
         <file>res/bullet_green.png</file>
+        <file>res/enemy15.png</file>
     </qresource>
 </RCC>

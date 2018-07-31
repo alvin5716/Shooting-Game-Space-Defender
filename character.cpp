@@ -110,6 +110,9 @@ void Character::fadein(int time) {
     fadeinAni->setEndValue(this->opacity());
     fadeinAni->setEasingCurve(QEasingCurve::OutCubic);
     fadeinAni->start(QAbstractAnimation::DeleteWhenStopped);
+    //neutralize whiteize effect
+    whiteized=true;
+    connect(fadeinAni,SIGNAL(finished()),this,SLOT(whiteizedFinish()));
 }
 void Character::fadeout(int time) {
     //effect
@@ -122,6 +125,9 @@ void Character::fadeout(int time) {
     fadeoutAni->setEndValue(0);
     fadeoutAni->setEasingCurve(QEasingCurve::InCubic);
     fadeoutAni->start(QAbstractAnimation::DeleteWhenStopped);
+    //neutralize whiteize effect
+    whiteized=true;
+    connect(fadeoutAni,SIGNAL(finished()),this,SLOT(whiteizedFinish()));
 }
 void Character::whiteize(int time) {
     if(whiteized) return;
