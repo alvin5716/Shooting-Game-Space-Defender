@@ -1,6 +1,5 @@
 #include "enemy_2_blue_1.h"
 #include <QDebug>
-#include "bullet_bounce.h"
 #include "bullet_terminal.h"
 
 Enemy_2_Blue_1::Enemy_2_Blue_1(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)

@@ -4,8 +4,7 @@
 #include "enemy_2_blue.h"
 #include <QString>
 #include <vector>
-#include "bullet_bounce.h"
-#include "bullet_wall_stick.h"
+#include "bullet_wall.h"
 
 class Enemy_2_Blue_2 : public Enemy_2_Blue
 {
@@ -15,8 +14,7 @@ public:
     std::vector<Bullet*>* shoot2();
 private:
     bool mode, aim_summoned;
-    Bullet_Bounce* aim[7];
-    Bullet_Wall_Stick* stick[2];
+    Bullet_Wall* aim[7], *stick[2];
     int shoot_count;
 };
 

@@ -1,7 +1,7 @@
 #include "enemy_2_blue_3.h"
 #include <QDebug>
 #include "bullet_rotate.h"
-#include "bullet_bounce.h"
+#include "bullet_wall.h"
 #include "effect_shaking.h"
 
 Enemy_2_Blue_3::Enemy_2_Blue_3(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
@@ -49,7 +49,9 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
                     if(i>=-12 && i<=10) continue;
                     cos = std::cos((i+j*0.5-0.25+rotater*0.15)*M_PI/bullet_count_2*2+M_PI/2);
                     sin = std::sin((i+j*0.5-0.25+rotater*0.15)*M_PI/bullet_count_2*2+M_PI/2);
-                    new_bullet = new Bullet_Bounce(rainbowBullet(j),1,9,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                    Bullet_Wall *new_bullet_wall;
+                    new_bullet = new_bullet_wall = new Bullet_Wall(rainbowBullet(j),9,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                    new_bullet_wall->addWallData(false);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
                 }

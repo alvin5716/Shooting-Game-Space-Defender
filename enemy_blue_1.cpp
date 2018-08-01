@@ -1,6 +1,6 @@
 #include "enemy_blue_1.h"
 #include <QDebug>
-#include "bullet_bounce.h"
+#include "bullet_wall.h"
 #include "effect_shaking.h"
 
 Enemy_Blue_1::Enemy_Blue_1(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
@@ -64,7 +64,9 @@ std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
             sin = std::sin(angle+2*i*M_PI/bullet_count);
             cosp = std::cos(5*M_PI/3);
             sinp = std::sin(((clockwise)?1:-1)*5*M_PI/3);
-            new_bullet = new Bullet_Bounce(str,(bullet_fast)?3:1,bullet_radius,x+(radius-40)*(cos*cosp-sin*sinp)+25*cos*t,y+(radius-40)*(sin*cosp+cos*sinp)+25*sin*t,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            Bullet_Wall  *new_bullet_wall;
+            new_bullet = new_bullet_wall = new Bullet_Wall(str,bullet_radius,x+(radius-40)*(cos*cosp-sin*sinp)+25*cos*t,y+(radius-40)*(sin*cosp+cos*sinp)+25*sin*t,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            for(int i=0;i<((bullet_fast)?3:1);++i) new_bullet_wall->addWallData(false);
             new_bullet->fadein((bullet_fast)?1500:3000);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

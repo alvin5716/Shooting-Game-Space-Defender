@@ -40,7 +40,6 @@ SOURCES += \
     enemy_blue_3.cpp \
     enemy_blue_4.cpp \
     enemy_blue_5.cpp \
-    bullet_bounce.cpp \
     flash.cpp \
     effect.cpp \
     shield.cpp \
@@ -58,8 +57,6 @@ SOURCES += \
     enemy_2_blue_4.cpp \
     enemy_2_blue_5.cpp \
     effect_shaking.cpp \
-    bullet_wall_vertical.cpp \
-    bullet_wall_stick.cpp \
     bullet_sin.cpp \
     enemy_3.cpp \
     enemy_3_green.cpp \
@@ -67,7 +64,8 @@ SOURCES += \
     enemy_3_yellow.cpp \
     bullet_time.cpp \
     enemy_3_pink.cpp \
-    enemy_3_blue.cpp
+    enemy_3_blue.cpp \
+    bullet_wall.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -86,7 +84,6 @@ HEADERS += \
     enemy_blue_3.h \
     enemy_blue_4.h \
     enemy_blue_5.h \
-    bullet_bounce.h \
     flash.h \
     effect.h \
     shield.h \
@@ -106,8 +103,6 @@ HEADERS += \
     enemy_2_blue_4.h \
     enemy_2_blue_5.h \
     effect_shaking.h \
-    bullet_wall_vertical.h \
-    bullet_wall_stick.h \
     bullet_sin.h \
     enemy_3.h \
     enemy_3_green.h \
@@ -116,7 +111,8 @@ HEADERS += \
     bullet_time.h \
     enemy_3_pink.h \
     enemy_3_pink_cross.h \
-    enemy_3_blue.h
+    enemy_3_blue.h \
+    bullet_wall.h
 
 FORMS += \
         mainwindow.ui

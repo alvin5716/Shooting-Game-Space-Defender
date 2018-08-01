@@ -1,9 +1,7 @@
 #include "enemy_2_blue_2.h"
 #include <QDebug>
-#include "bullet_bounce.h"
 #include "laser.h"
-#include "bullet_wall_vertical.h"
-#include "bullet_wall_stick.h"
+#include "bullet_wall.h"
 
 Enemy_2_Blue_2::Enemy_2_Blue_2(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_2_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
@@ -33,7 +31,8 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
     if(!aim_summoned) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         for(int i=0;i<7;++i) {
-            aim[i] = new Bullet_Bounce(rainbowBullet(i-3),-1,7,((double)Game::FrameWidth*(i+1))/8,8,1+i*0.2,0,0,0);
+            aim[i] = new Bullet_Wall(rainbowBullet(i-3),7,((double)Game::FrameWidth*(i+1))/8,8,1+i*0.2,0,0,0);
+            aim[i]->addWallData(true);
             aim[i]->setInvulnerable();
             aim[i]->setOpacity(0);
             connect(this,SIGNAL(killItsBullets()),aim[i],SLOT(killItself()));
@@ -57,7 +56,9 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
             angle = angleofvector(aim[i+3]->getX()-x,aim[i+3]->getY()-radius-y);
             sin = std::sin(angle);
             cos = std::cos(angle);
-            new_bullet = new Bullet_Wall_Vertical(rainbowBullet(i),bullet_radius,1,0.05*(qrand()%40),0.0025,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            Bullet_Wall *new_bullet_wall;
+            new_bullet = new_bullet_wall = new Bullet_Wall(rainbowBullet(i),bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet_wall->addWallData(0.05*(qrand()%40),0.0025);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullet->fadein(1800);
             new_bullets->push_back(new_bullet);
@@ -68,7 +69,8 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
                 angle = angleofvector(i*Game::FrameWidth-x,((player->getY()>Game::FrameHeight-17)?Game::FrameHeight-17:player->getY())-radius-y);
                 sin = std::sin(angle);
                 cos = std::cos(angle);
-                stick[i] = new Bullet_Wall_Stick(":/res/bullet_2_purple.png",25,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                stick[i] = new Bullet_Wall(":/res/bullet_2_purple.png",25,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                stick[i]->addWallData();
                 stick[i]->setInvulnerable();
                 stick[i]->fadein(500);
                 connect(this,SIGNAL(killItsBullets()),stick[i],SLOT(killItself()));

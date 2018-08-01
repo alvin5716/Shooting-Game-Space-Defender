@@ -1,15 +1,20 @@
 #include "bullet_time.h"
 
-Bullet_Time_Data::Bullet_Time_Data(int duration, double xv, double yv, double xa, double ya)
-    :duration(duration), type(Bullet_Time_Data::updateVA)
+Bullet_Time_Data::Bullet_Time_Data(int wait_time)
+    :wait_time(wait_time), type(Bullet_Time_Data::freeze)
+{
+
+}
+Bullet_Time_Data::Bullet_Time_Data(int wait_time, double xv, double yv, double xa, double ya)
+    :wait_time(wait_time), type(Bullet_Time_Data::updateVA)
 {
     this->data.updateVA.xv=xv;
     this->data.updateVA.yv=yv;
     this->data.updateVA.xa=xa;
     this->data.updateVA.ya=ya;
 }
-Bullet_Time_Data::Bullet_Time_Data(int duration, Character* player, double v, double a)
-    :duration(duration), type(Bullet_Time_Data::shootAtPlayer)
+Bullet_Time_Data::Bullet_Time_Data(int wait_time, Character* player, double v, double a)
+    :wait_time(wait_time), type(Bullet_Time_Data::shootAtPlayer)
 {
     this->data.shootAtPlayer.player=player;
     this->data.shootAtPlayer.v=v;
@@ -24,9 +29,12 @@ Bullet_Time::Bullet_Time(QString img, int radius, double x, double y, double xv,
 void Bullet_Time::move() {
     //move object
     if(this->bullet_time_data_list.size()>0) {
-        if(++timer>this->bullet_time_data_list.begin()->duration) {
+        if(++timer>this->bullet_time_data_list.begin()->wait_time) {
             timer=0;
             switch (this->bullet_time_data_list.begin()->type) {
+            case Bullet_Time_Data::freeze:
+                this->xa = this->ya = this->xv = this->yv = 0;
+                break;
             case Bullet_Time_Data::updateVA:
                 this->xv=this->bullet_time_data_list.begin()->data.updateVA.xv;
                 this->yv=this->bullet_time_data_list.begin()->data.updateVA.yv;
@@ -51,14 +59,18 @@ void Bullet_Time::move() {
     setPosition(x+xv,y+yv);
     setSpeed(xv+xa,yv+ya);
 }
-
-Bullet_Time& Bullet_Time::addTimeData(int duration, double xv, double yv, double xa, double ya) {
-    Bullet_Time_Data* bullet_time_data = new Bullet_Time_Data(duration,xv,yv,xa,ya);
+Bullet_Time& Bullet_Time::addTimeData(int wait_time) {
+    Bullet_Time_Data* bullet_time_data = new Bullet_Time_Data(wait_time);
     this->bullet_time_data_list.push_back(*bullet_time_data);
     return *this;
 }
-Bullet_Time& Bullet_Time::addTimeData(int duration, Character* player, double v, double a) {
-    Bullet_Time_Data* bullet_time_data = new Bullet_Time_Data(duration,player,v,a);
+Bullet_Time& Bullet_Time::addTimeData(int wait_time, double xv, double yv, double xa, double ya) {
+    Bullet_Time_Data* bullet_time_data = new Bullet_Time_Data(wait_time,xv,yv,xa,ya);
+    this->bullet_time_data_list.push_back(*bullet_time_data);
+    return *this;
+}
+Bullet_Time& Bullet_Time::addTimeData(int wait_time, Character* player, double v, double a) {
+    Bullet_Time_Data* bullet_time_data = new Bullet_Time_Data(wait_time,player,v,a);
     this->bullet_time_data_list.push_back(*bullet_time_data);
     return *this;
 }
