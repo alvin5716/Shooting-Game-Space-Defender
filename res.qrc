@@ -54,5 +54,7 @@
         <file>res/magic.png</file>
         <file>res/bullet_green.png</file>
         <file>res/enemy15.png</file>
+        <file>res/enemy15_2.png</file>
+        <file>res/red_fog.png</file>
     </qresource>
 </RCC>

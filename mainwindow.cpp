@@ -863,7 +863,7 @@ void MainWindow::doTick() {
                 newEffectInit(new_effect);
             }
         } else if(tickCheck(9475)) { //9475
-            new_boss = new Enemy_3_Pink_Cross(QString(":/res/enemy14.png"),54,43,150,120,player,35,60,80,50,Game::FrameWidth/2,100);
+            new_boss = new Enemy_3_Pink_Cross(QString(":/res/enemy14.png"),54,43,150,120,player,35,60,110,50,Game::FrameWidth/2,100);
             new_boss->fadein();
             newBossInit(new_boss);
             for(int i=0;i<2;++i) {
@@ -896,18 +896,23 @@ void MainWindow::doTick() {
             fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
             fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
         } else if(tickCheck(10725)) { //10725
-            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,160,0,0,0,0,true);
+            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,200,0,0,0,0,true);
             new_effect->setOpacity(0.6);
             new_effect->fadein();
             newEffectInit(new_effect);
         } else if(tickCheck(10925)) { //10925
             ui->BossLives->show();
             ui->BossHealth->setGeometry(100,40,690,30);
-            new_boss = new Enemy_3_Blue(QString(":/res/enemy15.png"),54,55,160,160,player,380,80,30,400,Game::FrameWidth/2,160,0,0,0,0,0,true);
+            new_boss = new Enemy_3_Blue_1(QString(":/res/enemy15.png"),54,55,160,160,player,300,80,50,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             new_boss->fadein(1500);
             newBossInit(new_boss);
             ui->BossLives->setText("5");
+            new_effect = new_boss->showShield(":/res/red_fog.png");
+            newEffectInit(new_effect);
+            new_effect->setOpacity(0);
+            new_effect->setZValue(-2);
+            connect(new_boss,SIGNAL(useSkill(QString)),new_effect,SLOT(setVisible()));
             tickFreeze();
         } else if(tickCheck(11175)) { //11175
             ui->BossLives->setText("4");

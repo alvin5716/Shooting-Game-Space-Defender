@@ -19,7 +19,7 @@ public:
     bool isSecPhase() const;
     virtual Effect* disappear() const;
     void setDisappearTime(int disappearTime);
-    Shield* showShield();
+    Shield* showShield(QString str=":/res/shield2.png");
     ~Enemy();
 public slots:
     virtual void move();

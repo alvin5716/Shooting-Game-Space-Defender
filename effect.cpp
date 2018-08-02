@@ -26,6 +26,9 @@ void Effect::move() {
     if(lifetimer==62 && autoFadeoutBeforeDie) fadeout();
     if(lifetimer==0) delete this;
 }
+void Effect::setVisible() {
+    this->setOpacity(1);
+}
 void Effect::rotateStart() {
     rotating=true;
 }

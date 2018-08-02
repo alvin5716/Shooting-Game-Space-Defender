@@ -9,6 +9,15 @@ Enemy_3_Blue::Enemy_3_Blue(QString img, int img_w, int img_h, int show_w, int sh
     mode=false;
     setInvulnerable();
     skill_timer=-200-shoot_cd_init;
+    boss=true;
+    connect(this,SIGNAL(useSkill(QString)),this,SIGNAL(killItsBullets()));
+    connect(this,SIGNAL(deadSignal()),this,SIGNAL(killItsBullets()));
+    connect(this,SIGNAL(deadSignal()),this,SLOT(deadSet()));
+    fadein(250);
+}
+void Enemy_3_Blue::deadSet() {
+    emit deadSignal(x,y);
+    emit useSkill("");
 }
 void Enemy_3_Blue::skill() {
     const int interval = 700;

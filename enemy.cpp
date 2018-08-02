@@ -37,8 +37,8 @@ std::vector<Bullet*>* Enemy::shoot2() {
     if(shoot_timer>=shoot_cd) shoot_timer = 0;
     return NULL;
 }
-Shield* Enemy::showShield() {
-    shield = new Shield(QString(":/res/shield2.png"),70,70,radius*3.2,radius*3.2,this,-1,x,y);
+Shield* Enemy::showShield(QString str) {
+    shield = new Shield(str,70,70,radius*3.2,radius*3.2,this,-1,x,y);
     return shield;
 }
 void Enemy::move() {
