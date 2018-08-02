@@ -903,7 +903,7 @@ void MainWindow::doTick() {
         } else if(tickCheck(10925)) { //10925
             ui->BossLives->show();
             ui->BossHealth->setGeometry(100,40,690,30);
-            new_boss = new Enemy_3_Blue_1(QString(":/res/enemy15.png"),54,55,160,160,player,300,80,50,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+            new_boss = new Enemy_3_Blue_1(QString(":/res/enemy15.png"),54,55,160,160,player,290,80,35,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             new_boss->fadein(1500);
             newBossInit(new_boss);

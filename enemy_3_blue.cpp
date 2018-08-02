@@ -24,9 +24,9 @@ void Enemy_3_Blue::skill() {
     if(skill_timer>=0&&skill_timer%interval==0) {
         if(skill_timer>=interval*2) skill_timer=0;
         if(skill_timer==0) {
-            moveTo(Game::FrameWidth/2+100+qrand()%(Game::FrameWidth/2-300),180+qrand()%50,375);
+            moveTo(Game::FrameWidth/2+80+qrand()%(Game::FrameWidth/2-350),180+qrand()%50,375);
         } else if(skill_timer==interval*1) {
-            moveTo(Game::FrameWidth/2-100-qrand()%(Game::FrameWidth/2-300),180+qrand()%50,375);
+            moveTo(Game::FrameWidth/2-80-qrand()%(Game::FrameWidth/2-350),180+qrand()%50,375);
         }
     }
     ++skill_timer;

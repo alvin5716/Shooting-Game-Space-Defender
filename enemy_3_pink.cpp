@@ -10,7 +10,8 @@ Enemy_3_Pink::Enemy_3_Pink(QString img, int img_w, int img_h, int show_w, int sh
 std::vector<Bullet*>* Enemy_3_Pink::shoot() {
     const int interval=30;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
-        double bullet_v, bullet_a, bullet_v_2, bullet_a_2, bullet_count, cos, sin, t;
+        double bullet_v, bullet_a, bullet_v_2, bullet_a_2, cos, sin;
+        int t, bullet_count;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         Bullet_Time* new_bullet_time;
