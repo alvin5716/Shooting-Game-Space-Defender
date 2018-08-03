@@ -18,7 +18,7 @@ public slots:
 private:
     double angle;
     Bullet_Wall* magicstone;
-    bool shoot_small_bullets;
+    bool shoot_small_bullets, mode;
 };
 
 #endif // ENEMY_3_BLUE_1_H

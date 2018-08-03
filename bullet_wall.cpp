@@ -23,11 +23,13 @@ Bullet_Wall_Data::Bullet_Wall_Data(double vertical_v, double vertical_a)
     this->data.vertical.v=vertical_v;
     this->data.vertical.a=vertical_a;
 }
-Bullet_Wall_Data::Bullet_Wall_Data(Character* player, double v)
+Bullet_Wall_Data::Bullet_Wall_Data(Character* player, double v, double aim_radius, bool zoom)
     :type(Bullet_Wall_Data::magicStone)
 {
     this->data.magicStone.player=player;
     this->data.magicStone.v=v;
+    this->data.magicStone.aim_radius=aim_radius;
+    this->data.magicStone.zooming=zoom;
 }
 
 Bullet_Wall::Bullet_Wall(QString img, int radius, double x, double y, double xv, double yv, double xa, double ya)
@@ -111,8 +113,14 @@ void Bullet_Wall::move() {
             }
         }
     }
-    setPosition(x+xv,y+yv);
-    setSpeed(xv+xa,yv+ya);
+    if(!((this->bullet_wall_data_list.begin()->type==Bullet_Wall_Data::magicStone) && (this->bullet_wall_data_list.begin()->data.magicStone.zooming))) {
+        setPosition(x+xv,y+yv);
+        setSpeed(xv+xa,yv+ya);
+    } else {
+        if(++radius>=this->bullet_wall_data_list.begin()->data.magicStone.aim_radius) this->bullet_wall_data_list.begin()->data.magicStone.zooming=false;
+        double current_scale = ((double)radius)/this->bullet_wall_data_list.begin()->data.magicStone.aim_radius;
+        this->setTransform(QTransform().translate(show_w/2-radius*1.1,show_h/2-radius*1.1).scale(current_scale,current_scale));
+    }
 }
 Bullet_Wall& Bullet_Wall::addWallData(int bullet_wall_data_type) {
     Bullet_Wall_Data* bullet_wall_data = new Bullet_Wall_Data(bullet_wall_data_type);
@@ -130,7 +138,8 @@ Bullet_Wall& Bullet_Wall::addWallData(double vertical_v, double vertical_a) {
     return *this;
 }
 Bullet_Wall& Bullet_Wall::addWallData(Character* player, double v) {
-    Bullet_Wall_Data* bullet_wall_data = new Bullet_Wall_Data(player,v);
+    Bullet_Wall_Data* bullet_wall_data = new Bullet_Wall_Data(player,v,radius,true);
     this->bullet_wall_data_list.push_back(*bullet_wall_data);
+    radius=1;
     return *this;
 }

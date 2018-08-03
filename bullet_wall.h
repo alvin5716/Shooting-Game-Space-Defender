@@ -10,7 +10,7 @@ public:
     Bullet_Wall_Data(int bullet_wall_data_type);
     Bullet_Wall_Data(bool infinite_bounce, bool bounce_when_hit_downside);
     Bullet_Wall_Data(double vertical_v, double vertical_a);
-    Bullet_Wall_Data(Character* player, double v);
+    Bullet_Wall_Data(Character* player, double v, double aim_radius, bool zoom);
     static const short freeze = 0;
     static const short vertical = 1;
     static const short bounce = 2;
@@ -28,6 +28,8 @@ private:
         struct {
             Character* player;
             double v;
+            bool zooming;
+            int aim_radius;
         } magicStone;
     } data;
 };
