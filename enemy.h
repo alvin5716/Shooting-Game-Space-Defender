@@ -26,6 +26,7 @@ public slots:
     virtual void skill();
     void diedFromPlayer();
 signals:
+    void summonEffect(Effect*);
     void pointGive(int);
 protected:
     unsigned int point;

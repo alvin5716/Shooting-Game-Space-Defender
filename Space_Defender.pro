@@ -66,7 +66,9 @@ SOURCES += \
     enemy_3_pink.cpp \
     enemy_3_blue.cpp \
     bullet_wall.cpp \
-    enemy_3_blue_1.cpp
+    enemy_3_blue_1.cpp \
+    enemy_3_blue_2.cpp \
+    bullet_distance.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -114,7 +116,9 @@ HEADERS += \
     enemy_3_pink_cross.h \
     enemy_3_blue.h \
     bullet_wall.h \
-    enemy_3_blue_1.h
+    enemy_3_blue_1.h \
+    enemy_3_blue_2.h \
+    bullet_distance.h
 
 FORMS += \
         mainwindow.ui

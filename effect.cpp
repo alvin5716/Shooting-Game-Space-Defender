@@ -32,3 +32,6 @@ void Effect::setVisible() {
 void Effect::rotateStart() {
     rotating=true;
 }
+void Effect::killItself() {
+    delete this;
+}

@@ -28,8 +28,6 @@ public:
     virtual Character* testAttackedBy(Character* attacker);
     virtual void attacked();
     void moveTo(double x, double y, double t=125);
-    void fadein(int time=800);
-    void fadeout(int time=500);
     void whiteize(int time=60);
     void setCanBeMirrored(bool canBeMirrored=true);
     void setFaceToLeft(bool face_to_left=true);
@@ -40,12 +38,14 @@ signals:
     void healthChanged(int);
     void killItsBullets();
 public slots:
+    void fadein(int time=800);
+    void fadeout(int time=500);
     virtual void move();
     virtual void img_move();
     virtual void setVulnerable();
     virtual void setInvulnerable();
     void whiteizedFinish();
-    void killItself();
+    virtual void killItself();
 protected:
     int radius, health, img_w, img_h, show_w, show_h, img_timer;
     double x, y, xv, yv, xa, ya;

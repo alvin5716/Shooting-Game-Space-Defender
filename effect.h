@@ -12,6 +12,7 @@ public:
 public slots:
     virtual void move();
     void setVisible();
+    void killItself();
 protected:
     int lifetimer;
     unsigned int angle;

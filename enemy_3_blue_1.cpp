@@ -24,7 +24,7 @@ void Enemy_3_Blue_1::skill() {
     }
     if(secPhase) {
         //skill
-        if(skill_timer==0) moveTo(Game::FrameWidth/2,160,240);
+        if(skill_timer==0) moveTo(Game::FrameWidth/2,180,240);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     } else {

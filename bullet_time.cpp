@@ -54,6 +54,7 @@ void Bullet_Time::move() {
                 break;
             }
             bullet_time_data_list.erase(bullet_time_data_list.begin());
+            emit triggered();
         }
     }
     setPosition(x+xv,y+yv);

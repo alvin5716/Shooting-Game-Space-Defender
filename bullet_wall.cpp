@@ -141,5 +141,6 @@ Bullet_Wall& Bullet_Wall::addWallData(Character* player, double v) {
     Bullet_Wall_Data* bullet_wall_data = new Bullet_Wall_Data(player,v,radius,true);
     this->bullet_wall_data_list.push_back(*bullet_wall_data);
     radius=1;
+    this->setTransform(QTransform().translate(show_w/2-radius*1.1,show_h/2-radius*1.1).scale(0.0000001,0.0000001));
     return *this;
 }

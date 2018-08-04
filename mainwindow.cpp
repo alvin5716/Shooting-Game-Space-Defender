@@ -914,8 +914,21 @@ void MainWindow::doTick() {
             new_effect->setZValue(-2);
             connect(new_boss,SIGNAL(useSkill(QString)),new_effect,SLOT(setVisible()));
             tickFreeze();
-        } else if(tickCheck(11175)) { //11175
+        } else if(tickCheck(10927)) { //10927
             ui->BossLives->setText("4");
+        } else if(tickCheck(11175)) { //11175
+            new_boss = new Enemy_3_Blue_2(QString(":/res/enemy15.png"),54,55,160,160,player,290,80,35,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+            connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+            new_boss->fadein(1500);
+            newBossInit(new_boss);
+            new_effect = new_boss->showShield(":/res/red_fog.png");
+            newEffectInit(new_effect);
+            new_effect->setOpacity(0);
+            new_effect->setZValue(-2);
+            connect(new_boss,SIGNAL(useSkill(QString)),new_effect,SLOT(setVisible()));
+            tickFreeze();
+        } else if(tickCheck(11177)) { //11177
+            ui->BossLives->setText("3");
         }
         break;
     default:
@@ -950,6 +963,7 @@ void MainWindow::backToMenu() {
     delete player;
     player=NULL;
     emit killEffects();
+    dot=NULL;
     //menu
     ui->stackedWidget->setCurrentIndex(GamePage::Menu);
     //game state
@@ -987,6 +1001,7 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     connect(new_boss,SIGNAL(useSkill(QString)),flash,SLOT(flash()));
     connect(new_boss,SIGNAL(deadSignal()),ui->BossHealth,SLOT(hide()));
     connect(new_boss,SIGNAL(deadSignal()),ui->BossSkill,SLOT(hide()));
+    connect(new_boss,SIGNAL(summonEffect(Effect*)),this,SLOT(newEffectInit(Effect*)));
 }
 void MainWindow::pauseAndResume() {
     if(gamestate==GameState::Playing) {

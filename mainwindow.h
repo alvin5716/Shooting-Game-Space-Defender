@@ -33,6 +33,7 @@
 #include "enemy_3_pink.h"
 #include "enemy_3_pink_cross.h"
 #include "enemy_3_blue_1.h"
+#include "enemy_3_blue_2.h"
 #include <QKeyEvent>
 #include <vector>
 #include "flash.h"
@@ -51,7 +52,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
-    void newEffectInit(Effect* new_effect);
     void newEnemyInit(Enemy* new_enemy);
     void newBossInit(Enemy* new_boss);
     void tickFreeze();
@@ -87,6 +87,7 @@ private:
     QString strBossBG;
 
 private slots:
+    void newEffectInit(Effect* new_effect);
     void levelSelect();
     void start();
     void start1();
