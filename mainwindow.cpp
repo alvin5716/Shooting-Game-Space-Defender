@@ -287,15 +287,6 @@ void MainWindow::doTick() {
             }
         }
         //death
-        if(player->isDead()) {
-            //game end
-            player->gameEndSetting();
-            player->setOpacity(0.5);
-            ui->EndList->setCurrentIndex(EndListPage::Failed);
-            ui->EndList->show();
-            //game state
-            gamestate=GameState::Failed;
-        }
         for(std::vector<Bullet*>::iterator i=player_bullets.begin();i!=player_bullets.end();) {
             if((*i)->isDead()) {
                 //delete and erase
@@ -916,8 +907,14 @@ void MainWindow::doTick() {
             tickFreeze();
         } else if(tickCheck(10927)) { //10927
             ui->BossLives->setText("4");
+            for(int i=0;i<2;++i) {
+                new_effect = new Effect(QString(":/res/magic.png"),50,50,100,100,400,(i==0)?160:Game::FrameWidth-160,150,0,0,0,0,true);
+                new_effect->setOpacity(0.6);
+                new_effect->fadein();
+                newEffectInit(new_effect);
+            }
         } else if(tickCheck(11175)) { //11175
-            new_boss = new Enemy_3_Blue_2(QString(":/res/enemy15.png"),54,55,160,160,player,290,80,35,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+            new_boss = new Enemy_3_Blue_2(QString(":/res/enemy15.png"),54,55,160,160,player,330,80,90,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             new_boss->fadein(1500);
             newBossInit(new_boss);
@@ -926,9 +923,48 @@ void MainWindow::doTick() {
             new_effect->setOpacity(0);
             new_effect->setZValue(-2);
             connect(new_boss,SIGNAL(useSkill(QString)),new_effect,SLOT(setVisible()));
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_3_Green(QString(":/res/enemy11.png"),54,55,75,60,player,5,30,230,300,(i==0)?160:Game::FrameWidth-160,150);
+                newEnemyInit(new_enemy);
+                new_enemy->setInvulnerable();
+                new_enemy->fadein(1000);
+                new_effect = new_enemy->showShield();
+                newEffectInit(new_effect);
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SIGNAL(killItsBullets()));
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SLOT(killItself()));
+            }
             tickFreeze();
         } else if(tickCheck(11177)) { //11177
             ui->BossLives->setText("3");
+            for(int i=0;i<2;++i) {
+                new_effect = new Effect(QString(":/res/magic.png"),50,50,100,100,400,(i==0)?160:Game::FrameWidth-160,150,0,0,0,0,true);
+                new_effect->setOpacity(0.6);
+                new_effect->fadein();
+                newEffectInit(new_effect);
+            }
+        } else if(tickCheck(11425)) { //11425
+            new_boss = new Enemy_3_Blue_3(QString(":/res/enemy15.png"),54,55,160,160,player,370,80,90,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+            connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+            new_boss->fadein(1500);
+            newBossInit(new_boss);
+            new_effect = new_boss->showShield(":/res/red_fog.png");
+            newEffectInit(new_effect);
+            new_effect->setOpacity(0);
+            new_effect->setZValue(-2);
+            connect(new_boss,SIGNAL(useSkill(QString)),new_effect,SLOT(setVisible()));
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_3_Red(QString(":/res/enemy12.png"),54,55,75,60,player,5,30,250,300,(i==0)?160:Game::FrameWidth-160,150);
+                newEnemyInit(new_enemy);
+                new_enemy->setInvulnerable();
+                new_enemy->fadein(1000);
+                new_effect = new_enemy->showShield();
+                newEffectInit(new_effect);
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SIGNAL(killItsBullets()));
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SLOT(killItself()));
+            }
+            tickFreeze();
+        } else if(tickCheck(11427)) { //11427
+            ui->BossLives->setText("2");
         }
         break;
     default:
@@ -936,6 +972,16 @@ void MainWindow::doTick() {
     }
     //draw
     if(gamestate!=GameState::Paused) emit doImgMove();
+    //player death
+    if(player->isDead()) {
+        //game end
+        player->gameEndSetting();
+        player->setOpacity(0.5);
+        ui->EndList->setCurrentIndex(EndListPage::Failed);
+        ui->EndList->show();
+        //game state
+        gamestate=GameState::Failed;
+    }
     //ticking
     if(gamestate==GameState::Playing && ticking) ++tick;
     if(gamestate==GameState::Playing) ++gametime;

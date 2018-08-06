@@ -17,7 +17,7 @@ void Enemy_3_Blue_1::skill() {
         secPhase = true;
         invulnerable=true;
         img=":/res/enemy15_2.png";
-        shoot_timer = -700;
+        shoot_timer = -850;
         shoot_cd = 600;
         skill_timer = -200;
         emit useSkill("神秘的魔法石");
@@ -33,7 +33,7 @@ void Enemy_3_Blue_1::skill() {
 }
 std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
     //magic stone
-    if(shoot_timer==-300) {
+    if(shoot_timer==-450) {
         double bullet_v, bullet_a, cos, sin;
         int bullet_radius;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
@@ -61,7 +61,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         //bullet v, a and count
         bullet_v = 0.1;
         bullet_a = 0.008;
-        bullet_count = 20;
+        bullet_count = 24;
         angle = angleofvector(player->getX()-x,player->getY()-y);
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
@@ -69,7 +69,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
             cos = std::cos(shoot_angle);
             sin = std::sin(shoot_angle);
             new_bullet = new_bullet_time =
-                    new Bullet_Time(QString(":/res/magicball.png"),14,
+                    new Bullet_Time(QString(":/res/magicball.png"),12,
                                     magicstone->getX()+magicstone->getRadius()*cos*0.5,
                                     magicstone->getY()+magicstone->getRadius()*sin*0.5,
                                     bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);

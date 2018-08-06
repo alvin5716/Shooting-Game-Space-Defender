@@ -14,7 +14,9 @@ public:
 private:
     Effect* room;
     int room_radius_rate, omega_seed;
+    static const int room_radius = 200;
     double angle, omega;
-    bool mode, isBulletFaster;
+    bool mode, isBulletFaster, first_attack;
 };
+
 #endif // ENEMY_3_BLUE_2_H

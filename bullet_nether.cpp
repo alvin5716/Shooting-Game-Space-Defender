@@ -7,6 +7,7 @@ Bullet_Nether::Bullet_Nether(QString img, int radius, Character* nether_center, 
     lifetimer=lifetime;
     this->nether_center=nether_center;
     setOpacity(0.8);
+    fadeout_time=500;
 }
 void Bullet_Nether::move() {
     //move object
@@ -17,7 +18,7 @@ void Bullet_Nether::move() {
         if(sqrt(pow(nether_center->getX() - x,2)+pow(nether_center->getY() - y,2)) <= nether_center->getRadius() + radius) {
             if(health>0 && !invulnerable) health-=1;
             if(health<=0 && !invulnerable) {
-                fadeout(500);
+                fadeout(fadeout_time);
                 lifetimer=500/8;
                 setInvulnerable();
             }
@@ -43,4 +44,7 @@ Character* Bullet_Nether::testAttackedBy(Character* attacker) {
         return attacker;
     }
     return NULL;
+}
+void Bullet_Nether::setFadeoutTime(int time) {
+    this->fadeout_time=time;
 }

@@ -11,10 +11,11 @@ public:
     Character* testAttackedBy(std::vector<Character*> & attackers);
     Character* testAttackedBy(Character* attacker);
     QPropertyAnimation *fadeoutAni;
+    void setFadeoutTime(int time);
 public slots:
     void move();
 private:
-    int lifetimer;
+    int lifetimer, fadeout_time;
     Character* nether_center;
     QGraphicsOpacityEffect *eff;
 };

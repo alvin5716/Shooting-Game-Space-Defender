@@ -11,6 +11,7 @@ Player::Player(int health, int radius, int shoot_cd, double x, double y, double 
     invulnerable_timer=NULL;
     shoot_timer=0;
     skill_cd=skill_timer=375;
+    vulnerable_func_count=0;
 }
 void Player::move() {
     //move object
@@ -30,15 +31,7 @@ void Player::move() {
 Character* Player::testAttackedBy(std::vector<Character*> & attackers) {
     for(int i=0;i<(int)attackers.size();++i) {
         if(sqrt(pow(attackers.at(i)->getX() - x,2)+pow(attackers.at(i)->getY() - y,2)) <= attackers.at(i)->getRadius() + radius) {
-            if(health>0 && !invulnerable) {
-                health-=1;
-                setInvulnerable();
-                emit healthChanged(health);
-            }
-            if(health<=0) {
-                dead=true;
-                emit deadSignal();
-            }
+            attacked();
             return attackers.at(i);
         }
     }
@@ -67,7 +60,7 @@ void Player::setInvulnerable() {
     setVulnerable();
 }
 void Player::setVulnerable() {
-    static unsigned int i=0;
+    unsigned int& i = vulnerable_func_count;
     if(i%2==0) {
         setOpacity(0.5);
         if(health<=10) emit healthColorChange("red");

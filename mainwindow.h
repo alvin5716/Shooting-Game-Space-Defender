@@ -34,6 +34,7 @@
 #include "enemy_3_pink_cross.h"
 #include "enemy_3_blue_1.h"
 #include "enemy_3_blue_2.h"
+#include "enemy_3_blue_3.h"
 #include <QKeyEvent>
 #include <vector>
 #include "flash.h"

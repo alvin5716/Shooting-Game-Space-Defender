@@ -28,6 +28,7 @@ public slots:
 private:
     bool shooting;
     int shoot_timer, shoot_cd, skill_timer, skill_cd;
+    unsigned int vulnerable_func_count;
     QTimer *invulnerable_timer;
 };
 #endif // PLAYER_H

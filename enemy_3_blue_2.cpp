@@ -16,8 +16,8 @@ void Enemy_3_Blue_2::skill() {
         secPhase = true;
         invulnerable=true;
         img=":/res/enemy15_2.png";
-        shoot_timer = -500;
-        shoot_cd = 190;
+        shoot_timer = -900;
+        shoot_cd = 200;
         skill_timer = -200;
         emit useSkill("消失的密室");
     }
@@ -26,44 +26,68 @@ void Enemy_3_Blue_2::skill() {
         if(skill_timer==0) moveTo(Game::FrameWidth/2,140,200);
         //skill timer
         if(skill_timer<=200) ++skill_timer;
+        //invisible room
+        if(skill_timer>=200) {
+            if(room==NULL) {
+                room = new Effect(":/res/shield2.png",70,70,room_radius*2,room_radius*2,-1,player->getX(),player->getY());
+                room_radius_rate=0;
+                room->setTransform(QTransform().scale(0.01,0.01));
+                connect(this,SIGNAL(deadSignal()),room,SLOT(killItself()));
+                emit summonEffect(room);
+            } else {
+                room->setPosition(player->getX(),player->getY());
+                if(room_radius_rate<125) {
+                    ++room_radius_rate;
+                    room->setTransform(QTransform().translate(room_radius-room_radius*((double)room_radius_rate/125),room_radius-room_radius*((double)room_radius_rate/125)).scale(((double)room_radius_rate/125),((double)room_radius_rate/125)));
+                }
+            }
+        }
     } else {
         Enemy_3_Blue::skill();
     }
 }
 std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
-    const int room_radius = 200;
-    if(skill_timer>=200) {
-        if(room==NULL) {
-            room = new Effect(":/res/shield2.png",70,70,room_radius*2,room_radius*2,-1,player->getX(),player->getY());
-            room_radius_rate=0;
-            room->setTransform(QTransform().scale(0.01,0.01));
-            connect(this,SIGNAL(deadSignal()),room,SLOT(killItself()));
-            emit summonEffect(room);
-        } else {
-            room->setPosition(player->getX(),player->getY());
-            if(room_radius_rate<125) {
-                ++room_radius_rate;
-                room->setTransform(QTransform().translate(room_radius-room_radius*((double)room_radius_rate/125),room_radius-room_radius*((double)room_radius_rate/125)).scale(((double)room_radius_rate/125),((double)room_radius_rate/125)));
-            }
-        }
-    }
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
     Bullet* new_bullet;
     const int interval=20;
+    if(shoot_timer==-275||shoot_timer==-150||shoot_timer==-25) {
+        double bullet_v, bullet_a, cos, sin;
+        //bullet v, a and count
+        bullet_a = 0.012;
+        angle = angleofvector(player->getX()-x,player->getY()-y);
+        for(int i=0;i<2;++i) {
+            for(int j=0;j<8;++j) {
+                bullet_v = 0.5+j*0.3;
+                sin = std::sin(angle+((i==0)?1:-1)*M_PI/20);
+                cos = std::cos(angle+((i==0)?1:-1)*M_PI/20);
+                Bullet_Distance* new_bullet_distance;
+                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet_yellow.png",10,player,room_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){
+                    new_bullet_distance->setOpacity(0.3);
+                });
+                connect(new_bullet_distance,&Bullet_Distance::leaveArea,[=](){
+                    new_bullet_distance->setOpacity(1);
+                });
+                connect(player,SIGNAL(healthChanged(int)),new_bullet_distance,SLOT(disable()));
+                connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+                new_bullets->push_back(new_bullet);
+            }
+        }
+    }
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         setVulnerable();
         int t = (shoot_timer-shoot_cd)/interval;
         double bullet_v, bullet_a, cos, sin;
         int bullet_radius, bullet_count;
+        //slower
         if(!isBulletFaster) {
-            //bullet
             bullet_radius = 8;
             bullet_count = 20;
             bullet_v = 0.6;
             bullet_a = 0.005;
             if(t==0) {
                 angle = (2*M_PI/bullet_count)*(qrand()%10)/10;
-                omega_seed = 5+qrand()%11;
+                omega_seed = 3+qrand()%8;
                 omega = (mode?1:-1)*(2*M_PI/bullet_count)*omega_seed/30;
             }
             else angle += omega;
@@ -73,8 +97,9 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 cos = std::cos(angle+i*2*M_PI/bullet_count);
                 Bullet_Distance* new_bullet_distance;
                 new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet_purple.png",bullet_radius,player,room_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-                connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){ new_bullet_distance->fadeout(10); });
-                connect(new_bullet_distance,&Bullet_Distance::leaveArea,[=](){ new_bullet_distance->fadein(10); });
+                connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){ new_bullet_distance->fadeout(150); });
+                connect(new_bullet_distance,&Bullet_Distance::leaveArea,[=](){ new_bullet_distance->fadein(150); });
+                connect(player,SIGNAL(healthChanged(int)),new_bullet_distance,SLOT(disable()));
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }
@@ -83,8 +108,8 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 shoot_timer=0;
                 isBulletFaster=true;
             }
+        //bullet faster
         } else {
-            //bullet
             bullet_radius = 25;
             bullet_count = 14;
             bullet_v = 0;
@@ -101,13 +126,15 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 cos = std::cos(angle+i*2*M_PI/bullet_count);
                 Bullet_Distance* new_bullet_distance;
                 new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet_black.png",bullet_radius,player,room_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-                connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){ new_bullet_distance->fadeout(10); });
-                connect(new_bullet_distance,&Bullet_Distance::leaveArea,[=](){ new_bullet_distance->fadein(10); });
+                connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){ new_bullet_distance->fadeout(100); });
+                connect(new_bullet_distance,&Bullet_Distance::leaveArea,[=](){ new_bullet_distance->fadein(100); });
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+                connect(player,SIGNAL(healthChanged(int)),new_bullet_distance,SLOT(disable()));
                 new_bullets->push_back(new_bullet);
             }
             if(t==4) {
-                shoot_cd = 340;
+                moveTo(Game::FrameWidth/2+(qrand()%121-60),140+(qrand()%41-20),200);
+                shoot_cd = 400;
                 shoot_timer=0;
                 isBulletFaster=false;
                 mode=!mode;
