@@ -50,30 +50,6 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
     Bullet* new_bullet;
     const int interval=20;
-    if(shoot_timer==-275||shoot_timer==-150||shoot_timer==-25) {
-        double bullet_v, bullet_a, cos, sin;
-        //bullet v, a and count
-        bullet_a = 0.012;
-        angle = angleofvector(player->getX()-x,player->getY()-y);
-        for(int i=0;i<2;++i) {
-            for(int j=0;j<8;++j) {
-                bullet_v = 0.5+j*0.3;
-                sin = std::sin(angle+((i==0)?1:-1)*M_PI/20);
-                cos = std::cos(angle+((i==0)?1:-1)*M_PI/20);
-                Bullet_Distance* new_bullet_distance;
-                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet_yellow.png",10,player,room_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-                connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){
-                    new_bullet_distance->setOpacity(0.3);
-                });
-                connect(new_bullet_distance,&Bullet_Distance::leaveArea,[=](){
-                    new_bullet_distance->setOpacity(1);
-                });
-                connect(player,SIGNAL(healthChanged(int)),new_bullet_distance,SLOT(disable()));
-                connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
-                new_bullets->push_back(new_bullet);
-            }
-        }
-    }
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         setVulnerable();
         int t = (shoot_timer-shoot_cd)/interval;
@@ -138,6 +114,30 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 shoot_timer=0;
                 isBulletFaster=false;
                 mode=!mode;
+            }
+        }
+    //yellow bullets
+    } else if(shoot_timer==-275||shoot_timer==-150||shoot_timer==-25) {
+        double bullet_v, bullet_a, cos, sin;
+        //bullet v, a and count
+        bullet_a = 0.012;
+        angle = angleofvector(player->getX()-x,player->getY()-y);
+        for(int i=0;i<2;++i) {
+            for(int j=0;j<8;++j) {
+                bullet_v = 0.5+j*0.3;
+                sin = std::sin(angle+((i==0)?1:-1)*M_PI/20);
+                cos = std::cos(angle+((i==0)?1:-1)*M_PI/20);
+                Bullet_Distance* new_bullet_distance;
+                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet_yellow.png",10,player,room_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){
+                    new_bullet_distance->setOpacity(0.3);
+                });
+                connect(new_bullet_distance,&Bullet_Distance::leaveArea,[=](){
+                    new_bullet_distance->setOpacity(1);
+                });
+                connect(player,SIGNAL(healthChanged(int)),new_bullet_distance,SLOT(disable()));
+                connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+                new_bullets->push_back(new_bullet);
             }
         }
     }

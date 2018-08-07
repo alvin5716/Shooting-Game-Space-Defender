@@ -11,10 +11,12 @@ public:
     Bullet_Wall_Data(bool infinite_bounce, bool bounce_when_hit_downside);
     Bullet_Wall_Data(double vertical_v, double vertical_a);
     Bullet_Wall_Data(Character* player, double v, double aim_radius, bool zoom);
+    Bullet_Wall_Data(Character* player, double v, double a);
     static const short freeze = 0;
     static const short vertical = 1;
     static const short bounce = 2;
     static const short magicStone = 3;
+    static const short shootAtPlayer = 4;
     friend class Bullet_Wall;
 private:
     short type;
@@ -31,6 +33,11 @@ private:
             bool zooming;
             int aim_radius;
         } magicStone;
+        struct {
+            Character* player;
+            double v;
+            double a;
+        } shootAtPlayer;
     } data;
 };
 
@@ -44,6 +51,7 @@ public:
     Bullet_Wall& addWallData(bool infinite_bounce, bool bounce_when_hit_downside=false);
     Bullet_Wall& addWallData(double vertical_v, double vertical_a);
     Bullet_Wall& addWallData(Character* player, double v);
+    Bullet_Wall& addWallData(Character* player, double v, double a);
 signals:
     void triggered();
 private:

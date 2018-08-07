@@ -1,5 +1,7 @@
 #include "bullet_time.h"
+#include <QDebug>
 
+//Bullet_Time_Data
 Bullet_Time_Data::Bullet_Time_Data(int wait_time)
     :wait_time(wait_time), type(Bullet_Time_Data::freeze)
 {
@@ -20,6 +22,14 @@ Bullet_Time_Data::Bullet_Time_Data(int wait_time, Character* player, double v, d
     this->data.shootAtPlayer.v=v;
     this->data.shootAtPlayer.a=a;
 }
+Bullet_Time_Data::Bullet_Time_Data(int wait_time, double x, double y, int time)
+    :wait_time(wait_time), type(Bullet_Time_Data::moveTo)
+{
+    this->data.moveTo.x=x;
+    this->data.moveTo.y=y;
+    this->data.moveTo.time=time;
+}
+// Bullet_Time
 Bullet_Time::Bullet_Time(QString img, int radius, double x, double y, double xv, double yv, double xa, double ya)
     :Bullet(img,radius,x,y,xv,yv,xa,ya), timer(0)
 {
@@ -42,6 +52,7 @@ void Bullet_Time::move() {
                 this->ya=this->bullet_time_data_list.begin()->data.updateVA.ya;
                 break;
             case Bullet_Time_Data::shootAtPlayer:
+            {
                 double angle = angleofvector(
                             bullet_time_data_list.begin()->data.shootAtPlayer.player->getX()-x,
                             bullet_time_data_list.begin()->data.shootAtPlayer.player->getY()-y);
@@ -52,6 +63,14 @@ void Bullet_Time::move() {
                 this->xa=this->bullet_time_data_list.begin()->data.shootAtPlayer.a*cos;
                 this->ya=this->bullet_time_data_list.begin()->data.shootAtPlayer.a*sin;
                 break;
+            }
+            //These braces are order to limit the scope of the 3 variables above,
+            //or it will lead to compile error.
+            case Bullet_Time_Data::moveTo:
+                this->moveTo(bullet_time_data_list.begin()->data.moveTo.x,bullet_time_data_list.begin()->data.moveTo.y,bullet_time_data_list.begin()->data.moveTo.time);
+                break;
+            default:
+                qDebug() << "error: can't get the type of Bullet_Time_Data";
             }
             bullet_time_data_list.erase(bullet_time_data_list.begin());
             emit triggered();
@@ -72,6 +91,11 @@ Bullet_Time& Bullet_Time::addTimeData(int wait_time, double xv, double yv, doubl
 }
 Bullet_Time& Bullet_Time::addTimeData(int wait_time, Character* player, double v, double a) {
     Bullet_Time_Data* bullet_time_data = new Bullet_Time_Data(wait_time,player,v,a);
+    this->bullet_time_data_list.push_back(*bullet_time_data);
+    return *this;
+}
+Bullet_Time& Bullet_Time::addTimeData(int wait_time, double x, double y, int time) {
+    Bullet_Time_Data* bullet_time_data = new Bullet_Time_Data(wait_time,x,y,time);
     this->bullet_time_data_list.push_back(*bullet_time_data);
     return *this;
 }

@@ -9,9 +9,11 @@ public:
     Bullet_Time_Data(int wait_time);
     Bullet_Time_Data(int wait_time, double xv, double yv, double xa, double ya);
     Bullet_Time_Data(int wait_time, Character* player, double v, double a);
+    Bullet_Time_Data(int wait_time, double x, double y, int time);
     static const short freeze = 0;
     static const short updateVA = 1;
     static const short shootAtPlayer = 2;
+    static const short moveTo = 3;
     friend class Bullet_Time;
 private:
     int wait_time;
@@ -24,6 +26,10 @@ private:
             double v, a;
             Character* player;
         } shootAtPlayer;
+        struct {
+            double x, y;
+            int time;
+        } moveTo;
     } data;
 };
 
@@ -36,6 +42,7 @@ public:
     Bullet_Time& addTimeData(int wait_time);
     Bullet_Time& addTimeData(int wait_time, double xv, double yv, double xa, double ya);
     Bullet_Time& addTimeData(int wait_time, Character* player, double v, double a);
+    Bullet_Time& addTimeData(int wait_time, double x, double y, int time);
 signals:
     void triggered();
 private:

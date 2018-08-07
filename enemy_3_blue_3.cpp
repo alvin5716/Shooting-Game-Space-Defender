@@ -96,7 +96,8 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     } else if(shoot_timer>shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         setVulnerable();
         double cos, sin, bullet_a, bullet_v;
-        int bullet_radius, bullet_count;
+        int bullet_radius, bullet_count, t;
+        t=(shoot_timer-shoot_cd)/interval;
         //purple random bullets
         if(shoot_count<6) ++shoot_count;
         else {
@@ -106,10 +107,10 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
             bullet_a = 0.0005;
             //shoot
             for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
-                double rand_seed = qrand()%30;
+                double rand_angle = angle+(i+t*0.5+(double)(qrand()%30)/30)*2*M_PI/bullet_count;
                 bullet_v = 0.13+qrand()%15/100;
-                sin = std::sin(angle+(i+rand_seed/30)*2*M_PI/bullet_count);
-                cos = std::cos(angle+(i+rand_seed/30)*2*M_PI/bullet_count);
+                sin = std::sin(rand_angle);
+                cos = std::cos(rand_angle);
                 new_bullet = new Bullet(":/res/bullet_purple.png",bullet_radius,center->getX(),center->getY(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
