@@ -972,7 +972,7 @@ void MainWindow::doTick() {
                 newEffectInit(new_effect);
             }
         } else if(tickCheck(11675)) { //11675
-            new_boss = new Enemy_3_Blue_4(QString(":/res/enemy15.png"),54,55,160,160,player,420,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+            new_boss = new Enemy_3_Blue_4(QString(":/res/enemy15.png"),54,55,160,160,player,405,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             new_boss->fadein(1500);
             newBossInit(new_boss);
