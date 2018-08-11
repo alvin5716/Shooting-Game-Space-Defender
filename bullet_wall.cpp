@@ -101,6 +101,7 @@ void Bullet_Wall::move() {
                         double angle = angleofvector(
                                     bullet_wall_data_list.begin()->data.magicStone.player->getX()-x,
                                     bullet_wall_data_list.begin()->data.magicStone.player->getY()-y);
+                        if(!(angle>M_PI/20 && angle<M_PI*19/20)) angle = M_PI*(qrand()%19+1)/20;
                         double sin = std::sin(angle);
                         double cos = std::cos(angle);
                         this->xv=this->bullet_wall_data_list.begin()->data.magicStone.v*cos;

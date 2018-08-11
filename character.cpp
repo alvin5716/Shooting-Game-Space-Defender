@@ -19,6 +19,7 @@ Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, 
     setPixmap(cutImg.scaled(show_w,show_h));
     face_to_left=false;
     canBeMirrored=false;
+    attackable=true;
 }
 void Character::setPosition(double x, double y) {
     this->x=x;
@@ -69,7 +70,7 @@ Character* Character::testAttackedBy(std::vector<Character*> & attackers) {
         dead=true;
     }
     for(int i=0;i<(int)attackers.size();++i) {
-        if(sqrt(pow(attackers.at(i)->getX() - x,2)+pow(attackers.at(i)->getY() - y,2)) <= attackers.at(i)->getRadius() + radius) {
+        if(attackers.at(i)->isAttackable() && (sqrt(pow(attackers.at(i)->getX() - x,2)+pow(attackers.at(i)->getY() - y,2)) <= attackers.at(i)->getRadius() + radius)) {
             attacked();
             return attackers.at(i);
         }
@@ -81,7 +82,7 @@ Character* Character::testAttackedBy(Character* attacker) {
         dead=true;
     }
     if(attacker!=NULL) {
-        if(sqrt(pow(attacker->getX() - x,2)+pow(attacker->getY() - y,2)) <= attacker->getRadius() + radius) {
+        if(attacker->isAttackable() && (sqrt(pow(attacker->getX() - x,2)+pow(attacker->getY() - y,2)) <= attacker->getRadius() + radius)) {
             attacked();
             return attacker;
         }
@@ -175,6 +176,9 @@ bool Character::isDead() const {
 }
 bool Character::isInvulnerable() const {
     return invulnerable;
+}
+bool Character::isAttackable() const {
+    return attackable;
 }
 double Character::angleofsincos(double sin, double cos) const {
     return (cos>0)?std::asin(sin):M_PI-std::asin(sin);

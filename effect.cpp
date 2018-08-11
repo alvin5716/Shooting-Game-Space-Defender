@@ -18,7 +18,7 @@ void Effect::move() {
     //rotate image
     if(rotating) {
         setTransform(QTransform().translate(show_w/2, show_h/2).rotate(0.5*angle++).translate(-show_w/2, -show_h/2));//martrix transform
-        if(angle>=360) angle-=360;
+        if(angle>=720) angle-=720;
     }
 
     //lifetimer

@@ -994,6 +994,49 @@ void MainWindow::doTick() {
             tickFreeze();
         } else if(tickCheck(11677)) { //11677
             ui->BossLives->setText("1");
+            for(int i=0;i<2;++i) {
+                new_effect = new Effect(QString(":/res/magic.png"),50,50,100,100,400,(i==0)?160:Game::FrameWidth-160,150,0,0,0,0,true);
+                new_effect->setOpacity(0.6);
+                new_effect->fadein();
+                newEffectInit(new_effect);
+            }
+        } else if(tickCheck(11925)) { //11925
+            new_boss = new Enemy_3_Blue_5(QString(":/res/enemy15.png"),54,55,160,160,player,650,80,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+            connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+            new_boss->fadein(1500);
+            newBossInit(new_boss);
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_3_Pink(QString(":/res/enemy14.png"),54,55,75,60,player,5,30,300,300,(i==0)?160:Game::FrameWidth-160,150);
+                newEnemyInit(new_enemy);
+                new_enemy->setInvulnerable();
+                new_enemy->fadein(1000);
+                new_effect = new_enemy->showShield();
+                newEffectInit(new_effect);
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SIGNAL(killItsBullets()));
+                connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SLOT(killItself()));
+            }
+            tickFreeze();
+        } else if(tickCheck(11927)) { //11927, END
+            ui->BossLives->hide();
+            ui->BossSkill->hide();
+            if(player!=NULL) player->gameEndSetting();
+        } else if(tickCheck(12600)) { //12600, WIN LIST
+            ticking=false;
+            //Point
+            ui->PlayerPoint_list->display(ui->PlayerPoint->value());
+            //Health
+            ui->PlayerLife_list->display(ui->PlayerLife->value());
+            ui->PlayerLife_listBonus->display(5);
+            //Shield
+            ui->PlayerSkill_list->display(ui->PlayerSkill->value());
+            ui->PlayerSkill_listBonus->display(2);
+            //Total
+            ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
+            //List
+            ui->EndList->setCurrentIndex(EndListPage::Won);
+            ui->EndList->show();
+            //game state
+            gamestate=GameState::Won;
         }
         break;
     default:

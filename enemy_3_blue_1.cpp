@@ -60,7 +60,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         int bullet_count;
         //bullet v, a and count
         bullet_v_2 = 0.3;
-        bullet_count = 16;
+        bullet_count = 14;
         angle = angleofvector(player->getX()-x,player->getY()-y);
         //shoot
         for(int j=0;j<2;++j) {

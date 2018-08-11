@@ -22,6 +22,7 @@ public:
     int getHealth() const;
     bool isDead() const;
     bool isInvulnerable() const;
+    bool isAttackable() const;
     double angleofsincos(double sin, double cos) const;
     double angleofvector(double x, double y) const;
     virtual Character* testAttackedBy(std::vector<Character*> & attackers);
@@ -50,7 +51,7 @@ public slots:
 protected:
     int radius, health, img_w, img_h, show_w, show_h, img_timer;
     double x, y, xv, yv, xa, ya;
-    bool dead, invulnerable, whiteized, face_to_left, canBeMirrored;
+    bool dead, invulnerable, whiteized, face_to_left, canBeMirrored, attackable;
     QString img;
 };
 

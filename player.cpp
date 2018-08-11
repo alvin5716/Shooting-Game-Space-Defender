@@ -32,7 +32,7 @@ void Player::move() {
 }
 Character* Player::testAttackedBy(std::vector<Character*> & attackers) {
     for(int i=0;i<(int)attackers.size();++i) {
-        if(sqrt(pow(attackers.at(i)->getX() - x,2)+pow(attackers.at(i)->getY() - y,2)) <= attackers.at(i)->getRadius() + radius) {
+        if(attackers.at(i)->isAttackable() && (sqrt(pow(attackers.at(i)->getX() - x,2)+pow(attackers.at(i)->getY() - y,2)) <= attackers.at(i)->getRadius() + radius)) {
             attacked();
             return attackers.at(i);
         }

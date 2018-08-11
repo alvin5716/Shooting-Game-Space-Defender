@@ -30,7 +30,9 @@ void Enemy_3_Blue_2::skill() {
         //invisible room
         if(skill_timer>=200) {
             if(room==NULL) {
-                room = new Effect(":/res/shield2.png",70,70,room_radius*2,room_radius*2,-1,player->getX(),player->getY());
+                room = new Effect(":/res/magic_red.png",70,70,room_radius*2,room_radius*2,-1,player->getX(),player->getY());
+                room->setOpacity(0.6);
+                room->rotateStart();
                 room_radius_rate=0;
                 room->setTransform(QTransform().scale(0.01,0.01));
                 connect(this,SIGNAL(deadSignal()),room,SLOT(killItself()));
@@ -115,9 +117,22 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
             switch(t) {
             case 0:
                 angle = (2*M_PI/bullet_count)*(qrand()%10)/10;
-                if(shoot_count!=-1) {
-                    omega_seed = 15-omega_seed;
+                switch (shoot_count) {
+                case -1:
+                    omega=0;
+                    break;
+                case 0:
+                    omega_seed = 3+qrand()%3;
                     omega = (mode?1:-1)*(2*M_PI/bullet_count)*omega_seed/30;
+                    break;
+                case 1:
+                    omega_seed = 8+qrand()%3;
+                    omega = (mode?1:-1)*(2*M_PI/bullet_count)*omega_seed/30;
+                    break;
+                default:
+                    omega_seed = 6+qrand()%3;
+                    omega = (mode?1:-1)*(2*M_PI/bullet_count)*omega_seed/30;
+                    break;
                 }
                 break;
             default:

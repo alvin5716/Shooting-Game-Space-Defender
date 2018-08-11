@@ -66,8 +66,8 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
         }
     //laser
     } else if(shoot_timer==-150) {
-        for(int i=0;i<2;++i) {
-            new_bullet = new Laser(QString(":/res/laser_purple.png"),24,0,0,-1,i==0?80:Game::FrameWidth-80,230);
+        for(int i=0;i<4;++i) {
+            new_bullet = new Laser(QString(":/res/laser_purple.png"),6,0,0,-1,(i<2?80:Game::FrameWidth-80)+(i%2==0?22:-22),230);
             new_bullet->setInvulnerable();
             new_bullet->setZValue(-1);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -93,7 +93,7 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
         }
         //yellow bullets
         if(this->health<130 && t==0) {
-            int bullet_count = 22;
+            int bullet_count = 24;
             bullet_v = 0.6;
             bullet_radius = 14;
             bullet_a = 0.0005;
