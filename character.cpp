@@ -192,3 +192,6 @@ void Character::setCanBeMirrored(bool canBeMirrored) {
 void Character::setFaceToLeft(bool face_to_left) {
     this->face_to_left=face_to_left;
 }
+void Character::setImg(QString img) {
+    this->img=img;
+}

@@ -56,29 +56,31 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
     //small magic stone bullets
     if(shoot_small_bullets) {
         Bullet_Time* new_bullet_time;
-        double bullet_v, bullet_a, cos, sin;
+        double bullet_v, bullet_v_2, bullet_a, cos, sin, init_pos;
         int bullet_count;
         //bullet v, a and count
-        bullet_v = 0.1;
-        bullet_a = 0.008;
-        bullet_count = 24;
+        bullet_v_2 = 0.3;
+        bullet_count = 16;
         angle = angleofvector(player->getX()-x,player->getY()-y);
         //shoot
-        for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-            double shoot_angle = angle+(i+(mode?0.5:0))*M_PI/(bullet_count/2);
-            cos = std::cos(shoot_angle);
-            sin = std::sin(shoot_angle);
-            new_bullet = new_bullet_time =
-                    new Bullet_Time(QString(":/res/magicball.png"),12,
-                                    magicstone->getX()+magicstone->getRadius()*cos*0.5,
-                                    magicstone->getY()+magicstone->getRadius()*sin*0.5,
-                                    bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-            for(int i=0;i<2;++i)
-                new_bullet_time->addTimeData(250)
-                        .addTimeData(100,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-            new_bullet->fadein(1500);
-            connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
-            new_bullets->push_back(new_bullet);
+        for(int j=0;j<2;++j) {
+            for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
+                bullet_v = (j==0)?0.1:0;
+                bullet_a = (j==0)?0.008:0.006;
+                init_pos = (j==0)?0.5:0;
+                double shoot_angle = angle+(i+(mode?0.5:0)+0.5*j)*M_PI/(bullet_count/2);
+                cos = std::cos(shoot_angle);
+                sin = std::sin(shoot_angle);
+                new_bullet = new_bullet_time =
+                        new Bullet_Time(QString(":/res/magicball.png"),12,
+                                        magicstone->getX()+magicstone->getRadius()*cos*init_pos,
+                                        magicstone->getY()+magicstone->getRadius()*sin*init_pos,
+                                        bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet_time->addTimeData(250,bullet_v_2*cos,bullet_v_2*sin,0,0);
+                new_bullet->fadein(1500);
+                connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+                new_bullets->push_back(new_bullet);
+            }
         }
         shoot_small_bullets=false;
         mode=!mode;

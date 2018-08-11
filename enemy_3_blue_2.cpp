@@ -9,6 +9,7 @@ Enemy_3_Blue_2::Enemy_3_Blue_2(QString img, int img_w, int img_h, int show_w, in
     room=NULL;
     mode=false;
     isBulletFaster=false;
+    shoot_count=-1;
 }
 void Enemy_3_Blue_2::skill() {
     //second phase
@@ -61,12 +62,33 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
             bullet_count = 20;
             bullet_v = 0.6;
             bullet_a = 0.005;
-            if(t==0) {
+            switch (t) {
+            case 0:
                 angle = (2*M_PI/bullet_count)*(qrand()%10)/10;
-                omega_seed = 3+qrand()%8;
-                omega = (mode?1:-1)*(2*M_PI/bullet_count)*omega_seed/30;
+                switch (shoot_count) {
+                case -1:
+                    omega=0;
+                    break;
+                case 0:
+                    omega_seed = 3+qrand()%3;
+                    omega = (mode?1:-1)*(2*M_PI/bullet_count)*omega_seed/30;
+                    break;
+                case 1:
+                    omega_seed = 8+qrand()%3;
+                    omega = (mode?1:-1)*(2*M_PI/bullet_count)*omega_seed/30;
+                    break;
+                default:
+                    omega_seed = 6+qrand()%3;
+                    omega = (mode?1:-1)*(2*M_PI/bullet_count)*omega_seed/30;
+                    break;
+                }
+                break;
+            case 4:
+                if(shoot_count>=2) omega*=-1;
+            default:
+                angle += omega;
+                break;
             }
-            else angle += omega;
             //shoot
             for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
                 sin = std::sin(angle+i*2*M_PI/bullet_count);
@@ -90,12 +112,18 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
             bullet_count = 14;
             bullet_v = 0;
             bullet_a = 0.018;
-            if(t==7) {
+            switch(t) {
+            case 0:
                 angle = (2*M_PI/bullet_count)*(qrand()%10)/10;
-                omega_seed = 20-omega_seed;
-                omega = (mode?1:-1)*(2*M_PI/bullet_count)*omega_seed/30;
+                if(shoot_count!=-1) {
+                    omega_seed = 15-omega_seed;
+                    omega = (mode?1:-1)*(2*M_PI/bullet_count)*omega_seed/30;
+                }
+                break;
+            default:
+                angle += omega;
+                break;
             }
-            else angle += omega;
             //shoot
             for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
                 sin = std::sin(angle+i*2*M_PI/bullet_count);
@@ -109,6 +137,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 new_bullets->push_back(new_bullet);
             }
             if(t==4) {
+                if(++shoot_count>2) shoot_count=0;
                 moveTo(Game::FrameWidth/2+(qrand()%121-60),140+(qrand()%41-20),200);
                 shoot_cd = 400;
                 shoot_timer=0;

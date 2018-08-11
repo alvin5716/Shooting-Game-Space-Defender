@@ -82,17 +82,18 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
         bullet_radius = 8;
         bullet_a = -0.005;
         for(int i=0;i<10;++i) {
-            bullet_v = 0.1+(double)(qrand()%10)/10;
+            bullet_v = 0.1+(double)(qrand()%4)/10;
             cos = std::cos(angle+i*M_PI/5);
             sin = std::sin(angle+i*M_PI/5);
             new_bullet = new_bullet_wall = new Bullet_Wall(QString(":/res/bullet_red.png"),8,t==0?80:Game::FrameWidth-80,170,bullet_v*cos,bullet_v*sin,0,bullet_a);
             new_bullet_wall->addWallData(player,1.8,0);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+            connect(new_bullet_wall,&Bullet_Wall::triggered,[=](){ new_bullet_wall->setImg(":/res/bullet_2_red.png"); });
             new_bullets->push_back(new_bullet);
         }
         //yellow bullets
         if(this->health<130 && t==0) {
-            int bullet_count = 26;
+            int bullet_count = 22;
             bullet_v = 0.6;
             bullet_radius = 14;
             bullet_a = 0.0005;

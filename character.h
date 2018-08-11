@@ -31,6 +31,7 @@ public:
     void whiteize(int time=60);
     void setCanBeMirrored(bool canBeMirrored=true);
     void setFaceToLeft(bool face_to_left=true);
+    void setImg(QString img);
 signals:
     void deadSignal();
     void deadSignal(int, int);
