@@ -1,7 +1,6 @@
 #include "enemy_2_blue_4.h"
 #include "laser.h"
 #include "bullet_nether.h"
-#include "bullet_terminal.h"
 #include "bullet_wall.h"
 
 Enemy_2_Blue_4::Enemy_2_Blue_4(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
@@ -77,10 +76,12 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                         bullet_a = 0.002;
                         cos = std::cos(j*2*M_PI/7);
                         sin = std::sin(j*2*M_PI/7);
-                        new_bullet = new Bullet_Terminal(rainbowBullet(j),8,0.7,rainbowSpawnpoint[i]->getX(),rainbowSpawnpoint[i]->getY(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                        new_bullet = new Bullet(rainbowBullet(j),8,rainbowSpawnpoint[i]->getX(),rainbowSpawnpoint[i]->getY(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                        new_bullet->setVTerminal(0.7);
                         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                         new_bullets->push_back(new_bullet);
-                        new_bullet = new Bullet_Terminal(rainbowBullet(j),8,0.7,rainbowSpawnpoint[i]->getX()+310*((i==0)?-1:1)*std::cos(bullet_angle+M_PI/2),rainbowSpawnpoint[i]->getY()+310*((i==0)?-1:1)*std::sin(bullet_angle+M_PI/2),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                        new_bullet = new Bullet(rainbowBullet(j),8,rainbowSpawnpoint[i]->getX()+310*((i==0)?-1:1)*std::cos(bullet_angle+M_PI/2),rainbowSpawnpoint[i]->getY()+310*((i==0)?-1:1)*std::sin(bullet_angle+M_PI/2),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                        new_bullet->setVTerminal(0.7);
                         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                         new_bullets->push_back(new_bullet);
                     }

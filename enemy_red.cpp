@@ -1,5 +1,4 @@
 #include "enemy_red.h"
-#include "bullet_terminal.h"
 #include <cmath>
 
 Enemy_Red::Enemy_Red(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
@@ -21,7 +20,8 @@ std::vector<Bullet*>* Enemy_Red::shoot() {
                 sin = std::sin(angle+i*M_PI/15);
                 bullet_v = 0.25;
                 bullet_a = 0.01+0.001*j;
-                new_bullet = new Bullet_Terminal(QString(":/res/bullet_red.png"),8,3.5,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new Bullet(QString(":/res/bullet_red.png"),8,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet->setVTerminal(3.5);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }

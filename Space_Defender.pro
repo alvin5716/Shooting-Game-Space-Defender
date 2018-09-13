@@ -44,7 +44,6 @@ SOURCES += \
     effect.cpp \
     shield.cpp \
     bullet_nether.cpp \
-    bullet_terminal.cpp \
     laser.cpp \
     enemy_2_green.cpp \
     enemy_2_red.cpp \
@@ -94,7 +93,6 @@ HEADERS += \
     effect.h \
     shield.h \
     bullet_nether.h \
-    bullet_terminal.h \
     laser.h \
     game.h \
     enemy_2_green.h \

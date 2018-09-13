@@ -76,8 +76,7 @@ void Bullet_Time::move() {
             emit triggered();
         }
     }
-    setPosition(x+xv,y+yv);
-    setSpeed(xv+xa,yv+ya);
+    Bullet::move();
 }
 Bullet_Time& Bullet_Time::addTimeData(int wait_time) {
     Bullet_Time_Data* bullet_time_data = new Bullet_Time_Data(wait_time);

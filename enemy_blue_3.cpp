@@ -1,5 +1,4 @@
 #include "enemy_blue_3.h"
-#include "bullet_terminal.h"
 #include "laser.h"
 #include <ctime>
 #include <QDebug>
@@ -60,7 +59,8 @@ std::vector<Bullet*>* Enemy_Blue_3::shoot2() {
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                 sin=std::sin(2*i*M_PI/bullet_count);
                 cos=std::cos(2*i*M_PI/bullet_count);
-                new_bullet = new Bullet_Terminal(":/res/bullet_purple.png",8,bullet_v_t,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new Bullet(":/res/bullet_purple.png",8,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet->setVTerminal(bullet_v_t);
                 new_bullet->fadein(800);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);

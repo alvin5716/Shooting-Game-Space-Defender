@@ -138,8 +138,7 @@ void Bullet_Wall::move() {
         }
     }
     if(!((this->bullet_wall_data_list.begin()->type==Bullet_Wall_Data::magicStone) && (this->bullet_wall_data_list.begin()->data.magicStone.zooming))) {
-        setPosition(x+xv,y+yv);
-        setSpeed(xv+xa,yv+ya);
+        Bullet::move();
     } else {
         if(++radius>=this->bullet_wall_data_list.begin()->data.magicStone.aim_radius) this->bullet_wall_data_list.begin()->data.magicStone.zooming=false;
         double current_scale = ((double)radius)/this->bullet_wall_data_list.begin()->data.magicStone.aim_radius;

@@ -1,6 +1,5 @@
 #include "enemy_2_blue_1.h"
 #include <QDebug>
-#include "bullet_terminal.h"
 
 Enemy_2_Blue_1::Enemy_2_Blue_1(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_2_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
@@ -50,7 +49,8 @@ std::vector<Bullet*>* Enemy_2_Blue_1::shoot2() {
                 bullet_a = mode?(i+2)*0.00062:i*0.00055-0.0001;
                 cos = std::cos(angle+i*M_PI/24+(mode?-1:1)*t*M_PI/17.7);
                 sin = std::sin(angle+i*M_PI/24+(mode?-1:1)*t*M_PI/17.7);
-                new_bullet = new Bullet_Terminal(rainbowBullet(i),bullet_radius,0.6,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new Bullet(rainbowBullet(i),bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet->setVTerminal(0.6);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullet->fadein(1800);
                 new_bullets->push_back(new_bullet);
