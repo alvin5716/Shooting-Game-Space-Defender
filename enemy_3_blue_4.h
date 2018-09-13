@@ -13,6 +13,7 @@ public:
     std::vector<Bullet*>* shoot2();
 private:
     double angle;
+    int shoot_timer_2;
 };
 
 #endif // ENEMY_3_BLUE_4_H

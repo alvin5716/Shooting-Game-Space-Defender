@@ -21,6 +21,11 @@ void Enemy_3_Blue_2::skill() {
         shoot_cd = 200;
         skill_timer = -200;
         emit useSkill("消失的密室");
+        this->showShield(":/res/magic_red.png");
+        shield->setOpacity(0.6);
+        shield->setZValue(-2);
+        shield->rotateStart();
+        emit summonEffect(shield);
     }
     if(secPhase) {
         //skill

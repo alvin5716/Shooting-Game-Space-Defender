@@ -899,11 +899,6 @@ void MainWindow::doTick() {
             new_boss->fadein(1500);
             newBossInit(new_boss);
             ui->BossLives->setText("5");
-            new_effect = new_boss->showShield(":/res/red_fog.png");
-            newEffectInit(new_effect);
-            new_effect->setOpacity(0);
-            new_effect->setZValue(-2);
-            connect(new_boss,SIGNAL(useSkill(QString)),new_effect,SLOT(setVisible()));
             tickFreeze();
         } else if(tickCheck(10927)) { //10927
             ui->BossLives->setText("4");
@@ -918,11 +913,6 @@ void MainWindow::doTick() {
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             new_boss->fadein(1500);
             newBossInit(new_boss);
-            new_effect = new_boss->showShield(":/res/red_fog.png");
-            newEffectInit(new_effect);
-            new_effect->setOpacity(0);
-            new_effect->setZValue(-2);
-            connect(new_boss,SIGNAL(useSkill(QString)),new_effect,SLOT(setVisible()));
             for(int i=0;i<2;++i) {
                 new_enemy = new Enemy_3_Green(QString(":/res/enemy11.png"),54,55,75,60,player,5,30,230,300,(i==0)?160:Game::FrameWidth-160,150);
                 newEnemyInit(new_enemy);
@@ -947,11 +937,6 @@ void MainWindow::doTick() {
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             new_boss->fadein(1500);
             newBossInit(new_boss);
-            new_effect = new_boss->showShield(":/res/red_fog.png");
-            newEffectInit(new_effect);
-            new_effect->setOpacity(0);
-            new_effect->setZValue(-2);
-            connect(new_boss,SIGNAL(useSkill(QString)),new_effect,SLOT(setVisible()));
             for(int i=0;i<2;++i) {
                 new_enemy = new Enemy_3_Red(QString(":/res/enemy12.png"),54,55,75,60,player,5,30,250,300,(i==0)?160:Game::FrameWidth-160,150);
                 newEnemyInit(new_enemy);
@@ -972,15 +957,10 @@ void MainWindow::doTick() {
                 newEffectInit(new_effect);
             }
         } else if(tickCheck(11675)) { //11675
-            new_boss = new Enemy_3_Blue_4(QString(":/res/enemy15.png"),54,55,160,160,player,415,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+            new_boss = new Enemy_3_Blue_4(QString(":/res/enemy15.png"),54,55,160,160,player,395,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             new_boss->fadein(1500);
             newBossInit(new_boss);
-            new_effect = new_boss->showShield(":/res/red_fog.png");
-            newEffectInit(new_effect);
-            new_effect->setOpacity(0);
-            new_effect->setZValue(-2);
-            connect(new_boss,SIGNAL(useSkill(QString)),new_effect,SLOT(setVisible()));
             for(int i=0;i<2;++i) {
                 new_enemy = new Enemy_3_Yellow(QString(":/res/enemy13.png"),54,55,75,60,player,5,30,500,300,(i==0)?160:Game::FrameWidth-160,150);
                 newEnemyInit(new_enemy);
@@ -1001,8 +981,7 @@ void MainWindow::doTick() {
                 newEffectInit(new_effect);
             }
         } else if(tickCheck(11925)) { //11925
-            new_boss = new Enemy_3_Blue_5(QString(":/res/enemy15.png"),54,55,160,160,player,650,80,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
-            connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+            new_boss = new Enemy_3_Blue_5(QString(":/res/enemy15.png"),54,55,160,160,player,550,80,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
             new_boss->fadein(1500);
             newBossInit(new_boss);
             for(int i=0;i<2;++i) {

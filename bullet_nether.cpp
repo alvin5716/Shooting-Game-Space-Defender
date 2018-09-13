@@ -11,8 +11,13 @@ Bullet_Nether::Bullet_Nether(QString img, int radius, Character* nether_center, 
 }
 void Bullet_Nether::move() {
     //move object
-    setPosition(x+xv,y+yv);
-    setSpeed(xv+xa,yv+ya);
+    if(terminal_v==0) {
+        setPosition(x+xv,y+yv);
+        setSpeed(xv+xa,yv+ya);
+    } else {
+        setPosition(x+xv,y+yv);
+        if((sqrt(pow(xv,2)+pow(yv,2))<=terminal_v && sqrt(pow(xv+xa,2)+pow(yv+ya,2))<=terminal_v) || (sqrt(pow(xv,2)+pow(yv,2))>=terminal_v && sqrt(pow(xv+xa,2)+pow(yv+ya,2))>=terminal_v)) setSpeed(xv+xa,yv+ya);
+    }
     //attack by nether center
     if(nether_center!=NULL) {
         if(sqrt(pow(nether_center->getX() - x,2)+pow(nether_center->getY() - y,2)) <= nether_center->getRadius() + radius) {

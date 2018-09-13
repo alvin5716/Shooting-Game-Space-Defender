@@ -1,6 +1,7 @@
 #include "enemy_3_blue_4.h"
 #include "bullet_time.h"
 #include "bullet_wall.h"
+#include "bullet_sin.h"
 #include "laser.h"
 #include <QDebug>
 #include "game.h"
@@ -9,10 +10,11 @@ Enemy_3_Blue_4::Enemy_3_Blue_4(QString img, int img_w, int img_h, int show_w, in
     :Enemy_3_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     angle=0;
+    shoot_timer_2=0;
 }
 void Enemy_3_Blue_4::skill() {
     //second phase
-    if(health<=250 && !secPhase) {
+    if(health<=230 && !secPhase) {
         secPhase = true;
         invulnerable=true;
         img=":/res/enemy15_2.png";
@@ -20,6 +22,11 @@ void Enemy_3_Blue_4::skill() {
         shoot_cd = 85;
         skill_timer = -200;
         emit useSkill("火盃的考驗");
+        this->showShield(":/res/magic_red.png");
+        shield->setOpacity(0.6);
+        shield->setZValue(-2);
+        shield->rotateStart();
+        emit summonEffect(shield);
     }
     if(secPhase) {
         //skill
@@ -85,28 +92,35 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
             bullet_v = 0.1+(double)(qrand()%4)/10;
             cos = std::cos(angle+i*M_PI/5);
             sin = std::sin(angle+i*M_PI/5);
-            new_bullet = new_bullet_wall = new Bullet_Wall(QString(":/res/bullet_red.png"),8,t==0?80:Game::FrameWidth-80,170,bullet_v*cos,bullet_v*sin,0,bullet_a);
+            new_bullet = new_bullet_wall = new Bullet_Wall(QString(":/res/bullet_red.png"),bullet_radius,t==0?80:Game::FrameWidth-80,170,bullet_v*cos,bullet_v*sin,0,bullet_a);
             new_bullet_wall->addWallData(player,1.8,0);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             connect(new_bullet_wall,&Bullet_Wall::triggered,[=](){ new_bullet_wall->setImg(":/res/bullet_2_red.png"); });
             new_bullets->push_back(new_bullet);
         }
-        //yellow bullets
-        if(this->health<130 && t==0) {
-            int bullet_count = 24;
-            bullet_v = 0.6;
-            bullet_radius = 14;
+        angle += M_PI/20;
+        if(shoot_timer==shoot_cd+interval) shoot_timer=0;
+    }
+    //yellow bullets
+    if(this->health<130) {
+        const int shoot_cd_2 = 55;
+        if(shoot_timer_2>=shoot_cd_2) {
+            double cos, sin, bullet_v, bullet_a;
+            int bullet_radius;
+            int bullet_count = 18;
+            bullet_v = 1;
+            bullet_radius = 8;
             bullet_a = 0.0005;
             for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
-                sin = std::sin(angle+(t*0.5+i)*2*M_PI/bullet_count);
-                cos = std::cos(angle+(t*0.5+i)*2*M_PI/bullet_count);
-                new_bullet = new Bullet(":/res/bullet_yellow.png",bullet_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                sin = std::sin((i+0.5)*2*M_PI/bullet_count+M_PI/2);
+                cos = std::cos((i+0.5)*2*M_PI/bullet_count+M_PI/2);
+                new_bullet = new Bullet_Sin(":/res/bullet_yellow.png",300,10,bullet_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }
+            shoot_timer_2=0;
         }
-        angle += M_PI/20;
-        if(shoot_timer==shoot_cd+interval) shoot_timer=0;
+        ++shoot_timer_2;
     }
     if(new_bullets->size()>0) return new_bullets;
     return NULL;

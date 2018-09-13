@@ -21,6 +21,11 @@ void Enemy_3_Blue_1::skill() {
         shoot_cd = 600;
         skill_timer = -200;
         emit useSkill("神秘的魔法石");
+        this->showShield(":/res/magic_red.png");
+        shield->setOpacity(0.6);
+        shield->setZValue(-2);
+        shield->rotateStart();
+        emit summonEffect(shield);
     }
     if(secPhase) {
         //skill
