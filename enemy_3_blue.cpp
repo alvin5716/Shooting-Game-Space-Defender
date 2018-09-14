@@ -67,7 +67,7 @@ std::vector<Bullet*>* Enemy_3_Blue::shoot() {
 void Enemy_3_Blue::redMagicShield() {
     this->showShield(":/res/magic_red.png");
     shield->setOpacity(0.6);
-    shield->fadein(1500);
+    shield->fadein(2500);
     shield->setZValue(-2);
     shield->rotateStart();
     emit summonEffect(shield);
