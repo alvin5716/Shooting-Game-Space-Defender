@@ -43,8 +43,7 @@ Shield* Enemy::showShield(QString str) {
 }
 void Enemy::move() {
     //move object
-    setPosition(x+xv,y+yv);
-    setSpeed(xv+xa,yv+ya);
+    Character::move();
     //attack cool down
     ++shoot_timer;
     //bounceable

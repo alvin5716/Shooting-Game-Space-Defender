@@ -131,6 +131,7 @@ void MainWindow::start() {
     //dot
     if(dot!=NULL) delete dot;
     dot = new Shield(":/res/dot.png",50,50,10,10,player,-1,player->getX(),player->getY());
+    dot->setZValue(100);
     newEffectInit(dot);
     //timer
     gametime=tick=Game::StartTick;

@@ -17,8 +17,7 @@ Player::Player(int health, int radius, int shoot_cd, double x, double y, double 
 }
 void Player::move() {
     //move object
-    setPosition(x+xv,y+yv);
-    setSpeed(xv+xa,yv+ya);
+    Character::move();
     //don't go out of frame
     if(x<0+radius+5) setPosition(0+radius+5,y);
     else if(x>Game::FrameWidth-radius-5) setPosition(Game::FrameWidth-radius-5,y);

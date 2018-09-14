@@ -26,11 +26,7 @@ void Enemy_3_Blue_5::skill() {
         shoot_cd = 160;
         skill_timer = -200;
         emit useSkill("鳳凰會的密令");
-        this->showShield(":/res/magic_red.png");
-        shield->setOpacity(0.6);
-        shield->setZValue(-2);
-        shield->rotateStart();
-        emit summonEffect(shield);
+        this->redMagicShield();
     }
     if(secPhase) {
         //skill
@@ -61,7 +57,6 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
                     count=0;
                 }
             }
-            qDebug() << (randSeed+count)%4;
             //fireballs
             for(int i=0;i<wings;++i) {
                 switch((randSeed+count)%4) {

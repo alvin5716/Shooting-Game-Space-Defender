@@ -23,11 +23,7 @@ void Enemy_3_Blue_3::skill() {
         shoot_cd = 60;
         skill_timer = -400;
         emit useSkill("阿茲卡班的逃犯");
-        this->showShield(":/res/magic_red.png");
-        shield->setOpacity(0.6);
-        shield->setZValue(-2);
-        shield->rotateStart();
-        emit summonEffect(shield);
+        this->redMagicShield();
     }
     if(secPhase) {
         //skill

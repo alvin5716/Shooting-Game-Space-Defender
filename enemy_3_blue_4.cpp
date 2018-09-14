@@ -22,11 +22,7 @@ void Enemy_3_Blue_4::skill() {
         shoot_cd = 85;
         skill_timer = -200;
         emit useSkill("火盃的考驗");
-        this->showShield(":/res/magic_red.png");
-        shield->setOpacity(0.6);
-        shield->setZValue(-2);
-        shield->rotateStart();
-        emit summonEffect(shield);
+        this->redMagicShield();
     }
     if(secPhase) {
         //skill

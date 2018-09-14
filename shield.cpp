@@ -6,11 +6,6 @@ Shield::Shield(QString img, int img_w, int img_h, int show_w, int show_h, Charac
 
 }
 void Shield::move() {
-    //move
+    Effect::move();
     setPosition(user->getX(),user->getY());
-
-    //lifetimer
-    if(lifetimer!=-1) --lifetimer; //if lifetime is -1, it won't die
-    if(lifetimer==62) fadeout();
-    if(lifetimer==0) delete this;
 }

@@ -64,3 +64,11 @@ std::vector<Bullet*>* Enemy_3_Blue::shoot() {
     }
     return NULL;
 }
+void Enemy_3_Blue::redMagicShield() {
+    this->showShield(":/res/magic_red.png");
+    shield->setOpacity(0.6);
+    shield->fadein(1500);
+    shield->setZValue(-2);
+    shield->rotateStart();
+    emit summonEffect(shield);
+}
