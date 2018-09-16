@@ -1210,7 +1210,23 @@ void MainWindow::pauseAndResume() {
     return;
 }
 void MainWindow::bossCorpse(int x, int y) {
-    new_effect = new Effect(QString(":/res/lightball.png"),120,120,300,300,308,x,y,0,0,0,0,true);
+    QString str;
+    switch(level) {
+    case 1:
+        str = ":/res/lightball.png";
+        break;
+    case 2:
+        str = ":/res/stars.png";
+        break;
+    case 3:
+        str = ":/res/magic_wind.png";
+        break;
+    default:
+        str = ":/res/lightball.png";
+        qDebug() << "Error: can't find boss corpse img because can't get what level is";
+        break;
+    }
+    new_effect = new Effect(str,120,120,300,300,308,x,y,0,0,0,0,true);
     new_effect->fadein();
     new_effect->rotateStart();
     new_effect->moveTo(Game::FrameWidth/2,200,246);
