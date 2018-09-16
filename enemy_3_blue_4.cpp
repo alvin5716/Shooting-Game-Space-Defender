@@ -43,25 +43,25 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
         Bullet_Time* new_bullet_time;
         for(int j=0;j<2;++j) {
             for(int i=0;i<20;++i) {
-                new_bullet = new_bullet_time = new Bullet_Time(QString(":/res/bullet_purple.png"),8,x,y);
+                new_bullet = new_bullet_time = new Bullet_Time(QString(":/res/bullet_purple.png"),8,shootXPos(),shootYPos());
                 if(i<5) {
-                    aim_x=this->x-40-10*(4-i);
-                    aim_y=this->y-15*(2-i);
+                    aim_x=shootXPos()-40-10*(4-i);
+                    aim_y=shootYPos()-15*(2-i);
                 } else if(i<8) {
-                    aim_x=this->x-20*(6-i);
-                    aim_y=this->y+30;
+                    aim_x=shootXPos()-20*(6-i);
+                    aim_y=shootYPos()+30;
                 } else if(i<13) {
-                    aim_x=this->x+40+10*(i-8);
-                    aim_y=this->y+15*(10-i);
+                    aim_x=shootXPos()+40+10*(i-8);
+                    aim_y=shootYPos()+15*(10-i);
                 } else {
-                    aim_x=this->x+20*(16-i);
-                    aim_y=this->y-30;
+                    aim_x=shootXPos()+20*(16-i);
+                    aim_y=shootYPos()-30;
                 }
                 new_bullet->moveTo(aim_x,aim_y,50);
                 new_bullet->fadein();
                 new_bullet->setInvulnerable();
                 new_bullet_time->addTimeData(50)
-                        .addTimeData(100,aim_x+(j==0?-1:1)*(Game::FrameWidth/2-80),aim_y-50,250)
+                        .addTimeData(100,aim_x+(x-shootXPos())+(j==0?-1:1)*(Game::FrameWidth/2-80),aim_y+(y-shootYPos())-50,250)
                         .addTimeData(250);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
@@ -108,9 +108,9 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
             bullet_radius = 8;
             bullet_a = 0.0005;
             for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
-                sin = std::sin((i+0.5)*2*M_PI/bullet_count+M_PI/2);
-                cos = std::cos((i+0.5)*2*M_PI/bullet_count+M_PI/2);
-                new_bullet = new Bullet_Sin(":/res/bullet_yellow.png",300,10,bullet_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                sin = std::sin((i+(face_to_left?0.2:-0.2))*2*M_PI/bullet_count+M_PI/2);
+                cos = std::cos((i+(face_to_left?0.2:-0.2))*2*M_PI/bullet_count+M_PI/2);
+                new_bullet = new Bullet_Sin(":/res/bullet_yellow.png",300,10,bullet_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }

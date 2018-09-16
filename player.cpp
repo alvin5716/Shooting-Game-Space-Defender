@@ -30,6 +30,7 @@ void Player::move() {
     if(invulnerable_timer==NULL) invulnerable = (skill_timer<skill_cd)?true:false;
 }
 Character* Player::testAttackedBy(std::vector<Character*> & attackers) {
+    if(invulnerable) return NULL;
     for(int i=0;i<(int)attackers.size();++i) {
         if(attackers.at(i)->isAttackable() && (sqrt(pow(attackers.at(i)->getX() - x,2)+pow(attackers.at(i)->getY() - y,2)) <= attackers.at(i)->getRadius() + radius)) {
             attacked();
@@ -64,11 +65,11 @@ void Player::setVulnerable() {
     unsigned int& i = vulnerable_func_count;
     if(i%2==0) {
         setOpacity(0.5);
-        if(health<=10) emit healthColorChange("red");
+        if(health<=5) emit healthColorChange("red");
         else healthColorChange("yellow");
     } else {
         setOpacity(1);
-        if(health<=10) emit healthColorChange("white");
+        if(health<=5) emit healthColorChange("white");
         else healthColorChange("yellow");
     }
     if(i==7 && invulnerable_timer!=NULL) {

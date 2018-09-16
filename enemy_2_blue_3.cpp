@@ -13,7 +13,7 @@ Enemy_2_Blue_3::Enemy_2_Blue_3(QString img, int img_w, int img_h, int show_w, in
 }
 void Enemy_2_Blue_3::skill() {
     //second phase
-    if(health<=340 && !secPhase) {
+    if(health<=290 && !secPhase) {
         secPhase = true;
         invulnerable=true;
         img=":/res/enemy10_2.png";

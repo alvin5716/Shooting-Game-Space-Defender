@@ -14,8 +14,8 @@ public slots:
     void img_move();
 private:
     double angle, omega;
-    int lifetimer, prepare_timer;
-    bool preparing;
+    int lifetimer, prepare_timer, dead_timer;
+    bool preparing, dying;
 };
 
 #endif // LASER_H

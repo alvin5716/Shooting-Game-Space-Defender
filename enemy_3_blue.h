@@ -11,6 +11,8 @@ public:
     std::vector<Bullet*>* shoot();
     virtual void skill();
     void redMagicShield();
+    double shootXPos() const;
+    double shootYPos() const;
 public slots:
     void deadSet();
 private:

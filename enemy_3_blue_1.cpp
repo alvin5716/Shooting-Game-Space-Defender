@@ -105,7 +105,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
             bullet_v = 0.2;
             bullet_a = 0.025;
             Bullet_Time* new_bullet_time;
-            new_bullet = new_bullet_time = new Bullet_Time(":/res/bullet_yellow.png",bullet_radius,x,y);
+            new_bullet = new_bullet_time = new Bullet_Time(":/res/bullet_yellow.png",bullet_radius,shootXPos(),shootYPos());
             int aim_x, aim_y;
             if(i<=6) {
                 aim_x = this->x-i*6;

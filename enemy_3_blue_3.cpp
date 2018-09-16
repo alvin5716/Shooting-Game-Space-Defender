@@ -43,7 +43,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     const short interval = 80;
     //center
     if(shoot_timer==-150) {
-        new_bullet = center = new Bullet_Time(":/res/bullet_black.png",30,x,y);
+        new_bullet = center = new Bullet_Time(":/res/bullet_black.png",30,shootXPos(),shootYPos());
         center->addTimeData(150);
         new_bullet->moveTo(Game::FrameWidth/2,Game::FrameHeight/2,150);
         new_bullet->setInvulnerable();

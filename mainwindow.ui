@@ -41,7 +41,7 @@ background-color:  black;
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="StartPage">
      <widget class="QPushButton" name="startButton">
@@ -128,7 +128,7 @@ background-color: transparent;</string>
        </rect>
       </property>
      </widget>
-     <widget class="QFrame" name="frame">
+     <widget class="QFrame" name="gameFrame">
       <property name="geometry">
        <rect>
         <x>45</x>
@@ -995,7 +995,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </widget>
      </widget>
-     <zorder>frame</zorder>
+     <zorder>gameFrame</zorder>
      <zorder>graphicsView</zorder>
      <zorder>PlayerSkill</zorder>
      <zorder>PlayerLife</zorder>

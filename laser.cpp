@@ -12,6 +12,8 @@ Laser::Laser(QString img, int radius, double angle, double omega, int lifetime, 
     while(this->angle<0) this->angle+=2*M_PI;
     this->omega=omega;
     this->lifetimer=lifetime;
+    this->dead_timer=-1;
+    this->dying=false;
     this->img_w=38;
     this->img_h=500;
     this->show_h=1150;
@@ -21,7 +23,7 @@ Laser::Laser(QString img, int radius, double angle, double omega, int lifetime, 
     preparing=true;
 }
 Character* Laser::testAttackedBy(Character* attacker) {
-    if(preparing) return NULL;
+    if(preparing||dying) return NULL;
     if(x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius) {
         dead=true;
     }
@@ -31,7 +33,7 @@ Character* Laser::testAttackedBy(Character* attacker) {
         double angle_dif=angle-theta;
         while(angle_dif>M_PI) angle_dif-=2*M_PI;
         while(angle_dif<-M_PI) angle_dif+=2*M_PI;
-        if((abs((slope*x0-y0-slope*x+y)/sqrt(pow(slope,2)+1)) <= attacker->getRadius() + radius)
+        if(attacker->isAttackable() && (abs((slope*x0-y0-slope*x+y)/sqrt(pow(slope,2)+1)) <= attacker->getRadius() + radius)
                 && (angle_dif<=M_PI/2) && (angle_dif>=-M_PI/2))
         {
             if(health>0 && !invulnerable) {
@@ -48,6 +50,19 @@ Character* Laser::testAttackedBy(Character* attacker) {
     return NULL;
 }
 void Laser::move() {
+    //dead fade out
+    if(dead_timer!=-1 && !dying) {
+        dying=true;
+        fadeout(300);
+    }
+    if(dying) {
+        if(--dead_timer==0) {
+            dead=true;
+            emit deadSignal();
+        }
+        return;
+    }
+    //prepare fade in
     if(prepare_timer<=0 && preparing) {
         setOpacity(0.8);
         fadein(1);
@@ -63,8 +78,7 @@ void Laser::move() {
         //lifetimer
         if(lifetimer!=-1) --lifetimer; //if lifetime is -1, it won't die
         if(lifetimer==0) {
-            dead=true;
-            emit deadSignal();
+            dead_timer=37;
         }
     } else --prepare_timer;
 }

@@ -62,6 +62,7 @@ public:
     bool tickCheck(unsigned int tick_init, unsigned int interval, unsigned int times);
     void pauseAndResume();
     void backToMenu();
+    void redFlash();
     ~MainWindow();
 
 private:
@@ -101,6 +102,7 @@ private slots:
     void pointAdd(int);
     void bossCorpse(int,int);
     void healthColorChange(QString);
+    void sceneVibrate(short vibrate_count = 0);
 
 signals:
     void doMove();
