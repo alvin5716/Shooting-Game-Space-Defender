@@ -25,7 +25,7 @@ void Enemy_3_Blue_1::skill() {
     }
     if(secPhase) {
         //skill
-        if(skill_timer==0) moveTo(Game::FrameWidth/2,180,240);
+        if(skill_timer==0) moveTo(Game::FrameWidth/2,220,240);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     } else {
@@ -42,9 +42,9 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         bullet_radius = 60;
         bullet_v = 0;
         bullet_a = 0.015;
-        cos = std::cos(-M_PI/6);
-        sin = std::sin(-M_PI/6);
-        new_bullet = magicstone = new Bullet_Wall(":/res/magicball.png",bullet_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+        cos = std::cos(face_to_left?-M_PI/6:M_PI/6);
+        sin = std::sin(face_to_left?-M_PI/6:M_PI/6);
+        new_bullet = magicstone = new Bullet_Wall(":/res/magicball.png",bullet_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
         magicstone->addWallData(player,2.6);
         connect(magicstone,SIGNAL(triggered()),this,SLOT(shootSmallBullet()));
         new_bullet->setInvulnerable();
