@@ -232,9 +232,9 @@ void MainWindow::doTick() {
         //boss lives, skill bar and health bar
         if(!isPlayerPosHigh && player->getY()<280) {
             isPlayerPosHigh=true;
-            bossHealthOpacityEff->setOpacity(0.3);
-            bossLivesOpacityEff->setOpacity(0.3);
-            bossSkillOpacityEff->setOpacity(0.3);
+            bossHealthOpacityEff->setOpacity(0.5);
+            bossLivesOpacityEff->setOpacity(0.5);
+            bossSkillOpacityEff->setOpacity(0.5);
         } else if(isPlayerPosHigh && player->getY()>=280) {
             isPlayerPosHigh=false;
             bossHealthOpacityEff->setOpacity(1);
@@ -276,6 +276,7 @@ void MainWindow::doTick() {
             redFlash();
         }
         for(int i=0;i<(int)enemies.size();++i) { //enemies
+            if(enemies.at(i)->isDead()) continue;
             //shoot
             std::vector<Bullet*>* new_enemy_bullets;
             if(!(enemies.at(i)->isBoss() && enemies.at(i)->isSecPhase())) new_enemy_bullets = enemies.at(i)->shoot();

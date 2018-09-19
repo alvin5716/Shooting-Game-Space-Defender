@@ -16,9 +16,9 @@ void Enemy_3_Blue_3::skill() {
     //second phase
     if(health<=230 && !secPhase) {
         secPhase = true;
-        invulnerable=true;
+        invulnerable = true;
         img=":/res/enemy15_2.png";
-        shoot_timer = -450;
+        shoot_timer = -540;
         shoot_cd = 60;
         skill_timer = -400;
         emit useSkill("阿茲卡班的逃犯");
@@ -52,7 +52,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     } else if(use_laser && shoot_timer==30) {
         use_laser=false;
         for(int i=0;i<2;++i) {
-            new_bullet = new Laser(":/res/laser_yellow.png",18,M_PI/2+(2+shoot_count_yellow)*M_PI/5,(i==0)?M_PI/300:-M_PI/300,270,Game::FrameWidth/2,Game::FrameHeight/2,0);
+            new_bullet = new Laser(":/res/laser_purple.png",18,M_PI/2+(2+shoot_count_yellow)*M_PI/5,(i==0)?M_PI/400:-M_PI/400,360,Game::FrameWidth/2,Game::FrameHeight/2,0);
             new_bullet->setZValue(-1);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
@@ -98,7 +98,8 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
                 bullet_v = 0.11+(double)(qrand()%5)/100;
                 sin = std::sin(rand_angle);
                 cos = std::cos(rand_angle);
-                new_bullet = new Bullet(":/res/bullet_black.png",bullet_radius,center->getX(),center->getY(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new Bullet(":/res/bullet_black.png",bullet_radius,center->getX()+bullet_radius*2*cos,center->getY()+bullet_radius*2*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet->fadein();
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }
