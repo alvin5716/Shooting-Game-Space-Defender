@@ -18,7 +18,7 @@ void Enemy_3_Blue_4::skill() {
         secPhase = true;
         invulnerable=true;
         img=":/res/enemy15_2.png";
-        shoot_timer = -950;
+        shoot_timer = -800;
         shoot_cd = 85;
         skill_timer = -200;
         emit useSkill("火盃的考驗");
@@ -38,7 +38,7 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
     Bullet* new_bullet;
     const int interval = shoot_cd;
     //bowl
-    if(shoot_timer==-550) {
+    if(shoot_timer==-400) {
         int aim_x, aim_y;
         Bullet_Time* new_bullet_time;
         for(int j=0;j<2;++j) {
@@ -66,15 +66,6 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }
-        }
-    //laser
-    } else if(shoot_timer==-150) {
-        for(int i=0;i<4;++i) {
-            new_bullet = new Laser(QString(":/res/laser_purple.png"),6,0,0,-1,(i<2?80:Game::FrameWidth-80)+(i%2==0?22:-22),230);
-            new_bullet->setInvulnerable();
-            new_bullet->setZValue(-1);
-            connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
-            new_bullets->push_back(new_bullet);
         }
     //flame
     } else if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
