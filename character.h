@@ -33,6 +33,7 @@ public:
     void setCanBeMirrored(bool canBeMirrored=true);
     void setFaceToLeft(bool face_to_left=true);
     void setImg(QString img);
+    void show_img_set();
 signals:
     void deadSignal();
     void deadSignal(int, int);

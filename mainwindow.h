@@ -85,10 +85,11 @@ private:
     Shield *dot;
     int secret;
     QPixmap *oriImg2, *cutImg, *oriImg;
-    QGraphicsOpacityEffect* bossSkillOpacityEff;
+    QGraphicsOpacityEffect* bossSkillOpacityEff, *bossHealthOpacityEff, *bossLivesOpacityEff;
     QPropertyAnimation* bossSkillFadeinAni, *bossSkillMoveInAni;
     int gamestate, level;
     QString strBossBG;
+    bool isPlayerPosHigh;
 
 private slots:
     void newEffectInit(Effect* new_effect);

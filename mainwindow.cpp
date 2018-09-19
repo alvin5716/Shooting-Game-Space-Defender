@@ -20,6 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(GamePage::Menu);
+    //boss objects
+    bossHealthOpacityEff = new QGraphicsOpacityEffect(this);
+    bossLivesOpacityEff = new QGraphicsOpacityEffect(this);
+    ui->BossHealth->setGraphicsEffect(bossHealthOpacityEff);
+    ui->BossLives->setGraphicsEffect(bossLivesOpacityEff);
     //level
     level = 1;
     //scene
@@ -122,6 +127,7 @@ void MainWindow::start() {
     //player
     if(player!=NULL) delete player;
     player = new Player(5,5,15,Game::FrameWidth/2,Game::FrameHeight-100);
+    isPlayerPosHigh=false;
     ui->PlayerLife->display(player->getHealth());
     scene->addItem(player);
     connect(this,SIGNAL(doMove()),player,SLOT(move()));
@@ -223,6 +229,18 @@ void MainWindow::doTick() {
         emit doMove();
     }
     if(gamestate==GameState::Playing) {
+        //boss lives, skill bar and health bar
+        if(!isPlayerPosHigh && player->getY()<280) {
+            isPlayerPosHigh=true;
+            bossHealthOpacityEff->setOpacity(0.3);
+            bossLivesOpacityEff->setOpacity(0.3);
+            bossSkillOpacityEff->setOpacity(0.3);
+        } else if(isPlayerPosHigh && player->getY()>=280) {
+            isPlayerPosHigh=false;
+            bossHealthOpacityEff->setOpacity(1);
+            bossLivesOpacityEff->setOpacity(1);
+            bossSkillOpacityEff->setOpacity(1);
+        }
         //player skill
         if(use_skill && !player->isUsingSkill() && skill_times>0 && !player->isInvulnerable()) { //init
             player->coolDown();

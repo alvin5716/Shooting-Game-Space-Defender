@@ -42,7 +42,7 @@ void Enemy_3_Blue_2::skill() {
                 room->setPosition(player->getX(),player->getY());
                 if(room_radius_rate<125) {
                     ++room_radius_rate;
-                    room->setTransform(QTransform().translate(room_radius-room_radius*((double)room_radius_rate/125),room_radius-room_radius*((double)room_radius_rate/125)).scale(((double)room_radius_rate/125),((double)room_radius_rate/125)));
+                    room->setTransform(room->transform().translate(room_radius-room_radius*((double)room_radius_rate/125),room_radius-room_radius*((double)room_radius_rate/125)).scale(((double)room_radius_rate/125),((double)room_radius_rate/125)));
                 }
             }
         }

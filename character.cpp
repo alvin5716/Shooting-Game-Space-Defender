@@ -38,7 +38,7 @@ void Character::move() {
     setPosition(x+xv,y+yv);
     setSpeed(xv+xa,yv+ya);
 }
-void Character::img_move() {
+void Character::show_img_set() {
     //image move
     if(img_timer%30==0) {
         if(img_timer>=30*4) img_timer=0;
@@ -57,8 +57,11 @@ void Character::img_move() {
             setPixmap(cutImg.scaled(show_w,show_h));
         }
     }
-    setPos(x-show_w/2,y-show_h/2);
     ++img_timer;
+}
+void Character::img_move() {
+    show_img_set();
+    setPos(x-show_w/2,y-show_h/2);
 }
 void Character::moveTo(double x, double y, double t) {
     //use physics formula
