@@ -13,9 +13,8 @@ public:
     void skill();
     std::vector<Bullet*>* shoot2();
 private:
-    bool clockwise, use_laser;
-    double angle;
-    short mode, shoot_count;
+    bool use_laser;
+    short shoot_count_yellow, shoot_count;
     Bullet_Time* center;
 };
 
