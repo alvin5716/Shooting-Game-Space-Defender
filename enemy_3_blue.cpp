@@ -24,9 +24,11 @@ void Enemy_3_Blue::skill() {
     if(skill_timer>=0&&skill_timer%interval==0) {
         if(skill_timer>=interval*2) skill_timer=0;
         if(skill_timer==0) {
-            moveTo(Game::FrameWidth/2+80+qrand()%(Game::FrameWidth/2-350),180+qrand()%50,375);
+            moveTo(Game::FrameWidth/2+80+qrand()%(Game::FrameWidth/2-350),185+qrand()%50,375);
+            show_img_force_set();
         } else if(skill_timer==interval*1) {
-            moveTo(Game::FrameWidth/2-80-qrand()%(Game::FrameWidth/2-350),180+qrand()%50,375);
+            moveTo(Game::FrameWidth/2-80-qrand()%(Game::FrameWidth/2-350),185+qrand()%50,375);
+            show_img_force_set();
         }
     }
     ++skill_timer;
@@ -65,7 +67,7 @@ std::vector<Bullet*>* Enemy_3_Blue::shoot() {
     return NULL;
 }
 void Enemy_3_Blue::redMagicShield() {
-    this->showShield(":/res/magic_red.png");
+    this->showShield(":/res/magic_red.png",120,120);
     shield->setOpacity(0.6);
     shield->fadein(2500);
     shield->setZValue(-2);

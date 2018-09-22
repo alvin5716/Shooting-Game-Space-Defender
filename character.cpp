@@ -38,6 +38,9 @@ void Character::move() {
     setPosition(x+xv,y+yv);
     setSpeed(xv+xa,yv+ya);
 }
+void Character::show_img_force_set() {
+    img_timer=30*4;
+}
 void Character::show_img_set() {
     //image move
     if(img_timer%30==0) {

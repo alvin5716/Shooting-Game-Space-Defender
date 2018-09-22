@@ -90,7 +90,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
         else {
             //bullet
             bullet_radius = 6;
-            bullet_count = 18;
+            bullet_count = 14;
             bullet_a = 0.0005;
             //shoot
             for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {

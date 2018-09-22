@@ -13,7 +13,7 @@ Enemy_3_Blue_1::Enemy_3_Blue_1(QString img, int img_w, int img_h, int show_w, in
 }
 void Enemy_3_Blue_1::skill() {
     //second phase
-    if(health<=170 && !secPhase) {
+    if(health<=135 && !secPhase) {
         secPhase = true;
         invulnerable=true;
         img=":/res/enemy15_2.png";
@@ -42,8 +42,8 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         bullet_radius = 60;
         bullet_v = 0;
         bullet_a = 0.015;
-        cos = std::cos(face_to_left?-M_PI/6:M_PI/6);
-        sin = std::sin(face_to_left?-M_PI/6:M_PI/6);
+        cos = std::cos(face_to_left?-M_PI/6:-M_PI*5/6);
+        sin = std::sin(face_to_left?-M_PI/6:-M_PI*5/6);
         new_bullet = magicstone = new Bullet_Wall(":/res/magicball.png",bullet_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
         magicstone->addWallData(player,2.6);
         connect(magicstone,SIGNAL(triggered()),this,SLOT(shootSmallBullet()));
@@ -108,14 +108,14 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
             new_bullet = new_bullet_time = new Bullet_Time(":/res/bullet_yellow.png",bullet_radius,shootXPos(),shootYPos());
             int aim_x, aim_y;
             if(i<=6) {
-                aim_x = this->x-i*6;
-                aim_y = this->y-(6-i)*20;
+                aim_x = this->shootXPos()-i*6;
+                aim_y = this->shootYPos()-(6-i)*20;
             } else if(i>=12) {
-                aim_x = this->x+(18-i)*8;
-                aim_y = this->y+(i-12)*20;
+                aim_x = this->shootXPos()+(18-i)*8;
+                aim_y = this->shootYPos()+(i-12)*20;
             } else {
-                aim_x = this->x+(i-9)*16;
-                aim_y = this->y;
+                aim_x = this->shootXPos()+(i-9)*16;
+                aim_y = this->shootYPos();
             }
             new_bullet_time->moveTo(aim_x,aim_y,50);
             new_bullet_time->addTimeData(50)

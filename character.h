@@ -34,6 +34,7 @@ public:
     void setFaceToLeft(bool face_to_left=true);
     void setImg(QString img);
     void show_img_set();
+    void show_img_force_set();
 signals:
     void deadSignal();
     void deadSignal(int, int);

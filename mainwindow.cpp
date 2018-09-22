@@ -554,8 +554,8 @@ void MainWindow::doTick() {
     //level 2
     case 2:
         switch(tick) {
-        case 500: case 500+175: case 500+175*2: case 500+175*3: case 500+175*4: case 500+175*5: case 500+175*6:
-            //500+175i, 7 times
+        case 500: case 500+262: case 500+262*2: case 500+262*3: case 500+262*4:
+            //500+262i, 5 times
             for(int i=0;i<2;++i) {
                 new_enemy = new Enemy_2_Green(QString(":/res/enemy6.png"),35,35,70,70,player,3,35,300,200,(i==0)?-35:Game::FrameWidth+35,250,(i==0)?1.2:-1.2,-0.5,0,0.001);
                 newEnemyInit(new_enemy);
@@ -802,12 +802,7 @@ void MainWindow::doTick() {
     case 3:
         switch(tick) {
         case 500: case 500+250: case 500+250*2: case 500+250*3: case 500+250*4: //500+250i, 5 times
-            for(int i=0;i<2;++i) {
-                new_effect = new Effect(QString(":/res/magic.png"),50,50,120,120,350,(i==0)?300-60*((tick-500)/250):Game::FrameWidth-300+60*((tick-500)/250),80+100*((tick-500)/250),0,0,0,0,true);
-                new_effect->setOpacity(0.6);
-                new_effect->fadein();
-                newEffectInit(new_effect);
-            }
+            for(int i=0;i<2;++i) newMagicEffect(120,120,(i==0)?300-60*((tick-500)/250):Game::FrameWidth-300+60*((tick-500)/250),80+100*((tick-500)/250));
             break;
         case 700: case 700+250: case 700+250*2: case 700+250*3: case 700+250*4: //700+250i, 5 times
             for(int i=0;i<2;++i) {
@@ -817,12 +812,7 @@ void MainWindow::doTick() {
             }
             break;
         case 2700: //2700
-            for(int i=0;i<2;++i) {
-                new_effect = new Effect(QString(":/res/magic.png"),50,50,150,150,350,(i==0)?100:Game::FrameWidth-100,150,0,0,0,0,true);
-                new_effect->setOpacity(0.6);
-                new_effect->fadein();
-                newEffectInit(new_effect);
-            }
+            for(int i=0;i<2;++i) newMagicEffect(150,150,(i==0)?100:Game::FrameWidth-100,150);
             break;
         case 2900: //2900
             for(int i=0;i<2;++i) {
@@ -832,18 +822,8 @@ void MainWindow::doTick() {
             }
             break;
         case 3800: //3800
-            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,725,Game::FrameWidth/2,220,0,0,0,0,true);
-            new_effect->setOpacity(0.6);
-            new_effect->fadein();
-            newEffectInit(new_effect);
-            for(int t=0;t<2;++t) {
-                for(int i=0;i<2;++i) {
-                    new_effect = new Effect(QString(":/res/magic.png"),50,50,120,120,725,(i==0)?300-80*t:Game::FrameWidth-300+80*t,80+100*t,0,0,0,0,true);
-                    new_effect->setOpacity(0.6);
-                    new_effect->fadein();
-                    newEffectInit(new_effect);
-                }
-            }
+            newMagicEffect(180,180,Game::FrameWidth/2,220,725);
+            for(int t=0;t<2;++t) for(int i=0;i<2;++i) newMagicEffect(120,120,(i==0)?300-80*t:Game::FrameWidth-300+80*t,80+100*t,725);
             break;
         case 4000: //4000
             new_boss = new Enemy_3_Green(QString(":/res/enemy11.png"),54,43,150,120,player,45,60,50,375,Game::FrameWidth/2,220);
@@ -870,10 +850,7 @@ void MainWindow::doTick() {
             new_boss->setVulnerable();
             break;
         case 4500: //4500
-            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,250,0,0,0,0,true);
-            new_effect->setOpacity(0.6);
-            new_effect->fadein();
-            newEffectInit(new_effect);
+            newMagicEffect(180,180,Game::FrameWidth/2,250);
             break;
         case 4700: //4700
             new_enemy = new Enemy_3_Yellow(QString(":/res/enemy13.png"),54,43,150,120,player,30,60,250,120,Game::FrameWidth/2,250);
@@ -892,16 +869,8 @@ void MainWindow::doTick() {
             }
             break;
         case 7000: //7000
-            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,100,0,0,0,0,true);
-            new_effect->setOpacity(0.6);
-            new_effect->fadein();
-            newEffectInit(new_effect);
-            for(int i=0;i<2;++i) {
-                new_effect = new Effect(QString(":/res/magic.png"),50,50,120,120,350,(i==0)?80:Game::FrameWidth-80,Game::FrameHeight-70,0,0,0,0,true);
-                new_effect->setOpacity(0.6);
-                new_effect->fadein();
-                newEffectInit(new_effect);
-            }
+            newMagicEffect(180,180,Game::FrameWidth/2,100);
+            for(int i=0;i<2;++i) newMagicEffect(120,120,(i==0)?80:Game::FrameWidth-80,Game::FrameHeight-70);
             break;
         case 7200: //7200
             new_boss = new Enemy_3_Yellow(QString(":/res/enemy13.png"),54,43,150,120,player,60,60,300,50,Game::FrameWidth/2,100);
@@ -919,10 +888,7 @@ void MainWindow::doTick() {
             tickFreeze();
             break;
         case 7500: //7500
-            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,250,0,0,0,0,true);
-            new_effect->setOpacity(0.6);
-            new_effect->fadein();
-            newEffectInit(new_effect);
+            newMagicEffect(180,180,Game::FrameWidth/2,250);
             break;
         case 7700: //7700
             new_enemy = new Enemy_3_Pink(QString(":/res/enemy14.png"),54,43,150,120,player,40,60,120,100,Game::FrameWidth/2,250);
@@ -941,16 +907,8 @@ void MainWindow::doTick() {
             }
             break;
         case 9275: //9275
-            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,100,0,0,0,0,true);
-            new_effect->setOpacity(0.6);
-            new_effect->fadein();
-            newEffectInit(new_effect);
-            for(int i=0;i<2;++i) {
-                new_effect = new Effect(QString(":/res/magic.png"),50,50,120,120,350,(i==0)?80:Game::FrameWidth-80,70,0,0,0,0,true);
-                new_effect->setOpacity(0.6);
-                new_effect->fadein();
-                newEffectInit(new_effect);
-            }
+            newMagicEffect(180,180,Game::FrameWidth/2,100);
+            for(int i=0;i<2;++i) newMagicEffect(120,120,(i==0)?80:Game::FrameWidth-80,70);
             break;
         case 9475: //9475
             new_boss = new Enemy_3_Pink_Cross(QString(":/res/enemy14.png"),54,43,150,120,player,35,60,110,50,Game::FrameWidth/2,100);
@@ -993,7 +951,7 @@ void MainWindow::doTick() {
             }
             break;
         case 10725: //10725
-            new_effect = new Effect(QString(":/res/magic.png"),50,50,180,180,350,Game::FrameWidth/2,200,0,0,0,0,true);
+            new_effect = new Effect(QString(":/res/magic_blue.png"),120,120,256,256,350,Game::FrameWidth/2,200,0,0,0,0,true);
             new_effect->setOpacity(0.6);
             new_effect->fadein();
             newEffectInit(new_effect);
@@ -1001,7 +959,7 @@ void MainWindow::doTick() {
         case 10925: //10925, BOSS 1
             ui->BossLives->show();
             ui->BossHealth->setGeometry(100,40,690,30);
-            new_boss = new Enemy_3_Blue_1(QString(":/res/enemy15.png"),54,55,160,160,player,290,80,35,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+            new_boss = new Enemy_3_Blue_1(QString(":/res/enemy15.png"),54,55,160,160,player,250,80,35,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
             connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
             new_boss->fadein(1500);
             newBossInit(new_boss);
@@ -1010,12 +968,7 @@ void MainWindow::doTick() {
             break;
         case 10927: //10927
             ui->BossLives->setText("4");
-            for(int i=0;i<2;++i) {
-                new_effect = new Effect(QString(":/res/magic.png"),50,50,100,100,400,(i==0)?160:Game::FrameWidth-160,150,0,0,0,0,true);
-                new_effect->setOpacity(0.6);
-                new_effect->fadein();
-                newEffectInit(new_effect);
-            }
+            for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,400);
             break;
         case 11175: //11175, BOSS 2
             new_boss = new Enemy_3_Blue_2(QString(":/res/enemy15.png"),54,55,160,160,player,330,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
@@ -1036,12 +989,7 @@ void MainWindow::doTick() {
             break;
         case 11177: //11177
             ui->BossLives->setText("3");
-            for(int i=0;i<2;++i) {
-                new_effect = new Effect(QString(":/res/magic.png"),50,50,100,100,400,(i==0)?160:Game::FrameWidth-160,150,0,0,0,0,true);
-                new_effect->setOpacity(0.6);
-                new_effect->fadein();
-                newEffectInit(new_effect);
-            }
+            for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,400);
             break;
         case 11425: //11425, BOSS 3
             new_boss = new Enemy_3_Blue_3(QString(":/res/enemy15.png"),54,55,160,160,player,370,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
@@ -1062,12 +1010,7 @@ void MainWindow::doTick() {
             break;
         case 11427: //11427
             ui->BossLives->setText("2");
-            for(int i=0;i<2;++i) {
-                new_effect = new Effect(QString(":/res/magic.png"),50,50,100,100,400,(i==0)?160:Game::FrameWidth-160,150,0,0,0,0,true);
-                new_effect->setOpacity(0.6);
-                new_effect->fadein();
-                newEffectInit(new_effect);
-            }
+            for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,400);
             break;
         case 11675: //11675, BOSS 4
             new_boss = new Enemy_3_Blue_4(QString(":/res/enemy15.png"),54,55,160,160,player,395,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
@@ -1088,12 +1031,7 @@ void MainWindow::doTick() {
             break;
         case 11677: //11677
             ui->BossLives->setText("1");
-            for(int i=0;i<2;++i) {
-                new_effect = new Effect(QString(":/res/magic.png"),50,50,100,100,400,(i==0)?160:Game::FrameWidth-160,150,0,0,0,0,true);
-                new_effect->setOpacity(0.6);
-                new_effect->fadein();
-                newEffectInit(new_effect);
-            }
+            for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,400);
             break;
         case 11925: //11925, BOSS 5
             new_boss = new Enemy_3_Blue_5(QString(":/res/enemy15.png"),54,55,160,160,player,550,80,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
@@ -1217,6 +1155,12 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     connect(new_boss,SIGNAL(deadSignal()),ui->BossSkill,SLOT(hide()));
     connect(new_boss,SIGNAL(summonEffect(Effect*)),this,SLOT(newEffectInit(Effect*)));
 }
+void MainWindow::newMagicEffect(int show_w, int show_h, double x, double y, int lifetime) {
+    new_effect = new Effect(QString(":/res/magic.png"),100,100,show_w,show_h,lifetime,x,y,0,0,0,0,true);
+    new_effect->setOpacity(0.6);
+    new_effect->fadein();
+    newEffectInit(new_effect);
+}
 void MainWindow::pauseAndResume() {
     if(gamestate==GameState::Playing) {
         ui->EndList->setCurrentIndex(EndListPage::Paused);
@@ -1233,21 +1177,27 @@ void MainWindow::bossCorpse(int x, int y) {
     switch(level) {
     case 1:
         str = ":/res/lightball.png";
+        new_effect = new Effect(str,120,120,300,300,308,x,y,0,0,0,0,true);
+        new_effect->rotateStart();
         break;
     case 2:
         str = ":/res/stars.png";
+        new_effect = new Effect(str,120,120,300,300,308,x,y,0,0,0,0,true);
+        new_effect->rotateStart();
         break;
     case 3:
-        str = ":/res/magic_wind.png";
+        str = ":/res/magic_blue.png";
+        new_effect = new Effect(str,120,120,256,256,308,x,y,0,0,0,0,true);
+        new_effect->setOpacity(0.6);
         break;
     default:
         str = ":/res/lightball.png";
+        new_effect = new Effect(str,120,120,300,300,308,x,y,0,0,0,0,true);
+        new_effect->rotateStart();
         qDebug() << "Error: can't find boss corpse img because can't get what level is";
         break;
     }
-    new_effect = new Effect(str,120,120,300,300,308,x,y,0,0,0,0,true);
     new_effect->fadein();
-    new_effect->rotateStart();
     new_effect->moveTo(Game::FrameWidth/2,200,246);
     newEffectInit(new_effect);
 }

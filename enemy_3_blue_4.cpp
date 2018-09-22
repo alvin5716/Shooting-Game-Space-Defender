@@ -94,13 +94,13 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
         if(shoot_timer_2>=shoot_cd_2) {
             double cos, sin, bullet_v, bullet_a;
             int bullet_radius;
-            int bullet_count = 18;
+            angle2=angleofvector(player->getX()-x,player->getY()-y);
             bullet_v = 1;
             bullet_radius = 8;
             bullet_a = 0.0005;
-            for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
-                sin = std::sin((i+(face_to_left?0.2:-0.2))*2*M_PI/bullet_count+M_PI/2);
-                cos = std::cos((i+(face_to_left?0.2:-0.2))*2*M_PI/bullet_count+M_PI/2);
+            for(int i=0;i<4;++i) {
+                sin = std::sin(angle2+(i-1.5)*2*M_PI/15);
+                cos = std::cos(angle2+(i-1.5)*2*M_PI/15);
                 new_bullet = new Bullet_Sin(":/res/bullet_yellow.png",300,10,bullet_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);

@@ -12,7 +12,7 @@ public:
     void skill();
     std::vector<Bullet*>* shoot2();
 private:
-    double angle;
+    double angle, angle2;
     int shoot_timer_2;
 };
 

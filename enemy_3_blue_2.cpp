@@ -31,8 +31,9 @@ void Enemy_3_Blue_2::skill() {
         //invisible room
         if(skill_timer>=200) {
             if(room==NULL) {
-                room = new Effect(":/res/magic_red.png",70,70,room_radius*2,room_radius*2,-1,player->getX(),player->getY());
+                room = new Effect(":/res/magic_red.png",120,120,room_radius*2,room_radius*2,-1,player->getX(),player->getY());
                 room->setOpacity(0.6);
+                room->setZValue(-2);
                 room->rotateStart();
                 room_radius_rate=0;
                 room->setTransform(QTransform().scale(0.01,0.01));
@@ -62,7 +63,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
         //slower
         if(!isBulletFaster) {
             bullet_radius = 8;
-            bullet_count = 20;
+            bullet_count = 18;
             bullet_v = 0.6;
             bullet_a = 0.005;
             switch (t) {
