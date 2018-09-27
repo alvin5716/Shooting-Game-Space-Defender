@@ -1,7 +1,6 @@
 #include "enemy_blue_1.h"
 #include <QDebug>
 #include "bullet_wall.h"
-#include "effect_shaking.h"
 
 Enemy_Blue_1::Enemy_Blue_1(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
@@ -9,6 +8,7 @@ Enemy_Blue_1::Enemy_Blue_1(QString img, int img_w, int img_h, int show_w, int sh
     clockwise=false;
     setDisappearTime(5000);
     bullet_fast=false;
+    death_img=":/res/enemy4_3.png";
 }
 void Enemy_Blue_1::skill() {
     //second phase
@@ -77,9 +77,4 @@ std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
         return new_bullets;
     }
     return NULL;
-}
-Effect* Enemy_Blue_1::disappear() const {
-    Effect* corpse = new Effect_Shaking(":/res/enemy4_3.png",img_w,img_h,show_w,show_h,disappearTime/8,x,y);
-    corpse->fadeout(disappearTime);
-    return corpse;
 }

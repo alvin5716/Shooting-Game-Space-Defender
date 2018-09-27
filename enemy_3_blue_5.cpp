@@ -4,7 +4,6 @@
 #include <QDebug>
 #include "game.h"
 #include "bullet_sin.h"
-#include "effect_shaking.h"
 
 Enemy_3_Blue_5::Enemy_3_Blue_5(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_3_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
@@ -15,6 +14,7 @@ Enemy_3_Blue_5::Enemy_3_Blue_5(QString img, int img_w, int img_h, int show_w, in
     centerball=NULL;
     randSeed=0;
     count=4;
+    death_img=":/res/enemy15_3.png";
 }
 void Enemy_3_Blue_5::skill() {
     //second phase
@@ -72,6 +72,8 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
                 case 3:
                     bullet_v = 2.85;
                     break;
+                default:
+                    bullet_v = 2.35+std::abs(i-wings/2)*0.15;
                 }
                 if(i==wings/2) {
                     cos = std::cos(angle);
@@ -150,9 +152,4 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
     }
     if(new_bullets->size()>0) return new_bullets;
     return NULL;
-}
-Effect* Enemy_3_Blue_5::disappear() const {
-    Effect* corpse = new Effect_Shaking(":/res/enemy15_3.png",img_w,img_h,show_w,show_h,disappearTime/8,x,y);
-    corpse->fadeout(disappearTime);
-    return corpse;
 }

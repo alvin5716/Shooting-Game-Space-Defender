@@ -6,6 +6,8 @@
 #include <QTimer>
 #include "game.h"
 
+short Character::float_timer=0;
+
 Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya)
     :radius(radius), health(health),
       img_w(img_w), img_h(img_h), show_w(show_w), show_h(show_h), img_timer(0),
@@ -20,6 +22,7 @@ Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, 
     face_to_left=false;
     canBeMirrored=false;
     attackable=true;
+    floating=false;
 }
 void Character::setPosition(double x, double y) {
     this->x=x;
@@ -64,7 +67,11 @@ void Character::show_img_set() {
 }
 void Character::img_move() {
     show_img_set();
-    setPos(x-show_w/2,y-show_h/2);
+    if(floating) setPos(x-show_w/2,y-show_h/2+Character::float_distance*std::sin((double)float_timer/125*M_PI));
+    else setPos(x-show_w/2,y-show_h/2);
+}
+void Character::setFloating(bool floating) {
+    this->floating=floating;
 }
 void Character::moveTo(double x, double y, double t) {
     //use physics formula

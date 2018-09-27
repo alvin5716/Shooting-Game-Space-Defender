@@ -35,6 +35,9 @@ public:
     void setImg(QString img);
     void show_img_set();
     void show_img_force_set();
+    void setFloating(bool floating=true);
+    static short float_timer;
+    static const short float_distance=6;
 signals:
     void deadSignal();
     void deadSignal(int, int);
@@ -53,7 +56,7 @@ public slots:
 protected:
     int radius, health, img_w, img_h, show_w, show_h, img_timer;
     double x, y, xv, yv, xa, ya;
-    bool dead, invulnerable, whiteized, face_to_left, canBeMirrored, attackable;
+    bool dead, invulnerable, whiteized, face_to_left, canBeMirrored, attackable, floating;
     QString img;
 };
 

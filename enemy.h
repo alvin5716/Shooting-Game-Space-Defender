@@ -35,6 +35,7 @@ protected:
     Shield* shield;
     Character* player;
     int disappearTime;
+    QString death_img;
 };
 
 #endif // ENEMY_H

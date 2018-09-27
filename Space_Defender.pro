@@ -55,7 +55,6 @@ SOURCES += \
     enemy_2_blue_3.cpp \
     enemy_2_blue_4.cpp \
     enemy_2_blue_5.cpp \
-    effect_shaking.cpp \
     bullet_sin.cpp \
     enemy_3.cpp \
     enemy_3_green.cpp \
@@ -106,7 +105,6 @@ HEADERS += \
     enemy_2_blue_3.h \
     enemy_2_blue_4.h \
     enemy_2_blue_5.h \
-    effect_shaking.h \
     bullet_sin.h \
     enemy_3.h \
     enemy_3_green.h \

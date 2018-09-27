@@ -20,6 +20,8 @@ Enemy::Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Characte
     secPhase=false;
     shield=NULL;
     connect(this,SIGNAL(deadSignal()),this,SLOT(diedFromPlayer()));
+    floating=true;
+    death_img="";
 }
 void Enemy::diedFromPlayer() {
     emit pointGive((int)point);
@@ -39,6 +41,7 @@ std::vector<Bullet*>* Enemy::shoot2() {
 }
 Shield* Enemy::showShield(QString str,int img_w, int img_h) {
     shield = new Shield(str,img_w,img_h,radius*3.2,radius*3.2,this,-1,x,y);
+    if(floating) shield->setFloating();
     return shield;
 }
 void Enemy::move() {
@@ -77,8 +80,12 @@ bool Enemy::isSecPhase() const{
     return secPhase;
 }
 Effect* Enemy::disappear() const {
-    Effect* corpse = new Effect(img,img_w,img_h,show_w,show_h,disappearTime/8,x,y,xv,yv,xa,ya);
-    if(canBeMirrored&&face_to_left) corpse->setCanBeMirrored();
+    Effect* corpse = new Effect((death_img=="")?img:death_img,img_w,img_h,show_w,show_h,disappearTime/8,x,y,xv,yv,xa,ya);
+    if(canBeMirrored&&face_to_left) {
+        corpse->setCanBeMirrored();
+        corpse->setFaceToLeft();
+    }
+    if(floating) corpse->setFloating(true);
     corpse->fadeout(disappearTime);
     return corpse;
 }
