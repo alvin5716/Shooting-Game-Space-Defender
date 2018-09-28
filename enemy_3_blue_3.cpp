@@ -30,7 +30,10 @@ void Enemy_3_Blue_3::skill() {
         //skill timer
         if(skill_timer<=300) {
             ++skill_timer;
-            if(skill_timer==150) moveTo(player->getX(),80,125);
+            if(skill_timer==150) {
+                moveTo(player->getX(),80,125);
+                setFloating(false);
+            }
         } else skill_timer=0;
     } else {
         Enemy_3_Blue::skill();
@@ -39,7 +42,7 @@ void Enemy_3_Blue_3::skill() {
 std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
     Bullet* new_bullet;
-    const short interval = 80;
+    const short interval = 120;
     //center
     if(shoot_timer==-150) {
         new_bullet = center = new Bullet_Time(":/res/bullet_purple.png",30,shootXPos(),shootYPos());
@@ -90,12 +93,12 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
         else {
             //bullet
             bullet_radius = 6;
-            bullet_count = 14;
+            bullet_count = 20;
             bullet_a = 0.0005;
             //shoot
             for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
                 double rand_angle = (i+t*0.33+(double)(qrand()%30)/30)*2*M_PI/bullet_count;
-                bullet_v = 0.11+(double)(qrand()%5)/100;
+                bullet_v = 0.09+(double)(qrand()%9)/100;
                 sin = std::sin(rand_angle);
                 cos = std::cos(rand_angle);
                 new_bullet = new Bullet(":/res/bullet_black.png",bullet_radius,center->getX()+bullet_radius*2*cos,center->getY()+bullet_radius*2*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
@@ -104,7 +107,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
                 new_bullets->push_back(new_bullet);
             }
         }
-        if(shoot_timer==shoot_cd+interval*3) shoot_timer=0;
+        if(shoot_timer==shoot_cd+interval*2) shoot_timer=0;
     }
     if(new_bullets->size()>0) return new_bullets;
     return NULL;

@@ -35,7 +35,7 @@ public:
     void setImg(QString img);
     void show_img_set();
     void show_img_force_set();
-    void setFloating(bool floating=true);
+    virtual void setFloating(bool floating=true);
     virtual double imgX() const;
     virtual double imgY() const;
     static short float_timer;

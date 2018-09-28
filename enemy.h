@@ -20,6 +20,7 @@ public:
     Effect* disappear() const;
     void setDisappearTime(int disappearTime);
     Shield* showShield(QString str=":/res/shield2.png",int img_w=70, int img_h=70);
+    void setFloating(bool floating=true) override final;
     ~Enemy();
 public slots:
     virtual void move();

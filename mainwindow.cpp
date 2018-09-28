@@ -177,7 +177,7 @@ void MainWindow::doTick() {
     //focus
     setFocus();
     //float
-    if(++Character::float_timer>=250) Character::float_timer=0;
+    if(gamestate!=Game::GameStatePaused && ++Character::float_timer>=250) Character::float_timer=0;
     //level intro
     if(tick==500) {
         QGraphicsOpacityEffect* levelIntroOpacityEff = new QGraphicsOpacityEffect(this);
@@ -764,7 +764,7 @@ void MainWindow::doTick() {
             ui->BossLives->setText("1");
             break;
         case 13748: //13748, BOSS 5
-            new_boss = new Enemy_2_Blue_3(QString(":/res/enemy10.png"),35,35,130,130,player,450,60,400,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            new_boss = new Enemy_2_Blue_3(QString(":/res/enemy10.png"),35,35,130,130,player,460,60,400,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
             newBossInit(new_boss);
             for(int i=0;i<2;++i) {
                 new_enemy = new Enemy_2_Pink(QString(":/res/enemy9.png"),35,35,60,60,player,5,30,300,300,Game::FrameWidth/2,200,(i==0)?-0.8:0.8,-1.2,0,0.005,true,true);

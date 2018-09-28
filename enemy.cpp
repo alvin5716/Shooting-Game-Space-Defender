@@ -44,6 +44,10 @@ Shield* Enemy::showShield(QString str,int img_w, int img_h) {
     if(floating) shield->setFloating();
     return shield;
 }
+void Enemy::setFloating(bool floating) {
+    Character::setFloating(floating);
+    if(this->shield!=NULL) this->shield->setFloating(floating);
+}
 void Enemy::move() {
     //move object
     Character::move();
