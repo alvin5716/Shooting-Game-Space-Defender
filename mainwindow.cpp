@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     player(NULL),dot(NULL),secret(0),oriImg2(NULL)
 {
     ui->setupUi(this);
-    ui->stackedWidget->setCurrentIndex(GamePage::Menu);
+    ui->stackedWidget->setCurrentIndex(Game::GamePageMenu);
     //boss objects
     bossHealthOpacityEff = new QGraphicsOpacityEffect(this);
     bossLivesOpacityEff = new QGraphicsOpacityEffect(this);
@@ -64,12 +64,12 @@ MainWindow::MainWindow(QWidget *parent) :
     bossSkillMoveInAni->setEndValue(QRect(510,80,280,50));
     bossSkillMoveInAni->setEasingCurve(QEasingCurve::OutCubic);
     //game state
-    gamestate=GameState::Menu;
+    gamestate=Game::GameStateMenu;
     //level intro
     ui->levelIntro->hide();
 }
 void MainWindow::levelSelect() {
-    ui->stackedWidget->setCurrentIndex(GamePage::LevelSelecting);
+    ui->stackedWidget->setCurrentIndex(Game::GamePageLevelSelecting);
 }
 void MainWindow::start1() {
     level=1;
@@ -150,9 +150,9 @@ void MainWindow::start() {
     connect(timer,SIGNAL(timeout()),this,SLOT(doTick()));
     connect(timer,SIGNAL(timeout()),ui->graphicsView,SLOT(update()));
     //page
-    ui->stackedWidget->setCurrentIndex(GamePage::Playing);
+    ui->stackedWidget->setCurrentIndex(Game::GamePagePlaying);
     //game state
-    gamestate=GameState::Playing;
+    gamestate=Game::GameStatePlaying;
     //boss tick
     switch(level) {
     case 1:
@@ -218,7 +218,7 @@ void MainWindow::doTick() {
     background->setPixmap(cutImg->scaled(Game::FrameWidth,Game::FrameHeight));
 
     //game
-    if(gamestate==GameState::Playing||gamestate==GameState::Won) {
+    if(gamestate==Game::GameStatePlaying||gamestate==Game::GameStateWon) {
         //player speed
         if(left && up) player->setSpeed(-Player::speed/sqrt(2),-Player::speed/sqrt(2));
         else if(left && down) player->setSpeed(-Player::speed/sqrt(2),Player::speed/sqrt(2));
@@ -232,7 +232,7 @@ void MainWindow::doTick() {
         //move
         emit doMove();
     }
-    if(gamestate==GameState::Playing) {
+    if(gamestate==Game::GameStatePlaying) {
         //boss lives, skill bar and health bar
         if(!isPlayerPosHigh && player->getY()<280) {
             isPlayerPosHigh=true;
@@ -549,10 +549,10 @@ void MainWindow::doTick() {
             //Total
             ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
             //List
-            ui->EndList->setCurrentIndex(EndListPage::Won);
+            ui->EndList->setCurrentIndex(Game::EndListPageWon);
             ui->EndList->show();
             //game state
-            gamestate=GameState::Won;
+            gamestate=Game::GameStateWon;
         }
         break;
     //level 2
@@ -796,10 +796,10 @@ void MainWindow::doTick() {
             //Total
             ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
             //List
-            ui->EndList->setCurrentIndex(EndListPage::Won);
+            ui->EndList->setCurrentIndex(Game::EndListPageWon);
             ui->EndList->show();
             //game state
-            gamestate=GameState::Won;
+            gamestate=Game::GameStateWon;
         }
         break;
     //level 3
@@ -1071,30 +1071,30 @@ void MainWindow::doTick() {
             //Total
             ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
             //List
-            ui->EndList->setCurrentIndex(EndListPage::Won);
+            ui->EndList->setCurrentIndex(Game::EndListPageWon);
             ui->EndList->show();
             //game state
-            gamestate=GameState::Won;
+            gamestate=Game::GameStateWon;
         }
         break;
     default:
         qDebug() << "error: can't get what level is selected";
     }
     //draw
-    if(gamestate!=GameState::Paused) emit doImgMove();
+    if(gamestate!=Game::GameStatePaused) emit doImgMove();
     //player death
     if(player->isDead()) {
         //game end
         player->gameEndSetting();
         player->setOpacity(0.5);
-        ui->EndList->setCurrentIndex(EndListPage::Failed);
+        ui->EndList->setCurrentIndex(Game::EndListPageFailed);
         ui->EndList->show();
         //game state
-        gamestate=GameState::Failed;
+        gamestate=Game::GameStateFailed;
     }
     //ticking
-    if(gamestate==GameState::Playing && ticking) ++tick;
-    if(gamestate==GameState::Playing) ++gametime;
+    if(gamestate==Game::GameStatePlaying && ticking) ++tick;
+    if(gamestate==Game::GameStatePlaying) ++gametime;
 }
 void MainWindow::backToMenu() {
     ticking=false;
@@ -1121,9 +1121,9 @@ void MainWindow::backToMenu() {
     emit killEffects();
     dot=NULL;
     //menu
-    ui->stackedWidget->setCurrentIndex(GamePage::Menu);
+    ui->stackedWidget->setCurrentIndex(Game::GamePageMenu);
     //game state
-    gamestate=GameState::Menu;
+    gamestate=Game::GameStateMenu;
 }
 void MainWindow::newEffectInit(Effect* new_effect) {
     if(new_effect!=NULL) {
@@ -1166,13 +1166,13 @@ void MainWindow::newMagicEffect(int show_w, int show_h, double x, double y, int 
     newEffectInit(new_effect);
 }
 void MainWindow::pauseAndResume() {
-    if(gamestate==GameState::Playing) {
-        ui->EndList->setCurrentIndex(EndListPage::Paused);
+    if(gamestate==Game::GameStatePlaying) {
+        ui->EndList->setCurrentIndex(Game::EndListPagePaused);
         ui->EndList->show();
-        gamestate=GameState::Paused;
+        gamestate=Game::GameStatePaused;
     } else {
         ui->EndList->hide();
-        gamestate=GameState::Playing;
+        gamestate=Game::GameStatePlaying;
     }
     return;
 }
@@ -1294,7 +1294,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
             down=true;
             break;
         case Qt::Key_Z:
-            if(gamestate!=GameState::Menu) player->setShooting(true);
+            if(gamestate!=Game::GameStateMenu) player->setShooting(true);
             Player::speed=1.8;
             break;
         case Qt::Key_X:
@@ -1302,13 +1302,13 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
             break;
         case Qt::Key_Escape:
         case Qt::Key_P:
-            if(gamestate==GameState::Playing||gamestate==GameState::Paused) pauseAndResume();
+            if(gamestate==Game::GameStatePlaying||gamestate==Game::GameStatePaused) pauseAndResume();
             break;
         case Qt::Key_M:
-            if(gamestate==GameState::Won||gamestate==GameState::Failed||gamestate==GameState::Paused) backToMenu();
+            if(gamestate==Game::GameStateWon||gamestate==Game::GameStateFailed||gamestate==Game::GameStatePaused) backToMenu();
             break;
         case Qt::Key_R:
-            if(gamestate==GameState::Won||gamestate==GameState::Failed||gamestate==GameState::Paused) {
+            if(gamestate==Game::GameStateWon||gamestate==Game::GameStateFailed||gamestate==Game::GameStatePaused) {
                 backToMenu();
                 start();
             }
@@ -1340,7 +1340,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
             break;
         case Qt::Key_A:
             if(secret==9) {
-                if(gamestate==GameState::Menu) start();
+                if(gamestate==Game::GameStateMenu) start();
                 player->setHealthTo999();
                 ui->PlayerLife->display(player->getHealth());
             }
@@ -1372,7 +1372,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e) {
             down=false;
             break;
         case Qt::Key_Z:
-            if(gamestate!=GameState::Menu) player->setShooting(false);
+            if(gamestate!=Game::GameStateMenu) player->setShooting(false);
             Player::speed=3.5;
             break;
         case Qt::Key_X:

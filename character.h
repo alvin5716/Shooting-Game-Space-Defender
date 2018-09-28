@@ -39,7 +39,7 @@ public:
     virtual double imgX() const;
     virtual double imgY() const;
     static short float_timer;
-    static const short float_distance=6;
+    static constexpr short float_distance=6;
 signals:
     void deadSignal();
     void deadSignal(int, int);
