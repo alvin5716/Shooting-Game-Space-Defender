@@ -4,20 +4,18 @@
 #include "bullet.h"
 #include <vector>
 
+enum class Bullet_Time_Data_Type{freeze, updateVA, shootAtPlayer, moveTo};
+
 class Bullet_Time_Data {
 public:
     Bullet_Time_Data(int wait_time);
     Bullet_Time_Data(int wait_time, double xv, double yv, double xa, double ya);
     Bullet_Time_Data(int wait_time, Character* player, double v, double a);
     Bullet_Time_Data(int wait_time, double x, double y, int time);
-    static const short freeze = 0;
-    static const short updateVA = 1;
-    static const short shootAtPlayer = 2;
-    static const short moveTo = 3;
     friend class Bullet_Time;
 private:
     int wait_time;
-    short type;
+    Bullet_Time_Data_Type type;
     union {
         struct {
             double xv, yv, xa, ya;

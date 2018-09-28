@@ -1,10 +1,10 @@
 #include "bullet_wall.h"
 #include <QDebug>
 
-Bullet_Wall_Data::Bullet_Wall_Data(int bullet_wall_data_type)
+Bullet_Wall_Data::Bullet_Wall_Data(Bullet_Wall_Data_Type bullet_wall_data_type)
 {
     switch(bullet_wall_data_type) {
-    case Bullet_Wall_Data::freeze:
+    case Bullet_Wall_Data_Type::freeze:
         type = bullet_wall_data_type;
         break;
     default:
@@ -12,19 +12,19 @@ Bullet_Wall_Data::Bullet_Wall_Data(int bullet_wall_data_type)
     }
 }
 Bullet_Wall_Data::Bullet_Wall_Data(bool infinite_bounce, bool bounce_when_hit_downside)
-    :type(Bullet_Wall_Data::bounce)
+    :type(Bullet_Wall_Data_Type::bounce)
 {
     this->data.bounce.infinite=infinite_bounce;
     this->data.bounce.bounce_when_hit_downside=bounce_when_hit_downside;
 }
 Bullet_Wall_Data::Bullet_Wall_Data(double vertical_v, double vertical_a)
-    :type(Bullet_Wall_Data::vertical)
+    :type(Bullet_Wall_Data_Type::vertical)
 {
     this->data.vertical.v=vertical_v;
     this->data.vertical.a=vertical_a;
 }
 Bullet_Wall_Data::Bullet_Wall_Data(Character* player, double v, double aim_radius, bool zoom)
-    :type(Bullet_Wall_Data::magicStone)
+    :type(Bullet_Wall_Data_Type::magicStone)
 {
     this->data.magicStone.player=player;
     this->data.magicStone.v=v;
@@ -32,7 +32,7 @@ Bullet_Wall_Data::Bullet_Wall_Data(Character* player, double v, double aim_radiu
     this->data.magicStone.zooming=zoom;
 }
 Bullet_Wall_Data::Bullet_Wall_Data(Character* player, double v, double a)
-    :type(Bullet_Wall_Data::shootAtPlayer)
+    :type(Bullet_Wall_Data_Type::shootAtPlayer)
 {
     this->data.shootAtPlayer.player=player;
     this->data.shootAtPlayer.v=v;
@@ -50,14 +50,14 @@ void Bullet_Wall::move() {
         if(!already_enter && (x>0+radius && x<Game::FrameWidth-radius && y>0+radius && y<Game::FrameHeight-radius)) already_enter=true;
         if(already_enter) {
             switch (this->bullet_wall_data_list.begin()->type) {
-            case Bullet_Wall_Data::freeze:
+            case Bullet_Wall_Data_Type::freeze:
                 if(x<0 || x>Game::FrameWidth || y<0 || y>Game::FrameHeight) {
                     this->xa = this->ya = this->xv = this->yv = 0;
                     emit triggered();
                     bullet_wall_data_list.erase(bullet_wall_data_list.begin());
                 }
                 break;
-            case Bullet_Wall_Data::vertical:
+            case Bullet_Wall_Data_Type::vertical:
                 if(x<0+radius || x>Game::FrameWidth-radius || y<0+radius || y>Game::FrameHeight-radius) {
                     if(x<0+radius) {
                         yv=ya=0;
@@ -81,7 +81,7 @@ void Bullet_Wall::move() {
                     bullet_wall_data_list.erase(bullet_wall_data_list.begin());
                 }
                 break;
-            case Bullet_Wall_Data::bounce:
+            case Bullet_Wall_Data_Type::bounce:
                 if(x<0+radius || x>Game::FrameWidth-radius || y<0+radius || (this->bullet_wall_data_list.begin()->data.bounce.bounce_when_hit_downside && y>Game::FrameHeight-radius)) {
                     if(x<0+radius || x>Game::FrameWidth-radius) {
                         this->xv *= -1;
@@ -95,7 +95,7 @@ void Bullet_Wall::move() {
                         bullet_wall_data_list.erase(bullet_wall_data_list.begin());
                 }
                 break;
-            case Bullet_Wall_Data::magicStone:
+            case Bullet_Wall_Data_Type::magicStone:
                 if(x<0+radius || x>Game::FrameWidth-radius || y<0+radius || y>Game::FrameHeight-radius) {
                     if(y<0+radius) {
                         double angle = angleofvector(
@@ -117,7 +117,7 @@ void Bullet_Wall::move() {
                     emit triggered();
                 }
                 break;
-            case Bullet_Wall_Data::shootAtPlayer:
+            case Bullet_Wall_Data_Type::shootAtPlayer:
                 if(x<0+radius || x>Game::FrameWidth-radius || y<0+radius || (this->bullet_wall_data_list.begin()->data.bounce.bounce_when_hit_downside && y>Game::FrameHeight-radius)) {
                     double angle = angleofvector(
                                 bullet_wall_data_list.begin()->data.shootAtPlayer.player->getX()-x,
@@ -137,7 +137,7 @@ void Bullet_Wall::move() {
             }
         }
     }
-    if(!((this->bullet_wall_data_list.begin()->type==Bullet_Wall_Data::magicStone) && (this->bullet_wall_data_list.begin()->data.magicStone.zooming))) {
+    if(!((this->bullet_wall_data_list.begin()->type==Bullet_Wall_Data_Type::magicStone) && (this->bullet_wall_data_list.begin()->data.magicStone.zooming))) {
         Bullet::move();
     } else {
         if(++radius>=this->bullet_wall_data_list.begin()->data.magicStone.aim_radius) this->bullet_wall_data_list.begin()->data.magicStone.zooming=false;
@@ -145,7 +145,7 @@ void Bullet_Wall::move() {
         this->setTransform(QTransform().translate(show_w/2-radius*1.1,show_h/2-radius*1.1).scale(current_scale,current_scale));
     }
 }
-Bullet_Wall& Bullet_Wall::addWallData(int bullet_wall_data_type) {
+Bullet_Wall& Bullet_Wall::addWallData(Bullet_Wall_Data_Type bullet_wall_data_type) {
     Bullet_Wall_Data* bullet_wall_data = new Bullet_Wall_Data(bullet_wall_data_type);
     this->bullet_wall_data_list.push_back(*bullet_wall_data);
     return *this;

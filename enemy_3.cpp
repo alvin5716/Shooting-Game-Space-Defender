@@ -6,18 +6,6 @@ Enemy_3::Enemy_3(QString img, int img_w, int img_h, int show_w, int show_h, Char
 {
     setCanBeMirrored();
 }
-void Enemy_3::img_move() {
-    show_img_set();
-    if(floating) setPos(x-((double)show_w)*(face_to_left?30:24)/54,y-show_h/2+Character::float_distance*std::sin((double)float_timer/125*M_PI));
-    else setPos(x-((double)show_w)*(face_to_left?30:24)/54,y-show_h/2);
-}
-Effect* Enemy_3::disappear() const {
-    Effect* corpse = new Effect((death_img=="")?img:death_img,img_w,img_h,show_w,show_h,disappearTime/8,x+(face_to_left?-1:1)*((double)show_w)/18,y+Character::float_distance*std::sin((double)float_timer/125*M_PI),xv,yv,xa,ya);
-    if(canBeMirrored&&face_to_left) {
-        corpse->setCanBeMirrored();
-        corpse->setFaceToLeft();
-    }
-    if(floating) corpse->setFloating(true);
-    corpse->fadeout(disappearTime);
-    return corpse;
+double Enemy_3::imgX() const{
+    return x-((double)show_w)*(face_to_left?30:24)/54;
 }

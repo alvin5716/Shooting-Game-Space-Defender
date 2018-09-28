@@ -17,7 +17,7 @@ public:
     void outOfFrame();
     bool isBoss() const;
     bool isSecPhase() const;
-    virtual Effect* disappear() const;
+    Effect* disappear() const;
     void setDisappearTime(int disappearTime);
     Shield* showShield(QString str=":/res/shield2.png",int img_w=70, int img_h=70);
     ~Enemy();

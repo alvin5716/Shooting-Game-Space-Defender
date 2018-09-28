@@ -3,12 +3,12 @@
 
 //Bullet_Time_Data
 Bullet_Time_Data::Bullet_Time_Data(int wait_time)
-    :wait_time(wait_time), type(Bullet_Time_Data::freeze)
+    :wait_time(wait_time), type(Bullet_Time_Data_Type::freeze)
 {
 
 }
 Bullet_Time_Data::Bullet_Time_Data(int wait_time, double xv, double yv, double xa, double ya)
-    :wait_time(wait_time), type(Bullet_Time_Data::updateVA)
+    :wait_time(wait_time), type(Bullet_Time_Data_Type::updateVA)
 {
     this->data.updateVA.xv=xv;
     this->data.updateVA.yv=yv;
@@ -16,14 +16,14 @@ Bullet_Time_Data::Bullet_Time_Data(int wait_time, double xv, double yv, double x
     this->data.updateVA.ya=ya;
 }
 Bullet_Time_Data::Bullet_Time_Data(int wait_time, Character* player, double v, double a)
-    :wait_time(wait_time), type(Bullet_Time_Data::shootAtPlayer)
+    :wait_time(wait_time), type(Bullet_Time_Data_Type::shootAtPlayer)
 {
     this->data.shootAtPlayer.player=player;
     this->data.shootAtPlayer.v=v;
     this->data.shootAtPlayer.a=a;
 }
 Bullet_Time_Data::Bullet_Time_Data(int wait_time, double x, double y, int time)
-    :wait_time(wait_time), type(Bullet_Time_Data::moveTo)
+    :wait_time(wait_time), type(Bullet_Time_Data_Type::moveTo)
 {
     this->data.moveTo.x=x;
     this->data.moveTo.y=y;
@@ -42,16 +42,16 @@ void Bullet_Time::move() {
         if(++timer>this->bullet_time_data_list.begin()->wait_time) {
             timer=0;
             switch (this->bullet_time_data_list.begin()->type) {
-            case Bullet_Time_Data::freeze:
+            case Bullet_Time_Data_Type::freeze:
                 this->xa = this->ya = this->xv = this->yv = 0;
                 break;
-            case Bullet_Time_Data::updateVA:
+            case Bullet_Time_Data_Type::updateVA:
                 this->xv=this->bullet_time_data_list.begin()->data.updateVA.xv;
                 this->yv=this->bullet_time_data_list.begin()->data.updateVA.yv;
                 this->xa=this->bullet_time_data_list.begin()->data.updateVA.xa;
                 this->ya=this->bullet_time_data_list.begin()->data.updateVA.ya;
                 break;
-            case Bullet_Time_Data::shootAtPlayer:
+            case Bullet_Time_Data_Type::shootAtPlayer:
             {
                 double angle = angleofvector(
                             bullet_time_data_list.begin()->data.shootAtPlayer.player->getX()-x,
@@ -66,7 +66,7 @@ void Bullet_Time::move() {
             }
             //These braces are order to limit the scope of the 3 variables above,
             //or it will lead to compile error.
-            case Bullet_Time_Data::moveTo:
+            case Bullet_Time_Data_Type::moveTo:
                 this->moveTo(bullet_time_data_list.begin()->data.moveTo.x,bullet_time_data_list.begin()->data.moveTo.y,bullet_time_data_list.begin()->data.moveTo.time);
                 break;
             default:

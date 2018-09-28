@@ -80,12 +80,15 @@ bool Enemy::isSecPhase() const{
     return secPhase;
 }
 Effect* Enemy::disappear() const {
-    Effect* corpse = new Effect((death_img=="")?img:death_img,img_w,img_h,show_w,show_h,disappearTime/8,x,y,xv,yv,xa,ya);
+    Effect* corpse = new Effect((death_img=="")?img:death_img,img_w,img_h,show_w,show_h,disappearTime/8,imgX()+show_w/2,imgY()+show_h/2,(death_img=="")?xv:0,(death_img=="")?yv:0,(death_img=="")?xa:0,(death_img=="")?ya:0);
+    //if needed, face to left
     if(canBeMirrored&&face_to_left) {
         corpse->setCanBeMirrored();
         corpse->setFaceToLeft();
     }
+    //if needed, float
     if(floating) corpse->setFloating(true);
+    //disappear time
     corpse->fadeout(disappearTime);
     return corpse;
 }

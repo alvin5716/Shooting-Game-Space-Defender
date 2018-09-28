@@ -67,8 +67,14 @@ void Character::show_img_set() {
 }
 void Character::img_move() {
     show_img_set();
-    if(floating) setPos(x-show_w/2,y-show_h/2+Character::float_distance*std::sin((double)float_timer/125*M_PI));
-    else setPos(x-show_w/2,y-show_h/2);
+    if(floating) setPos(imgX(),imgY()+Character::float_distance*std::sin((double)float_timer/125*M_PI));
+    else setPos(imgX(),imgY());
+}
+double Character::imgX() const{
+    return x-show_w/2;
+}
+double Character::imgY() const{
+    return y-show_h/2;
 }
 void Character::setFloating(bool floating) {
     this->floating=floating;
@@ -193,7 +199,7 @@ bool Character::isInvulnerable() const {
 bool Character::isAttackable() const {
     return attackable;
 }
-double Character::angleofsincos(double sin, double cos) const {
+inline double Character::angleofsincos(double sin, double cos) const {
     return (cos>0)?std::asin(sin):M_PI-std::asin(sin);
 }
 double Character::angleofvector(double x, double y) const {

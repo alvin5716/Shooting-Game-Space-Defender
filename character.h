@@ -23,7 +23,7 @@ public:
     bool isDead() const;
     bool isInvulnerable() const;
     bool isAttackable() const;
-    double angleofsincos(double sin, double cos) const;
+    inline double angleofsincos(double sin, double cos) const;
     double angleofvector(double x, double y) const;
     virtual Character* testAttackedBy(std::vector<Character*> & attackers);
     virtual Character* testAttackedBy(Character* attacker);
@@ -36,6 +36,8 @@ public:
     void show_img_set();
     void show_img_force_set();
     void setFloating(bool floating=true);
+    virtual double imgX() const;
+    virtual double imgY() const;
     static short float_timer;
     static const short float_distance=6;
 signals:
