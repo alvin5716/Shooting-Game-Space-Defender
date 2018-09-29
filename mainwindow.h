@@ -99,6 +99,7 @@ private slots:
     void start1();
     void start2();
     void start3();
+    void start4();
     void doTick();
     void tickContinueCheck();
     void pointAdd(int);

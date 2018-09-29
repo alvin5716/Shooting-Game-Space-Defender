@@ -9,6 +9,7 @@ namespace Game {
     static constexpr unsigned int BossTick1 = 6604;
     static constexpr unsigned int BossTick2 = 11502;
     static constexpr unsigned int BossTick3 = 9479;
+    static constexpr unsigned int BossTick4 = 9479;
 
     enum GamePage {
         GamePageMenu,

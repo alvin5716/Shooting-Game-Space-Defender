@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->LevelButton_1,SIGNAL(clicked(bool)),this,SLOT(start1()));
     connect(ui->LevelButton_2,SIGNAL(clicked(bool)),this,SLOT(start2()));
     connect(ui->LevelButton_3,SIGNAL(clicked(bool)),this,SLOT(start3()));
+    connect(ui->LevelButton_4,SIGNAL(clicked(bool)),this,SLOT(start4()));
     //focus policy
     setFocusPolicy(Qt::NoFocus);
     //flash
@@ -81,6 +82,10 @@ void MainWindow::start2() {
 }
 void MainWindow::start3() {
     level=3;
+    start();
+}
+void MainWindow::start4() {
+    level=4;
     start();
 }
 void MainWindow::start() {
@@ -166,6 +171,10 @@ void MainWindow::start() {
     case 3:
         boss_tick=Game::BossTick3;
         strBossBG=":/res/bg_boss_3.png";
+        break;
+    case 4:
+        boss_tick=Game::BossTick4;
+        strBossBG=":/res/bg_boss_4.png";
         break;
     default:
         boss_tick=Game::BossTick1;
@@ -1075,6 +1084,13 @@ void MainWindow::doTick() {
             ui->EndList->show();
             //game state
             gamestate=Game::GameStateWon;
+        }
+        break;
+    //level 4
+    case 4:
+        switch(tick) {
+        case 500:
+            break;
         }
         break;
     default:

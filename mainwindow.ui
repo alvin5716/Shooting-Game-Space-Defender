@@ -41,7 +41,7 @@ background-color:  black;
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="StartPage">
      <widget class="QPushButton" name="startButton">
@@ -994,6 +994,39 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </widget>
+      <widget class="QWidget" name="page_4">
+       <widget class="QTextBrowser" name="levelIntro2_4">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>481</width>
+          <height>261</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Abyssinica SIL</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color:white;
+background-color: transparent;</string>
+        </property>
+        <property name="html">
+         <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Abyssinica SIL'; font-size:12pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'TW Cen MT'; font-size:56px; font-weight:400;&quot;&gt;LEVEL 4&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微軟正黑體'; font-size:56px;&quot;&gt;智慧星&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微軟正黑體'; font-size:32px;&quot;&gt;生物都很有智慧的星球&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </widget>
      </widget>
      <zorder>gameFrame</zorder>
      <zorder>graphicsView</zorder>
@@ -1022,9 +1055,9 @@ background-image: url(&quot;:/res/title1.png&quot;);
      <widget class="QFrame" name="frame_2">
       <property name="geometry">
        <rect>
-        <x>140</x>
+        <x>70</x>
         <y>540</y>
-        <width>891</width>
+        <width>1011</width>
         <height>201</height>
        </rect>
       </property>
@@ -1135,15 +1168,18 @@ background-color: grey;
        </property>
        <property name="font">
         <font>
-         <family>微軟正黑體</family>
+         <family>Consolas</family>
          <pointsize>40</pointsize>
         </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: black;</string>
        </property>
        <property name="text">
-        <string>...</string>
+        <string>4</string>
        </property>
       </widget>
       <widget class="QPushButton" name="LevelButton_5">
@@ -1172,6 +1208,28 @@ background-color: grey;
        <property name="geometry">
         <rect>
          <x>740</x>
+         <y>50</y>
+         <width>101</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>微軟正黑體</family>
+         <pointsize>40</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: black;</string>
+       </property>
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="LevelButton_7">
+       <property name="geometry">
+        <rect>
+         <x>880</x>
          <y>50</y>
          <width>101</width>
          <height>101</height>
