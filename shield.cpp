@@ -9,3 +9,6 @@ void Shield::move() {
     Effect::move();
     setPosition(user->getX(),user->getY());
 }
+bool Shield::floating() const{
+    return user->floating();
+}

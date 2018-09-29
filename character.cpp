@@ -22,7 +22,7 @@ Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, 
     face_to_left=false;
     canBeMirrored=false;
     attackable=true;
-    floating=false;
+    floatable=false;
 }
 void Character::setPosition(double x, double y) {
     this->x=x;
@@ -65,9 +65,12 @@ void Character::show_img_set() {
     }
     ++img_timer;
 }
+bool Character::floating() const{
+    return floatable && xv<=0.1 && yv <=0.1;
+}
 void Character::img_move() {
     show_img_set();
-    if(floating) setPos(imgX(),imgY()+Character::float_distance*std::sin((double)float_timer/125*M_PI));
+    if(floating()) setPos(imgX(),imgY()+Character::float_distance*std::sin((double)float_timer/125*M_PI));
     else setPos(imgX(),imgY());
 }
 double Character::imgX() const{
@@ -76,8 +79,8 @@ double Character::imgX() const{
 double Character::imgY() const{
     return y-show_h/2;
 }
-void Character::setFloating(bool floating) {
-    this->floating=floating;
+void Character::setFloatable(bool floatable) {
+    this->floatable=floatable;
 }
 void Character::moveTo(double x, double y, double t) {
     //use physics formula

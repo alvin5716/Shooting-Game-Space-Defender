@@ -20,7 +20,7 @@ Enemy::Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Characte
     secPhase=false;
     shield=NULL;
     connect(this,SIGNAL(deadSignal()),this,SLOT(diedFromPlayer()));
-    floating=true;
+    floatable=true;
     death_img="";
 }
 void Enemy::diedFromPlayer() {
@@ -41,12 +41,12 @@ std::vector<Bullet*>* Enemy::shoot2() {
 }
 Shield* Enemy::showShield(QString str,int img_w, int img_h) {
     shield = new Shield(str,img_w,img_h,radius*3.2,radius*3.2,this,-1,x,y);
-    if(floating) shield->setFloating();
+    if(floatable) shield->setFloatable();
     return shield;
 }
-void Enemy::setFloating(bool floating) {
-    Character::setFloating(floating);
-    if(this->shield!=NULL) this->shield->setFloating(floating);
+void Enemy::setFloatable(bool floatable) {
+    Character::setFloatable(floatable);
+    if(this->shield!=NULL) this->shield->setFloatable(floatable);
 }
 void Enemy::move() {
     //move object
@@ -91,7 +91,7 @@ Effect* Enemy::disappear() const {
         corpse->setFaceToLeft();
     }
     //if needed, float
-    if(floating) corpse->setFloating(true);
+    if(floatable) corpse->setFloatable(true);
     //disappear time
     corpse->fadeout(disappearTime);
     return corpse;

@@ -32,7 +32,6 @@ void Enemy_3_Blue_3::skill() {
             ++skill_timer;
             if(skill_timer==150) {
                 moveTo(player->getX(),80,125);
-                setFloating(false);
             }
         } else skill_timer=0;
     } else {
