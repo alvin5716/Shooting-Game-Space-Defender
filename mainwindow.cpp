@@ -89,8 +89,6 @@ void MainWindow::start4() {
     start();
 }
 void MainWindow::start() {
-    //float
-    Character::float_timer=0;
     //level intro
     if(Game::StartTick==0) ui->levelIntro->show();
     ui->levelIntro->setCurrentIndex(level-1);
@@ -185,8 +183,6 @@ void MainWindow::start() {
 void MainWindow::doTick() {
     //focus
     setFocus();
-    //float
-    if(gamestate!=Game::GameStatePaused && ++Character::float_timer>=250) Character::float_timer=0;
     //level intro
     if(tick==500) {
         QGraphicsOpacityEffect* levelIntroOpacityEff = new QGraphicsOpacityEffect(this);

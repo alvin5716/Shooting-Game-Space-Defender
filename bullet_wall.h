@@ -49,8 +49,6 @@ public:
     Bullet_Wall& addWallData(double vertical_v, double vertical_a);
     Bullet_Wall& addWallData(Character* player, double v);
     Bullet_Wall& addWallData(Character* player, double v, double a);
-signals:
-    void triggered();
 private:
     bool already_enter;
     std::vector<Bullet_Wall_Data> bullet_wall_data_list;

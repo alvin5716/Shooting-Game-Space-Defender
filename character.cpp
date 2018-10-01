@@ -6,8 +6,6 @@
 #include <QTimer>
 #include "game.h"
 
-short Character::float_timer=0;
-
 Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya)
     :radius(radius), health(health),
       img_w(img_w), img_h(img_h), show_w(show_w), show_h(show_h), img_timer(0),
@@ -23,6 +21,7 @@ Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, 
     canBeMirrored=false;
     attackable=true;
     floatable=false;
+    float_timer=0;
 }
 void Character::setPosition(double x, double y) {
     this->x=x;
@@ -66,12 +65,18 @@ void Character::show_img_set() {
     ++img_timer;
 }
 bool Character::floating() const{
-    return floatable && xv<=0.1 && yv <=0.1;
+    return floatable && xv<=0.1 && yv<=0.1;
 }
 void Character::img_move() {
     show_img_set();
-    if(floating()) setPos(imgX(),imgY()+Character::float_distance*std::sin((double)float_timer/125*M_PI));
-    else setPos(imgX(),imgY());
+    if(floating()) {
+        setPos(imgX(),imgY()+float_distance*std::sin((double)float_timer/125*M_PI));
+        if(++float_timer>=250) float_timer=0;
+    }
+    else {
+        setPos(imgX(),imgY());
+        float_timer=0;
+    }
 }
 double Character::imgX() const{
     return x-show_w/2;

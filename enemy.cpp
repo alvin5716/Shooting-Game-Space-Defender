@@ -41,7 +41,10 @@ std::vector<Bullet*>* Enemy::shoot2() {
 }
 Shield* Enemy::showShield(QString str,int img_w, int img_h) {
     shield = new Shield(str,img_w,img_h,radius*3.2,radius*3.2,this,-1,x,y);
-    if(floatable) shield->setFloatable();
+    if(floatable) {
+        shield->setFloatable();
+        shield->float_timer = this->float_timer;
+    }
     return shield;
 }
 void Enemy::setFloatable(bool floatable) {
@@ -91,7 +94,10 @@ Effect* Enemy::disappear() const {
         corpse->setFaceToLeft();
     }
     //if needed, float
-    if(floatable) corpse->setFloatable(true);
+    if(floatable) {
+        corpse->setFloatable(true);
+        corpse->float_timer = this->float_timer;
+    }
     //disappear time
     corpse->fadeout(disappearTime);
     return corpse;

@@ -1,6 +1,5 @@
 #include "enemy_3_blue_3.h"
 #include "bullet_nether.h"
-#include "bullet_time.h"
 #include <QDebug>
 #include "game.h"
 #include "laser.h"
@@ -44,7 +43,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     const short interval = 120;
     //center
     if(shoot_timer==-150) {
-        new_bullet = center = new Bullet_Time(":/res/bullet_purple.png",30,shootXPos(),shootYPos());
+        new_bullet = center = new Bullet(":/res/bullet_purple.png",30,shootXPos(),shootYPos());
         center->addTimeData(150);
         new_bullet->moveTo(Game::FrameWidth/2,Game::FrameHeight/2,150);
         new_bullet->setInvulnerable();

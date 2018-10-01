@@ -1,5 +1,4 @@
 #include "enemy_3_blue_4.h"
-#include "bullet_time.h"
 #include "bullet_wall.h"
 #include "bullet_sin.h"
 #include "laser.h"
@@ -40,10 +39,9 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
     //bowl
     if(shoot_timer==-400) {
         int aim_x, aim_y;
-        Bullet_Time* new_bullet_time;
         for(int j=0;j<2;++j) {
             for(int i=0;i<20;++i) {
-                new_bullet = new_bullet_time = new Bullet_Time(QString(":/res/bullet_purple.png"),8,shootXPos(),shootYPos());
+                new_bullet = new Bullet(QString(":/res/bullet_purple.png"),8,shootXPos(),shootYPos());
                 if(i<5) {
                     aim_x=shootXPos()-40-10*(4-i);
                     aim_y=shootYPos()-15*(2-i);
@@ -60,9 +58,9 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
                 new_bullet->moveTo(aim_x,aim_y,50);
                 new_bullet->fadein();
                 new_bullet->setInvulnerable();
-                new_bullet_time->addTimeData(50)
-                        .addTimeData(100,aim_x+(x-shootXPos())+(j==0?-1:1)*(Game::FrameWidth/2-80),aim_y+(y-shootYPos())-50,250)
-                        .addTimeData(250);
+                new_bullet->addTimeData(50)
+                        ->addTimeData(100,aim_x+(x-shootXPos())+(j==0?-1:1)*(Game::FrameWidth/2-80),aim_y+(y-shootYPos())-50,250)
+                        ->addTimeData(250);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }

@@ -2,7 +2,6 @@
 #define ENEMY_3_BLUE_3_H
 
 #include "enemy_3_blue.h"
-#include "bullet_time.h"
 #include <QString>
 #include <vector>
 
@@ -15,7 +14,7 @@ public:
 private:
     bool use_laser;
     short shoot_count_yellow, shoot_count;
-    Bullet_Time* center;
+    Bullet* center;
 };
 
 #endif // ENEMY_3_BLUE_3_H

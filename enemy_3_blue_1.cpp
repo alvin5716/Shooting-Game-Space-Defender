@@ -1,5 +1,4 @@
 #include "enemy_3_blue_1.h"
-#include "bullet_time.h"
 #include "bullet_sin.h"
 #include <QDebug>
 #include "game.h"
@@ -56,7 +55,6 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
     Bullet* new_bullet;
     //small magic stone bullets
     if(shoot_small_bullets) {
-        Bullet_Time* new_bullet_time;
         double bullet_v, bullet_v_2, bullet_a, cos, sin, init_pos;
         int bullet_count;
         //bullet v, a and count
@@ -72,12 +70,11 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
                 double shoot_angle = angle+(i+(mode?0.5:0)+0.5*j)*M_PI/(bullet_count/2);
                 cos = std::cos(shoot_angle);
                 sin = std::sin(shoot_angle);
-                new_bullet = new_bullet_time =
-                        new Bullet_Time(QString(":/res/magicball.png"),12,
+                new_bullet = new Bullet(QString(":/res/magicball.png"),12,
                                         magicstone->getX()+magicstone->getRadius()*cos*init_pos,
                                         magicstone->getY()+magicstone->getRadius()*sin*init_pos,
                                         bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-                new_bullet_time->addTimeData(250,bullet_v_2*cos,bullet_v_2*sin,0,0);
+                new_bullet->addTimeData(250,bullet_v_2*cos,bullet_v_2*sin,0,0);
                 new_bullet->fadein(1500);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
@@ -104,8 +101,8 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         for(int i=0;i<19;++i) {
             bullet_v = 0.2;
             bullet_a = 0.025;
-            Bullet_Time* new_bullet_time;
-            new_bullet = new_bullet_time = new Bullet_Time(":/res/bullet_yellow.png",bullet_radius,shootXPos(),shootYPos());
+            Bullet* new_bullet;
+            new_bullet = new Bullet(":/res/bullet_yellow.png",bullet_radius,shootXPos(),shootYPos());
             int aim_x, aim_y;
             if(i<=6) {
                 aim_x = this->shootXPos()-i*6;
@@ -117,9 +114,9 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
                 aim_x = this->shootXPos()+(i-9)*16;
                 aim_y = this->shootYPos();
             }
-            new_bullet_time->moveTo(aim_x,aim_y,50);
-            new_bullet_time->addTimeData(50)
-                    .addTimeData(20,0,bullet_v,0,bullet_a);
+            new_bullet->moveTo(aim_x,aim_y,50);
+            new_bullet->addTimeData(50)
+                    ->addTimeData(20,0,bullet_v,0,bullet_a);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullet->fadein();
             new_bullets->push_back(new_bullet);

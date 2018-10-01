@@ -39,8 +39,6 @@ public:
     virtual bool floating() const;
     virtual double imgX() const;
     virtual double imgY() const;
-    static short float_timer;
-    static constexpr short float_distance=5;
 signals:
     void deadSignal();
     void deadSignal(int, int);
@@ -57,6 +55,8 @@ public slots:
     void whiteizedFinish();
     virtual void killItself();
 protected:
+    static constexpr short float_distance=6;
+    short float_timer;
     int radius, health, img_w, img_h, show_w, show_h, img_timer;
     double x, y, xv, yv, xa, ya;
     bool dead, invulnerable, whiteized, face_to_left, canBeMirrored, attackable, floatable;

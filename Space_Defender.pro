@@ -60,7 +60,6 @@ SOURCES += \
     enemy_3_green.cpp \
     enemy_3_red.cpp \
     enemy_3_yellow.cpp \
-    bullet_time.cpp \
     enemy_3_pink.cpp \
     enemy_3_blue.cpp \
     bullet_wall.cpp \
@@ -69,7 +68,9 @@ SOURCES += \
     bullet_distance.cpp \
     enemy_3_blue_3.cpp \
     enemy_3_blue_4.cpp \
-    enemy_3_blue_5.cpp
+    enemy_3_blue_5.cpp \
+    bulletdata.cpp \
+    bulletdatatime.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -110,7 +111,6 @@ HEADERS += \
     enemy_3_green.h \
     enemy_3_red.h \
     enemy_3_yellow.h \
-    bullet_time.h \
     enemy_3_pink.h \
     enemy_3_pink_cross.h \
     enemy_3_blue.h \
@@ -120,7 +120,9 @@ HEADERS += \
     bullet_distance.h \
     enemy_3_blue_3.h \
     enemy_3_blue_4.h \
-    enemy_3_blue_5.h
+    enemy_3_blue_5.h \
+    bulletdata.h \
+    bulletdatatime.h
 
 FORMS += \
         mainwindow.ui
