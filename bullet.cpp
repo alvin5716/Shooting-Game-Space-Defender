@@ -1,4 +1,6 @@
 #include "bullet.h"
+#include "bulletdatatime.h"
+#include "bulletdatawall.h"
 #include <cmath>
 #include <QDebug>
 
@@ -15,9 +17,11 @@ void Bullet::setVTerminal(double terminal_v) {
 
 void Bullet::move() {
     if(this->data_head!=NULL && this->data_head->skill()) {
-        BulletData* temp = this->data_head;
-        this->data_head = temp->next();
-        delete temp;
+        if(!this->data_head->isInfinite()) {
+            BulletData* temp = this->data_head;
+            this->data_head = temp->next();
+            delete temp;
+        }
         emit triggered();
     }
     if(terminal_v==0) {
@@ -38,8 +42,14 @@ void Bullet::addData(BulletData* bullet_data) {
     ptr->setNext(bullet_data);
     bullet_data->setNext(NULL);
 }
+// bullet time data
 Bullet* Bullet::addTimeData(int wait_time) {
     BulletData* bullet_data = new BulletDataTime(this,wait_time);
+    this->addData(bullet_data);
+    return this;
+}
+Bullet* Bullet::addTimeData(int wait_time, int aim_radius) {
+    BulletData* bullet_data = new BulletDataTime(this,wait_time,aim_radius);
     this->addData(bullet_data);
     return this;
 }
@@ -55,6 +65,32 @@ Bullet* Bullet::addTimeData(int wait_time, Character* player, double v, double a
 }
 Bullet* Bullet::addTimeData(int wait_time, double x, double y, int time) {
     BulletData* bullet_data = new BulletDataTime(this,wait_time,x,y,time);
+    this->addData(bullet_data);
+    return this;
+}
+// bullet wall data
+Bullet* Bullet::addWallData() {
+    BulletData* bullet_data = new BulletDataWall(this);
+    this->addData(bullet_data);
+    return this;
+}
+Bullet* Bullet::addWallData(bool infinite_bounce, bool bounce_when_hit_downside) {
+    BulletData* bullet_data = new BulletDataWall(this,infinite_bounce, bounce_when_hit_downside);
+    this->addData(bullet_data);
+    return this;
+}
+Bullet* Bullet::addWallData(double vertical_v, double vertical_a) {
+    BulletData* bullet_data = new BulletDataWall(this,vertical_v,vertical_a);
+    this->addData(bullet_data);
+    return this;
+}
+Bullet* Bullet::addWallData(Character* player, double v) {
+    BulletData* bullet_data = new BulletDataWall(this,player,v);
+    this->addData(bullet_data);
+    return this;
+}
+Bullet* Bullet::addWallData(Character* player, double v, double a) {
+    BulletData* bullet_data = new BulletDataWall(this,player,v,a);
     this->addData(bullet_data);
     return this;
 }

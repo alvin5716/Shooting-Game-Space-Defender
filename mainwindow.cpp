@@ -1043,7 +1043,7 @@ void MainWindow::doTick() {
             for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,400);
             break;
         case 11925: //11925, BOSS 5
-            new_boss = new Enemy_3_Blue_5(QString(":/res/enemy15.png"),54,55,160,160,player,550,80,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+            new_boss = new Enemy_3_Blue_5(QString(":/res/enemy15.png"),54,55,160,160,player,500,80,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
             new_boss->fadein(1500);
             newBossInit(new_boss);
             for(int i=0;i<2;++i) {
@@ -1170,6 +1170,7 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     connect(new_boss,SIGNAL(deadSignal()),ui->BossHealth,SLOT(hide()));
     connect(new_boss,SIGNAL(deadSignal()),ui->BossSkill,SLOT(hide()));
     connect(new_boss,SIGNAL(summonEffect(Effect*)),this,SLOT(newEffectInit(Effect*)));
+    connect(new_boss,SIGNAL(shakeScreen()),this,SLOT(sceneVibrate()));
 }
 void MainWindow::newMagicEffect(int show_w, int show_h, double x, double y, int lifetime) {
     new_effect = new Effect(QString(":/res/magic.png"),100,100,show_w,show_h,lifetime,x,y,0,0,0,0,true);

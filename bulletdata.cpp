@@ -1,9 +1,12 @@
 #include "bulletdata.h"
 
-BulletData::BulletData(Character* bullet)
-    :next_data(NULL), bullet(bullet)
+BulletData::BulletData(Bullet* bullet)
+    :next_data(NULL), bullet(bullet), infinite(false)
 {
 
+}
+bool BulletData::isInfinite() const{
+    return infinite;
 }
 void BulletData::setNext(BulletData* next_data) {
     this->next_data = next_data;

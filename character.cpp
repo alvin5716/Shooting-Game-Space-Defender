@@ -41,7 +41,7 @@ void Character::move() {
     setSpeed(xv+xa,yv+ya);
 }
 void Character::show_img_force_set() {
-    img_timer=30*4;
+    img_timer=img_timer/30*30;
 }
 void Character::show_img_set() {
     //image move
@@ -65,7 +65,7 @@ void Character::show_img_set() {
     ++img_timer;
 }
 bool Character::floating() const{
-    return floatable && xv<=0.1 && yv<=0.1;
+    return floatable && std::abs(yv)<=0.1 && std::abs(xv)<=0.1;
 }
 void Character::img_move() {
     show_img_set();
@@ -83,6 +83,12 @@ double Character::imgX() const{
 }
 double Character::imgY() const{
     return y-show_h/2;
+}
+void Character::bounceAtX() {
+    this->xv *= -1;
+}
+void Character::bounceAtY() {
+    this->yv *= -1;
 }
 void Character::setFloatable(bool floatable) {
     this->floatable=floatable;

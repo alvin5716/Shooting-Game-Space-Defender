@@ -9,6 +9,7 @@ Enemy_3_Blue_1::Enemy_3_Blue_1(QString img, int img_w, int img_h, int show_w, in
     mode=false;
     magicstone=NULL;
     shoot_small_bullets=false;
+    triggered_count=0;
 }
 void Enemy_3_Blue_1::skill() {
     //second phase
@@ -43,8 +44,10 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         bullet_a = 0.015;
         cos = std::cos(face_to_left?-M_PI/6:-M_PI*5/6);
         sin = std::sin(face_to_left?-M_PI/6:-M_PI*5/6);
-        new_bullet = magicstone = new Bullet_Wall(":/res/magicball.png",bullet_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-        magicstone->addWallData(player,2.6);
+        new_bullet = magicstone = new Bullet(":/res/magicball.png",0,shootXPos(),shootYPos());
+        magicstone->addTimeData(125,bullet_radius)
+                ->addTimeData(50,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin)
+                ->addWallData(player,2.6);
         connect(magicstone,SIGNAL(triggered()),this,SLOT(shootSmallBullet()));
         new_bullet->setInvulnerable();
         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -127,5 +130,9 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
     return NULL;
 }
 void Enemy_3_Blue_1::shootSmallBullet() {
-    shoot_small_bullets=true;
+    if(triggered_count<2) ++triggered_count;
+    else {
+        shoot_small_bullets=true;
+        shakeScreen();
+    }
 }

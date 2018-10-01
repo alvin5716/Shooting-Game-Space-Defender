@@ -1,12 +1,20 @@
 #include "bulletdatatime.h"
+#include "bullet.h"
 #include <QDebug>
 
-BulletDataTime::BulletDataTime(Character* bullet, int wait_time)
+BulletDataTime::BulletDataTime(Bullet* bullet, int wait_time)
     :BulletData(bullet), wait_time(wait_time), type(BulletDataTimeType::freeze)
 {
 
 }
-BulletDataTime::BulletDataTime(Character* bullet, int wait_time, double xv, double yv, double xa, double ya)
+BulletDataTime::BulletDataTime(Bullet* bullet, int wait_time, int aim_radius)
+    :BulletData(bullet), wait_time(wait_time), type(BulletDataTimeType::zoom)
+{
+    this->data.zoom.aim_radius=aim_radius;
+    this->data.zoom.now_radius=bullet->getRadius();
+    this->data.zoom.increment=((double)aim_radius-bullet->getRadius())/wait_time;
+}
+BulletDataTime::BulletDataTime(Bullet* bullet, int wait_time, double xv, double yv, double xa, double ya)
     :BulletData(bullet), wait_time(wait_time), type(BulletDataTimeType::updateVA)
 {
     this->data.updateVA.xv=xv;
@@ -14,14 +22,14 @@ BulletDataTime::BulletDataTime(Character* bullet, int wait_time, double xv, doub
     this->data.updateVA.xa=xa;
     this->data.updateVA.ya=ya;
 }
-BulletDataTime::BulletDataTime(Character* bullet, int wait_time, Character* player, double v, double a)
+BulletDataTime::BulletDataTime(Bullet* bullet, int wait_time, Character* player, double v, double a)
     :BulletData(bullet), wait_time(wait_time), type(BulletDataTimeType::shootAtPlayer)
 {
     this->data.shootAtPlayer.player=player;
     this->data.shootAtPlayer.v=v;
     this->data.shootAtPlayer.a=a;
 }
-BulletDataTime::BulletDataTime(Character* bullet, int wait_time, double x, double y, int time)
+BulletDataTime::BulletDataTime(Bullet* bullet, int wait_time, double x, double y, int time)
     :BulletData(bullet), wait_time(wait_time), type(BulletDataTimeType::moveTo)
 {
     this->data.moveTo.x=x;
@@ -30,6 +38,16 @@ BulletDataTime::BulletDataTime(Character* bullet, int wait_time, double x, doubl
 }
 
 bool BulletDataTime::skill() {
+    switch (this->type) {
+    case BulletDataTimeType::zoom:
+        this->data.zoom.now_radius += this->data.zoom.increment;
+        this->bullet->radius = (int)this->data.zoom.now_radius;
+        this->bullet->show_w = this->bullet->show_h = (int)round(this->bullet->radius*2.2);
+        this->bullet->show_img_force_set();
+        break;
+    default:
+        break;
+    }
     if(--this->wait_time<=0) {
         switch (this->type) {
         case BulletDataTimeType::freeze:
@@ -55,7 +73,7 @@ bool BulletDataTime::skill() {
             this->bullet->moveTo(this->data.moveTo.x,this->data.moveTo.y,this->data.moveTo.time);
             break;
         default:
-            qDebug() << "error: can't get the type of BulletDataTimeType";
+            break;
         }
         return true;
     }

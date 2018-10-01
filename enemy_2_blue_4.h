@@ -2,7 +2,6 @@
 #define ENEMY_2_BLUE_4_H
 
 #include "enemy_2_blue.h"
-#include "bullet_wall.h"
 #include <QString>
 #include <vector>
 
@@ -19,8 +18,7 @@ private:
     int shoot_count;
     double bullet_angle;
     bool is_laser_used;
-    Bullet *rainbowSpawnpoint[2];
-    Bullet_Wall *stick[2];
+    Bullet *rainbowSpawnpoint[2], *stick[2];
 };
 
 #endif // ENEMY_2_BLUE_4_H

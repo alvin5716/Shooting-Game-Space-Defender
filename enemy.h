@@ -29,6 +29,7 @@ public slots:
 signals:
     void summonEffect(Effect*);
     void pointGive(int);
+    void shakeScreen();
 protected:
     unsigned int point;
     bool bounceable, stopable, already_enter, boss, secPhase;

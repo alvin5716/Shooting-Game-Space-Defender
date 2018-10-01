@@ -39,6 +39,8 @@ public:
     virtual bool floating() const;
     virtual double imgX() const;
     virtual double imgY() const;
+    void bounceAtX();
+    void bounceAtY();
 signals:
     void deadSignal();
     void deadSignal(int, int);

@@ -1,7 +1,6 @@
 #include "enemy_2_blue_4.h"
 #include "laser.h"
 #include "bullet_nether.h"
-#include "bullet_wall.h"
 
 Enemy_2_Blue_4::Enemy_2_Blue_4(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_2_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
@@ -100,7 +99,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                 phi = angleofvector(((i==0)?0:150)-x,((i==0)?150:0)-radius-y);
                 sin = std::sin(phi);
                 cos = std::cos(phi);
-                stick[i] = new Bullet_Wall(":/res/bullet_2_purple.png",22,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                stick[i] = new Bullet(":/res/bullet_2_purple.png",22,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 stick[i]->addWallData();
                 stick[i]->setInvulnerable();
                 stick[i]->fadein(500);
@@ -114,7 +113,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                 phi = angleofvector((Game::FrameWidth-((i==0)?0:150))-x,((i==0)?150:0)-radius-y);
                 sin = std::sin(phi);
                 cos = std::cos(phi);
-                stick[i] = new Bullet_Wall(":/res/bullet_2_purple.png",22,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                stick[i] = new Bullet(":/res/bullet_2_purple.png",22,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 stick[i]->addWallData();
                 stick[i]->setInvulnerable();
                 stick[i]->fadein(500);

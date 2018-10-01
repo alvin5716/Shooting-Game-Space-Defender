@@ -8,6 +8,7 @@
 Enemy_3_Blue_5::Enemy_3_Blue_5(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_3_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
+    point+=10;
     angle=0;
     for(int i=0;i<7;++i) fireballs[i]=NULL;
     setDisappearTime(5000);
@@ -18,7 +19,7 @@ Enemy_3_Blue_5::Enemy_3_Blue_5(QString img, int img_w, int img_h, int show_w, in
 }
 void Enemy_3_Blue_5::skill() {
     //second phase
-    if(health<=400 && !secPhase) {
+    if(health<=350 && !secPhase) {
         secPhase = true;
         invulnerable=true;
         img=":/res/enemy15_2.png";
@@ -46,7 +47,7 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
         setVulnerable();
         double cos, sin, bullet_v, bullet_a;
         int bullet_radius, wings;
-        wings = (health<290)?7:((health<350)?5:3);
+        wings = (health<240)?7:((health<300)?5:3);
         if(shoot_timer==shoot_cd) {
             angle=angleofvector(player->getX()-shootXPos(),player->getY()-shootYPos());
             bullet_radius = 16;
@@ -89,7 +90,7 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
                 new_bullets->push_back(new_bullet);
             }
             //circle
-            if(health<250) {
+            if(health<200) {
                 int bullet_count = 32;
                 bullet_radius = 12;
                 bullet_a = 0;
@@ -147,7 +148,7 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
         if(shoot_timer==shoot_cd+interval*15) {
             shoot_timer=0;
             if(health<50) shoot_cd=70;
-            else if(health<200) shoot_cd=90;
+            else if(health<150) shoot_cd=90;
         }
     }
     if(new_bullets->size()>0) return new_bullets;

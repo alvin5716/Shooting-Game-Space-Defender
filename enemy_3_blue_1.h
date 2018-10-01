@@ -2,7 +2,6 @@
 #define ENEMY_3_BLUE_1_H
 
 #include "enemy_3_blue.h"
-#include "bullet_wall.h"
 #include <QString>
 #include <vector>
 
@@ -17,8 +16,9 @@ public slots:
     void shootSmallBullet();
 private:
     double angle;
-    Bullet_Wall* magicstone;
+    Bullet* magicstone;
     bool shoot_small_bullets, mode;
+    short triggered_count;
 };
 
 #endif // ENEMY_3_BLUE_1_H
