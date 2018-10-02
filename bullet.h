@@ -7,6 +7,7 @@
 class BulletData;
 class BulletDataTime;
 class BulletDataWall;
+class BulletDataContinuous;
 
 class Bullet : public Character
 {
@@ -26,17 +27,19 @@ public:
     Bullet* addWallData(double vertical_v, double vertical_a);
     Bullet* addWallData(Character* player, double v);
     Bullet* addWallData(Character* player, double v, double a);
-    // consistence data
+    // continuous data
+    Bullet* rotateAround(Character* rotate_center, double rotate_ac, bool clockwise);
+    Bullet* rotateAround(int rotate_xc, int rotate_yc, double rotate_ac, bool clockwise);
     /*
-    Bullet* addConsistanceData(double terminal_v);
-    Bullet* addConsistanceData(Character* rotate_center, double rotate_ac, bool clockwise);
-    Bullet* addConsistanceData(int rotate_xc, int rotate_yc, double rotate_ac, bool clockwise);
-    Bullet* addConsistanceData(int T, int r, bool sin_or_cos);
-    Bullet* addConsistanceData(int T, int r, double (*periodic_func)(double));
+    Bullet* gravityFrom(Character* rotate_center, double gravity_ac);
+    Bullet* gravityFrom(int gravity_xc, int gravity_yc, double gravity_ac);
+    Bullet* moveAsTrigFunction(int T, int r, bool sin_or_cos);
+    Bullet* moveAsPeriodicFunction(int T, int r, double (*periodic_func)(double));
     */
     ~Bullet();
     friend class BulletDataTime;
     friend class BulletDataWall;
+    friend class BulletDataContinuous;
 public slots:
     virtual void move();
 signals:

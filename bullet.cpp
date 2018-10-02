@@ -1,6 +1,7 @@
 #include "bullet.h"
 #include "bulletdatatime.h"
 #include "bulletdatawall.h"
+#include "bulletdatacontinuous.h"
 #include <cmath>
 #include <QDebug>
 
@@ -94,8 +95,19 @@ Bullet* Bullet::addWallData(Character* player, double v, double a) {
     this->addData(bullet_data);
     return this;
 }
+// bullet continuous data
+Bullet* Bullet::rotateAround(Character* rotate_center, double rotate_ac, bool clockwise) {
+    BulletData* bullet_data = new BulletDataContinuous(this,rotate_center,rotate_ac,clockwise);
+    this->addData(bullet_data);
+    return this;
+}
+Bullet* Bullet::rotateAround(int rotate_xc, int rotate_yc, double rotate_ac, bool clockwise) {
+    BulletData* bullet_data = new BulletDataContinuous(this,rotate_xc,rotate_yc,rotate_ac,clockwise);
+    this->addData(bullet_data);
+    return this;
+}
+// clear all bullet data
 Bullet::~Bullet() {
-    // clear all bullet data
     if(this->data_head!=nullptr) {
         BulletData *ptr = this->data_head;
         while(ptr->next()!=nullptr) {

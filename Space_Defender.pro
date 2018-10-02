@@ -37,7 +37,6 @@ SOURCES += \
     enemy_blue.cpp \
     enemy_blue_1.cpp \
     enemy_blue_2.cpp \
-    bullet_rotate.cpp \
     enemy_blue_3.cpp \
     enemy_blue_4.cpp \
     enemy_blue_5.cpp \
@@ -71,7 +70,8 @@ SOURCES += \
     enemy_3_blue_5.cpp \
     bulletdata.cpp \
     bulletdatatime.cpp \
-    bulletdatawall.cpp
+    bulletdatawall.cpp \
+    bulletdatacontinuous.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -86,7 +86,6 @@ HEADERS += \
     enemy_blue.h \
     enemy_blue_1.h \
     enemy_blue_2.h \
-    bullet_rotate.h \
     enemy_blue_3.h \
     enemy_blue_4.h \
     enemy_blue_5.h \
@@ -123,7 +122,8 @@ HEADERS += \
     enemy_3_blue_5.h \
     bulletdata.h \
     bulletdatatime.h \
-    bulletdatawall.h
+    bulletdatawall.h \
+    bulletdatacontinuous.h
 
 FORMS += \
         mainwindow.ui

@@ -1,5 +1,4 @@
 #include "enemy_blue_4.h"
-#include "bullet_rotate.h"
 
 Enemy_Blue_4::Enemy_Blue_4(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
@@ -86,7 +85,8 @@ std::vector<Bullet*>* Enemy_Blue_4::shoot2() {
                     double angle = j*M_PI/6+rand1;
                     double cosa = std::cos(angle);
                     double sina = std::sin(angle);
-                    new_bullet = new Bullet_Rotate(QString(":/res/bullet_black.png"),x,y,0.004,clockwise,16,x,y,(1.6+0.1*i)*cosa,(1.6+0.1*i)*sina);
+                    new_bullet = new Bullet(QString(":/res/bullet_black.png"),16,x,y,(1.6+0.1*i)*cosa,(1.6+0.1*i)*sina);
+                    new_bullet->rotateAround(x,y,0.004,clockwise);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
                 }

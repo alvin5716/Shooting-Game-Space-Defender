@@ -2,7 +2,6 @@
 #include "laser.h"
 #include <QDebug>
 #include <cmath>
-#include "bullet_rotate.h"
 
 Enemy_2_Blue::Enemy_2_Blue(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
@@ -39,7 +38,8 @@ std::vector<Bullet*>* Enemy_2_Blue::shoot() {
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                 cos = (j?1:-1)*std::cos(angle+i*M_PI/(bullet_count/2)+t*M_PI/30);
                 sin = std::sin(angle+i*M_PI/(bullet_count/2)+t*M_PI/30);
-                new_bullet = new Bullet_Rotate(QString(":/res/bullet_2_blue.png"),x,y,0.001,j==0,bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin);
+                new_bullet = new Bullet(QString(":/res/bullet_2_blue.png"),bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin);
+                new_bullet->rotateAround(x,y,0.001,j==0);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }

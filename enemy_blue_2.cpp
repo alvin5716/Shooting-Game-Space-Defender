@@ -1,5 +1,4 @@
 #include "enemy_blue_2.h"
-#include "bullet_rotate.h"
 #include <QDebug>
 
 Enemy_Blue_2::Enemy_Blue_2(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
@@ -58,7 +57,8 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
                 int bullet_radius=((i+(bullet_count/2))%4)*5+12;
                 cos = std::cos(angle+2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
                 sin = std::sin(angle+2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
-                new_bullet = new Bullet_Rotate(QString(":/res/bullet_purple.png"),x,y,0.011,clockwise,bullet_radius,x+(double)radius*2/3*cos,y+(double)radius*2/3*sin,bullet_v*cos,bullet_v*sin);
+                new_bullet = new Bullet(QString(":/res/bullet_purple.png"),bullet_radius,x+(double)radius*2/3*cos,y+(double)radius*2/3*sin,bullet_v*cos,bullet_v*sin);
+                new_bullet->rotateAround(x,y,0.011,clockwise);
                 new_bullet->fadein(500);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
@@ -68,7 +68,8 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
                 for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                     cos = std::cos(angle+2*i*M_PI/bullet_count+M_PI/bullet_count);
                     sin = std::sin(angle+2*i*M_PI/bullet_count+M_PI/bullet_count);
-                    new_bullet = new Bullet_Rotate(QString(":/res/bullet_purple.png"),(j==0)?220:Game::FrameWidth-220,200,0.007,clockwise,12,(j==0)?220:Game::FrameWidth-220,200,bullet_v*cos,bullet_v*sin);
+                    new_bullet = new Bullet(QString(":/res/bullet_purple.png"),12,(j==0)?220:Game::FrameWidth-220,200,bullet_v*cos,bullet_v*sin);
+                    new_bullet->rotateAround((j==0)?220:Game::FrameWidth-220,200,0.007,clockwise);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
                 }

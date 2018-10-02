@@ -1,5 +1,4 @@
 #include "enemy_2_blue_5.h"
-#include "bullet_rotate.h"
 #include "laser.h"
 #include <QDebug>
 
@@ -44,7 +43,8 @@ std::vector<Bullet*>* Enemy_2_Blue_5::shoot2() {
                         bullet_v = 0.15+0.25*j;
                         cos = std::cos(angle+i*2*M_PI/7+(mode?M_PI/7:0)+k*M_PI/14);
                         sin = std::sin(angle+i*2*M_PI/7+(mode?M_PI/7:0)+k*M_PI/14);
-                        new_bullet = new Bullet_Rotate(rainbowBullet(i),x,y+radius,0.003+0.00085*j,mode,bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin);
+                        new_bullet = new Bullet(rainbowBullet(i),bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin);
+                        new_bullet->rotateAround(x,y+radius,0.003+0.00085*j,mode);
                         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                         new_bullet->fadein(1200);
                         new_bullets->push_back(new_bullet);

@@ -1,5 +1,4 @@
 #include "enemy_2_pink.h"
-#include "bullet_rotate.h"
 
 Enemy_2_Pink::Enemy_2_Pink(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
@@ -23,7 +22,8 @@ std::vector<Bullet*>* Enemy_2_Pink::shoot() {
             bullet_radius = (t==0)?18:6;
             cos = std::cos(angle+i*M_PI/(bullet_count/2)+(mode?-1:1)*t*M_PI/30);
             sin = std::sin(angle+i*M_PI/(bullet_count/2)+(mode?-1:1)*t*M_PI/30);
-            new_bullet = new Bullet_Rotate(QString(":/res/bullet_2_pink.png"),x,y+radius*3/4,0.01,mode,bullet_radius,x,y+radius*3/4,bullet_v*cos,bullet_v*sin);
+            new_bullet = new Bullet(QString(":/res/bullet_2_pink.png"),bullet_radius,x,y+radius*3/4,bullet_v*cos,bullet_v*sin);
+            new_bullet->rotateAround(x,y+radius*3/4,0.01,mode);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }

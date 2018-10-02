@@ -1043,7 +1043,7 @@ void MainWindow::doTick() {
             for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,400);
             break;
         case 11925: //11925, BOSS 5
-            new_boss = new Enemy_3_Blue_5(QString(":/res/enemy15.png"),54,55,160,160,player,500,80,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+            new_boss = new Enemy_3_Blue_5(QString(":/res/enemy15.png"),54,55,160,160,player,500,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
             new_boss->fadein(1500);
             newBossInit(new_boss);
             for(int i=0;i<2;++i) {

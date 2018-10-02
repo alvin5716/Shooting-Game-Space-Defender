@@ -1,6 +1,5 @@
 #include "enemy_2_blue_3.h"
 #include <QDebug>
-#include "bullet_rotate.h"
 
 Enemy_2_Blue_3::Enemy_2_Blue_3(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_2_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
@@ -99,7 +98,8 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
                 for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
                     cos = std::cos(angle+i*M_PI/bullet_count*2);
                     sin = std::sin(angle+i*M_PI/bullet_count*2);
-                    new_bullet = new Bullet_Rotate(rainbowBullet(j),x,y+radius,0.0032,j==-3,6,x,y+radius,bullet_v*cos,bullet_v*sin);
+                    new_bullet = new Bullet(rainbowBullet(j),6,x,y+radius,bullet_v*cos,bullet_v*sin);
+                    new_bullet->rotateAround(x,y+radius,0.0032,j==-3);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
                 }
