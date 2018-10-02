@@ -7,7 +7,7 @@ Enemy_2_Blue_4::Enemy_2_Blue_4(QString img, int img_w, int img_h, int show_w, in
 {
     shoot_count=0;
     is_laser_used=false;
-    rainbowSpawnpoint[1]=rainbowSpawnpoint[0]=NULL;
+    rainbowSpawnpoint[1]=rainbowSpawnpoint[0]=nullptr;
 }
 void Enemy_2_Blue_4::skill() {
     //second phase
@@ -38,7 +38,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
             switch(shoot_count) {
             case 1:
                 for(int i=0;i<2;++i) {
-                    rainbowSpawnpoint[i] = new_bullet = new Bullet_Nether(":/res/bullet_2_purple.png",18,NULL,600,(i==0)?150:0,(i==0)?0:150,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
+                    rainbowSpawnpoint[i] = new_bullet = new Bullet_Nether(":/res/bullet_2_purple.png",18,nullptr,600,(i==0)?150:0,(i==0)?0:150,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
                     new_bullet->setInvulnerable();
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     connect(this,SIGNAL(killSpawnpoints()),new_bullet,SLOT(killItself()));
@@ -47,7 +47,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                 break;
             case 2:
                 for(int i=0;i<2;++i) {
-                    rainbowSpawnpoint[i] = new_bullet = new Bullet_Nether(":/res/bullet_2_purple.png",18,NULL,600,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
+                    rainbowSpawnpoint[i] = new_bullet = new Bullet_Nether(":/res/bullet_2_purple.png",18,nullptr,600,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
                     new_bullet->setInvulnerable();
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     connect(this,SIGNAL(killSpawnpoints()),new_bullet,SLOT(killItself()));
@@ -60,7 +60,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
     } else if(shoot_timer>300&&shoot_timer<700&&(shoot_timer-300)%5==0) {
         Bullet* new_bullet;
         for(int i=0;i<2;++i) {
-            if(rainbowSpawnpoint[i]!=NULL) {
+            if(rainbowSpawnpoint[i]!=nullptr) {
                 for(int j=-3;j<=3;++j) {
                     //fast
                     double bullet_v=2.5, bullet_a=0.1, sin, cos;
@@ -163,5 +163,5 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
         }
     }
     if(new_bullets->size()>0) return new_bullets;
-    return NULL;
+    return nullptr;
 }

@@ -96,5 +96,5 @@ std::vector<Bullet*>* Enemy_Blue_4::shoot2() {
         if(shoot_timer==shoot_cd+interval*(total_t-1)) shoot_timer = 0;
         return new_bullets;
     }
-    return NULL;
+    return nullptr;
 }

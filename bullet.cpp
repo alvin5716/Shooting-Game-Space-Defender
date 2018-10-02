@@ -8,7 +8,7 @@ Bullet::Bullet(QString img, int radius, double x, double y, double xv, double yv
     :Character(img,50,50,(int)round(radius*2.2),(int)round(radius*2.2),1,radius,x,y,xv,yv,xa,ya)
 {
     terminal_v = 0;
-    this->data_head = NULL;
+    this->data_head = nullptr;
 }
 
 void Bullet::setVTerminal(double terminal_v) {
@@ -16,7 +16,7 @@ void Bullet::setVTerminal(double terminal_v) {
 }
 
 void Bullet::move() {
-    if(this->data_head!=NULL && this->data_head->skill()) {
+    if(this->data_head!=nullptr && this->data_head->skill()) {
         if(!this->data_head->isInfinite()) {
             BulletData* temp = this->data_head;
             this->data_head = temp->next();
@@ -33,14 +33,14 @@ void Bullet::move() {
     }
 }
 void Bullet::addData(BulletData* bullet_data) {
-    if(this->data_head==NULL) {
+    if(this->data_head==nullptr) {
         this->data_head = bullet_data;
         return;
     }
     BulletData* ptr=this->data_head;
-    while(ptr->next()!=NULL) ptr=ptr->next();
+    while(ptr->next()!=nullptr) ptr=ptr->next();
     ptr->setNext(bullet_data);
-    bullet_data->setNext(NULL);
+    bullet_data->setNext(nullptr);
 }
 // bullet time data
 Bullet* Bullet::addTimeData(int wait_time) {
@@ -93,4 +93,16 @@ Bullet* Bullet::addWallData(Character* player, double v, double a) {
     BulletData* bullet_data = new BulletDataWall(this,player,v,a);
     this->addData(bullet_data);
     return this;
+}
+Bullet::~Bullet() {
+    // clear all bullet data
+    if(this->data_head!=nullptr) {
+        BulletData *ptr = this->data_head;
+        while(ptr->next()!=nullptr) {
+            BulletData *temp = ptr;
+            ptr=ptr->next();
+            delete temp;
+        }
+        delete ptr;
+    }
 }

@@ -6,7 +6,7 @@
 Enemy_3_Blue_2::Enemy_3_Blue_2(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_3_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
-    room=NULL;
+    room=nullptr;
     mode=false;
     isBulletFaster=false;
     shoot_count=-1;
@@ -30,7 +30,7 @@ void Enemy_3_Blue_2::skill() {
         if(skill_timer<=200) ++skill_timer;
         //invisible room
         if(skill_timer>=200) {
-            if(room==NULL) {
+            if(room==nullptr) {
                 room = new Effect(":/res/magic_red.png",120,120,room_radius*2,room_radius*2,-1,player->getX(),player->getY());
                 room->setOpacity(0.6);
                 room->setZValue(-2);
@@ -188,5 +188,5 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
         }
     }
     if(new_bullets->size()>0) return new_bullets;
-    return NULL;
+    return nullptr;
 }

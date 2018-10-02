@@ -17,6 +17,8 @@ protected:
     BulletData* next_data;
     Bullet* bullet;
     bool infinite;
+private:
+    static int bulletdata_count;
 };
 
 #endif // BULLETDATA_H

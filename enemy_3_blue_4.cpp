@@ -106,5 +106,5 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
         ++shoot_timer_2;
     }
     if(new_bullets->size()>0) return new_bullets;
-    return NULL;
+    return nullptr;
 }

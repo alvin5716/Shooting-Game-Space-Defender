@@ -64,7 +64,7 @@ std::vector<Bullet*>* Enemy_3_Blue::shoot() {
         }
         return new_bullets;
     }
-    return NULL;
+    return nullptr;
 }
 void Enemy_3_Blue::redMagicShield() {
     this->showShield(":/res/magic_red.png",120,120);

@@ -10,9 +10,9 @@ Enemy_3_Blue_5::Enemy_3_Blue_5(QString img, int img_w, int img_h, int show_w, in
 {
     point+=10;
     angle=0;
-    for(int i=0;i<7;++i) fireballs[i]=NULL;
+    for(int i=0;i<7;++i) fireballs[i]=nullptr;
     setDisappearTime(5000);
-    centerball=NULL;
+    centerball=nullptr;
     randSeed=0;
     count=4;
     death_img=":/res/enemy15_3.png";
@@ -84,7 +84,7 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
                     cos = std::cos(angle+(i>wings/2?6.5:-6.5)*M_PI/10-(i-wings/2)*M_PI/10);
                     sin = std::sin(angle+(i>wings/2?6.5:-6.5)*M_PI/10-(i-wings/2)*M_PI/10);
                 }
-                new_bullet = fireballs[i] = new Bullet_Nether(QString(":/res/bullet_2_red.png"),bullet_radius,NULL,500,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = fireballs[i] = new Bullet_Nether(QString(":/res/bullet_2_red.png"),bullet_radius,nullptr,500,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 new_bullet->setInvulnerable();
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
@@ -109,7 +109,7 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
             bullet_v = -1.5;
             cos = std::cos(angle);
             sin = std::sin(angle);
-            new_bullet = centerball = new Bullet_Nether(QString(":/res/bullet_2_red.png"),bullet_radius,NULL,1000,shootXPos()-22*cos,shootYPos()-22*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = centerball = new Bullet_Nether(QString(":/res/bullet_2_red.png"),bullet_radius,nullptr,1000,shootXPos()-22*cos,shootYPos()-22*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             new_bullet->setVTerminal(1.6);
             new_bullet->setZValue(1);
             new_bullet->setInvulnerable();
@@ -122,10 +122,10 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
             bullet_a = 0.01;
             bullet_v = -1.5;
             for(int i=0;i<wings;++i) {
-                if(fireballs[i]!=NULL) {
+                if(fireballs[i]!=nullptr) {
                     cos = std::cos(angle);
                     sin = std::sin(angle);
-                    new_bullet = new Bullet_Nether(QString(":/res/bullet_red.png"),bullet_radius,NULL,1000,fireballs[i]->getX(),fireballs[i]->getY(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                    new_bullet = new Bullet_Nether(QString(":/res/bullet_red.png"),bullet_radius,nullptr,1000,fireballs[i]->getX(),fireballs[i]->getY(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                     new_bullet->setVTerminal(1.6);
                     new_bullet->fadein((i==wings/2)?100:500);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -152,5 +152,5 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
         }
     }
     if(new_bullets->size()>0) return new_bullets;
-    return NULL;
+    return nullptr;
 }

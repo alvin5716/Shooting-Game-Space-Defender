@@ -23,11 +23,11 @@ Laser::Laser(QString img, int radius, double angle, double omega, int lifetime, 
     preparing=true;
 }
 Character* Laser::testAttackedBy(Character* attacker) {
-    if(preparing||dying) return NULL;
+    if(preparing||dying) return nullptr;
     if(x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius) {
         dead=true;
     }
-    if(attacker!=NULL) {
+    if(attacker!=nullptr) {
         double x0=attacker->getX(), y0=attacker->getY(), slope=tan(angle), theta;
         theta = angleofvector(x0-x,y0-y);
         double angle_dif=angle-theta;
@@ -47,7 +47,7 @@ Character* Laser::testAttackedBy(Character* attacker) {
             return attacker;
         }
     }
-    return NULL;
+    return nullptr;
 }
 void Laser::move() {
     //dead fade out

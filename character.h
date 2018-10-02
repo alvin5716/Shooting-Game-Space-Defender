@@ -41,6 +41,7 @@ public:
     virtual double imgY() const;
     void bounceAtX();
     void bounceAtY();
+    ~Character();
 signals:
     void deadSignal();
     void deadSignal(int, int);
@@ -63,6 +64,8 @@ protected:
     double x, y, xv, yv, xa, ya;
     bool dead, invulnerable, whiteized, face_to_left, canBeMirrored, attackable, floatable;
     QString img;
+private:
+    static int character_count;
 };
 
 #endif // CHARACTER_H

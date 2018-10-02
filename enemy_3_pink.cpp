@@ -39,5 +39,5 @@ std::vector<Bullet*>* Enemy_3_Pink::shoot() {
         }
         return new_bullets;
     }
-    return NULL;
+    return nullptr;
 }

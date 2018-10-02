@@ -30,5 +30,5 @@ std::vector<Bullet*>* Enemy_3_Yellow::shoot() {
         shoot_timer = 0;
         return new_bullets;
     }
-    return NULL;
+    return nullptr;
 }

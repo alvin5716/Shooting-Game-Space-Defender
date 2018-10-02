@@ -1,9 +1,13 @@
 #include "bulletdata.h"
+#include <QDebug>
+
+int BulletData::bulletdata_count = 0;
 
 BulletData::BulletData(Bullet* bullet)
-    :next_data(NULL), bullet(bullet), infinite(false)
+    :next_data(nullptr), bullet(bullet), infinite(false)
 {
-
+    ++bulletdata_count;
+    qDebug() << "bullet data count:" << bulletdata_count;
 }
 bool BulletData::isInfinite() const{
     return infinite;
@@ -15,5 +19,6 @@ BulletData* BulletData::next() const {
     return next_data;
 }
 BulletData::~BulletData() {
-
+    --bulletdata_count;
+    qDebug() << "bullet data count:" << bulletdata_count;
 }

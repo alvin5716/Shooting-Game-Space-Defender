@@ -13,7 +13,7 @@ void Bullet_Nether::move() {
     //move object
     Bullet::move();
     //attack by nether center
-    if(nether_center!=NULL) {
+    if(nether_center!=nullptr) {
         if(sqrt(pow(nether_center->getX() - x,2)+pow(nether_center->getY() - y,2)) <= nether_center->getRadius() + radius) {
             if(health>0 && !invulnerable) health-=1;
             if(health<=0 && !invulnerable) {
@@ -34,14 +34,14 @@ Character* Bullet_Nether::testAttackedBy(std::vector<Character*> & attackers) {
             return attackers.at(i);
         }
     }
-    return NULL;
+    return nullptr;
 }
 Character* Bullet_Nether::testAttackedBy(Character* attacker) {
     if(sqrt(pow(attacker->getX() - x,2)+pow(attacker->getY() - y,2)) <= attacker->getRadius() + radius) {
         attacked();
         return attacker;
     }
-    return NULL;
+    return nullptr;
 }
 void Bullet_Nether::setFadeoutTime(int time) {
     this->fadeout_time=time;

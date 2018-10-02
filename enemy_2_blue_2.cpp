@@ -87,5 +87,5 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
         shoot_timer = 0;
         return new_bullets;
     }
-    return NULL;
+    return nullptr;
 }

@@ -28,5 +28,5 @@ std::vector<Bullet*>* Enemy_3_Red::shoot() {
         if(shoot_timer==shoot_cd+108) shoot_timer = 0;
         return new_bullets;
     }
-    return NULL;
+    return nullptr;
 }

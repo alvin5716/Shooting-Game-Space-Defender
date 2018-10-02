@@ -6,6 +6,8 @@
 #include <QTimer>
 #include "game.h"
 
+int Character::character_count=0;
+
 Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya)
     :radius(radius), health(health),
       img_w(img_w), img_h(img_h), show_w(show_w), show_h(show_h), img_timer(0),
@@ -22,6 +24,8 @@ Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, 
     attackable=true;
     floatable=false;
     float_timer=0;
+    ++character_count;
+    qDebug() << "character count:" << character_count;
 }
 void Character::setPosition(double x, double y) {
     this->x=x;
@@ -72,10 +76,13 @@ void Character::img_move() {
     if(floating()) {
         setPos(imgX(),imgY()+float_distance*std::sin((double)float_timer/125*M_PI));
         if(++float_timer>=250) float_timer=0;
-    }
-    else {
+    } else if(floatable) {
+        setPos(imgX(),imgY()+float_distance*std::sin((double)float_timer/125*M_PI));
+        if(float_timer%125==0) float_timer=0;
+        else if(float_timer%125<=62) --float_timer;
+        else ++float_timer;
+    } else {
         setPos(imgX(),imgY());
-        float_timer=0;
     }
 }
 double Character::imgX() const{
@@ -92,6 +99,7 @@ void Character::bounceAtY() {
 }
 void Character::setFloatable(bool floatable) {
     this->floatable=floatable;
+    float_timer=0;
 }
 void Character::moveTo(double x, double y, double t) {
     //use physics formula
@@ -108,19 +116,19 @@ Character* Character::testAttackedBy(std::vector<Character*> & attackers) {
             return attackers.at(i);
         }
     }
-    return NULL;
+    return nullptr;
 }
 Character* Character::testAttackedBy(Character* attacker) {
     if(x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius) {
         dead=true;
     }
-    if(attacker!=NULL) {
+    if(attacker!=nullptr) {
         if(attacker->isAttackable() && (sqrt(pow(attacker->getX() - x,2)+pow(attacker->getY() - y,2)) <= attacker->getRadius() + radius)) {
             attacked();
             return attacker;
         }
     }
-    return NULL;
+    return nullptr;
 }
 void Character::attacked() {
     if(health>0 && !invulnerable) {
@@ -231,4 +239,8 @@ void Character::setFaceToLeft(bool face_to_left) {
 }
 void Character::setImg(QString img) {
     this->img=img;
+}
+Character::~Character() {
+    --character_count;
+    qDebug() << "character count:" << character_count;
 }

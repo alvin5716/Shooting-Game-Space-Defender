@@ -7,7 +7,7 @@ Enemy_3_Blue_1::Enemy_3_Blue_1(QString img, int img_w, int img_h, int show_w, in
     :Enemy_3_Blue(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     mode=false;
-    magicstone=NULL;
+    magicstone=nullptr;
     shoot_small_bullets=false;
     triggered_count=0;
 }
@@ -127,7 +127,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         if(shoot_timer==shoot_cd+interval*2) shoot_timer = 0;
     }
     if(new_bullets->size()>0) return new_bullets;
-    return NULL;
+    return nullptr;
 }
 void Enemy_3_Blue_1::shootSmallBullet() {
     if(triggered_count<2) ++triggered_count;

@@ -49,7 +49,7 @@ std::vector<Bullet*>* Enemy_2_Blue::shoot() {
         }
         return new_bullets;
     }
-    return NULL;
+    return nullptr;
 }
 QString Enemy_2_Blue::rainbowBullet(int i) const{
     QString str;

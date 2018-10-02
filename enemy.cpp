@@ -18,7 +18,7 @@ Enemy::Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Characte
     already_enter=false;
     boss=false;
     secPhase=false;
-    shield=NULL;
+    shield=nullptr;
     connect(this,SIGNAL(deadSignal()),this,SLOT(diedFromPlayer()));
     floatable=true;
     death_img="";
@@ -33,11 +33,11 @@ void Enemy::outOfFrame() {
 }
 std::vector<Bullet*>* Enemy::shoot() {
     if(shoot_timer>=shoot_cd) shoot_timer = 0;
-    return NULL;
+    return nullptr;
 }
 std::vector<Bullet*>* Enemy::shoot2() {
     if(shoot_timer>=shoot_cd) shoot_timer = 0;
-    return NULL;
+    return nullptr;
 }
 Shield* Enemy::showShield(QString str,int img_w, int img_h) {
     shield = new Shield(str,img_w,img_h,radius*3.2,radius*3.2,this,-1,x,y);
@@ -49,7 +49,7 @@ Shield* Enemy::showShield(QString str,int img_w, int img_h) {
 }
 void Enemy::setFloatable(bool floatable) {
     Character::setFloatable(floatable);
-    if(this->shield!=NULL) this->shield->setFloatable(floatable);
+    if(this->shield!=nullptr) this->shield->setFloatable(floatable);
 }
 void Enemy::move() {
     //move object
@@ -103,5 +103,5 @@ Effect* Enemy::disappear() const {
     return corpse;
 }
 Enemy::~Enemy() {
-    if(shield!=NULL) delete shield;
+    if(shield!=nullptr) delete shield;
 }

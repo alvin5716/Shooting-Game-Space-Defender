@@ -10,7 +10,7 @@ Player::Player(int health, int radius, int shoot_cd, double x, double y, double 
 {
     this->shoot_cd=shoot_cd;
     shooting=false;
-    invulnerable_timer=NULL;
+    invulnerable_timer=nullptr;
     shoot_timer=0;
     skill_cd=skill_timer=375;
     vulnerable_func_count=0;
@@ -27,17 +27,17 @@ void Player::move() {
     if(shoot_timer<shoot_cd) ++shoot_timer;
     //skill cool down
     if(skill_timer<skill_cd) ++skill_timer;
-    if(invulnerable_timer==NULL) invulnerable = (skill_timer<skill_cd)?true:false;
+    if(invulnerable_timer==nullptr) invulnerable = (skill_timer<skill_cd)?true:false;
 }
 Character* Player::testAttackedBy(std::vector<Character*> & attackers) {
-    if(invulnerable) return NULL;
+    if(invulnerable) return nullptr;
     for(int i=0;i<(int)attackers.size();++i) {
         if(attackers.at(i)->isAttackable() && (sqrt(pow(attackers.at(i)->getX() - x,2)+pow(attackers.at(i)->getY() - y,2)) <= attackers.at(i)->getRadius() + radius)) {
             attacked();
             return attackers.at(i);
         }
     }
-    return NULL;
+    return nullptr;
 }
 void Player::attacked() {
     if(health>0 && !invulnerable) {
@@ -52,9 +52,9 @@ void Player::attacked() {
 }
 void Player::setInvulnerable() {
     invulnerable=true;
-    if(invulnerable_timer!=NULL) {
+    if(invulnerable_timer!=nullptr) {
         delete invulnerable_timer;
-        invulnerable_timer=NULL;
+        invulnerable_timer=nullptr;
     }
     invulnerable_timer = new QTimer;
     invulnerable_timer->start(400);
@@ -72,18 +72,18 @@ void Player::setVulnerable() {
         if(health<=5) emit healthColorChange("white");
         else healthColorChange("yellow");
     }
-    if(i==7 && invulnerable_timer!=NULL) {
+    if(i==7 && invulnerable_timer!=nullptr) {
         invulnerable=false;
         delete invulnerable_timer;
-        invulnerable_timer=NULL;
+        invulnerable_timer=nullptr;
     }
     if(++i>7) i=0;
 }
 void Player::gameEndSetting() {
     invulnerable=true;
-    if(invulnerable_timer!=NULL) {
+    if(invulnerable_timer!=nullptr) {
         delete invulnerable_timer;
-        invulnerable_timer=NULL;
+        invulnerable_timer=nullptr;
     }
 }
 Bullet *Player::shoot() {
@@ -92,7 +92,7 @@ Bullet *Player::shoot() {
         Bullet *new_bullet = new Bullet(QString(":/res/bullet_white.png"),3,x,y-show_h/2,0,-6);
         return new_bullet;
     }
-    return NULL;
+    return nullptr;
 }
 bool Player::isShooting() const {
     return shooting;

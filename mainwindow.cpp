@@ -14,9 +14,9 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    timer(NULL),freezeTimer(NULL),
+    timer(nullptr),freezeTimer(nullptr),
     ticking(false),left(false),right(false),up(false),down(false),use_skill(false),
-    player(NULL),dot(NULL),secret(0),oriImg2(NULL)
+    player(nullptr),dot(nullptr),secret(0),oriImg2(nullptr)
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(Game::GamePageMenu);
@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
     //qrand
-    qsrand(time(NULL));
+    qsrand(time(nullptr));
     //button
     connect(ui->startButton,SIGNAL(clicked(bool)),this,SLOT(levelSelect()));
     connect(ui->QuitButton,SIGNAL(clicked(bool)),qApp,SLOT(quit()));
@@ -130,7 +130,7 @@ void MainWindow::start() {
     cutImg = new QPixmap(150,172);
     oriImg = new QPixmap(":/res/bg_normal.png");
     //player
-    if(player!=NULL) delete player;
+    if(player!=nullptr) delete player;
     player = new Player(5,5,15,Game::FrameWidth/2,Game::FrameHeight-100);
     isPlayerPosHigh=false;
     ui->PlayerLife->display(player->getHealth());
@@ -140,14 +140,14 @@ void MainWindow::start() {
     connect(player,SIGNAL(healthColorChange(QString)),this,SLOT(healthColorChange(QString)));
     player->healthColorChange("white");
     //dot
-    if(dot!=NULL) delete dot;
+    if(dot!=nullptr) delete dot;
     dot = new Shield(":/res/dot.png",50,50,10,10,player,-1,player->getX(),player->getY());
     dot->setZValue(100);
     newEffectInit(dot);
     //timer
     gametime=tick=Game::StartTick;
     ticking=true;
-    if(timer!=NULL) delete timer;
+    if(timer!=nullptr) delete timer;
     timer=new QTimer;
     timer->start(8); //125 tick per sec
     connect(timer,SIGNAL(timeout()),this,SLOT(doTick()));
@@ -217,7 +217,7 @@ void MainWindow::doTick() {
         QPainter merger(cutImg);
         int init = (450-172)-((tick-boss_tick)/4+1);
         if(init<0) init = 0;
-        if(oriImg2!=NULL) merger.drawPixmap(QRect(0,0,150,172),*oriImg2,QRect(0,init,150,172));
+        if(oriImg2!=nullptr) merger.drawPixmap(QRect(0,0,150,172),*oriImg2,QRect(0,init,150,172));
         else merger.drawPixmap(QRect(0,0,150,172),QPixmap(strBossBG),QRect(0,0,150,172));
     }
     background->setPixmap(cutImg->scaled(Game::FrameWidth,Game::FrameHeight));
@@ -269,7 +269,7 @@ void MainWindow::doTick() {
         if(player->isShooting()) { //player
             //shoot
             Bullet* new_player_bullet = player->shoot();
-            if(new_player_bullet!=NULL) {
+            if(new_player_bullet!=nullptr) {
                 scene->addItem(new_player_bullet);
                 player_bullets.push_back(new_player_bullet);
                 connect(this,SIGNAL(doMove()),new_player_bullet,SLOT(move()));
@@ -279,7 +279,7 @@ void MainWindow::doTick() {
         //damaged
         std::vector<Character*> attackers(enemies.begin(),enemies.end());
         Character* real_attacker = player->testAttackedBy(attackers);
-        if(real_attacker!=NULL) {
+        if(real_attacker!=nullptr) {
             ui->PlayerLife->display(player->getHealth());
             sceneVibrate();
             redFlash();
@@ -290,7 +290,7 @@ void MainWindow::doTick() {
             std::vector<Bullet*>* new_enemy_bullets;
             if(!(enemies.at(i)->isBoss() && enemies.at(i)->isSecPhase())) new_enemy_bullets = enemies.at(i)->shoot();
             else new_enemy_bullets = enemies.at(i)->shoot2();
-            if(new_enemy_bullets!=NULL) {
+            if(new_enemy_bullets!=nullptr) {
                 for (std::vector<Bullet*>::iterator j=(*new_enemy_bullets).begin();j!=(*new_enemy_bullets).end();++j) {
                     scene->addItem(*j);
                     enemy_bullets.push_back(*j);
@@ -308,13 +308,13 @@ void MainWindow::doTick() {
             //damaged
             std::vector<Character*> attackers(enemies.begin(),enemies.end());
             Character* real_attacker = player_bullets.at(i)->testAttackedBy(attackers);
-            if(real_attacker!=NULL) real_attacker->attacked();
+            if(real_attacker!=nullptr) real_attacker->attacked();
         }
         for(int i=0;i<(int)enemy_bullets.size();++i) { //enemy bullets
             //damaged
             Character* attacker = player;
             Character* real_attacker = enemy_bullets.at(i)->testAttackedBy(attacker);
-            if(real_attacker!=NULL) {
+            if(real_attacker!=nullptr) {
                 if(!player->isInvulnerable()) {
                     sceneVibrate();
                     redFlash();
@@ -539,7 +539,7 @@ void MainWindow::doTick() {
         case 8852: //8852, END
             ui->BossLives->hide();
             ui->BossSkill->hide();
-            if(player!=NULL) player->gameEndSetting();
+            if(player!=nullptr) player->gameEndSetting();
             break;
         case 9400: //9400, WIN LIST
             ticking=false;
@@ -786,7 +786,7 @@ void MainWindow::doTick() {
         case 13750: //13750, END
             ui->BossLives->hide();
             ui->BossSkill->hide();
-            if(player!=NULL) player->gameEndSetting();
+            if(player!=nullptr) player->gameEndSetting();
             break;
         case 14425: //14425, WIN LIST
             ticking=false;
@@ -1061,7 +1061,7 @@ void MainWindow::doTick() {
         case 11927: //11927, END
             ui->BossLives->hide();
             ui->BossSkill->hide();
-            if(player!=NULL) player->gameEndSetting();
+            if(player!=nullptr) player->gameEndSetting();
             break;
         case 12600: //12600, WIN LIST
             ticking=false;
@@ -1112,9 +1112,9 @@ void MainWindow::backToMenu() {
     ticking=false;
     //kill timer
     delete timer;
-    timer=NULL;
+    timer=nullptr;
     delete freezeTimer;
-    freezeTimer=NULL;
+    freezeTimer=nullptr;
     //kil all objects
     for(std::vector<Bullet*>::iterator i=player_bullets.begin();i!=player_bullets.end();) {
         delete (*i);
@@ -1129,16 +1129,16 @@ void MainWindow::backToMenu() {
         i = enemy_bullets.erase(i);
     }
     delete player;
-    player=NULL;
+    player=nullptr;
     emit killEffects();
-    dot=NULL;
+    dot=nullptr;
     //menu
     ui->stackedWidget->setCurrentIndex(Game::GamePageMenu);
     //game state
     gamestate=Game::GameStateMenu;
 }
 void MainWindow::newEffectInit(Effect* new_effect) {
-    if(new_effect!=NULL) {
+    if(new_effect!=nullptr) {
         scene->addItem(new_effect);
         connect(this,SIGNAL(doMove()),new_effect,SLOT(move()));
         connect(this,SIGNAL(doImgMove()),new_effect,SLOT(img_move()));
@@ -1146,7 +1146,7 @@ void MainWindow::newEffectInit(Effect* new_effect) {
     }
 }
 void MainWindow::newEnemyInit(Enemy* new_enemy) {
-    if(new_enemy!=NULL) {
+    if(new_enemy!=nullptr) {
         scene->addItem(new_enemy);
         enemies.push_back(new_enemy);
         connect(this,SIGNAL(doMove()),new_enemy,SLOT(move()));
@@ -1224,7 +1224,7 @@ void MainWindow::pointAdd(int point) {
 void MainWindow::tickFreeze() {
     ticking=false;
     ++tick;
-    if(freezeTimer==NULL) freezeTimer = new QTimer;
+    if(freezeTimer==nullptr) freezeTimer = new QTimer;
     freezeTimer->start(100);
     connect(freezeTimer,SIGNAL(timeout()),this,SLOT(tickContinueCheck()));
 }
@@ -1237,9 +1237,9 @@ bool MainWindow::tickCheck(unsigned int tick_init, unsigned int interval, unsign
     return false;
 }
 void MainWindow::tickContinueCheck() {
-    if(enemies.size()==0 && freezeTimer!=NULL) {
+    if(enemies.size()==0 && freezeTimer!=nullptr) {
         delete freezeTimer;
-        freezeTimer = NULL;
+        freezeTimer = nullptr;
         ticking=true;
     }
 }
@@ -1260,11 +1260,11 @@ void MainWindow::redFlash() {
     red_flash->flash(true);
 }
 void MainWindow::sceneVibrate(short vibrate_count) {
-    static QPropertyAnimation* vibrateAni=NULL;
+    static QPropertyAnimation* vibrateAni=nullptr;
     static short vibrate_count_temp=0;
     vibrate_count_temp = vibrate_count+1;
     if(vibrate_count<10) {
-        if(vibrateAni!=NULL) delete vibrateAni;
+        if(vibrateAni!=nullptr) delete vibrateAni;
         vibrateAni = new QPropertyAnimation(scene,"sceneRect");
         vibrateAni->setDuration((50+vibrate_count*vibrate_count*2.2)/((vibrate_count==0||vibrate_count==9)?2:1));
         vibrateAni->setEasingCurve(vibrate_count==9?QEasingCurve::InSine:(vibrate_count==0?QEasingCurve::OutSine:QEasingCurve::InOutSine));
@@ -1279,8 +1279,8 @@ void MainWindow::sceneVibrate(short vibrate_count) {
         });
         vibrateAni->start(QAbstractAnimation::KeepWhenStopped);
     } else {
-        if(vibrateAni!=NULL) delete vibrateAni;
-        vibrateAni=NULL;
+        if(vibrateAni!=nullptr) delete vibrateAni;
+        vibrateAni=nullptr;
     }
 }
 void MainWindow::keyPressEvent(QKeyEvent *e) {

@@ -37,5 +37,5 @@ std::vector<Bullet*>* Enemy_2_Yellow::shoot() {
         mode=!mode;
         return new_bullets;
     }
-    return NULL;
+    return nullptr;
 }
