@@ -17,6 +17,21 @@ BulletDataContinuous::BulletDataContinuous(Bullet* bullet, int rotate_xc, int ro
     this->data.rotateAroundPoint.rotate_ac=rotate_ac;
     this->data.rotateAroundPoint.clockwise=clockwise;
 }
+BulletDataContinuous::BulletDataContinuous(Bullet* bullet, Character* gravity_center, double gravity_ac)
+    :BulletData(bullet), type(BulletDataContinuousType::gravityFromCharacter)
+{
+    this->infinite = true;
+    this->data.gravityFromCharacter.gravity_center=gravity_center;
+    this->data.gravityFromCharacter.gravity_ac=gravity_ac;
+}
+BulletDataContinuous::BulletDataContinuous(Bullet* bullet, int gravity_xc, int gravity_yc, double gravity_ac)
+    :BulletData(bullet), type(BulletDataContinuousType::gravityFromPoint)
+{
+    this->infinite = true;
+    this->data.gravityFromPoint.gravity_xc=gravity_xc;
+    this->data.gravityFromPoint.gravity_yc=gravity_yc;
+    this->data.gravityFromPoint.gravity_ac=gravity_ac;
+}
 BulletDataContinuous::BulletDataContinuous(Bullet* bullet, int T, int r, bool sin_or_cos)
     :BulletData(bullet), type(BulletDataContinuousType::moveAsTrigFunction)
 {
@@ -63,6 +78,28 @@ bool BulletDataContinuous::skill() {
         cos = std::cos(angle);
         sin = std::sin(angle);
         this->bullet->setAcceleration(this->data.rotateAroundPoint.rotate_ac*cos,this->data.rotateAroundPoint.rotate_ac*sin);
+        break;
+    }
+    case BulletDataContinuousType::gravityFromCharacter:
+    {
+        double sin, cos, angle;
+        angle = this->bullet->angleofvector(
+                    this->data.gravityFromCharacter.gravity_center->getX()-this->bullet->getX(),
+                    this->data.gravityFromCharacter.gravity_center->getY()-this->bullet->getY());
+        cos = std::cos(angle);
+        sin = std::sin(angle);
+        this->bullet->setAcceleration(this->data.gravityFromCharacter.gravity_ac*cos,this->data.gravityFromCharacter.gravity_ac*sin);
+        break;
+    }
+    case BulletDataContinuousType::gravityFromPoint:
+    {
+        double sin, cos, angle;
+        angle = this->bullet->angleofvector(
+                    this->data.gravityFromPoint.gravity_xc-this->bullet->getX(),
+                    this->data.gravityFromPoint.gravity_yc-this->bullet->getY());
+        cos = std::cos(angle);
+        sin = std::sin(angle);
+        this->bullet->setAcceleration(this->data.gravityFromPoint.gravity_ac*cos,this->data.gravityFromPoint.gravity_ac*sin);
         break;
     }
     case BulletDataContinuousType::moveAsTrigFunction:
