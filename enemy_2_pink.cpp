@@ -23,7 +23,7 @@ std::vector<Bullet*>* Enemy_2_Pink::shoot() {
             cos = std::cos(angle+i*M_PI/(bullet_count/2)+(mode?-1:1)*t*M_PI/30);
             sin = std::sin(angle+i*M_PI/(bullet_count/2)+(mode?-1:1)*t*M_PI/30);
             new_bullet = new Bullet(QString(":/res/bullet_2_pink.png"),bullet_radius,x,y+radius*3/4,bullet_v*cos,bullet_v*sin);
-            new_bullet->rotateAround(x,y+radius*3/4,0.01,mode);
+            new_bullet->rotateAround(x,y+radius*3/4,0.005,mode);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
