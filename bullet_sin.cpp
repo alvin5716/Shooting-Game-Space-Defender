@@ -16,6 +16,6 @@ void Bullet_Sin::move() {
         setPosition(xc+r*std::sin(2*M_PI*t/T)*std::cos(angle),yc+r*std::sin(2*M_PI*t/T)*std::sin(angle));
     else
         setPosition(xc-r*std::sin(2*M_PI*t/T)*std::cos(angle),yc-r*std::sin(2*M_PI*t/T)*std::sin(angle));
-    setSpeed(xv+xa,yv+ya);
     if(++t>T) t=0;
+    setSpeed(xv+xa,yv+ya);
 }

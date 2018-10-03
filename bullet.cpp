@@ -10,6 +10,7 @@ Bullet::Bullet(QString img, int radius, double x, double y, double xv, double yv
 {
     terminal_v = 0;
     this->data_head = nullptr;
+    this->setPositionByData = false;
 }
 
 void Bullet::setVTerminal(double terminal_v) {
@@ -29,7 +30,7 @@ void Bullet::move() {
         Character::move();
     } else {
         //move object
-        setPosition(x+xv,y+yv);
+        if(!setPositionByData) setPosition(x+xv,y+yv);
         if((sqrt(pow(xv,2)+pow(yv,2))<=terminal_v && sqrt(pow(xv+xa,2)+pow(yv+ya,2))<=terminal_v) || (sqrt(pow(xv,2)+pow(yv,2))>=terminal_v && sqrt(pow(xv+xa,2)+pow(yv+ya,2))>=terminal_v)) setSpeed(xv+xa,yv+ya);
     }
 }
@@ -103,6 +104,18 @@ Bullet* Bullet::rotateAround(Character* rotate_center, double rotate_ac, bool cl
 }
 Bullet* Bullet::rotateAround(int rotate_xc, int rotate_yc, double rotate_ac, bool clockwise) {
     BulletData* bullet_data = new BulletDataContinuous(this,rotate_xc,rotate_yc,rotate_ac,clockwise);
+    this->addData(bullet_data);
+    return this;
+}
+Bullet* Bullet::moveAsTrigFunction(int T, int r, bool sin_or_cos) {
+    this->setPositionByData=true;
+    BulletData* bullet_data = new BulletDataContinuous(this,T,r,sin_or_cos);
+    this->addData(bullet_data);
+    return this;
+}
+Bullet* Bullet::moveAsPeriodicFunction(int T, int r, double (*periodic_func)(double)) {
+    this->setPositionByData=true;
+    BulletData* bullet_data = new BulletDataContinuous(this,T,r,periodic_func);
     this->addData(bullet_data);
     return this;
 }
