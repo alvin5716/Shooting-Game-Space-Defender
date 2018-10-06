@@ -1086,6 +1086,8 @@ void MainWindow::doTick() {
     case 4:
         switch(tick) {
         case 500:
+            new_enemy = new Enemy(QString(":/res/enemy16.png"),199,153,156,120,player,5,60,1,1,Game::FrameWidth/2,-40,0,2.2,0,-0.01,false,true);
+            newEnemyInit(new_enemy);
             break;
         }
         break;
