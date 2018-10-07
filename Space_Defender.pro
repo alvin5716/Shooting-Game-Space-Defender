@@ -72,7 +72,8 @@ SOURCES += \
     bulletdatatime.cpp \
     bulletdatawall.cpp \
     bulletdatacontinuous.cpp \
-    enemy_4.cpp
+    enemy_4.cpp \
+    enemy_4_green.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -125,7 +126,8 @@ HEADERS += \
     bulletdatatime.h \
     bulletdatawall.h \
     bulletdatacontinuous.h \
-    enemy_4.h
+    enemy_4.h \
+    enemy_4_green.h
 
 FORMS += \
         mainwindow.ui

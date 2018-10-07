@@ -1085,9 +1085,11 @@ void MainWindow::doTick() {
     //level 4
     case 4:
         switch(tick) {
-        case 500:
-            new_enemy = new Enemy_4(QString(":/res/enemy16.png"),199,153,156,120,player,5,60,1,1,Game::FrameWidth/2,-40,0,2.2,0,-0.01,false,true);
-            newEnemyInit(new_enemy);
+        case 500: case 500+450: case 500+450*2:
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_4_Green(QString(":/res/enemy16.png"),199,153,156,120,player,5,40,80,125,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
+                newEnemyInit(new_enemy);
+            }
             break;
         }
         break;
