@@ -1091,6 +1091,18 @@ void MainWindow::doTick() {
                 newEnemyInit(new_enemy);
             }
             break;
+        case 2200: case 2200+1000: case 2200+1000*2:
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_4_Red(QString(":/res/enemy17.png"),199,153,156,120,player,5,40,270,400,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
+                newEnemyInit(new_enemy);
+            }
+            break;
+        case 5200:
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_4_Yellow(QString(":/res/enemy18.png"),199,153,156,120,player,20,40,350,200,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
+                newEnemyInit(new_enemy);
+            }
+            break;
         }
         break;
     default:

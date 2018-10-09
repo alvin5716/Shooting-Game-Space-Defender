@@ -4,7 +4,6 @@ Enemy_4_Green::Enemy_4_Green(QString img, int img_w, int img_h, int show_w, int 
 :Enemy_4(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     move_speed = 1;
-    prep_timer = shoot_cd_init;
 }
 
 void Enemy_4_Green::skill() {

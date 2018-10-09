@@ -38,6 +38,8 @@
 #include "enemy_3_blue_4.h"
 #include "enemy_3_blue_5.h"
 #include "enemy_4_green.h"
+#include "enemy_4_red.h"
+#include "enemy_4_yellow.h"
 #include <QKeyEvent>
 #include <vector>
 #include "flash.h"

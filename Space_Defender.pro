@@ -73,7 +73,9 @@ SOURCES += \
     bulletdatawall.cpp \
     bulletdatacontinuous.cpp \
     enemy_4.cpp \
-    enemy_4_green.cpp
+    enemy_4_green.cpp \
+    enemy_4_red.cpp \
+    enemy_4_yellow.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -127,7 +129,9 @@ HEADERS += \
     bulletdatawall.h \
     bulletdatacontinuous.h \
     enemy_4.h \
-    enemy_4_green.h
+    enemy_4_green.h \
+    enemy_4_red.h \
+    enemy_4_yellow.h
 
 FORMS += \
         mainwindow.ui
