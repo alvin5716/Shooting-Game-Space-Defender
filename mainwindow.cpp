@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(Game::GamePageMenu);
+    this->setWindowState(Qt::WindowFullScreen);
     //boss objects
     bossHealthOpacityEff = new QGraphicsOpacityEffect(this);
     bossLivesOpacityEff = new QGraphicsOpacityEffect(this);
@@ -1099,9 +1100,19 @@ void MainWindow::doTick() {
             break;
         case 5200:
             for(int i=0;i<2;++i) {
-                new_enemy = new Enemy_4_Yellow(QString(":/res/enemy18.png"),199,153,156,120,player,20,40,350,200,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
+                new_enemy = new Enemy_4_Yellow(QString(":/res/enemy18.png"),199,153,156,120,player,12,40,400,200,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
                 newEnemyInit(new_enemy);
             }
+            tickFreeze();
+            break;
+        case 5500: case 5500+300: case 5500+300*2: case 5500+300*3: case 5500+300*4: case 5500+300*5: case 5500+300*6: case 5500+300*7: case 5500+300*8: case 5500+300*9:
+            new_enemy = new Enemy_4_Green(QString(":/res/enemy16.png"),199,153,156,120,player,7,40,80,125,((tick-5500)/200%2==0)?-40:Game::FrameWidth+40,-40,((tick-5500)/200%2==0)?1.7:-1.7,1.7,((tick-5500)/200%2==0)?-0.007:0.007,-0.007,false,true);
+            newEnemyInit(new_enemy);
+            if(tick==5500+300*9) tickFreeze();
+            break;
+        case 6150:
+            new_enemy = new Enemy_4_Yellow(QString(":/res/enemy18.png"),199,153,156,120,player,20,40,350,200,Game::FrameWidth/2,-40,0,1.7,0,-0.007,false,true);
+            newEnemyInit(new_enemy);
             break;
         }
         break;

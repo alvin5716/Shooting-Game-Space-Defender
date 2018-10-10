@@ -75,7 +75,8 @@ SOURCES += \
     enemy_4.cpp \
     enemy_4_green.cpp \
     enemy_4_red.cpp \
-    enemy_4_yellow.cpp
+    enemy_4_yellow.cpp \
+    enemy_4_pink.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -131,7 +132,8 @@ HEADERS += \
     enemy_4.h \
     enemy_4_green.h \
     enemy_4_red.h \
-    enemy_4_yellow.h
+    enemy_4_yellow.h \
+    enemy_4_pink.h
 
 FORMS += \
         mainwindow.ui

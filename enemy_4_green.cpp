@@ -3,7 +3,7 @@
 Enemy_4_Green::Enemy_4_Green(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
 :Enemy_4(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
-    move_speed = 1;
+    move_speed = 0.85;
 }
 
 void Enemy_4_Green::skill() {
@@ -11,6 +11,7 @@ void Enemy_4_Green::skill() {
         --prep_timer;
         return;
     }
+    setVulnerable();
     double angle = angleofvector(player->getX()-x,player->getY()-y);
     setSpeed(move_speed*std::cos(angle),move_speed*std::sin(angle));
 }
