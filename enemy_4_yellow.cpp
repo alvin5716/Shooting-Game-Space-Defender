@@ -5,6 +5,7 @@ Enemy_4_Yellow::Enemy_4_Yellow(QString img, int img_w, int img_h, int show_w, in
 :Enemy_4(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     move_speed=0.4;
+    setInvulnerable();
 }
 
 void Enemy_4_Yellow::skill() {

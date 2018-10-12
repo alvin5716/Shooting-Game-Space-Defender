@@ -28,6 +28,7 @@ public slots:
     void diedFromPlayer();
 signals:
     void summonEffect(Effect*);
+    void summonEnemy(Enemy*);
     void pointGive(int);
     void shakeScreen();
 protected:

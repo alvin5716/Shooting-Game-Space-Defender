@@ -40,6 +40,7 @@
 #include "enemy_4_green.h"
 #include "enemy_4_red.h"
 #include "enemy_4_yellow.h"
+#include "enemy_4_pink.h"
 #include <QKeyEvent>
 #include <vector>
 #include "flash.h"
@@ -58,8 +59,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
-    void newEnemyInit(Enemy* new_enemy);
-    void newBossInit(Enemy* new_boss);
     void newMagicEffect(int show_w, int show_h, double x, double y, int lifetime=350);
     void tickFreeze();
     bool tickCheck(unsigned int tick);
@@ -96,6 +95,8 @@ private:
     bool isPlayerPosHigh;
 
 private slots:
+    void newEnemyInit(Enemy* new_enemy);
+    void newBossInit(Enemy* new_boss);
     void newEffectInit(Effect* new_effect);
     void levelSelect();
     void start();

@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(Game::GamePageMenu);
-    this->setWindowState(Qt::WindowFullScreen);
+    //this->setWindowState(Qt::WindowFullScreen);
     //boss objects
     bossHealthOpacityEff = new QGraphicsOpacityEffect(this);
     bossLivesOpacityEff = new QGraphicsOpacityEffect(this);
@@ -1114,6 +1114,12 @@ void MainWindow::doTick() {
             new_enemy = new Enemy_4_Yellow(QString(":/res/enemy18.png"),199,153,156,120,player,20,40,350,200,Game::FrameWidth/2,-40,0,1.7,0,-0.007,false,true);
             newEnemyInit(new_enemy);
             break;
+        case 8600: case 8600+1000: case 8600+1000*2:
+            for(int i=0;i<2;++i) {
+                new_enemy = new Enemy_4_Pink(QString(":/res/enemy19.png"),199,153,156,120,player,5,40,270,400,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
+                newEnemyInit(new_enemy);
+            }
+            break;
         }
         break;
     default:
@@ -1179,6 +1185,8 @@ void MainWindow::newEnemyInit(Enemy* new_enemy) {
         connect(this,SIGNAL(doMove()),new_enemy,SLOT(move()));
         connect(this,SIGNAL(doImgMove()),new_enemy,SLOT(img_move()));
         connect(new_enemy,SIGNAL(pointGive(int)),this,SLOT(pointAdd(int)));
+        connect(new_enemy,SIGNAL(summonEffect(Effect*)),this,SLOT(newEffectInit(Effect*)));
+        connect(new_enemy,SIGNAL(summonEnemy(Enemy*)),this,SLOT(newEnemyInit(Enemy*)));
     }
 }
 void MainWindow::newBossInit(Enemy* new_boss) {
@@ -1196,7 +1204,6 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     connect(new_boss,SIGNAL(useSkill(QString)),flash,SLOT(flash()));
     connect(new_boss,SIGNAL(deadSignal()),ui->BossHealth,SLOT(hide()));
     connect(new_boss,SIGNAL(deadSignal()),ui->BossSkill,SLOT(hide()));
-    connect(new_boss,SIGNAL(summonEffect(Effect*)),this,SLOT(newEffectInit(Effect*)));
     connect(new_boss,SIGNAL(shakeScreen()),this,SLOT(sceneVibrate()));
 }
 void MainWindow::newMagicEffect(int show_w, int show_h, double x, double y, int lifetime) {

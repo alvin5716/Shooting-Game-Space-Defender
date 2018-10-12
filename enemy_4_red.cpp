@@ -5,6 +5,7 @@ Enemy_4_Red::Enemy_4_Red(QString img, int img_w, int img_h, int show_w, int show
 {
     move_speed=1.6;
     bounceable=true;
+    setInvulnerable();
 }
 
 void Enemy_4_Red::skill() {

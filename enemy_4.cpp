@@ -4,7 +4,6 @@ Enemy_4::Enemy_4(QString img, int img_w, int img_h, int show_w, int show_h, Char
     :Enemy(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     setCanBeMirrored();
-    setInvulnerable();
     move_speed = 1;
     prep_timer = 150;
 }
