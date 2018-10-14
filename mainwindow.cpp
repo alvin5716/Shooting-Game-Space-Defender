@@ -983,40 +983,40 @@ void MainWindow::doTick() {
         case 4:
             if(tickCheck(500,450,3)) {
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_4_Green(QString(":/res/enemy16.png"),199,153,156,120,player,5,40,80,125,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
+                    new_enemy = new Enemy_4_Green(player,5,40,80,125,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
                     newEnemyInit(new_enemy);
                 }
             } else if(tickCheck(2200,1000,3)) {
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_4_Red(QString(":/res/enemy17.png"),199,153,156,120,player,5,40,270,400,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,true);
+                    new_enemy = new Enemy_4_Red(player,5,40,270,400,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,true);
                     newEnemyInit(new_enemy);
                 }
             } else if(tickCheck(5200)) {
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_4_Yellow(QString(":/res/enemy18.png"),199,153,156,120,player,12,40,400,200,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
+                    new_enemy = new Enemy_4_Yellow(player,12,40,400,200,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
                     newEnemyInit(new_enemy);
                 }
                 tickFreeze();
             } else if(tickCheck(5500,300,10)) {
-                new_enemy = new Enemy_4_Green(QString(":/res/enemy16.png"),199,153,156,120,player,7,40,80,125,((tick-5500)/200%2==0)?-40:Game::FrameWidth+40,-40,((tick-5500)/200%2==0)?1.7:-1.7,1.7,((tick-5500)/200%2==0)?-0.007:0.007,-0.007,false,true);
+                new_enemy = new Enemy_4_Green(player,7,40,80,125,((tick-5500)/200%2==0)?-40:Game::FrameWidth+40,-40,((tick-5500)/200%2==0)?1.7:-1.7,1.7,((tick-5500)/200%2==0)?-0.007:0.007,-0.007,false,true);
                 newEnemyInit(new_enemy);
                 if(tickCheck(5500+300*9)) tickFreeze();
             } else if(tickCheck(6150)) {
-                new_boss = new Enemy_4_Yellow(QString(":/res/enemy18.png"),199,153,215,165,player,25,55,350,200,Game::FrameWidth/2,-40,0,1.7,0,-0.007,false,true);
+                new_boss = new Enemy_4_Yellow(player,25,55,350,200,Game::FrameWidth/2,-40,0,1.7,0,-0.007,false,true);
                 newBossInit(new_boss);
             } else if(tickCheck(8600,500,3)) {
                 const int t = timesCount(8600,500);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_4_Pink(QString(":/res/enemy19.png"),199,153,156,120,player,9,40,10,10,i?220-t*80:Game::FrameWidth-220+t*80,-40,0,0.9,0,0.00045);
+                    new_enemy = new Enemy_4_Pink(player,9,40,10,10,i?220-t*80:Game::FrameWidth-220+t*80,-40,0,0.9,0,0.00045);
                     newEnemyInit(new_enemy);
                 }
             } else if(tickCheck(11000,200,10)) {
-                new_enemy = new Enemy_4_Red(QString(":/res/enemy17.png"),199,153,156,120,player,5,40,400,400,qrand()%(Game::FrameWidth-80)+40,-40,0,1.2,0,-0.00045,true);
+                new_enemy = new Enemy_4_Red(player,5,40,400,400,qrand()%(Game::FrameWidth-80)+40,-40,0,1.2,0,-0.00045,true);
                 newEnemyInit(new_enemy);
                 if(timesCount(11000,200)==9) tickFreeze();
             } else if(tickCheck(11500,400,4)) {
                 const int t = timesCount(11500,400);
-                new_enemy = new Enemy_4_Pink(QString(":/res/enemy19.png"),199,153,156,120,player,5,40,10,10,t%2?70:Game::FrameWidth-70,-40,t%2?0.1:-0.1,0.9,t%2?-0.00001:0.00001,0.00045);
+                new_enemy = new Enemy_4_Pink(player,5,40,10,10,t%2?70:Game::FrameWidth-70,-40,t%2?0.1:-0.1,0.9,t%2?-0.00001:0.00001,0.00045);
                 newEnemyInit(new_enemy);
             } else if(tickCheck(12903,361,3)) { //12403+361i, 3 times, warning bar fade in
                 QGraphicsOpacityEffect *fadein = new QGraphicsOpacityEffect(this);

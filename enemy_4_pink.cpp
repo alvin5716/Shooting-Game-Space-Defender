@@ -2,8 +2,8 @@
 #include "enemy_temp.h"
 #include "game.h"
 
-Enemy_4_Pink::Enemy_4_Pink(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool stopable)
-:Enemy_4(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,true,stopable)
+Enemy_4_Pink::Enemy_4_Pink(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool stopable)
+:Enemy_4(QString(":/res/enemy19.png"),199,153,(int)(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,true,stopable)
 {
     move_speed=1.6;
     this->shoot_cd_init=shoot_cd_init;
