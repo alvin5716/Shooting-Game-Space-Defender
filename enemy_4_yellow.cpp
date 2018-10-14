@@ -14,7 +14,7 @@ void Enemy_4_Yellow::skill() {
         return;
     }
     setVulnerable();
-    constexpr int safe=30;
+    constexpr int safe=40;
     if(x>player->getX()-radius-safe && x<player->getX()+radius+safe) {
         double speed;
         if(player->getX()<safe+radius) speed=move_speed;

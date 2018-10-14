@@ -5,11 +5,11 @@ namespace Game {
 
     static constexpr int FrameWidth = 750;
     static constexpr int FrameHeight = 860;
-    static constexpr int StartTick = 8599;
+    static constexpr int StartTick = 10999;
     static constexpr unsigned int BossTick1 = 6604;
     static constexpr unsigned int BossTick2 = 11502;
     static constexpr unsigned int BossTick3 = 9479;
-    static constexpr unsigned int BossTick4 = 9479;
+    static constexpr unsigned int BossTick4 = 12802;
 
     enum GamePage {
         GamePageMenu,
