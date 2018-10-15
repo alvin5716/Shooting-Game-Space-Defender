@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(Game::GamePageMenu);
-    //this->setWindowState(Qt::WindowFullScreen);
+    this->setWindowState(Qt::WindowMaximized);
     //boss objects
     bossHealthOpacityEff = new QGraphicsOpacityEffect(this);
     bossLivesOpacityEff = new QGraphicsOpacityEffect(this);
@@ -1289,6 +1289,10 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
                 backToMenu();
                 start();
             }
+            break;
+        case Qt::Key_F11:
+            if(!(this->windowState()==Qt::WindowFullScreen)) this->setWindowState(Qt::WindowFullScreen);
+            else this->setWindowState(Qt::WindowMaximized);
             break;
         }
     }
