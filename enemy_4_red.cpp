@@ -1,7 +1,7 @@
 #include "enemy_4_red.h"
 
 Enemy_4_Red::Enemy_4_Red(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool stopable)
-:Enemy_4(QString(":/res/enemy17.png"),199,153,(int)(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,true,stopable)
+:Enemy_4(QString(":/res/enemy17.png"),199,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,true,stopable)
 {
     move_speed=1.6;
     setInvulnerable();

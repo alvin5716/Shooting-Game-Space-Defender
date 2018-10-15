@@ -2,7 +2,7 @@
 #include "game.h"
 
 Enemy_4_Yellow::Enemy_4_Yellow(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-:Enemy_4(QString(":/res/enemy18.png"),199,153,(int)(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+:Enemy_4(QString(":/res/enemy18.png"),199,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     move_speed=0.4;
     setInvulnerable();
