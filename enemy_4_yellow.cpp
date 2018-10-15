@@ -1,8 +1,8 @@
 #include "enemy_4_yellow.h"
 #include "game.h"
 
-Enemy_4_Yellow::Enemy_4_Yellow(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-:Enemy_4(img,img_w,img_h,show_w,show_h,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+Enemy_4_Yellow::Enemy_4_Yellow(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+:Enemy_4(QString(":/res/enemy18.png"),199,153,(int)(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     move_speed=0.4;
     setInvulnerable();
