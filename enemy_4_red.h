@@ -6,7 +6,7 @@
 class Enemy_4_Red: public Enemy_4
 {
 public:
-    Enemy_4_Red(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool stopable=false);
+    Enemy_4_Red(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool stopable=false);
     void skill() override;
     std::vector<Bullet*>* shoot() override;
 };
