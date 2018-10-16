@@ -33,7 +33,7 @@ std::vector<Bullet*>* Enemy_4_Yellow::shoot() {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         double sin, cos, angle = angleofvector(player->getX()-x,player->getY()-y), bullet_v=3.2, bullet_a=-0.08, bullet_v_t=0.6;
-        int t=(shoot_timer-shoot_cd)/interval;
+        const int t=(shoot_timer-shoot_cd)/interval;
         for(int i=0;i<bullet_count;++i) {
             if(t%2==0?i%(bullet_count/4)<12:i%(bullet_count/4)>7) continue;
             sin = std::sin(angle+i*M_PI/(bullet_count/2));

@@ -12,6 +12,8 @@ public:
     void skill() override;
 public slots:
     void deadSet();
+private:
+    double angle[2];
 };
 
 #endif // ENEMY_4_BLUE_H

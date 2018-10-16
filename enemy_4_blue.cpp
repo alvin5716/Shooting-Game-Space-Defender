@@ -28,22 +28,55 @@ void Enemy_4_Blue::deadSet() {
 
 std::vector<Bullet*>* Enemy_4_Blue::shoot() {
     if(prep_timer>0) return nullptr;
-    if(shoot_timer>=shoot_cd) {
+    constexpr int interval=30, shoot_count=7;
+    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         const int r=12;
-        const double x1=player->getX(), y1=player->getY(), w=Game::FrameWidth+r;
-        const double k[2]={((r+x)*y1+(r+x1)*y)/(2*r+x+x1),((w-x)*y1+(w-x1)*y)/(2*w-x-x1)}, angle[2]={angleofvector(-x,k[0]-y),angleofvector(w-x,k[1]-y)};
-        double sin, cos, bullet_v=1.2;
-        for(int i=0;i<2;++i) {
-            sin = std::sin(angle[i]);
-            cos = std::cos(angle[i]);
-            new_bullet = new Bullet(QString(":/res/bullet_2_blue.png"),r,x,y,bullet_v*cos,bullet_v*sin);
-            new_bullet->addWallData(false,false);
-            connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
-            new_bullets->push_back(new_bullet);
+        const int t=(shoot_timer-shoot_cd)/interval;
+        if(t==0) {
+            const int w=Game::FrameWidth-r;
+            const double x1=player->getX(), y1=player->getY(), phi=M_PI*(qrand()%5)/100;
+            double k;
+            k=((x-r)*y1+(x1-r)*y)/(x+x1-2*r);
+            angle[0]=angleofvector(r-x,k-y)+phi;
+            k=((w-x)*y1+(w-x1)*y)/(2*w-x-x1);
+            angle[1]=angleofvector(w-x,k-y)+phi;
         }
-        shoot_timer=0;
+        double sin, cos, sin_x, cos_x;
+        constexpr double bullet_v=1.7;
+        constexpr int bullet_xd=14;
+        for(int i=0;i<2;++i) {
+            for(int j=0;j<2;++j) {
+                sin = std::sin(angle[j]);
+                cos = std::cos(angle[j]);
+                sin_x = std::sin(angle[j]+(i?M_PI/2:-M_PI/2));
+                cos_x = std::cos(angle[j]+(i?M_PI/2:-M_PI/2));
+                new_bullet = new Bullet(QString(":/res/bullet_blue.png"),r,x+cos*radius+cos_x*bullet_xd*t,y+sin*radius+sin_x*bullet_xd*t,bullet_v*cos,bullet_v*sin);
+                new_bullet->addWallData(false,false);
+                new_bullet->whiteize(125);
+                connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+                new_bullets->push_back(new_bullet);
+            }
+        }
+        if(t>=shoot_count) {
+            shoot_timer=0;
+            if(std::sqrt(std::pow(x-player->getX(),2)+std::pow(y-player->getY(),2))<radius+40) {
+                //too near
+                moveTo(player->getX(),player->getY(),120);
+            } else if(x<player->getX()+radius+20 && x>player->getX()-radius-20) {
+                int xd=(x>player->getX()?1:-1)*(qrand()%21+50), yd=qrand()%61-30;
+                double aim_x, aim_y;
+                //x out of range
+                if(x+xd<120 || x+xd>Game::FrameWidth-120) aim_x=x-xd;
+                else aim_x=x+xd;
+                //y out of range
+                if(y+yd>350 || y+yd<150) aim_y=y-yd;
+                else aim_y=y+yd;
+                //move
+                moveTo(aim_x,aim_y,120);
+            }
+        }
         return new_bullets;
     }
     return nullptr;
