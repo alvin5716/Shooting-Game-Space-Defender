@@ -14,6 +14,7 @@ public slots:
     void deadSet();
 private:
     double angle[2];
+    double attack_x, attack_y;
 };
 
 #endif // ENEMY_4_BLUE_H

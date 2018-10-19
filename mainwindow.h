@@ -42,7 +42,7 @@
 #include "enemy_4_red.h"
 #include "enemy_4_yellow.h"
 #include "enemy_4_pink.h"
-#include "enemy_4_blue.h"
+#include "enemy_4_blue_4.h"
 #include <QKeyEvent>
 #include <vector>
 #include "flash.h"
@@ -113,6 +113,7 @@ private slots:
     void bossCorpse(int,int);
     void healthColorChange(QString);
     void sceneVibrate(short vibrate_count = 0);
+    void bossSkillLengthSetting(QString skill);
 
 signals:
     void doMove();

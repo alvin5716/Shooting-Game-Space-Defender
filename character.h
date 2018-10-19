@@ -33,6 +33,7 @@ public:
     void setCanBeMirrored(bool canBeMirrored=true);
     void setFaceToLeft(bool face_to_left=true);
     void setImg(QString img);
+    void setShowSize(int show_w, int show_h);
     void show_img_set();
     void show_img_force_set();
     virtual void setFloatable(bool floatable=true);

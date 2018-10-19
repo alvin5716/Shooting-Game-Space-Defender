@@ -5,6 +5,7 @@ Enemy_Temp::Enemy_Temp(shoot_func shoot_func_ptr, Character* player, int shoot_c
 {
     this->attackable=false;
     this->setInvulnerable();
+    this->hide();
 }
 
 std::vector<Bullet*>* Enemy_Temp::shoot() {
@@ -31,6 +32,20 @@ std::vector<Bullet*>* Enemy_Temp::enemy_4_pink_shoot() {
             new_bullets->push_back(new_bullet);
         }
         if(shoot_timer==shoot_cd+280) killItself();
+        return new_bullets;
+    }
+    return nullptr;
+}
+
+std::vector<Bullet*>* Enemy_Temp::enemy_4_blue_4_shoot() {
+    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%20==0) {
+        std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
+        Bullet* new_bullet;
+        //shoot
+        new_bullet = new Bullet(QString(":/res/bullet_purple.png"),12,x,y);
+        new_bullet->fadein(200);
+        connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+        new_bullets->push_back(new_bullet);
         return new_bullets;
     }
     return nullptr;

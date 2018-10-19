@@ -240,6 +240,10 @@ void Character::setFaceToLeft(bool face_to_left) {
 void Character::setImg(QString img) {
     this->img=img;
 }
+void Character::setShowSize(int show_w, int show_h) {
+    this->show_w=show_w;
+    this->show_h=show_h;
+}
 Character::~Character() {
     --character_count;
     // qDebug() << "character count:" << character_count;

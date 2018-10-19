@@ -1039,7 +1039,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(14048)) { //13548, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
-                new_boss = new Enemy_4_Blue(player,340,60,125,400,Game::FrameWidth/2,-59,0,0,0,0,true,true);
+                new_boss = new Enemy_4_Blue_4(player,350,60,70,400,Game::FrameWidth/2,-60,0,0,0,0,true,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->moveTo(Game::FrameWidth/2,200,330);
                 newBossInit(new_boss);
@@ -1126,6 +1126,7 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     ui->BossSkill->setText("");
     connect(new_boss,SIGNAL(healthChanged(int)),ui->BossHealth,SLOT(setValue(int)));
     connect(new_boss,SIGNAL(useSkill(QString)),bossSkillFadeinAni,SLOT(start()));
+    connect(new_boss,SIGNAL(useSkill(QString)),this,SLOT(bossSkillLengthSetting(QString)));
     connect(new_boss,SIGNAL(useSkill(QString)),bossSkillMoveInAni,SLOT(start()));
     connect(new_boss,SIGNAL(useSkill(QString)),ui->BossSkill,SLOT(show()));
     connect(new_boss,SIGNAL(useSkill(QString)),ui->BossSkill,SLOT(setText(QString)));
@@ -1133,6 +1134,11 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     connect(new_boss,SIGNAL(deadSignal()),ui->BossHealth,SLOT(hide()));
     connect(new_boss,SIGNAL(deadSignal()),ui->BossSkill,SLOT(hide()));
     connect(new_boss,SIGNAL(shakeScreen()),this,SLOT(sceneVibrate()));
+}
+void MainWindow::bossSkillLengthSetting(QString skill) {
+    int length=skill.length();
+    bossSkillMoveInAni->setStartValue(QRect(480-length*50,80,length*50,50));
+    bossSkillMoveInAni->setEndValue(QRect(790-length*50,80,length*50,50));
 }
 void MainWindow::newMagicEffect(int show_w, int show_h, double x, double y, int lifetime) {
     new_effect = new Effect(QString(":/res/magic.png"),100,100,show_w,show_h,lifetime,x,y,0,0,0,0,true);
