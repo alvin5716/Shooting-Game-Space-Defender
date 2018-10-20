@@ -6,7 +6,6 @@ Bullet_Nether::Bullet_Nether(QString img, int radius, Character* nether_center, 
 {
     lifetimer=lifetime;
     this->nether_center=nether_center;
-    setOpacity(0.8);
     fadeout_time=500;
 }
 void Bullet_Nether::move() {

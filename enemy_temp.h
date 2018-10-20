@@ -7,7 +7,7 @@ class Enemy_Temp: public Enemy
 {
 public:
     typedef std::vector<Bullet*>* (Enemy_Temp::*shoot_func)(void);
-    Enemy_Temp(shoot_func shoot_func_ptr, Character* player, int shoot_cd, int shoot_cd_init, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool bounceable=false, bool stopable=false);
+    Enemy_Temp(Enemy* real_shooter, shoot_func shoot_func_ptr, Character* player, int shoot_cd, int shoot_cd_init, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool bounceable=false, bool stopable=false);
     std::vector<Bullet*>* shoot() override;
     // shoot method
     std::vector<Bullet*>* enemy_4_pink_shoot();
@@ -15,6 +15,7 @@ public:
 private:
     shoot_func shoot_func_ptr;
     double angle;
+    Enemy* real_shooter;
 };
 
 #endif // ENEMY_TEMP_H

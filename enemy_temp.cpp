@@ -1,7 +1,9 @@
 #include "enemy_temp.h"
+#include "bullet_nether.h"
 
-Enemy_Temp::Enemy_Temp(shoot_func shoot_func_ptr, Character* player, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy(":/res/bullet_black.png",0,0,0,0,player,1,1,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable), shoot_func_ptr(shoot_func_ptr)
+Enemy_Temp::Enemy_Temp(Enemy* real_shooter, shoot_func shoot_func_ptr, Character* player, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+    :Enemy(":/res/bullet_black.png",0,0,0,0,player,1,1,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable),
+      shoot_func_ptr(shoot_func_ptr), real_shooter(real_shooter)
 {
     this->attackable=false;
     this->setInvulnerable();
@@ -29,6 +31,7 @@ std::vector<Bullet*>* Enemy_Temp::enemy_4_pink_shoot() {
             sin = std::sin(angle-i*M_PI/(bullet_count/2)-t*M_PI/(bullet_count*3));
             new_bullet = new Bullet(QString(":/res/bullet_pink.png"),16,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+            if(real_shooter!=nullptr) connect(real_shooter,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
         if(shoot_timer==shoot_cd+280) killItself();
@@ -42,9 +45,10 @@ std::vector<Bullet*>* Enemy_Temp::enemy_4_blue_4_shoot() {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //shoot
-        new_bullet = new Bullet(QString(":/res/bullet_purple.png"),12,x,y);
+        new_bullet = new Bullet_Nether(QString(":/res/bullet_purple.png"),12,nullptr,3000,x,y);
         new_bullet->fadein(200);
         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+        if(real_shooter!=nullptr) connect(real_shooter,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
         new_bullets->push_back(new_bullet);
         return new_bullets;
     }

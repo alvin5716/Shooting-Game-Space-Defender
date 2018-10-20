@@ -1039,7 +1039,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(14048)) { //13548, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
-                new_boss = new Enemy_4_Blue_4(player,350,60,70,400,Game::FrameWidth/2,-60,0,0,0,0,true,true);
+                new_boss = new Enemy_4_Blue_4(player,180,60,70,400,Game::FrameWidth/2,-60,0,0,0,0,true,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->moveTo(Game::FrameWidth/2,200,330);
                 newBossInit(new_boss);
