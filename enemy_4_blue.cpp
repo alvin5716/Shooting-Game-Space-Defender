@@ -2,7 +2,7 @@
 #include "game.h"
 
 Enemy_4_Blue::Enemy_4_Blue(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_4(QString(":/res/enemy20.png"),199,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_4(QString(":/res/enemy20.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     point=18;
     boss=true;
@@ -18,12 +18,12 @@ void Enemy_4_Blue::skill() {
     if(skill_timer>=interval) {
         skill_timer=0;
         double aim_x, aim_y;
-        if(x<240 || x>Game::FrameWidth-240 || y>350 || y<150) {
-            if(y>350) aim_y=350;
+        if(x<240 || x>Game::FrameWidth-240 || y>250 || y<150) {
+            if(y>250) aim_y=250;
             else if(y<150) aim_y=150;
             else {
                 int yd=qrand()%121-60;
-                if(y+yd>350 || y+yd<150) aim_y=y-yd;
+                if(y+yd>250 || y+yd<150) aim_y=y-yd;
                 else aim_y=y+yd;
             }
             if(x>Game::FrameWidth-240) aim_x=Game::FrameWidth-240;
@@ -48,7 +48,7 @@ void Enemy_4_Blue::skill() {
             if(x+xd<240 || x+xd>Game::FrameWidth-240) aim_x=x-xd;
             else aim_x=x+xd;
             //y out of range
-            if(y+yd>350 || y+yd<150) aim_y=y-yd;
+            if(y+yd>250 || y+yd<150) aim_y=y-yd;
             else aim_y=y+yd;
         } else {
             aim_x=x;

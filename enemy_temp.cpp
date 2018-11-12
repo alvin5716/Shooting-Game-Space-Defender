@@ -41,15 +41,16 @@ std::vector<Bullet*>* Enemy_Temp::enemy_4_pink_shoot() {
 }
 
 std::vector<Bullet*>* Enemy_Temp::enemy_4_blue_4_shoot() {
-    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%20==0) {
+    if(shoot_timer>=shoot_cd) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //shoot
-        new_bullet = new Bullet_Nether(QString(":/res/bullet_purple.png"),12,nullptr,3000,x,y);
+        new_bullet = new Bullet_Nether(QString(":/res/bullet_purple.png"),12,nullptr,2800,x,y);
         new_bullet->fadein(200);
         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
         if(real_shooter!=nullptr) connect(real_shooter,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
         new_bullets->push_back(new_bullet);
+        shoot_timer=0;
         return new_bullets;
     }
     return nullptr;

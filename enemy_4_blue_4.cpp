@@ -9,7 +9,7 @@ Enemy_4_Blue_4::Enemy_4_Blue_4(Character* player, int health, int radius, int sh
 }
 void Enemy_4_Blue_4::skill() {
     //second phase
-    if(health<=180 && !secPhase) {
+    if(health<=350 && !secPhase) {
         secPhase = true;
         invulnerable=true;
         img=":/res/enemy20_2.png";
@@ -20,9 +20,12 @@ void Enemy_4_Blue_4::skill() {
     }
     if(secPhase) {
         //skill
-        if(skill_timer==0) moveTo(Game::FrameWidth/2,240,200);
+        if(skill_timer==-1) moveTo(player->getX(),120,200);
         //skill timer
-        if(skill_timer<=0) ++skill_timer;
+        if(++skill_timer>=200) {
+            moveTo(player->getX(),120,200);
+            skill_timer=0;
+        }
     } else {
         Enemy_4_Blue::skill();
     }
@@ -34,8 +37,8 @@ std::vector<Bullet*>* Enemy_4_Blue_4::shoot2() {
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         double sin = std::sin(angle), cos = std::cos(angle);
         double constexpr bullet_v=3.2;
-        if(++shoot_count>7) {
-            Enemy* new_enemy = new Enemy_Temp(this,Enemy_Temp::enemy_4_blue_4_shoot,player,40,rand()%40,x,y,bullet_v*cos,bullet_v*sin);
+        if(++shoot_count>5) {
+            Enemy* new_enemy = new Enemy_Temp(this,Enemy_Temp::enemy_4_blue_4_shoot,player,18+qrand()%5,qrand()%20,x,y,bullet_v*cos,bullet_v*sin);
             new_enemy->setImg(":/res/bullet_purple.png");
             new_enemy->setShowSize(24,24);
             new_enemy->show();
