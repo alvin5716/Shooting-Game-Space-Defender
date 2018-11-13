@@ -5,7 +5,6 @@ namespace Game {
 
     static constexpr int FrameWidth = 750;
     static constexpr int FrameHeight = 860;
-    static constexpr int StartTick = 0;
     static constexpr unsigned int BossTick1 = 6604;
     static constexpr unsigned int BossTick2 = 11502;
     static constexpr unsigned int BossTick3 = 9479;

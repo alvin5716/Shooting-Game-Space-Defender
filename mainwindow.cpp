@@ -90,7 +90,7 @@ void MainWindow::start4() {
 }
 void MainWindow::start() {
     //level intro
-    if(Game::StartTick==0) ui->levelIntro->show();
+    if(StartTick==0) ui->levelIntro->show();
     ui->levelIntro->setCurrentIndex(level-1);
     QGraphicsOpacityEffect *fadein = new QGraphicsOpacityEffect(this);
     ui->levelIntro->setGraphicsEffect(fadein);
@@ -139,13 +139,15 @@ void MainWindow::start() {
     connect(this,SIGNAL(doImgMove()),player,SLOT(img_move()));
     connect(player,SIGNAL(healthColorChange(QString)),this,SLOT(healthColorChange(QString)));
     player->healthColorChange("white");
+    //bullets
+    enemy_bullets.reserve(700);
     //dot
     if(dot!=nullptr) delete dot;
     dot = new Shield(":/res/dot.png",50,50,10,10,player,-1,player->getX(),player->getY());
     dot->setZValue(100);
     newEffectInit(dot);
     //timer
-    gametime=tick=Game::StartTick;
+    gametime=tick=StartTick;
     ticking=true;
     if(timer!=nullptr) delete timer;
     timer=new QTimer;
@@ -297,6 +299,8 @@ void MainWindow::doTick() {
                     connect(this,SIGNAL(doMove()),*j,SLOT(move()));
                     connect(this,SIGNAL(doImgMove()),*j,SLOT(img_move()));
                 }
+                new_enemy_bullets->clear();
+                new_enemy_bullets->shrink_to_fit();
                 delete new_enemy_bullets;
             }
             //skill
@@ -1036,17 +1040,25 @@ void MainWindow::doTick() {
                 fadeoutAni->setEndValue(0);
                 fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
                 fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
-            } else if(tickCheck(14048)) { //13548, BOSS 1
+            } else if(tickCheck(14048)) { //14048, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
-                new_boss = new Enemy_4_Blue_4(player,500,60,70,400,Game::FrameWidth/2,-60,0,0,0,0,true,true);
+                new_boss = new Enemy_4_Blue_4(player,470,60,70,400,Game::FrameWidth/2,-60,0,0,0,0,true,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->moveTo(Game::FrameWidth/2,200,330);
                 newBossInit(new_boss);
                 ui->BossLives->setText("5");
                 tickFreeze();
-            } else if(tickCheck(14050)) { //13550
+            } else if(tickCheck(14050)) { //14050
                 ui->BossLives->setText("4");
+            } else if(tickCheck(14298)) { //14298, BOSS 2
+                new_boss = new Enemy_4_Blue_2(player,161,60,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+                connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+                new_boss->fadein(1500);
+                newBossInit(new_boss);
+                tickFreeze();
+            } else if(tickCheck(14300)) { //14300
+                ui->BossLives->setText("3");
             }
             break;
         default:
@@ -1076,7 +1088,7 @@ void MainWindow::backToMenu() {
     timer=nullptr;
     delete freezeTimer;
     freezeTimer=nullptr;
-    //kil all objects
+    //kill all objects
     for(std::vector<Bullet*>::iterator i=player_bullets.begin();i!=player_bullets.end();) {
         delete (*i);
         i = player_bullets.erase(i);
