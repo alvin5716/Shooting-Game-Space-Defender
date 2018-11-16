@@ -283,7 +283,7 @@ void MainWindow::doTick() {
         Character* real_attacker = player->testAttackedBy(attackers);
         if(real_attacker!=nullptr) {
             ui->PlayerLife->display(player->getHealth());
-            sceneVibrate();
+            sceneVibrate(static_cast<short>(Enemy::shakeLevel::mediumShake));
             redFlash();
         }
         for(int i=0;i<(int)enemies.size();++i) { //enemies
@@ -1043,7 +1043,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(14048)) { //14048, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
-                new_boss = new Enemy_4_Blue_4(player,470,60,70,400,Game::FrameWidth/2,-60,0,0,0,0,true,true);
+                new_boss = new Enemy_4_Blue_4(player,450,60,70,400,Game::FrameWidth/2,-60,0,0,0,0,true,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->moveTo(Game::FrameWidth/2,200,330);
                 newBossInit(new_boss);
@@ -1052,7 +1052,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(14050)) { //14050
                 ui->BossLives->setText("4");
             } else if(tickCheck(14298)) { //14298, BOSS 2
-                new_boss = new Enemy_4_Blue_2(player,161,60,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+                new_boss = new Enemy_4_Blue_2(player,250,60,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
@@ -1145,7 +1145,7 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     connect(new_boss,SIGNAL(useSkill(QString)),flash,SLOT(flash()));
     connect(new_boss,SIGNAL(deadSignal()),ui->BossHealth,SLOT(hide()));
     connect(new_boss,SIGNAL(deadSignal()),ui->BossSkill,SLOT(hide()));
-    connect(new_boss,SIGNAL(shakeScreen()),this,SLOT(sceneVibrate()));
+    connect(new_boss,SIGNAL(shakeScreen(short)),this,SLOT(sceneVibrate(short)));
 }
 void MainWindow::bossSkillLengthSetting(QString skill) {
     int length=skill.length();
@@ -1248,12 +1248,14 @@ void MainWindow::redFlash() {
 void MainWindow::sceneVibrate(short vibrate_count) {
     static QPropertyAnimation* vibrateAni=nullptr;
     static short vibrate_count_temp=0;
+    bool firstVib=false;
     vibrate_count_temp = vibrate_count+1;
     if(vibrate_count<10) {
         if(vibrateAni!=nullptr) delete vibrateAni;
+        else firstVib=true;
         vibrateAni = new QPropertyAnimation(scene,"sceneRect");
-        vibrateAni->setDuration((50+vibrate_count*vibrate_count*2.2)/((vibrate_count==0||vibrate_count==9)?2:1));
-        vibrateAni->setEasingCurve(vibrate_count==9?QEasingCurve::InSine:(vibrate_count==0?QEasingCurve::OutSine:QEasingCurve::InOutSine));
+        vibrateAni->setDuration((50+(vibrate_count>0?1:-1)*(vibrate_count*vibrate_count)*2.2)/((firstVib||vibrate_count==9)?2:1));
+        vibrateAni->setEasingCurve(vibrate_count==9?QEasingCurve::InSine:(firstVib?QEasingCurve::OutSine:QEasingCurve::InOutSine));
         vibrateAni->setStartValue(this->scene->sceneRect());
         if(vibrate_count==9) {
             vibrateAni->setEndValue(QRect(0,0,Game::FrameWidth,Game::FrameHeight));
@@ -1294,7 +1296,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
             break;
         case Qt::Key_Z:
             if(gamestate!=Game::GameStateMenu) player->setShooting(true);
-            Player::speed=1.8;
+            Player::speed=Player::shootingSpeed;
             break;
         case Qt::Key_X:
             use_skill=true;
@@ -1376,7 +1378,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e) {
             break;
         case Qt::Key_Z:
             if(gamestate!=Game::GameStateMenu) player->setShooting(false);
-            Player::speed=3.5;
+            Player::speed=Player::nonShootingSpeed;
             break;
         case Qt::Key_X:
             use_skill=false;

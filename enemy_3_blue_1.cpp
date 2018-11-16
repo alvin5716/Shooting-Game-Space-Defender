@@ -133,6 +133,6 @@ void Enemy_3_Blue_1::shootSmallBullet() {
     if(triggered_count<2) ++triggered_count;
     else {
         shoot_small_bullets=true;
-        shakeScreen();
+        emit shakeScreen(static_cast<short>(shakeLevel::smallShake));
     }
 }

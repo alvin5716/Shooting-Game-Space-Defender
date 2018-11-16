@@ -98,7 +98,7 @@ private:
     int gamestate, level;
     QString strBossBG;
     bool isPlayerPosHigh;
-    static constexpr int StartTick = 14297;
+    static constexpr int StartTick = 14047;
 
 private slots:
     void newEnemyInit(Enemy* new_enemy);

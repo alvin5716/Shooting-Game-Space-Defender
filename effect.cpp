@@ -10,6 +10,10 @@ Effect::Effect(QString img, int img_w, int img_h, int show_w, int show_h, int li
     //rotate
     rotating=false;
     angle=0;
+    //zoom
+    increment_w=increment_h=0;
+    now_show_w=show_w;
+    now_show_h=show_h;
 }
 void Effect::move() {
     //move object
@@ -25,6 +29,23 @@ void Effect::move() {
     if(lifetimer!=-1) --lifetimer; //if lifetime is -1, it won't die
     if(lifetimer==62 && autoFadeoutBeforeDie) fadeout();
     if(lifetimer==0) killItself();
+
+    //zoom
+    if(zoom_timer>0) {
+        --zoom_timer;
+        this->now_show_w += this->increment_w;
+        this->show_w = (int)this->now_show_w;
+        this->now_show_h += this->increment_h;
+        this->show_h = (int)this->now_show_h;
+        this->show_img_force_set();
+    }
+}
+void Effect::zoom(int time, int aim_show_w, int aim_show_h) {
+    increment_w = ((double)aim_show_w-show_w)/time;
+    increment_h = ((double)aim_show_h-show_h)/time;
+    zoom_timer = time;
+    now_show_w = show_w;
+    now_show_h = show_h;
 }
 void Effect::rotateStart() {
     rotating=true;

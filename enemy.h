@@ -7,10 +7,12 @@
 #include <QString>
 #include "shield.h"
 
+
 class Enemy : public Character
 {
     Q_OBJECT
 public:
+    enum shakeLevel{smallShake=6,mediumShake=0,largeShake=-4};
     Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool bounceable=false, bool stopable=false);
     virtual std::vector<Bullet*>* shoot(); //return a pointer to vector, whose elements are pointer to new bullets
     virtual std::vector<Bullet*>* shoot2(); //this is only be used for boss
@@ -30,7 +32,7 @@ signals:
     void summonEffect(Effect*);
     void summonEnemy(Enemy*);
     void pointGive(int);
-    void shakeScreen();
+    void shakeScreen(short);
 protected:
     unsigned int point;
     bool bounceable, stopable, already_enter, boss, secPhase;
