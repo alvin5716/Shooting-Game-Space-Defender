@@ -5,7 +5,7 @@
 #include "laser.h"
 
 Enemy_3_Blue_3::Enemy_3_Blue_3(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_3_Blue(player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_3_Blue(player,230,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     shoot_count=0;
     use_laser=true;
@@ -13,8 +13,7 @@ Enemy_3_Blue_3::Enemy_3_Blue_3(Character* player, int health, int radius, int sh
 }
 void Enemy_3_Blue_3::skill() {
     //second phase
-    if(health<=230 && !secPhase) {
-        secPhase = true;
+    testIfSecPhase([this](){
         invulnerable = true;
         img=":/res/enemy15_2.png";
         shoot_timer = -540;
@@ -22,8 +21,8 @@ void Enemy_3_Blue_3::skill() {
         skill_timer = -400;
         emit useSkill("阿茲卡班的逃犯");
         this->redMagicShield();
-    }
-    if(secPhase) {
+    },
+    [this](){
         //skill
         if(skill_timer==-200) moveTo(Game::FrameWidth/2,80,350);
         //skill timer
@@ -33,9 +32,10 @@ void Enemy_3_Blue_3::skill() {
                 moveTo(player->getX(),80,125);
             }
         } else skill_timer=0;
-    } else {
+    },
+    [this](){
         Enemy_3_Blue::skill();
-    }
+    });
 }
 std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;

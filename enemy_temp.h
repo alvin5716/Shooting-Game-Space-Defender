@@ -11,6 +11,7 @@ public:
     std::vector<Bullet*>* shoot() override;
     // shoot method
     std::vector<Bullet*>* enemy_4_pink_shoot();
+    std::vector<Bullet*>* enemy_4_pink_shoot_2();
     std::vector<Bullet*>* enemy_4_blue_4_shoot();
 private:
     shoot_func shoot_func_ptr;

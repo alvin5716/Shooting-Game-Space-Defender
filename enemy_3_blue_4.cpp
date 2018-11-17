@@ -5,15 +5,14 @@
 #include "game.h"
 
 Enemy_3_Blue_4::Enemy_3_Blue_4(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_3_Blue(player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_3_Blue(player,230,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     angle=0;
     shoot_timer_2=0;
 }
 void Enemy_3_Blue_4::skill() {
     //second phase
-    if(health<=230 && !secPhase) {
-        secPhase = true;
+    testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy15_2.png";
         shoot_timer = -800;
@@ -21,15 +20,16 @@ void Enemy_3_Blue_4::skill() {
         skill_timer = -200;
         emit useSkill("火盃的考驗");
         this->redMagicShield();
-    }
-    if(secPhase) {
+    },
+    [this](){
         //skill
         if(skill_timer==0) moveTo(Game::FrameWidth/2,250,200);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
-    } else {
+    },
+    [this](){
         Enemy_3_Blue::skill();
-    }
+    });
 }
 std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;

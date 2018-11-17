@@ -2,14 +2,14 @@
 #include "bullet_sin.h"
 #include "game.h"
 
-Enemy_3_Blue::Enemy_3_Blue(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+Enemy_3_Blue::Enemy_3_Blue(Character* player, int bossSkillHP, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_3(QString(":/res/enemy15.png"),54,55,radius*2,radius*2,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     point=20;
     mode=false;
     setInvulnerable();
     skill_timer=-200-shoot_cd_init;
-    boss=true;
+    this->beABoss(bossSkillHP);
     connect(this,SIGNAL(useSkill(QString)),this,SIGNAL(killItsBullets()));
     connect(this,SIGNAL(deadSignal()),this,SIGNAL(killItsBullets()));
     connect(this,SIGNAL(deadSignal()),this,SLOT(deadSet()));

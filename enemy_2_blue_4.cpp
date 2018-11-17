@@ -3,7 +3,7 @@
 #include "bullet_nether.h"
 
 Enemy_2_Blue_4::Enemy_2_Blue_4(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_2_Blue(player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_2_Blue(player,220,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     shoot_count=0;
     is_laser_used=false;
@@ -11,21 +11,20 @@ Enemy_2_Blue_4::Enemy_2_Blue_4(Character* player, int health, int radius, int sh
 }
 void Enemy_2_Blue_4::skill() {
     //second phase
-    if(health<=220 && !secPhase) {
-        secPhase = true;
+    testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy10_2.png";
         shoot_timer = 270;
         shoot_cd = 700;
         skill_timer = -150;
         emit useSkill("祖靈的彩虹橋");
-    }
-    if(secPhase) {
+    },
+    [this](){
         //skill
         if(skill_timer==0) moveTo(Game::FrameWidth/2+80,105,240);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
-    }
+    });
 }
 std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;

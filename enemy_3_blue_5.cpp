@@ -6,7 +6,7 @@
 #include "bullet_sin.h"
 
 Enemy_3_Blue_5::Enemy_3_Blue_5(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_3_Blue(player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_3_Blue(player,350,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     point+=10;
     angle=0;
@@ -19,8 +19,7 @@ Enemy_3_Blue_5::Enemy_3_Blue_5(Character* player, int health, int radius, int sh
 }
 void Enemy_3_Blue_5::skill() {
     //second phase
-    if(health<=350 && !secPhase) {
-        secPhase = true;
+    testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy15_2.png";
         shoot_timer = -350;
@@ -28,16 +27,17 @@ void Enemy_3_Blue_5::skill() {
         skill_timer = -200;
         emit useSkill("鳳凰會的密令");
         this->redMagicShield();
-    }
-    if(secPhase) {
+    },
+    [this](){
         //skill
         if(skill_timer==0) moveTo(Game::FrameWidth/2,250,200);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
         else Enemy_3_Blue::skill();
-    } else {
+    },
+    [this](){
         Enemy_3_Blue::skill();
-    }
+    });
 }
 std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;

@@ -3,22 +3,21 @@
 #include "game.h"
 
 Enemy_4_Blue_2::Enemy_4_Blue_2(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_4_Blue(player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_4_Blue(player,140,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     shoot_count=0;
 }
 void Enemy_4_Blue_2::skill() {
     //second phase
-    if(health<=140 && !secPhase) {
-        secPhase = true;
+    testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy20_2.png";
         shoot_timer = -530;
         shoot_cd = 10;
         skill_timer = -420;
         emit useSkill("奧伯斯悖論-寰宇之光");
-    }
-    if(secPhase) {
+    },
+    [this](){
         //skill
         if(skill_timer==-220) moveTo(Game::FrameWidth/2,120,150);
         else if(skill_timer==-20) {
@@ -34,9 +33,10 @@ void Enemy_4_Blue_2::skill() {
         //skill timer
         if(skill_timer<=0) ++skill_timer;
         else Enemy_4_Blue::skill();
-    } else {
+    },
+    [this](){
         Enemy_4_Blue::skill();
-    }
+    });
 }
 std::vector<Bullet*>* Enemy_4_Blue_2::shoot2() {
     const int interval=15;

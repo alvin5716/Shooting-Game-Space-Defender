@@ -6,7 +6,9 @@
 #include <vector>
 #include <QString>
 #include "shield.h"
+#include <functional>
 
+typedef std::function<void()> skillFunc;
 
 class Enemy : public Character
 {
@@ -34,13 +36,21 @@ signals:
     void pointGive(int);
     void shakeScreen(short);
 protected:
+    void beABoss(int bossSkillHP);
+    void setBossHPToSkill();
+    int getBossSkillHP();
     unsigned int point;
-    bool bounceable, stopable, already_enter, boss, secPhase;
+    bool bounceable, stopable, already_enter;
     int shoot_cd, shoot_timer, skill_timer;
     Shield* shield;
     Character* player;
     int disappearTime;
     QString death_img;
+    void testIfSecPhase(skillFunc initialize, skillFunc secPhaseSkill);
+    void testIfSecPhase(skillFunc initialize, skillFunc secPhaseSkill, skillFunc FirPhaseSkill);
+private:
+    bool boss, secPhase;
+    int bossSkillHP;
 };
 
 #endif // ENEMY_H

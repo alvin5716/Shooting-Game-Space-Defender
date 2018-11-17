@@ -21,6 +21,7 @@ Enemy::Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Characte
     shield=nullptr;
     connect(this,SIGNAL(deadSignal()),this,SLOT(diedFromPlayer()));
     floatable=true;
+    bossSkillHP=0;
     death_img="";
 }
 void Enemy::diedFromPlayer() {
@@ -75,6 +76,47 @@ void Enemy::move() {
             ya=0;
         }
     }
+}
+void Enemy::beABoss(int bossSkillHP) {
+    this->bossSkillHP=bossSkillHP;
+    this->boss=true;
+}
+void Enemy::setBossHPToSkill() {
+    if(!this->isBoss()) {
+        qDebug() << "only boss enemy can use this function: setBossHPToSkill";
+        return;
+    }
+    this->health=this->bossSkillHP;
+}
+int Enemy::getBossSkillHP() {
+    if(!this->isBoss()) {
+        qDebug() << "only boss enemy can use this function: setBossHPToSkill";
+        return 0;
+    }
+    return this->bossSkillHP;
+}
+void Enemy::testIfSecPhase(skillFunc initialize, skillFunc secPhaseSkill) {
+    if(!this->isBoss()) {
+        qDebug() << "only boss enemy can use this function: setBossHPToSkill";
+        return;
+    }
+    if(health<=bossSkillHP && !secPhase) {
+        secPhase = true;
+        initialize();
+    }
+    if(secPhase) secPhaseSkill();
+}
+void Enemy::testIfSecPhase(skillFunc initialize, skillFunc secPhaseSkill, skillFunc FirPhaseSkill) {
+    if(!this->isBoss()) {
+        qDebug() << "only boss enemy can use this function: setBossHPToSkill";
+        return;
+    }
+    if(health<=bossSkillHP && !secPhase) {
+        secPhase = true;
+        initialize();
+    }
+    if(secPhase) secPhaseSkill();
+    else FirPhaseSkill();
 }
 void Enemy::setDisappearTime(int disappearTime) {
     this->disappearTime=disappearTime;

@@ -4,14 +4,13 @@
 #include <QDebug>
 
 Enemy_Blue_5::Enemy_Blue_5(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_Blue(player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_Blue(player,220,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     first_time=true;
 }
 void Enemy_Blue_5::skill() {
     //second phase
-    if(health<=220 && !secPhase) {
-        secPhase = true;
+    testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy4_2.png";
         shoot_timer = -400;
@@ -19,12 +18,12 @@ void Enemy_Blue_5::skill() {
         skill_timer = -425;
         emit useSkill("扭曲虛空");
         moveTo(Game::FrameWidth/2,100);
-    }
-    if(secPhase) {
+    },
+    [this](){
         //skill timer
         if(skill_timer<=0) ++skill_timer;
         if(skill_timer==0) invulnerable=false;
-    }
+    });
 }
 std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
     static int attack2_count = 3;

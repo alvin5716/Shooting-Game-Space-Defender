@@ -4,7 +4,7 @@
 #include "game.h"
 
 Enemy_3_Blue_1::Enemy_3_Blue_1(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_3_Blue(player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_3_Blue(player,135,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     mode=false;
     magicstone=nullptr;
@@ -13,8 +13,7 @@ Enemy_3_Blue_1::Enemy_3_Blue_1(Character* player, int health, int radius, int sh
 }
 void Enemy_3_Blue_1::skill() {
     //second phase
-    if(health<=135 && !secPhase) {
-        secPhase = true;
+    testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy15_2.png";
         shoot_timer = -850;
@@ -22,15 +21,16 @@ void Enemy_3_Blue_1::skill() {
         skill_timer = -200;
         emit useSkill("神秘的魔法石");
         this->redMagicShield();
-    }
-    if(secPhase) {
+    },
+    [this](){
         //skill
         if(skill_timer==0) moveTo(Game::FrameWidth/2,220,240);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
-    } else {
+    },
+    [this](){
         Enemy_3_Blue::skill();
-    }
+    });
 }
 std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
     //magic stone

@@ -14,7 +14,7 @@ void Enemy_4_Pink::skill() {
         if(x<0+radius || x>Game::FrameWidth-radius || y<0+radius || y>Game::FrameHeight-radius) {
             setAcceleration(0,0);
             setSpeed(0,0);
-            Enemy* new_enemy = new Enemy_Temp(this,Enemy_Temp::enemy_4_pink_shoot,player,shoot_cd,shoot_cd_init,x,y);
+            Enemy* new_enemy = new Enemy_Temp(nullptr,Enemy_Temp::enemy_4_pink_shoot,player,shoot_cd,shoot_cd_init,x,y);
             emit summonEnemy(new_enemy);
             setDisappearTime(1200);
             killItself();
@@ -25,7 +25,7 @@ void Enemy_4_Pink::skill() {
 void Enemy_4_Pink::attacked() {
     Character::attacked();
     if(health<=0) {
-        Enemy* new_enemy = new Enemy_Temp(this,Enemy_Temp::enemy_4_pink_shoot,player,shoot_cd,shoot_cd_init,x,y);
+        Enemy* new_enemy = new Enemy_Temp(nullptr,Enemy_Temp::enemy_4_pink_shoot_2,player,shoot_cd,shoot_cd_init,x,y);
         emit summonEnemy(new_enemy);
     }
 }

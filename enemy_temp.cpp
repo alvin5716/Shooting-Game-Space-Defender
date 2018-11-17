@@ -40,6 +40,32 @@ std::vector<Bullet*>* Enemy_Temp::enemy_4_pink_shoot() {
     return nullptr;
 }
 
+std::vector<Bullet*>* Enemy_Temp::enemy_4_pink_shoot_2() {
+    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%20==0) {
+        double bullet_v, bullet_a, bullet_count, cos, sin, t;
+        std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
+        Bullet* new_bullet;
+        //bullet v, a and count
+        t = (shoot_timer-shoot_cd)/20;
+        bullet_v = 0.5;
+        bullet_a = 0.0005+t*0.00001;
+        bullet_count = 4;
+        if(shoot_timer==shoot_cd) angle=angleofvector(player->getX()-x,player->getY()-y);
+        //shoot
+        for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
+            cos = std::cos(angle-i*M_PI/(bullet_count/2)-t*M_PI/(bullet_count*3));
+            sin = std::sin(angle-i*M_PI/(bullet_count/2)-t*M_PI/(bullet_count*3));
+            new_bullet = new Bullet(QString(":/res/bullet_pink.png"),16,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+            if(real_shooter!=nullptr) connect(real_shooter,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+            new_bullets->push_back(new_bullet);
+        }
+        if(shoot_timer==shoot_cd+120) killItself();
+        return new_bullets;
+    }
+    return nullptr;
+}
+
 std::vector<Bullet*>* Enemy_Temp::enemy_4_blue_4_shoot() {
     if(shoot_timer>=shoot_cd) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;

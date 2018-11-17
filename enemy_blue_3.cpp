@@ -4,18 +4,17 @@
 #include <QDebug>
 
 Enemy_Blue_3::Enemy_Blue_3(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_Blue(player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_Blue(player,200,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     shootingbullet=false;
 }
 void Enemy_Blue_3::skill() {
     //second phase
-    if(health<=200 && !secPhase) {
+    testIfSecPhase([this](){
         phi=0;
         usinglaser = true;
         count=0;
         bullet_count=24;
-        secPhase = true;
         invulnerable=true;
         img=":/res/enemy4_2.png";
         shoot_timer = -200;
@@ -23,8 +22,8 @@ void Enemy_Blue_3::skill() {
         skill_timer = -400;
         emit useSkill("星爆氣流");
         moveTo(Game::FrameWidth/2,100);
-    }
-    if(secPhase) {
+    },
+    [this](){
         //skill
         if(skill_timer>=0) {
             if(skill_timer>=500*3) skill_timer=0;
@@ -47,7 +46,7 @@ void Enemy_Blue_3::skill() {
         }
         //skill timer
         ++skill_timer;
-    }
+    });
 }
 std::vector<Bullet*>* Enemy_Blue_3::shoot2() {
     if(shoot_timer>=shoot_cd) {

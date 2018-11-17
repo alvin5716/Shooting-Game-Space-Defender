@@ -1,11 +1,11 @@
 #include "enemy_4_blue.h"
 #include "game.h"
 
-Enemy_4_Blue::Enemy_4_Blue(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+Enemy_4_Blue::Enemy_4_Blue(Character* player, int bossSkillHP, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4(QString(":/res/enemy20.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     point=18;
-    boss=true;
+    this->beABoss(bossSkillHP);
     invulnerable=true;
     connect(this,SIGNAL(useSkill(QString)),this,SIGNAL(killItsBullets()));
     connect(this,SIGNAL(deadSignal()),this,SIGNAL(killItsBullets()));

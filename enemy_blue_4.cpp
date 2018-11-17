@@ -1,22 +1,21 @@
 #include "enemy_blue_4.h"
 
 Enemy_Blue_4::Enemy_Blue_4(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_Blue(player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_Blue(player,140,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     circle=false;
 }
 void Enemy_Blue_4::skill() {
     //second phase
-    if(health<=140 && !secPhase) {
-        secPhase = true;
+    testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy4_2.png";
         shoot_timer = -225;
         shoot_cd = 1;
         skill_timer = -175;
         emit useSkill("黑子風暴");
-    }
-    if(secPhase) {
+    },
+    [this](){
         //skill
         if(skill_timer>=0&&skill_timer%500==0) {
             if(skill_timer>=500*3) skill_timer=0;
@@ -33,7 +32,7 @@ void Enemy_Blue_4::skill() {
         }
         //skill timer
         ++skill_timer;
-    }
+    });
 }
 std::vector<Bullet*>* Enemy_Blue_4::shoot2() {
     const int total_t = 400;

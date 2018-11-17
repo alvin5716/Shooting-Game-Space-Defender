@@ -2,27 +2,26 @@
 #include <QDebug>
 
 Enemy_2_Blue_1::Enemy_2_Blue_1(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_2_Blue(player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_2_Blue(player,180,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     mode=false;
 }
 void Enemy_2_Blue_1::skill() {
     //second phase
-    if(health<=180 && !secPhase) {
-        secPhase = true;
+    testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy10_2.png";
         shoot_timer = -420;
         shoot_cd = 100;
         skill_timer = -200;
         emit useSkill("炫彩流");
-    }
-    if(secPhase) {
+    },
+    [this](){
         //skill
         if(skill_timer==0) moveTo(Game::FrameWidth/2-180,200,240);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
-    }
+    });
 }
 std::vector<Bullet*>* Enemy_2_Blue_1::shoot2() {
     const int interval=12;
