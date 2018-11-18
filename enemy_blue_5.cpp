@@ -32,7 +32,7 @@ std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
     std::vector<Bullet*>* new_bullets = new std::vector<Bullet*>;
     Bullet* new_bullet;
     //purple bullets
-    int bullet_count = 28;
+    int bullet_count = 24;
     if(attack2_count==3 && (shoot_timer==0 || shoot_timer==160)) phi = (qrand()%5)*2*M_PI/bullet_count/5;
     if(attack2_count==3 && shoot_timer==0) clockwise=(qrand()%2==0);
     if(attack2_count==3 && shoot_timer==160) clockwise=!clockwise;

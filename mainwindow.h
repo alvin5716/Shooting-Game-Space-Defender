@@ -85,7 +85,7 @@ private:
     QGraphicsPixmapItem *background;
     std::vector<Bullet*> player_bullets;
     std::vector<Enemy*> enemies;
-    std::vector<Bullet*> enemy_bullets;
+    std::list<Bullet*> enemy_bullets;
     Enemy* new_enemy, *new_boss;
     Effect* new_effect;
     Flash* flash;

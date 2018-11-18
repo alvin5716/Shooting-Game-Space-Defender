@@ -139,8 +139,6 @@ void MainWindow::start() {
     connect(this,SIGNAL(doImgMove()),player,SLOT(img_move()));
     connect(player,SIGNAL(healthColorChange(QString)),this,SLOT(healthColorChange(QString)));
     player->healthColorChange("white");
-    //bullets
-    enemy_bullets.reserve(700);
     //dot
     if(dot!=nullptr) delete dot;
     dot = new Shield(":/res/dot.png",50,50,10,10,player,-1,player->getX(),player->getY());
@@ -262,9 +260,9 @@ void MainWindow::doTick() {
             ui->PlayerSkill->display(skill_times);
         }
         if(player->isUsingSkill()) {
-            for(int i=0;i<(int)enemy_bullets.size();++i) { //continuous
-                if(sqrt(pow(enemy_bullets.at(i)->getX()-player->getX(),2)+pow(enemy_bullets.at(i)->getY()-player->getY(),2))<=250 && !enemy_bullets.at(i)->isInvulnerable())
-                    enemy_bullets.at(i)->killItself();
+            for(Bullet* enemy_bullet : enemy_bullets) { //continuous
+                if(sqrt(pow(enemy_bullet->getX()-player->getX(),2)+pow(enemy_bullet->getY()-player->getY(),2))<=250 && !enemy_bullet->isInvulnerable())
+                    enemy_bullet->killItself();
             }
         }
         //shoot ,skill
@@ -295,9 +293,9 @@ void MainWindow::doTick() {
             if(new_enemy_bullets!=nullptr) {
                 for (std::vector<Bullet*>::iterator j=(*new_enemy_bullets).begin();j!=(*new_enemy_bullets).end();++j) {
                     scene->addItem(*j);
-                    enemy_bullets.push_back(*j);
                     connect(this,SIGNAL(doMove()),*j,SLOT(move()));
                     connect(this,SIGNAL(doImgMove()),*j,SLOT(img_move()));
+                    enemy_bullets.push_back(*j);
                 }
                 new_enemy_bullets->clear();
                 new_enemy_bullets->shrink_to_fit();
@@ -314,10 +312,10 @@ void MainWindow::doTick() {
             Character* real_attacker = player_bullets.at(i)->testAttackedBy(attackers);
             if(real_attacker!=nullptr) real_attacker->attacked();
         }
-        for(int i=0;i<(int)enemy_bullets.size();++i) { //enemy bullets
+        for(Bullet* enemy_bullet: enemy_bullets) { //enemy bullets
             //damaged
             Character* attacker = player;
-            Character* real_attacker = enemy_bullets.at(i)->testAttackedBy(attacker);
+            Character* real_attacker = enemy_bullet->testAttackedBy(attacker);
             if(real_attacker!=nullptr) {
                 if(!player->isInvulnerable()) {
                     sceneVibrate();
@@ -345,7 +343,7 @@ void MainWindow::doTick() {
                 i = enemies.erase(i);
             } else ++i;
         }
-        for(std::vector<Bullet*>::iterator i=enemy_bullets.begin();i!=enemy_bullets.end();) {
+        for(std::list<Bullet*>::iterator i=enemy_bullets.begin();i!=enemy_bullets.end();) {
             if((*i)->isDead()) {
                 //delete and erase
                 delete (*i);
@@ -1097,7 +1095,7 @@ void MainWindow::backToMenu() {
         delete (*i);
         i = enemies.erase(i);
     }
-    for(std::vector<Bullet*>::iterator i=enemy_bullets.begin();i!=enemy_bullets.end();) {
+    for(std::list<Bullet*>::const_iterator i=enemy_bullets.begin();i!=enemy_bullets.end();) {
         delete (*i);
         i = enemy_bullets.erase(i);
     }
