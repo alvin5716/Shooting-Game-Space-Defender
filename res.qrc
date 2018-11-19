@@ -68,5 +68,7 @@
         <file>res/bg_boss_4.png</file>
         <file>res/enemy20_2.png</file>
         <file>res/wind.png</file>
+        <file>res/golden_wind.png</file>
+        <file>res/bullet_yellow_hex.png</file>
     </qresource>
 </RCC>

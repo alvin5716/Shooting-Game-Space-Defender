@@ -81,7 +81,8 @@ SOURCES += \
     enemy_green.cpp \
     enemy_4_blue.cpp \
     enemy_4_blue_4.cpp \
-    enemy_4_blue_2.cpp
+    enemy_4_blue_2.cpp \
+    spreadrng.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -143,7 +144,8 @@ HEADERS += \
     enemy_green.h \
     enemy_4_blue.h \
     enemy_4_blue_4.h \
-    enemy_4_blue_2.h
+    enemy_4_blue_2.h \
+    spreadrng.h
 
 FORMS += \
         mainwindow.ui

@@ -40,7 +40,7 @@ void Effect::move() {
         this->show_img_force_set();
     }
 }
-void Effect::zoom(int time, int aim_show_w, int aim_show_h) {
+void Effect::zoom(int aim_show_w, int aim_show_h, int time) {
     increment_w = ((double)aim_show_w-show_w)/time;
     increment_h = ((double)aim_show_h-show_h)/time;
     zoom_timer = time;
