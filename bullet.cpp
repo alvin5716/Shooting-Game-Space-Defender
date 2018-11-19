@@ -11,6 +11,7 @@ Bullet::Bullet(QString img, int radius, double x, double y, double xv, double yv
     terminal_v = 0;
     this->data_head = nullptr;
     this->setPositionByData = false;
+    this->rotatable=false;
 }
 
 void Bullet::setVTerminal(double terminal_v) {
@@ -34,6 +35,20 @@ void Bullet::move() {
         if((sqrt(pow(xv,2)+pow(yv,2))<=terminal_v && sqrt(pow(xv+xa,2)+pow(yv+ya,2))<=terminal_v) || (sqrt(pow(xv,2)+pow(yv,2))>=terminal_v && sqrt(pow(xv+xa,2)+pow(yv+ya,2))>=terminal_v)) setSpeed(xv+xa,yv+ya);
     }
 }
+
+void Bullet::img_move() {
+    Character::img_move();
+    if(rotatable) {
+        double angle = angleofvector(this->xv,this->yv);
+        this->setTransformOriginPoint(show_w/2,show_h/2);
+        setRotation(angle/M_PI*180);
+    }
+}
+
+void Bullet::setRotatable(bool rotatable) {
+    this->rotatable=rotatable;
+}
+
 void Bullet::addData(BulletData* bullet_data) {
     if(this->data_head==nullptr) {
         this->data_head = bullet_data;
