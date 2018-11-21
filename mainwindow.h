@@ -42,8 +42,9 @@
 #include "enemy_4_red.h"
 #include "enemy_4_yellow.h"
 #include "enemy_4_pink.h"
-#include "enemy_4_blue_4.h"
 #include "enemy_4_blue_2.h"
+#include "enemy_4_blue_3.h"
+#include "enemy_4_blue_4.h"
 #include <QKeyEvent>
 #include <vector>
 #include <list>
@@ -98,7 +99,7 @@ private:
     int gamestate, level;
     QString strBossBG;
     bool isPlayerPosHigh;
-    static constexpr int StartTick = 0;
+    static constexpr int StartTick = 14547;
 
 private slots:
     void newEnemyInit(Enemy* new_enemy);

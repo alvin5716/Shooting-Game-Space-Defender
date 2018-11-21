@@ -7,11 +7,14 @@
 #include <vector>
 #include <QPropertyAnimation>
 #include <QGraphicsOpacityEffect>
+#include <cmath>
+#include <algorithm>
 
 class Character : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
+    Character() = delete;
     Character(QString img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya);
     void setPosition(double x, double y);
     void setSpeed(double xv, double yv);

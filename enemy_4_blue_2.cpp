@@ -7,7 +7,6 @@ Enemy_4_Blue_2::Enemy_4_Blue_2(Character* player, int health, int radius, int sh
 {
     shoot_count=0;
     rng = new SpreadRNG(0,99);
-    this->setBossHPToSkill();
 }
 void Enemy_4_Blue_2::skill() {
     //second phase
