@@ -93,9 +93,11 @@ double Character::imgY() const{
 }
 void Character::bounceAtX() {
     this->xv *= -1;
+    emit bouncedAtX();
 }
 void Character::bounceAtY() {
     this->yv *= -1;
+    emit bouncedAtY();
 }
 void Character::setFloatable(bool floatable) {
     this->floatable=floatable;

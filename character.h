@@ -52,6 +52,8 @@ signals:
     void useSkill(QString);
     void healthChanged(int);
     void killItsBullets();
+    void bouncedAtX();
+    void bouncedAtY();
 public slots:
     void fadein(int time=800);
     void fadeout(int time=500);

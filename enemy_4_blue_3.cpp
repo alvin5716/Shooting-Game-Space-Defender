@@ -4,11 +4,14 @@
 #include <QDebug>
 
 Enemy_4_Blue_3::Enemy_4_Blue_3(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_4_Blue(player,160,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_4_Blue(player,230,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     shoot_count=0;
     angle_seed=0;
     this->setBossHPToSkill();
+    connect(this,&Enemy_4_Blue_3::bouncedAtY,[this](){
+        emit shakeScreen(static_cast<short>(shakeLevel::largeShake));
+    });
 }
 void Enemy_4_Blue_3::skill() {
     //second phase
@@ -30,16 +33,19 @@ void Enemy_4_Blue_3::skill() {
             ++skill_timer;
             this->bounceable = true;
             this->stopable = false;
-            this->setAcceleration(0,0.004);
+            this->setAcceleration(0,0.006);
         } else {
-            bool b = player->getX()>this->x;
-            this->xa=b?0.008:-0.008;
+            if(player->getX()>this->x+this->radius) this->xa=0.01;
+            else if(player->getX()<this->x-this->radius) this->xa=-0.01;
+            else if (this->xv>0) this->xa=-0.015;
+            else if (this->xv<0) this->xa=0.015;
+            else this->xa=0.0;
             if(this->xv>1.2) this->xv=1.2;
             else if(this->xv<-1.2) this->xv=-1.2;
             if(this->y<125 && !this->waving) {
                 this->waving=true;
-                shoot_cd=25;
             }
+            if(this->yv<0) shoot_cd=20;
         }
     },
     [this](){
@@ -48,13 +54,12 @@ void Enemy_4_Blue_3::skill() {
 }
 std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
     if(shoot_timer>=shoot_cd) {
-        setVulnerable();
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         double constexpr bullet_v=2.2;
         double sin, cos;
         for(int i=0;i<2;++i) {
-            double angle = M_PI/2+(i?1:-1)*(M_PI/5-(std::min(280-angle_seed,angle_seed)/4)*M_PI/180);
+            double angle = M_PI/2+(i?1:-1)*(M_PI/5-(std::min(210-angle_seed,angle_seed)/3)*M_PI/180);
             sin = std::sin(angle);
             cos = std::cos(angle);
             new_bullet = new Bullet(QString(":/res/bullet_purple.png"),14,x+cos*radius,y+sin*radius,bullet_v*cos,bullet_v*sin);
@@ -64,7 +69,8 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
         shoot_timer=0;
         return new_bullets;
     }
-    if( (waving && ++angle_seed>280) || !waving ) {
+    if(waving && ++angle_seed>210) {
+        setVulnerable();
         angle_seed=0;
         waving = false;
         shoot_cd = 50;

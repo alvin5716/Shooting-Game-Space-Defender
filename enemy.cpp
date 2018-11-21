@@ -61,8 +61,8 @@ void Enemy::move() {
     if(bounceable) {
         if(!already_enter && (x>0+radius && x<Game::FrameWidth-radius && y>0+radius && y<Game::FrameHeight-radius)) already_enter=true;
         if(already_enter) {
-            if(x<0+radius || x>Game::FrameWidth-radius) xv *= -1;
-            if(y<0+radius || y>Game::FrameHeight-radius) yv *= -1;
+            if(x<0+radius || x>Game::FrameWidth-radius) bounceAtX();
+            if(y<0+radius || y>Game::FrameHeight-radius) bounceAtY();
         }
     }
     //stopable
