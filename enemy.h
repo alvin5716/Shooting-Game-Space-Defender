@@ -35,6 +35,7 @@ signals:
     void summonEnemy(Enemy*);
     void pointGive(int);
     void shakeScreen(short);
+    void shakeScreenVertical(short);
 protected:
     void beABoss(int bossSkillHP);
     void setBossHPToSkill();

@@ -55,7 +55,7 @@ std::vector<Bullet*>* Enemy_Temp::enemy_4_pink_shoot_2() {
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
             cos = std::cos(angle-i*M_PI/(bullet_count/2)-t*M_PI/(bullet_count*3));
             sin = std::sin(angle-i*M_PI/(bullet_count/2)-t*M_PI/(bullet_count*3));
-            new_bullet = new Bullet(QString(":/res/bullet_pink.png"),16,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = new Bullet(QString(":/res/bullet_pink.png"),12,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             if(real_shooter!=nullptr) connect(real_shooter,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

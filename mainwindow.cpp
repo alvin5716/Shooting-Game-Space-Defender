@@ -1152,6 +1152,7 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     connect(new_boss,SIGNAL(deadSignal()),ui->BossHealth,SLOT(hide()));
     connect(new_boss,SIGNAL(deadSignal()),ui->BossSkill,SLOT(hide()));
     connect(new_boss,SIGNAL(shakeScreen(short)),this,SLOT(sceneVibrate(short)));
+    connect(new_boss,SIGNAL(shakeScreenVertical(short)),this,SLOT(sceneVibrateVertical(short)));
 }
 void MainWindow::bossSkillLengthSetting(QString skill) {
     int length=skill.length();
@@ -1270,6 +1271,32 @@ void MainWindow::sceneVibrate(short vibrate_count) {
         }
         connect(vibrateAni,&QPropertyAnimation::finished,[=](){
             sceneVibrate(vibrate_count_temp);
+        });
+        vibrateAni->start(QAbstractAnimation::KeepWhenStopped);
+    } else {
+        if(vibrateAni!=nullptr) delete vibrateAni;
+        vibrateAni=nullptr;
+    }
+}
+void MainWindow::sceneVibrateVertical(short vibrate_count) {
+    static QPropertyAnimation* vibrateAni=nullptr;
+    static short vibrate_count_temp=0;
+    bool firstVib=false;
+    vibrate_count_temp = vibrate_count+1;
+    if(vibrate_count<10) {
+        if(vibrateAni!=nullptr) delete vibrateAni;
+        else firstVib=true;
+        vibrateAni = new QPropertyAnimation(scene,"sceneRect");
+        vibrateAni->setDuration((50+(vibrate_count>0?1:-1)*(vibrate_count*vibrate_count)*2.2)/((firstVib||vibrate_count==9)?2:1));
+        vibrateAni->setEasingCurve(vibrate_count==9?QEasingCurve::InSine:(firstVib?QEasingCurve::OutSine:QEasingCurve::InOutSine));
+        vibrateAni->setStartValue(this->scene->sceneRect());
+        if(vibrate_count==9) {
+            vibrateAni->setEndValue(QRect(0,0,Game::FrameWidth,Game::FrameHeight));
+        } else {
+            vibrateAni->setEndValue(QRect(0,(vibrate_count%2==0?-1:1)*(5-vibrate_count*vibrate_count*0.05),Game::FrameWidth,Game::FrameHeight));
+        }
+        connect(vibrateAni,&QPropertyAnimation::finished,[=](){
+            sceneVibrateVertical(vibrate_count_temp);
         });
         vibrateAni->start(QAbstractAnimation::KeepWhenStopped);
     } else {

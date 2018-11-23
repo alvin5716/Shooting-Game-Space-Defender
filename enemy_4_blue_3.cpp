@@ -8,11 +8,11 @@ Enemy_4_Blue_3::Enemy_4_Blue_3(Character* player, int health, int radius, int sh
 {
     shoot_count=0;
     angle_seed=0;
-    this->setBossHPToSkill();
     connect(this,&Enemy_4_Blue_3::bouncedAtY,[this](){
-        emit shakeScreen(static_cast<short>(shakeLevel::largeShake));
+        emit shakeScreenVertical(static_cast<short>(shakeLevel::largeShake));
         this->dust_falling = true;
         this->first = false;
+        setVulnerable();
     });
     this->first = true;
     this->dust_falling=false;
@@ -94,7 +94,6 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
         return new_bullets;
     }
     if(waving && ++angle_seed>140) {
-        setVulnerable();
         angle_seed=0;
         waving = false;
         shoot_cd = 50;

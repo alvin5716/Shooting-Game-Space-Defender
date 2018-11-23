@@ -99,7 +99,7 @@ private:
     int gamestate, level;
     QString strBossBG;
     bool isPlayerPosHigh;
-    static constexpr int StartTick = 14547;
+    static constexpr int StartTick = 14047;
 
 private slots:
     void newEnemyInit(Enemy* new_enemy);
@@ -117,6 +117,7 @@ private slots:
     void bossCorpse(int,int);
     void healthColorChange(QString);
     void sceneVibrate(short vibrate_count = 0);
+    void sceneVibrateVertical(short vibrate_count = 0);
     void bossSkillLengthSetting(QString skill);
 
 signals:
