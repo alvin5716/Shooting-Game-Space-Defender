@@ -31,6 +31,10 @@ void Character::setPosition(double x, double y) {
     this->x=x;
     this->y=y;
 }
+void Character::setPosition(QPoint pos) {
+    this->x=pos.x();
+    this->y=pos.y();
+}
 void Character::setSpeed(double xv, double yv) {
     this->xv=xv;
     this->yv=yv;
@@ -107,6 +111,10 @@ void Character::moveTo(double x, double y, double t) {
     //use physics formula
     setAcceleration((2*(this->x-x))/(t*t),(2*(this->y-y))/(t*t));
     setSpeed(((x>this->x)?1:-1) * sqrt(2*(-this->xa)*(x-this->x)),((y>this->y)?1:-1) * sqrt(2*(-this->ya)*(y-this->y)));
+}
+void Character::moveTo(QPoint pos, double t) {
+    double xp = pos.x(), yp = pos.y();
+    this->moveTo(xp,yp,t);
 }
 Character* Character::testAttackedBy(std::vector<Character*> & attackers) {
     if(x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius) {
@@ -213,6 +221,9 @@ double Character::getRadius() const {
 }
 int Character::getHealth() const {
     return health;
+}
+QString Character::getImg() const {
+    return img;
 }
 bool Character::isDead() const {
     return dead;

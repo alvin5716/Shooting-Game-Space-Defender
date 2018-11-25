@@ -42,6 +42,7 @@
 #include "enemy_4_red.h"
 #include "enemy_4_yellow.h"
 #include "enemy_4_pink.h"
+#include "enemy_4_blue_1.h"
 #include "enemy_4_blue_2.h"
 #include "enemy_4_blue_3.h"
 #include "enemy_4_blue_4.h"

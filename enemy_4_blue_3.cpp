@@ -22,7 +22,7 @@ void Enemy_4_Blue_3::skill() {
         shoot_timer = -270;
         shoot_cd = 45;
         skill_timer = -420;
-        emit useSkill("膽小鬼賽局-以退為進");
+        emit useSkill("膽小鬼賽局");
     },
     [this](){
         //skill

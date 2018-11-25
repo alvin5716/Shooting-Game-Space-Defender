@@ -1041,7 +1041,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(14048)) { //14048, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
-                new_boss = new Enemy_4_Blue_4(player,450,60,70,400,Game::FrameWidth/2,-60,0,0,0,0,true,true);
+                new_boss = new Enemy_4_Blue_1(player,270,60,70,400,Game::FrameWidth/2,-60,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->moveTo(Game::FrameWidth/2,200,330);
                 newBossInit(new_boss);
@@ -1050,7 +1050,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(14050)) { //14050
                 ui->BossLives->setText("4");
             } else if(tickCheck(14298)) { //14298, BOSS 2
-                new_boss = new Enemy_4_Blue_2(player,250,60,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+                new_boss = new Enemy_4_Blue_2(player,250,60,70,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
@@ -1058,13 +1058,21 @@ void MainWindow::doTick() {
             } else if(tickCheck(14300)) { //14300
                 ui->BossLives->setText("3");
             } else if(tickCheck(14548)) { //14548, BOSS 3
-                new_boss = new Enemy_4_Blue_3(player,330,60,70,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+                new_boss = new Enemy_4_Blue_3(player,330,60,70,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
             } else if(tickCheck(14550)) { //14550
                 ui->BossLives->setText("2");
+            } else if(tickCheck(14798)) { //14798, BOSS 4
+                new_boss = new Enemy_4_Blue_4(player,450,60,70,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+                connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+                new_boss->fadein(1500);
+                newBossInit(new_boss);
+                tickFreeze();
+            } else if(tickCheck(14800)) { //14800
+                ui->BossLives->setText("1");
             }
             break;
         default:
