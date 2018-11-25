@@ -7,14 +7,11 @@ Enemy_4_Blue_3::Enemy_4_Blue_3(Character* player, int health, int radius, int sh
     :Enemy_4_Blue(player,180,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     shoot_count=0;
-    angle_seed=0;
     connect(this,&Enemy_4_Blue_3::bouncedAtY,[this](){
         emit shakeScreenVertical(static_cast<short>(shakeLevel::largeShake));
         this->dust_falling = true;
-        this->first = false;
         setVulnerable();
     });
-    this->first = true;
     this->dust_falling=false;
 }
 void Enemy_4_Blue_3::skill() {
@@ -23,7 +20,7 @@ void Enemy_4_Blue_3::skill() {
         invulnerable=true;
         img=":/res/enemy20_2.png";
         shoot_timer = -270;
-        shoot_cd = 50;
+        shoot_cd = 45;
         skill_timer = -420;
         emit useSkill("膽小鬼賽局-以退為進");
     },
@@ -52,11 +49,6 @@ void Enemy_4_Blue_3::skill() {
                 this->y=120;
                 this->yv=0;
             }
-
-            if(this->y<125 && !this->waving) {
-                if(!first) this->waving=true;
-            }
-            if(this->yv<0) shoot_cd=30;
         }
     },
     [this](){
@@ -71,7 +63,7 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
         double constexpr bullet_v=2.2;
         double sin, cos;
         for(int i=0;i<2;++i) {
-            double angle = M_PI/2+(i?1:-1)*(M_PI/5-(std::min(140-angle_seed,angle_seed)/2)*M_PI/180);
+            double angle = M_PI/2+(i?1:-1)*M_PI/5;
             sin = std::sin(angle);
             cos = std::cos(angle);
             new_bullet = new Bullet(QString(":/res/bullet_purple.png"),14,x+cos*radius,y+sin*radius,bullet_v*cos,bullet_v*sin);
@@ -92,11 +84,6 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
         }
         shoot_timer=0;
         return new_bullets;
-    }
-    if(waving && ++angle_seed>140) {
-        angle_seed=0;
-        waving = false;
-        shoot_cd = 50;
     }
     return nullptr;
 }

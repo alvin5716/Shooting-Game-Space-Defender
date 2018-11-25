@@ -11,8 +11,7 @@ public:
     std::vector<Bullet*>* shoot2() override;
 private:
     short shoot_count, bow_count;
-    int angle_seed;
-    bool waving, first, dust_falling;
+    bool dust_falling;
 };
 
 #endif // ENEMY_4_BLUE_3_H
