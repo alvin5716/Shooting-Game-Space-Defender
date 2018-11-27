@@ -15,7 +15,7 @@ void Enemy_3_Blue_1::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy15_2.png";
+        img=":/res/enemy/3/blue_2.png";
         shoot_timer = -850;
         shoot_cd = 600;
         skill_timer = -200;
@@ -44,7 +44,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         bullet_a = 0.015;
         cos = std::cos(face_to_left?-M_PI/6:-M_PI*5/6);
         sin = std::sin(face_to_left?-M_PI/6:-M_PI*5/6);
-        new_bullet = magicstone = new Bullet(":/res/magicball.png",0,shootXPos(),shootYPos());
+        new_bullet = magicstone = new Bullet(":/res/bullet/other/magicball.png",0,shootXPos(),shootYPos());
         magicstone->addTimeData(125,bullet_radius)
                 ->addTimeData(50,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin)
                 ->addWallData(player,2.6);
@@ -73,7 +73,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
                 double shoot_angle = angle+(i+(mode?0.5:0)+0.5*j)*M_PI/(bullet_count/2);
                 cos = std::cos(shoot_angle);
                 sin = std::sin(shoot_angle);
-                new_bullet = new Bullet(QString(":/res/magicball.png"),12,
+                new_bullet = new Bullet(QString(":/res/bullet/other/magicball.png"),12,
                                         magicstone->getX()+magicstone->getRadius()*cos*init_pos,
                                         magicstone->getY()+magicstone->getRadius()*sin*init_pos,
                                         bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
@@ -105,7 +105,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
             bullet_v = 0.2;
             bullet_a = 0.025;
             Bullet* new_bullet;
-            new_bullet = new Bullet(":/res/bullet_yellow.png",bullet_radius,shootXPos(),shootYPos());
+            new_bullet = new Bullet(":/res/bullet/1/yellow.png",bullet_radius,shootXPos(),shootYPos());
             int aim_x, aim_y;
             if(i<=6) {
                 aim_x = this->shootXPos()-i*6;

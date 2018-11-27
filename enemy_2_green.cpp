@@ -2,7 +2,7 @@
 #include <cmath>
 
 Enemy_2_Green::Enemy_2_Green(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy(QString(":/res/enemy6.png"),35,35,radius*2,radius*2,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy(QString(":/res/enemy/2/green.png"),35,35,radius*2,radius*2,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
 
 }
@@ -22,7 +22,7 @@ std::vector<Bullet*>* Enemy_2_Green::shoot() {
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
             cos = std::cos(angle+i*M_PI/(bullet_count/2));
             sin = std::sin(angle+i*M_PI/(bullet_count/2));
-            new_bullet = new Bullet(QString(":/res/bullet_2_green.png"),8,x,y+radius*3/4,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = new Bullet(QString(":/res/bullet/2/green.png"),8,x,y+radius*3/4,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }

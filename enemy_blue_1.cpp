@@ -8,13 +8,13 @@ Enemy_Blue_1::Enemy_Blue_1(Character* player, int health, int radius, int shoot_
     clockwise=false;
     setDisappearTime(5000);
     bullet_fast=false;
-    death_img=":/res/enemy4_3.png";
+    death_img=":/res/enemy/1/blue_3.png";
 }
 void Enemy_Blue_1::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy4_2.png";
+        img=":/res/enemy/1/blue_2.png";
         shoot_timer = -225;
         shoot_cd = 250;
         skill_timer = -250;
@@ -58,7 +58,7 @@ std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
         for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
             bullet_fast=!bullet_fast;
             bullet_v = (bullet_fast)?0.8:0.3;
-            QString str = (bullet_fast)?":/res/bullet_purple.png":":/res/bullet_black.png";
+            QString str = (bullet_fast)?":/res/bullet/1/purple.png":":/res/bullet/1/black.png";
             cos = std::cos(angle+2*i*M_PI/bullet_count);
             sin = std::sin(angle+2*i*M_PI/bullet_count);
             cosp = std::cos(5*M_PI/3);

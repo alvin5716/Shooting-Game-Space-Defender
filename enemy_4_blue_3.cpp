@@ -18,7 +18,7 @@ void Enemy_4_Blue_3::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy20_2.png";
+        img=":/res/enemy/4/blue_2.png";
         shoot_timer = -270;
         shoot_cd = 45;
         skill_timer = -420;
@@ -66,7 +66,7 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
             double angle = M_PI/2+(i?1:-1)*M_PI/5;
             sin = std::sin(angle);
             cos = std::cos(angle);
-            new_bullet = new Bullet(QString(":/res/bullet_purple.png"),14,x+cos*radius,y+sin*radius,bullet_v*cos,bullet_v*sin);
+            new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),14,x+cos*radius,y+sin*radius,bullet_v*cos,bullet_v*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
@@ -75,7 +75,7 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
         if(dust_falling) {
             int x0 = (int)std::round(player->getX())%bullet_count;
             for(int i=0;i<=bullet_count;++i) {
-                new_bullet = new Bullet(QString(":/res/bullet_black.png"),10,x0+i*(Game::FrameWidth/bullet_count),qrand()%17-8,0,qrand()%10/30.0,0,0.008);
+                new_bullet = new Bullet(QString(":/res/bullet/1/black.png"),10,x0+i*(Game::FrameWidth/bullet_count),qrand()%17-8,0,qrand()%10/30.0,0,0.008);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullet->fadein();
                 new_bullets->push_back(new_bullet);

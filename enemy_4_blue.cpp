@@ -2,7 +2,7 @@
 #include "game.h"
 
 Enemy_4_Blue::Enemy_4_Blue(Character* player, int bossSkillHP, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_4(QString(":/res/enemy20.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_4(QString(":/res/enemy/4/blue.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     point=18;
     this->beABoss(bossSkillHP);
@@ -96,7 +96,7 @@ std::vector<Bullet*>* Enemy_4_Blue::shoot() {
                 cos = std::cos(angle[j]);
                 sin_x = std::sin(angle[j]+(i?M_PI/2:-M_PI/2));
                 cos_x = std::cos(angle[j]+(i?M_PI/2:-M_PI/2));
-                new_bullet = new Bullet(QString(":/res/bullet_blue.png"),r,attack_x+cos*radius/2+cos_x*bullet_xd*t,attack_y+sin*radius/2+sin_x*bullet_xd*t,bullet_v*cos,bullet_v*sin);
+                new_bullet = new Bullet(QString(":/res/bullet/1/blue.png"),r,attack_x+cos*radius/2+cos_x*bullet_xd*t,attack_y+sin*radius/2+sin_x*bullet_xd*t,bullet_v*cos,bullet_v*sin);
                 new_bullet->addWallData(false,false);
                 new_bullet->fadein();
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));

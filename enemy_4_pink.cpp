@@ -3,7 +3,7 @@
 #include "game.h"
 
 Enemy_4_Pink::Enemy_4_Pink(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool stopable)
-:Enemy_4(QString(":/res/enemy19.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,true,stopable)
+:Enemy_4(QString(":/res/enemy/4/pink.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,true,stopable)
 {
     move_speed=1.6;
     this->shoot_cd_init=shoot_cd_init;

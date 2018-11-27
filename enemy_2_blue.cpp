@@ -4,7 +4,7 @@
 #include <cmath>
 
 Enemy_2_Blue::Enemy_2_Blue(Character* player, int bossSkillHP, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy(QString(":/res/enemy10.png"),35,35,std::round(radius*2.167),std::round(radius*2.167),player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy(QString(":/res/enemy/2/blue.png"),35,35,std::round(radius*2.167),std::round(radius*2.167),player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     invulnerable=true;
     point=15;
@@ -38,7 +38,7 @@ std::vector<Bullet*>* Enemy_2_Blue::shoot() {
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                 cos = (j?1:-1)*std::cos(angle+i*M_PI/(bullet_count/2)+t*M_PI/30);
                 sin = std::sin(angle+i*M_PI/(bullet_count/2)+t*M_PI/30);
-                new_bullet = new Bullet(QString(":/res/bullet_2_blue.png"),bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin);
+                new_bullet = new Bullet(QString(":/res/bullet/2/blue.png"),bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin);
                 new_bullet->rotateAround(x,y,0.001,j==0);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
@@ -55,25 +55,25 @@ QString Enemy_2_Blue::rainbowBullet(int i) const{
     QString str;
     switch(i) {
     case -3:
-        str=":/res/bullet_2_pink.png";
+        str=":/res/bullet/2/pink.png";
         break;
     case -2:
-        str=":/res/bullet_2_red.png";
+        str=":/res/bullet/2/red.png";
         break;
     case -1:
-        str=":/res/bullet_2_yellow.png";
+        str=":/res/bullet/2/yellow.png";
         break;
     case 0:
-        str=":/res/bullet_2_green.png";
+        str=":/res/bullet/2/green.png";
         break;
     case 1:
-        str=":/res/bullet_2_blue.png";
+        str=":/res/bullet/2/blue.png";
         break;
     case 2:
-        str=":/res/bullet_2_indigo.png";
+        str=":/res/bullet/2/indigo.png";
         break;
     case 3:
-        str=":/res/bullet_2_purple.png";
+        str=":/res/bullet/2/purple.png";
         break;
     }
     return str;
@@ -82,25 +82,25 @@ QString Enemy_2_Blue::rainbowLaser(int i) const{
     QString str;
     switch(i) {
     case -3:
-        str=":/res/laser_pink.png";
+        str=":/res/bullet/laser/pink.png";
         break;
     case -2:
-        str=":/res/laser_red.png";
+        str=":/res/bullet/laser/red.png";
         break;
     case -1:
-        str=":/res/laser_yellow.png";
+        str=":/res/bullet/laser/yellow.png";
         break;
     case 0:
-        str=":/res/laser_green.png";
+        str=":/res/bullet/laser/green.png";
         break;
     case 1:
-        str=":/res/laser_blue.png";
+        str=":/res/bullet/laser/blue.png";
         break;
     case 2:
-        str=":/res/laser_indigo.png";
+        str=":/res/bullet/laser/indigo.png";
         break;
     case 3:
-        str=":/res/laser_purple.png";
+        str=":/res/bullet/laser/purple.png";
         break;
     }
     return str;

@@ -15,7 +15,7 @@ void Enemy_3_Blue_2::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy15_2.png";
+        img=":/res/enemy/3/blue_2.png";
         shoot_timer = -900;
         shoot_cd = 200;
         skill_timer = -200;
@@ -30,7 +30,7 @@ void Enemy_3_Blue_2::skill() {
         //invisible room
         if(skill_timer>=200) {
             if(room==nullptr) {
-                room = new Effect(":/res/magic_red.png",120,120,room_radius*2,room_radius*2,-1,player->getX(),player->getY());
+                room = new Effect(":/res/effect/magic_red.png",120,120,room_radius*2,room_radius*2,-1,player->getX(),player->getY());
                 room->setOpacity(0.6);
                 room->setZValue(-2);
                 room->rotateStart();
@@ -98,7 +98,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 sin = std::sin(angle+i*2*M_PI/bullet_count);
                 cos = std::cos(angle+i*2*M_PI/bullet_count);
                 Bullet_Distance* new_bullet_distance;
-                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet_purple.png",bullet_radius,player,room_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/1/purple.png",bullet_radius,player,room_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){ new_bullet_distance->fadeout(150); });
                 connect(new_bullet_distance,&Bullet_Distance::leaveArea,[=](){ new_bullet_distance->fadein(150); });
                 connect(player,SIGNAL(healthChanged(int)),new_bullet_distance,SLOT(disable()));
@@ -146,7 +146,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 sin = std::sin(angle+i*2*M_PI/bullet_count);
                 cos = std::cos(angle+i*2*M_PI/bullet_count);
                 Bullet_Distance* new_bullet_distance;
-                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet_black.png",bullet_radius,player,room_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/1/black.png",bullet_radius,player,room_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){ new_bullet_distance->fadeout(100); });
                 connect(new_bullet_distance,&Bullet_Distance::leaveArea,[=](){ new_bullet_distance->fadein(100); });
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -174,7 +174,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 sin = std::sin(angle+((i==0)?1:-1)*M_PI/20);
                 cos = std::cos(angle+((i==0)?1:-1)*M_PI/20);
                 Bullet_Distance* new_bullet_distance;
-                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet_yellow.png",10,player,room_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/1/yellow.png",10,player,room_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){
                     new_bullet_distance->setOpacity(0.3);
                 });

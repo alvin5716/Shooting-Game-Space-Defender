@@ -17,6 +17,7 @@ private:
     bool first;
     SpreadRNG* rng;
     Bullet* boat_bullets[bullet_count];
+    short img_num[bullet_count];
 };
 
 #endif // ENEMY_4_BLUE_1_H

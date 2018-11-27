@@ -3,7 +3,7 @@
 #include "game.h"
 
 Enemy_3_Blue::Enemy_3_Blue(Character* player, int bossSkillHP, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_3(QString(":/res/enemy15.png"),54,55,radius*2,radius*2,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_3(QString(":/res/enemy/3/blue.png"),54,55,radius*2,radius*2,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     point=20;
     mode=false;
@@ -54,7 +54,7 @@ std::vector<Bullet*>* Enemy_3_Blue::shoot() {
             else shoot_angle = i*M_PI/(bullet_count/2)-M_PI/2+t*(mode?1:-1)*M_PI/(bullet_count*2.5);
             cos = std::cos(shoot_angle);
             sin = std::sin(shoot_angle);
-            new_bullet = new Bullet_Sin(QString(":/res/bullet_blue.png"),250,20,8,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,0,0.008);
+            new_bullet = new Bullet_Sin(QString(":/res/bullet/1/blue.png"),250,20,8,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,0,0.008);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
@@ -67,7 +67,7 @@ std::vector<Bullet*>* Enemy_3_Blue::shoot() {
     return nullptr;
 }
 void Enemy_3_Blue::redMagicShield() {
-    this->showShield(":/res/magic_red.png",120,120);
+    this->showShield(":/res/effect/magic_red.png",120,120);
     shield->setOpacity(0.6);
     shield->fadein(2500);
     shield->setZValue(-2);

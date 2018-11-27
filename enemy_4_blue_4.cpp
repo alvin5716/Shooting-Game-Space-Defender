@@ -12,7 +12,7 @@ void Enemy_4_Blue_4::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy20_2.png";
+        img=":/res/enemy/4/blue_2.png";
         shoot_timer = -500;
         shoot_cd = 20;
         skill_timer = -420;
@@ -46,7 +46,7 @@ std::vector<Bullet*>* Enemy_4_Blue_4::shoot2() {
                 sin = std::sin(angle);
                 cos = std::cos(angle);
                 Enemy* new_enemy = new Enemy_Temp(this,Enemy_Temp::enemy_4_blue_4_shoot,player,17+qrand()%6,qrand()%20,x,y,bullet_v*cos,bullet_v*sin);
-                new_enemy->setImg(":/res/bullet_2_purple.png");
+                new_enemy->setImg(":/res/bullet/2/purple.png");
                 new_enemy->setShowSize(24,24);
                 new_enemy->show();
                 connect(this,SIGNAL(killItsBullets()),new_enemy,SLOT(killItself()));
@@ -56,7 +56,7 @@ std::vector<Bullet*>* Enemy_4_Blue_4::shoot2() {
                     for(int i=0;i<2;++i) {
                         sin = std::sin(angle);
                         cos = std::cos(angle);
-                        new_bullet = new Bullet(QString(":/res/bullet_2_purple.png"),12,x-cos*12*j-sin*(i?1:-1)*9*j,y-sin*12*j+cos*(i?1:-1)*9*j,bullet_v*cos,bullet_v*sin);
+                        new_bullet = new Bullet(QString(":/res/bullet/2/purple.png"),12,x-cos*12*j-sin*(i?1:-1)*9*j,y-sin*12*j+cos*(i?1:-1)*9*j,bullet_v*cos,bullet_v*sin);
                         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                         new_bullets->push_back(new_bullet);
                     }
@@ -76,7 +76,7 @@ std::vector<Bullet*>* Enemy_4_Blue_4::shoot2() {
                 cosv = std::cos(angle+(i?1:-1)*M_PI/2);
                 sina = std::sin(angle);
                 cosa = std::cos(angle);
-                new_bullet = new Bullet(QString(":/res/bullet_purple.png"),16,x+cos*radius*1.5,y+sin*radius*1.5,bullet_v_2*cosv,bullet_v_2*sinv,bullet_a*cosa,bullet_a*sina);
+                new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),16,x+cos*radius*1.5,y+sin*radius*1.5,bullet_v_2*cosv,bullet_v_2*sinv,bullet_a*cosa,bullet_a*sina);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }

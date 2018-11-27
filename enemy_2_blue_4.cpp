@@ -13,7 +13,7 @@ void Enemy_2_Blue_4::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy10_2.png";
+        img=":/res/enemy/2/blue_2.png";
         shoot_timer = 270;
         shoot_cd = 700;
         skill_timer = -150;
@@ -37,7 +37,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
             switch(shoot_count) {
             case 1:
                 for(int i=0;i<2;++i) {
-                    rainbowSpawnpoint[i] = new_bullet = new Bullet_Nether(":/res/bullet_2_purple.png",18,nullptr,600,(i==0)?150:0,(i==0)?0:150,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
+                    rainbowSpawnpoint[i] = new_bullet = new Bullet_Nether(":/res/bullet/2/purple.png",18,nullptr,600,(i==0)?150:0,(i==0)?0:150,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
                     new_bullet->setInvulnerable();
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     connect(this,SIGNAL(killSpawnpoints()),new_bullet,SLOT(killItself()));
@@ -46,7 +46,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                 break;
             case 2:
                 for(int i=0;i<2;++i) {
-                    rainbowSpawnpoint[i] = new_bullet = new Bullet_Nether(":/res/bullet_2_purple.png",18,nullptr,600,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
+                    rainbowSpawnpoint[i] = new_bullet = new Bullet_Nether(":/res/bullet/2/purple.png",18,nullptr,600,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
                     new_bullet->setInvulnerable();
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     connect(this,SIGNAL(killSpawnpoints()),new_bullet,SLOT(killItself()));
@@ -98,7 +98,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                 phi = angleofvector(((i==0)?0:150)-x,((i==0)?150:0)-radius-y);
                 sin = std::sin(phi);
                 cos = std::cos(phi);
-                stick[i] = new Bullet(":/res/bullet_2_purple.png",22,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                stick[i] = new Bullet(":/res/bullet/2/purple.png",22,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 stick[i]->addWallData();
                 stick[i]->setInvulnerable();
                 stick[i]->fadein(500);
@@ -112,7 +112,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                 phi = angleofvector((Game::FrameWidth-((i==0)?0:150))-x,((i==0)?150:0)-radius-y);
                 sin = std::sin(phi);
                 cos = std::cos(phi);
-                stick[i] = new Bullet(":/res/bullet_2_purple.png",22,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                stick[i] = new Bullet(":/res/bullet/2/purple.png",22,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 stick[i]->addWallData();
                 stick[i]->setInvulnerable();
                 stick[i]->fadein(500);
@@ -135,7 +135,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
         case 2:
             phi = angleofvector(player->getX()-75,player->getY()-75);
             for(int i=0;i<2;++i) {
-                Laser *new_laser_temp = new Laser(":/res/laser_purple.png",10,(player->getX()+player->getY()<=150)?-M_PI/5:(phi-M_PI/2+((shoot_count==0)?0:((phi>M_PI/4)?((phi<5*M_PI/16&&player->getY()<Game::FrameHeight/2)?M_PI/15:-M_PI/7):M_PI/6))),0,(shoot_count==0)?525:375,(i==0)?0:150,(i==0)?150:0,(shoot_count==0)?100:300);
+                Laser *new_laser_temp = new Laser(":/res/bullet/laser/purple.png",10,(player->getX()+player->getY()<=150)?-M_PI/5:(phi-M_PI/2+((shoot_count==0)?0:((phi>M_PI/4)?((phi<5*M_PI/16&&player->getY()<Game::FrameHeight/2)?M_PI/15:-M_PI/7):M_PI/6))),0,(shoot_count==0)?525:375,(i==0)?0:150,(i==0)?150:0,(shoot_count==0)?100:300);
                 bullet_angle = new_laser_temp->getAngle();
                 new_laser = new_laser_temp;
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
@@ -149,7 +149,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
             shoot_cd=700;
             phi = angleofvector(player->getX()-Game::FrameWidth+75,player->getY()-75);
             for(int i=0;i<2;++i) {
-                Laser *new_laser_temp = new Laser(":/res/laser_purple.png",10,(player->getX()-player->getY()>=Game::FrameWidth-150)?M_PI/5:(phi-M_PI/2+((phi>3*M_PI/4)?-M_PI/6:(phi<11*M_PI/16&&player->getY()<Game::FrameHeight/2)?-M_PI/15:M_PI/7)),0,375,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,300);
+                Laser *new_laser_temp = new Laser(":/res/bullet/laser/purple.png",10,(player->getX()-player->getY()>=Game::FrameWidth-150)?M_PI/5:(phi-M_PI/2+((phi>3*M_PI/4)?-M_PI/6:(phi<11*M_PI/16&&player->getY()<Game::FrameHeight/2)?-M_PI/15:M_PI/7)),0,375,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,300);
                 bullet_angle = new_laser_temp->getAngle();
                 new_laser = new_laser_temp;
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));

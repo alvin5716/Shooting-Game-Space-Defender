@@ -10,7 +10,7 @@ void Enemy_Blue_2::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy4_2.png";
+        img=":/res/enemy/1/blue_2.png";
         shoot_timer = -175;
         shoot_cd = 250;
         skill_timer = -100;
@@ -44,7 +44,7 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
         //black balls
         if(t==2) {
             for(int i=0;i<2;++i) {
-                new_bullet = new Bullet(QString(":/res/bullet_black.png"),35,(i==0)?220:Game::FrameWidth-220,-34,0,2.2,0,-0.01);
+                new_bullet = new Bullet(QString(":/res/bullet/1/black.png"),35,(i==0)?220:Game::FrameWidth-220,-34,0,2.2,0,-0.01);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }
@@ -56,7 +56,7 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
                 int bullet_radius=((i+(bullet_count/2))%4)*5+12;
                 cos = std::cos(angle+2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
                 sin = std::sin(angle+2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
-                new_bullet = new Bullet(QString(":/res/bullet_purple.png"),bullet_radius,x+(double)radius*2/3*cos,y+(double)radius*2/3*sin,bullet_v*cos,bullet_v*sin);
+                new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),bullet_radius,x+(double)radius*2/3*cos,y+(double)radius*2/3*sin,bullet_v*cos,bullet_v*sin);
                 new_bullet->rotateAround(x,y,0.011,clockwise);
                 new_bullet->fadein(500);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -67,7 +67,7 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
                 for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                     cos = std::cos(angle+2*i*M_PI/bullet_count+M_PI/bullet_count);
                     sin = std::sin(angle+2*i*M_PI/bullet_count+M_PI/bullet_count);
-                    new_bullet = new Bullet(QString(":/res/bullet_purple.png"),12,(j==0)?220:Game::FrameWidth-220,200,bullet_v*cos,bullet_v*sin);
+                    new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),12,(j==0)?220:Game::FrameWidth-220,200,bullet_v*cos,bullet_v*sin);
                     new_bullet->rotateAround((j==0)?220:Game::FrameWidth-220,200,0.007,clockwise);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);

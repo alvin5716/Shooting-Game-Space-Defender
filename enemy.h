@@ -23,7 +23,7 @@ public:
     bool isSecPhase() const;
     Effect* disappear() const;
     void setDisappearTime(int disappearTime);
-    Shield* showShield(QString str=":/res/shield2.png",int img_w=70, int img_h=70);
+    Shield* showShield(QString str=":/res/effect/shield2.png",int img_w=70, int img_h=70);
     void setFloatable(bool floatable=true) override final;
     ~Enemy();
 public slots:

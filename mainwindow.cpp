@@ -128,7 +128,7 @@ void MainWindow::start() {
     background->setPos(0,0);
     background->setZValue(-100);
     cutImg = new QPixmap(150,172);
-    oriImg = new QPixmap(":/res/bg_normal.png");
+    oriImg = new QPixmap(":/res/bg/normal.png");
     //player
     if(player!=nullptr) delete player;
     player = new Player(5,5,15,Game::FrameWidth/2,Game::FrameHeight-100);
@@ -141,7 +141,7 @@ void MainWindow::start() {
     player->healthColorChange("white");
     //dot
     if(dot!=nullptr) delete dot;
-    dot = new Shield(":/res/dot.png",50,50,10,10,player,-1,player->getX(),player->getY());
+    dot = new Shield(":/res/effect/dot.png",50,50,10,10,player,-1,player->getX(),player->getY());
     dot->setZValue(100);
     newEffectInit(dot);
     //timer
@@ -160,23 +160,23 @@ void MainWindow::start() {
     switch(level) {
     case 1:
         boss_tick=Game::BossTick1;
-        strBossBG=":/res/bg_boss.png";
+        strBossBG=":/res/bg/boss.png";
         break;
     case 2:
         boss_tick=Game::BossTick2;
-        strBossBG=":/res/bg_boss_2.png";
+        strBossBG=":/res/bg/boss_2.png";
         break;
     case 3:
         boss_tick=Game::BossTick3;
-        strBossBG=":/res/bg_boss_3.png";
+        strBossBG=":/res/bg/boss_3.png";
         break;
     case 4:
         boss_tick=Game::BossTick4;
-        strBossBG=":/res/bg_boss_4.png";
+        strBossBG=":/res/bg/boss_4.png";
         break;
     default:
         boss_tick=Game::BossTick1;
-        strBossBG=":/res/bg_boss.png";
+        strBossBG=":/res/bg/boss.png";
         qDebug() << "error: can't get what level is selected";
     }
 }
@@ -253,7 +253,7 @@ void MainWindow::doTick() {
         //player skill
         if(use_skill && !player->isUsingSkill() && skill_times>0 && !player->isInvulnerable()) { //init
             player->coolDown();
-            new_effect = new Shield(QString(":/res/shield1.png"),70,70,500,500,player,375,player->getX(),player->getY());
+            new_effect = new Shield(QString(":/res/effect/shield1.png"),70,70,500,500,player,375,player->getX(),player->getY());
             new_effect->fadein();
             newEffectInit(new_effect);
             --skill_times;
@@ -869,7 +869,7 @@ void MainWindow::doTick() {
                 fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
                 fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
             } else if(tickCheck(10725)) {  //10725
-                new_effect = new Effect(QString(":/res/magic_blue.png"),120,120,256,256,350,Game::FrameWidth/2,200,0,0,0,0,true);
+                new_effect = new Effect(QString(":/res/effect/magic_blue.png"),120,120,256,256,350,Game::FrameWidth/2,200,0,0,0,0,true);
                 new_effect->setOpacity(0.6);
                 new_effect->fadein();
                 newEffectInit(new_effect);
@@ -1168,7 +1168,7 @@ void MainWindow::bossSkillLengthSetting(QString skill) {
     bossSkillMoveInAni->setEndValue(QRect(790-length*50,80,length*50,50));
 }
 void MainWindow::newMagicEffect(int show_w, int show_h, double x, double y, int lifetime) {
-    new_effect = new Effect(QString(":/res/magic.png"),100,100,show_w,show_h,lifetime,x,y,0,0,0,0,true);
+    new_effect = new Effect(QString(":/res/effect/magic.png"),100,100,show_w,show_h,lifetime,x,y,0,0,0,0,true);
     new_effect->setOpacity(0.6);
     new_effect->fadein();
     newEffectInit(new_effect);
@@ -1188,27 +1188,27 @@ void MainWindow::bossCorpse(int x, int y) {
     QString str;
     switch(level) {
     case 1:
-        str = ":/res/lightball.png";
+        str = ":/res/effect/lightball.png";
         new_effect = new Effect(str,120,120,300,300,308,x,y,0,0,0,0,true);
         new_effect->rotateStart();
         break;
     case 2:
-        str = ":/res/stars.png";
+        str = ":/res/effect/stars.png";
         new_effect = new Effect(str,120,120,300,300,308,x,y,0,0,0,0,true);
         new_effect->rotateStart();
         break;
     case 3:
-        str = ":/res/magic_blue.png";
+        str = ":/res/effect/magic_blue.png";
         new_effect = new Effect(str,120,120,256,256,308,x,y,0,0,0,0,true);
         new_effect->setOpacity(0.6);
         break;
     case 4:
-        str = ":/res/wind.png";
+        str = ":/res/effect/wind.png";
         new_effect = new Effect(str,120,120,300,300,308,x,y,0,0,0,0,true);
         new_effect->rotateStart();
         break;
     default:
-        str = ":/res/lightball.png";
+        str = ":/res/effect/lightball.png";
         new_effect = new Effect(str,120,120,300,300,308,x,y,0,0,0,0,true);
         new_effect->rotateStart();
         qDebug() << "Error: can't find boss corpse img because can't get what level is";

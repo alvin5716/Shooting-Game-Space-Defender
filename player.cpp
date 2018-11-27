@@ -89,7 +89,7 @@ void Player::gameEndSetting() {
 Bullet *Player::shoot() {
     if(shoot_timer>=shoot_cd) {
         shoot_timer = 0;
-        Bullet *new_bullet = new Bullet(QString(":/res/bullet_white.png"),3,x,y-show_h/2,0,-6);
+        Bullet *new_bullet = new Bullet(QString(":/res/bullet/1/white.png"),3,x,y-show_h/2,0,-6);
         return new_bullet;
     }
     return nullptr;

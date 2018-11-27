@@ -8,13 +8,13 @@ Enemy_2_Blue_3::Enemy_2_Blue_3(Character* player, int health, int radius, int sh
     shoot_count=0;
     rotater=0;
     setDisappearTime(5000);
-    death_img=":/res/enemy10_3.png";
+    death_img=":/res/enemy/2/blue_3.png";
 }
 void Enemy_2_Blue_3::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy10_2.png";
+        img=":/res/enemy/2/blue_2.png";
         shoot_timer = -170;
         shoot_cd = 120;
         skill_timer = -200;

@@ -10,7 +10,7 @@ void Enemy_2_Blue_1::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy10_2.png";
+        img=":/res/enemy/2/blue_2.png";
         shoot_timer = -420;
         shoot_cd = 100;
         skill_timer = -200;

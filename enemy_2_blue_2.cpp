@@ -12,7 +12,7 @@ void Enemy_2_Blue_2::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy10_2.png";
+        img=":/res/enemy/2/blue_2.png";
         shoot_timer = -420;
         shoot_cd = 40;
         skill_timer = -200;
@@ -66,7 +66,7 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
                 angle = angleofvector(i*Game::FrameWidth-x,((player->getY()>Game::FrameHeight-17)?Game::FrameHeight-17:player->getY())-radius-y);
                 sin = std::sin(angle);
                 cos = std::cos(angle);
-                stick[i] = new Bullet(":/res/bullet_2_purple.png",25,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                stick[i] = new Bullet(":/res/bullet/2/purple.png",25,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 stick[i]->addWallData();
                 stick[i]->setInvulnerable();
                 stick[i]->fadein(500);
@@ -75,7 +75,7 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
             }
             break;
         case 20:
-            new_laser = new Laser(QString(":/res/laser_purple.png"),16,-M_PI/2,0,150,0,stick[0]->getY(),200);
+            new_laser = new Laser(QString(":/res/bullet/laser/purple.png"),16,-M_PI/2,0,150,0,stick[0]->getY(),200);
             connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
             for(int i=0;i<2;++i) connect(new_laser,SIGNAL(deadSignal()),stick[i],SLOT(killItself()));
             new_bullets->push_back(new_laser);

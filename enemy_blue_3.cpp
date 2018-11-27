@@ -16,7 +16,7 @@ void Enemy_Blue_3::skill() {
         count=0;
         bullet_count=24;
         invulnerable=true;
-        img=":/res/enemy4_2.png";
+        img=":/res/enemy/1/blue_2.png";
         shoot_timer = -200;
         shoot_cd = 90;
         skill_timer = -400;
@@ -58,7 +58,7 @@ std::vector<Bullet*>* Enemy_Blue_3::shoot2() {
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                 sin=std::sin(2*i*M_PI/bullet_count);
                 cos=std::cos(2*i*M_PI/bullet_count);
-                new_bullet = new Bullet(":/res/bullet_purple.png",8,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new Bullet(":/res/bullet/1/purple.png",8,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 new_bullet->setVTerminal(bullet_v_t);
                 new_bullet->fadein(800);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -67,12 +67,12 @@ std::vector<Bullet*>* Enemy_Blue_3::shoot2() {
         }
         if(usinglaser && (count==0 || count==3)){
             //laser
-            QString str=(count==0)?":/res/laser_blue.png":":/res/laser_black.png";
+            QString str=(count==0)?":/res/bullet/laser/blue.png":":/res/bullet/laser/black.png";
             new_laser = new Laser(str,30,(count==0)?-5*M_PI/8-M_PI/5:5*M_PI/8+M_PI/5,(count==0)?M_PI/550:-M_PI/550,370,x,y,100);
             connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
             new_bullets->push_back(new_laser);
             //bullet
-            QString str2=(count==0)?":/res/bullet_blue.png":":/res/bullet_black.png";
+            QString str2=(count==0)?":/res/bullet/1/blue.png":":/res/bullet/1/black.png";
             new_bullet = new Bullet(str2,40,x,y);
             new_bullet->setInvulnerable();
             new_bullet->fadein(1200);

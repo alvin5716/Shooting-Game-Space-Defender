@@ -12,7 +12,7 @@ void Enemy_4_Blue_2::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy20_2.png";
+        img=":/res/enemy/4/blue_2.png";
         shoot_timer = -530;
         shoot_cd = 18;
         skill_timer = -420;
@@ -22,7 +22,7 @@ void Enemy_4_Blue_2::skill() {
         //skill
         if(skill_timer==-220) moveTo(Game::FrameWidth/2,120,150);
         else if(skill_timer==-20) {
-            Effect* bang = new Effect(":/res/golden_wind.png",120,120,0,0,200,Game::FrameWidth/2,120,0,0,0,0,true);
+            Effect* bang = new Effect(":/res/effect/golden_wind.png",120,120,0,0,200,Game::FrameWidth/2,120,0,0,0,0,true);
             bang->zoom(800,800,200);
             bang->rotateStart();
             bang->setOpacity(0.85);
@@ -63,7 +63,7 @@ std::vector<Bullet*>* Enemy_4_Blue_2::shoot2() {
             double angle_p = angleofvector(xp-Game::FrameWidth/2,yp);;
             double angle_dif = angle[i]-angle_p;
             bullet_radius = std::max(15-(int)std::abs(angle_dif*5),11)*(1-t*0.06);
-            new_bullet = new Bullet(QString(":/res/bullet_yellow_hex.png"),bullet_radius,Game::FrameWidth/2+cos*xd[i],sin*xd[i],bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = new Bullet(QString(":/res/bullet/other/yellow_hex.png"),bullet_radius,Game::FrameWidth/2+cos*xd[i],sin*xd[i],bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             double constexpr sc = (double)2/std::sqrt(3);
             new_bullet->setScale(sc);
             double sinp = std::sin(angle_p), cosp = std::cos(angle_p);

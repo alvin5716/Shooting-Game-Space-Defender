@@ -11,7 +11,7 @@ void Enemy_2_Blue_5::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy10_2.png";
+        img=":/res/enemy/2/blue_2.png";
         shoot_timer = -120;
         shoot_cd = 350;
         skill_timer = -200;
@@ -59,7 +59,7 @@ std::vector<Bullet*>* Enemy_2_Blue_5::shoot2() {
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
                 new_bullets->push_back(new_laser);
             }
-            new_bullet = new Bullet(":/res/bullet_2_purple.png",22,x,y+radius);
+            new_bullet = new Bullet(":/res/bullet/2/purple.png",22,x,y+radius);
             new_bullet->setInvulnerable();
             new_bullet->fadein(1000);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
