@@ -17,12 +17,12 @@ void Enemy_Blue_5::skill() {
         shoot_cd = 360;
         skill_timer = -425;
         emit useSkill("扭曲虛空");
-        moveTo(Game::FrameWidth/2,100);
     },
     [this](){
         //skill timer
         if(skill_timer<=0) ++skill_timer;
-        if(skill_timer==0) invulnerable=false;
+        if(skill_timer==-200) moveTo(Game::FrameWidth/2,100);
+        else if(skill_timer==0) invulnerable=false;
     });
 }
 std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
@@ -71,6 +71,7 @@ std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
             cos = std::cos(angle+2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0));
             sin = std::sin(angle+2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0));
             new_bullet = new Bullet_Nether(QString(":/res/bullet/1/black.png"),bullet_radius,this,2000,x+950*cos,y+950*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet->setOpacity(0.7);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }

@@ -7,7 +7,9 @@ Enemy_2_Blue_4::Enemy_2_Blue_4(Character* player, int health, int radius, int sh
 {
     shoot_count=0;
     is_laser_used=false;
+    second_shot=true;
     rainbowSpawnpoint[1]=rainbowSpawnpoint[0]=nullptr;
+    this->setBossHPToSkill();
 }
 void Enemy_2_Blue_4::skill() {
     //second phase
@@ -135,7 +137,8 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
         case 2:
             phi = angleofvector(player->getX()-75,player->getY()-75);
             for(int i=0;i<2;++i) {
-                Laser *new_laser_temp = new Laser(":/res/bullet/laser/purple.png",10,(player->getX()+player->getY()<=150)?-M_PI/5:(phi-M_PI/2+((shoot_count==0)?0:((phi>M_PI/4)?((phi<5*M_PI/16&&player->getY()<Game::FrameHeight/2)?M_PI/15:-M_PI/7):M_PI/6))),0,(shoot_count==0)?525:375,(i==0)?0:150,(i==0)?150:0,(shoot_count==0)?100:300);
+                double ang = (player->getX()+player->getY()<=150)?-M_PI/5:(phi-M_PI/2+((shoot_count==0)?0:((phi>M_PI/4)?((phi<5*M_PI/16&&player->getY()<Game::FrameHeight/2)?M_PI/15:-M_PI/7):M_PI/6)));
+                Laser *new_laser_temp = new Laser(":/res/bullet/laser/purple.png",10,ang,0,(shoot_count==0)?525:375,(i==0)?0:150,(i==0)?150:0,(shoot_count==0)?100:300);
                 bullet_angle = new_laser_temp->getAngle();
                 new_laser = new_laser_temp;
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
@@ -149,7 +152,8 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
             shoot_cd=700;
             phi = angleofvector(player->getX()-Game::FrameWidth+75,player->getY()-75);
             for(int i=0;i<2;++i) {
-                Laser *new_laser_temp = new Laser(":/res/bullet/laser/purple.png",10,(player->getX()-player->getY()>=Game::FrameWidth-150)?M_PI/5:(phi-M_PI/2+((phi>3*M_PI/4)?-M_PI/6:(phi<11*M_PI/16&&player->getY()<Game::FrameHeight/2)?-M_PI/15:M_PI/7)),0,375,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,300);
+                double ang = second_shot?phi-M_PI/2:(player->getX()-player->getY()>=Game::FrameWidth-150)?M_PI/5:(phi-M_PI/2+((phi>3*M_PI/4)?-M_PI/6:(phi<11*M_PI/16&&player->getY()<Game::FrameHeight/2)?-M_PI/15:M_PI/7));
+                Laser *new_laser_temp = new Laser(":/res/bullet/laser/purple.png",10,ang,0,375,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,300);
                 bullet_angle = new_laser_temp->getAngle();
                 new_laser = new_laser_temp;
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
@@ -157,6 +161,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                 new_laser->setZValue(-1);
                 new_bullets->push_back(new_laser);
             }
+            second_shot=false;
             shoot_count=2;
             break;
         }

@@ -21,7 +21,6 @@ void Enemy_Blue_3::skill() {
         shoot_cd = 90;
         skill_timer = -400;
         emit useSkill("星爆氣流");
-        moveTo(Game::FrameWidth/2,100);
     },
     [this](){
         //skill
@@ -43,7 +42,7 @@ void Enemy_Blue_3::skill() {
                 usinglaser = true;
                 count=0;
             }
-        }
+        } else if(skill_timer==-220) moveTo(Game::FrameWidth/2,150);
         //skill timer
         ++skill_timer;
     });

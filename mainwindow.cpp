@@ -100,6 +100,7 @@ void MainWindow::start() {
     fadeinAni->setEndValue(1);
     fadeinAni->setEasingCurve(QEasingCurve::InQuad);
     fadeinAni->start(QPropertyAnimation::DeleteWhenStopped);
+    levelIntroShowing = true;
     //level label
     ui->levelLabel->setText(QString("LEVEL ").append(QString().setNum(level)));
     //boss lives count
@@ -144,14 +145,6 @@ void MainWindow::start() {
     dot = new Shield(":/res/effect/dot.png",50,50,10,10,player,-1,player->getX(),player->getY());
     dot->setZValue(100);
     newEffectInit(dot);
-    //timer
-    gametime=tick=StartTick;
-    ticking=true;
-    if(timer!=nullptr) delete timer;
-    timer=new QTimer;
-    timer->start(8); //125 tick per sec
-    connect(timer,SIGNAL(timeout()),this,SLOT(doTick()));
-    connect(timer,SIGNAL(timeout()),ui->graphicsView,SLOT(update()));
     //page
     ui->stackedWidget->setCurrentIndex(Game::GamePagePlaying);
     //game state
@@ -179,16 +172,25 @@ void MainWindow::start() {
         strBossBG=":/res/bg/boss.png";
         qDebug() << "error: can't get what level is selected";
     }
+    //timer
+    gametime=tick=StartTick;
+    ticking=true;
+    if(timer!=nullptr) delete timer;
+    timer=new QTimer;
+    timer->start(8); //125 tick per sec
+    connect(timer,SIGNAL(timeout()),this,SLOT(doTick()));
+    connect(timer,SIGNAL(timeout()),ui->graphicsView,SLOT(update()));
 }
 void MainWindow::doTick() {
     //focus
     setFocus();
     //level intro
-    if(tick==500) {
+    if((tick==500 || gamestate!=Game::GameStatePlaying) && levelIntroShowing) {
+        levelIntroShowing = false;
         QGraphicsOpacityEffect* levelIntroOpacityEff = new QGraphicsOpacityEffect(this);
         ui->levelIntro->setGraphicsEffect(levelIntroOpacityEff);
         QPropertyAnimation* levelIntroFadeoutAni = new QPropertyAnimation(levelIntroOpacityEff,"opacity");
-        levelIntroFadeoutAni->setDuration(6000);
+        levelIntroFadeoutAni->setDuration(tick==500?6000:1000);
         levelIntroFadeoutAni->setStartValue(1);
         levelIntroFadeoutAni->setEndValue(0);
         levelIntroFadeoutAni->setEasingCurve(QEasingCurve::OutQuint);

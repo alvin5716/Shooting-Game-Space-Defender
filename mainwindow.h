@@ -99,7 +99,7 @@ private:
     QPropertyAnimation* bossSkillFadeinAni, *bossSkillMoveInAni;
     int gamestate, level;
     QString strBossBG;
-    bool isPlayerPosHigh;
+    bool isPlayerPosHigh, levelIntroShowing;
     static constexpr int StartTick = 0;
 
 private slots:

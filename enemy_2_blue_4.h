@@ -17,7 +17,7 @@ signals:
 private:
     int shoot_count;
     double bullet_angle;
-    bool is_laser_used;
+    bool is_laser_used, second_shot;
     Bullet *rainbowSpawnpoint[2], *stick[2];
 };
 
