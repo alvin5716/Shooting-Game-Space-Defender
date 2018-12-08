@@ -13,7 +13,7 @@ public:
     void skill() override;
     std::vector<Bullet*>* shoot2() override;
 private:
-    static constexpr int bullet_count = 30;
+    static constexpr int bullet_count = 58;
     bool first;
     SpreadRNG* rng;
     Bullet* boat_bullets[bullet_count];
