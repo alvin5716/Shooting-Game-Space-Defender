@@ -13,15 +13,15 @@ void Enemy_Blue_5::skill() {
     testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy/1/blue_2.png";
-        shoot_timer = -400;
-        shoot_cd = 360;
-        skill_timer = -425;
+        shoot_timer = -200;
+        shoot_cd = 180;
+        skill_timer = -213;
         emit useSkill("扭曲虛空");
     },
     [this](){
         //skill timer
         if(skill_timer<=0) ++skill_timer;
-        if(skill_timer==-200) moveTo(Game::FrameWidth/2,100);
+        if(skill_timer==-100) moveTo(Game::FrameWidth/2,100);
         else if(skill_timer==0) invulnerable=false;
     });
 }
@@ -33,21 +33,21 @@ std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
     Bullet* new_bullet;
     //purple bullets
     int bullet_count = 24;
-    if(attack2_count==3 && (shoot_timer==0 || shoot_timer==160)) phi = (qrand()%5)*2*M_PI/bullet_count/5;
+    if(attack2_count==3 && (shoot_timer==0 || shoot_timer==80)) phi = (qrand()%5)*2*M_PI/bullet_count/5;
     if(attack2_count==3 && shoot_timer==0) clockwise=(qrand()%2==0);
-    if(attack2_count==3 && shoot_timer==160) clockwise=!clockwise;
-    if(attack2_count==3 && ((shoot_timer>=50&&shoot_timer<=150) || (shoot_timer>=200&&shoot_timer<=300)) && shoot_timer%10==0) {
+    if(attack2_count==3 && shoot_timer==80) clockwise=!clockwise;
+    if(attack2_count==3 && ((shoot_timer>=25&&shoot_timer<=75) || (shoot_timer>=100&&shoot_timer<=150)) && shoot_timer%5==0) {
         double cos, sin;
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
             cos = std::cos(2*i*M_PI/bullet_count+phi);
             sin = std::sin(2*i*M_PI/bullet_count+phi);
-            new_bullet = new Bullet(":/res/bullet/1/purple.png",12,x+radius*cos,y+radius*sin,0.005,0.005);
-            new_bullet->rotateAround(x,y,0.018,clockwise);
+            new_bullet = new Bullet(":/res/bullet/1/purple.png",12,x+radius*cos,y+radius*sin,0.01,0.01);
+            new_bullet->rotateAround(x,y,0.072,clockwise);
             new_bullet->fadein(2000);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
-        if(shoot_timer==300) {
+        if(shoot_timer==150) {
             attack2_count=0;
         }
         return new_bullets;
@@ -57,8 +57,8 @@ std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
         double bullet_v, bullet_a, angle, cos, sin;
         int bullet_radius, bullet_count;
         //bullet v, a
-        bullet_v = -0.4;
-        bullet_a = -0.0001;
+        bullet_v = -0.8;
+        bullet_a = -0.0004;
         bullet_count = 22;
         bullet_radius = 50;
         angle=angleofvector(player->getX()-x,player->getY()-y);
@@ -70,7 +70,7 @@ std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
             }
             cos = std::cos(angle+2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0));
             sin = std::sin(angle+2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0));
-            new_bullet = new Bullet_Nether(QString(":/res/bullet/1/black.png"),bullet_radius,this,2000,x+950*cos,y+950*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = new Bullet_Nether(QString(":/res/bullet/1/black.png"),bullet_radius,this,1000,x+950*cos,y+950*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             new_bullet->setOpacity(0.7);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

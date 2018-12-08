@@ -19,8 +19,8 @@ public:
     void gameEndSetting();
     void setHealthTo999();
     static double speed;
-    static constexpr double nonShootingSpeed = 3.5;
-    static constexpr double shootingSpeed = 1.5;
+    static constexpr double nonShootingSpeed = 7;
+    static constexpr double shootingSpeed = 3;
 signals:
     void healthColorChange(QString);
 public slots:

@@ -49,14 +49,14 @@ void Character::move() {
     setSpeed(xv+xa,yv+ya);
 }
 void Character::show_img_force_set() {
-    img_timer=img_timer/30*30;
+    img_timer=img_timer/15*15;
 }
 void Character::show_img_set() {
     //image move
-    if(img_timer%30==0) {
-        if(img_timer>=30*4) img_timer=0;
+    if(img_timer%15==0) {
+        if(img_timer>=15*4) img_timer=0;
         if(!canBeMirrored) {
-            QRect cutFrame(img_w*(img_timer/30),0,img_w,img_h);
+            QRect cutFrame(img_w*(img_timer/15),0,img_w,img_h);
             QPixmap oriImg(img);
             QPixmap cutImg = oriImg.copy(cutFrame);
             setPixmap(cutImg.scaled(show_w,show_h));
@@ -64,7 +64,7 @@ void Character::show_img_set() {
             if(face_to_left&&xv>0) face_to_left=false;
             else if((!face_to_left)&&xv<0) face_to_left=true;
             QImage oriImg(img);
-            QRect cutFrame((face_to_left)?oriImg.width()-img_w*(img_timer/30+1):img_w*(img_timer/30),0,img_w,img_h);
+            QRect cutFrame((face_to_left)?oriImg.width()-img_w*(img_timer/15+1):img_w*(img_timer/15),0,img_w,img_h);
             QPixmap mirroredImg = QPixmap::fromImage((face_to_left)?oriImg.mirrored(true,false):oriImg);
             QPixmap cutImg = mirroredImg.copy(cutFrame);
             setPixmap(cutImg.scaled(show_w,show_h));
@@ -78,12 +78,12 @@ bool Character::floating() const{
 void Character::img_move() {
     show_img_set();
     if(floating()) {
-        setPos(imgX(),imgY()+float_distance*std::sin((double)float_timer/125*M_PI));
-        if(++float_timer>=250) float_timer=0;
+        setPos(imgX(),imgY()+float_distance*std::sin((double)float_timer/63*M_PI));
+        if(++float_timer>=125) float_timer=0;
     } else if(floatable) {
-        setPos(imgX(),imgY()+float_distance*std::sin((double)float_timer/125*M_PI));
-        if(float_timer%125==0) float_timer=0;
-        else if(float_timer%125<=62) --float_timer;
+        setPos(imgX(),imgY()+float_distance*std::sin((double)float_timer/63*M_PI));
+        if(float_timer%63==0) float_timer=0;
+        else if(float_timer%63<=31) --float_timer;
         else ++float_timer;
     } else {
         setPos(imgX(),imgY());

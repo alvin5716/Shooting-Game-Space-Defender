@@ -33,9 +33,9 @@ public:
     virtual Character* testAttackedBy(std::vector<Character*> & attackers);
     virtual Character* testAttackedBy(Character* attacker);
     virtual void attacked();
-    void moveTo(double x, double y, double t=125);
-    void moveTo(QPoint pos, double t=125);
-    void whiteize(int time=60);
+    void moveTo(double x, double y, double t=63);
+    void moveTo(QPoint pos, double t=63);
+    void whiteize(int time=30);
     void setCanBeMirrored(bool canBeMirrored=true);
     void setFaceToLeft(bool face_to_left=true);
     void setImg(QString img);

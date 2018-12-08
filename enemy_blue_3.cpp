@@ -17,32 +17,32 @@ void Enemy_Blue_3::skill() {
         bullet_count=24;
         invulnerable=true;
         img=":/res/enemy/1/blue_2.png";
-        shoot_timer = -200;
-        shoot_cd = 90;
-        skill_timer = -400;
+        shoot_timer = -100;
+        shoot_cd = 45;
+        skill_timer = -200;
         emit useSkill("星爆氣流");
     },
     [this](){
         //skill
         if(skill_timer>=0) {
-            if(skill_timer>=500*3) skill_timer=0;
-            if(skill_timer==500*0+370) {
+            if(skill_timer>=250*3) skill_timer=0;
+            if(skill_timer==250*0+175) {
                 moveTo(180,120);
-                shoot_timer = 40;
-                shoot_cd = 70;
+                shoot_timer = 20;
+                shoot_cd = 35;
                 bullet_count = 32;
-                bullet_v_t = 2;
+                bullet_v_t = 4;
                 invulnerable=false;
-            } else if(skill_timer==500*1) {
+            } else if(skill_timer==250*1) {
                 shootingbullet = true;
-                moveTo(Game::FrameWidth-180,120,375);
-            } else if(skill_timer==500*2) {
-                moveTo(Game::FrameWidth/2,300,375);
-            } else if(skill_timer==500*2+375) {
+                moveTo(Game::FrameWidth-180,120,188);
+            } else if(skill_timer==250*2) {
+                moveTo(Game::FrameWidth/2,300,188);
+            } else if(skill_timer==250*2+188) {
                 usinglaser = true;
                 count=0;
             }
-        } else if(skill_timer==-220) moveTo(Game::FrameWidth/2,150);
+        } else if(skill_timer==-110) moveTo(Game::FrameWidth/2,150);
         //skill timer
         ++skill_timer;
     });
@@ -52,7 +52,7 @@ std::vector<Bullet*>* Enemy_Blue_3::shoot2() {
         std::vector<Bullet*>* new_bullets = new std::vector<Bullet*>;
         Bullet* new_bullet, *new_laser;
         //shoot
-        double bullet_v=5.5, bullet_a=-0.15, sin, cos;
+        double bullet_v=11, bullet_a=-0.6, sin, cos;
         if(shootingbullet) {
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                 sin=std::sin(2*i*M_PI/bullet_count);
@@ -67,7 +67,7 @@ std::vector<Bullet*>* Enemy_Blue_3::shoot2() {
         if(usinglaser && (count==0 || count==3)){
             //laser
             QString str=(count==0)?":/res/bullet/laser/blue.png":":/res/bullet/laser/black.png";
-            new_laser = new Laser(str,30,(count==0)?-5*M_PI/8-M_PI/5:5*M_PI/8+M_PI/5,(count==0)?M_PI/550:-M_PI/550,370,x,y,100);
+            new_laser = new Laser(str,30,(count==0)?-5*M_PI/8-M_PI/5:5*M_PI/8+M_PI/5,(count==0)?M_PI/275:-M_PI/275,188,x,y,50);
             connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
             new_bullets->push_back(new_laser);
             //bullet

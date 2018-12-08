@@ -18,10 +18,10 @@ std::vector<Bullet*>* Enemy_Red::shoot() {
             for(int j=0;j<3;++j) {
                 cos = std::cos(angle+i*M_PI/15);
                 sin = std::sin(angle+i*M_PI/15);
-                bullet_v = 0.25;
-                bullet_a = 0.01+0.001*j;
+                bullet_v = 0.5;
+                bullet_a = 0.04+0.004*j;
                 new_bullet = new Bullet(QString(":/res/bullet/1/red.png"),8,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-                new_bullet->setVTerminal(3.5);
+                new_bullet->setVTerminal(7);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }

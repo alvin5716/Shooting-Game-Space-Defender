@@ -21,14 +21,16 @@ void Effect::move() {
 
     //rotate image
     if(rotating) {
-        setTransform(QTransform().translate(show_w/2, show_h/2).rotate(0.5*angle++).translate(-show_w/2, -show_h/2));//martrix transform
-        if(angle>=720) angle-=720;
+        setTransform(QTransform().translate(show_w/2, show_h/2).rotate(angle++).translate(-show_w/2, -show_h/2));//martrix transform
+        if(angle>=360) angle-=360;
     }
 
     //lifetimer
-    if(lifetimer!=-1) --lifetimer; //if lifetime is -1, it won't die
-    if(lifetimer==62 && autoFadeoutBeforeDie) fadeout();
-    if(lifetimer==0) killItself();
+    if(lifetimer!=-1) { //if lifetime is -1, it won't die
+        --lifetimer;
+        if(lifetimer<=0) killItself();
+    }
+    if(lifetimer==31 && autoFadeoutBeforeDie) fadeout();
 
     //zoom
     if(zoom_timer>0) {

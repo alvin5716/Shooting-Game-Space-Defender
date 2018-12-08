@@ -18,15 +18,15 @@ void Enemy_Blue::deadSet() {
     emit useSkill("");
 }
 std::vector<Bullet*>* Enemy_Blue::shoot() {
-    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%40==0) {
+    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%20==0) {
         double bullet_v, bullet_a, cos, sin;
         int bullet_radius, bullet_count, t;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a
-        t = (shoot_timer-shoot_cd)/40;
-        bullet_v = (t==3)?2:0.2;
-        bullet_a = (t==3)?0.01:0.01+t*0.003;
+        t = (shoot_timer-shoot_cd)/20;
+        bullet_v = (t==3)?4:0.4;
+        bullet_a = (t==3)?0.04:0.04+t*0.012;
         bullet_count = (t==3)?42:20;
         bullet_radius = (t==3)?9:18;
         if(shoot_timer==shoot_cd) {
@@ -41,7 +41,7 @@ std::vector<Bullet*>* Enemy_Blue::shoot() {
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
-        if(shoot_timer==shoot_cd+120) {
+        if(shoot_timer==shoot_cd+60) {
             shoot_timer = 0;
         }
         return new_bullets;

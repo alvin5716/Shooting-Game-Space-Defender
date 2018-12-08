@@ -9,14 +9,14 @@ Enemy_Yellow::Enemy_Yellow(Character* player, int health, int radius, int shoot_
 }
 
 std::vector<Bullet*>* Enemy_Yellow::shoot() {
-    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%25==0) {
+    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%13==0) {
         double bullet_v, bullet_a, bullet_count, cos, sin, t;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a and count
-        t = (shoot_timer-shoot_cd)/25;
-        bullet_v = 1.2;
-        bullet_a = 0.001+t*0.00005;
+        t = (shoot_timer-shoot_cd)/13;
+        bullet_v = 2.4;
+        bullet_a = 0.004+t*0.0002;
         bullet_count = 20;
         if(shoot_timer==shoot_cd) angle=angleofvector(player->getX()-x,player->getY()-y);
         //shoot
@@ -27,7 +27,7 @@ std::vector<Bullet*>* Enemy_Yellow::shoot() {
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
-        if(shoot_timer==shoot_cd+50) shoot_timer = 0;
+        if(shoot_timer==shoot_cd+26) shoot_timer = 0;
         return new_bullets;
     }
     return nullptr;

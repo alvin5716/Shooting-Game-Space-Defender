@@ -15,21 +15,21 @@ void Enemy_Blue_1::skill() {
     testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy/1/blue_2.png";
-        shoot_timer = -225;
-        shoot_cd = 250;
-        skill_timer = -250;
+        shoot_timer = -113;
+        shoot_cd = 125;
+        skill_timer = -125;
         emit useSkill("殞落星斗");
     },
     [this](){
         //skill
-        if(skill_timer>=0&&skill_timer%520==0) {
-            if(skill_timer>=520*3) skill_timer=0;
-            if(skill_timer==520*0) {
-                moveTo(250,200,300);
-            } else if(skill_timer==520*1) {
-                moveTo(Game::FrameWidth-250,200,300);
-            } else if(skill_timer==520*2) {
-                moveTo(Game::FrameWidth/2,400,300);
+        if(skill_timer>=0&&skill_timer%260==0) {
+            if(skill_timer>=260*3) skill_timer=0;
+            if(skill_timer==260*0) {
+                moveTo(250,200,150);
+            } else if(skill_timer==260*1) {
+                moveTo(Game::FrameWidth-250,200,150);
+            } else if(skill_timer==260*2) {
+                moveTo(Game::FrameWidth/2,400,150);
             }
         }
         //skill timer
@@ -38,7 +38,7 @@ void Enemy_Blue_1::skill() {
 }
 std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
     const int total_t = 3;
-    const int interval = 5;
+    const int interval = 3;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         double bullet_v, bullet_a, cos, sin, cosp, sinp;
         int bullet_radius, bullet_count, t;
@@ -46,7 +46,7 @@ std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
         Bullet* new_bullet;
         //bullet v, a
         t = (shoot_timer-shoot_cd)/interval;
-        bullet_a = 0.000015;
+        bullet_a = 0.00006;
         bullet_count = 20;
         bullet_radius = 8;
         if(shoot_timer==shoot_cd) {
@@ -57,7 +57,7 @@ std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
             bullet_fast=!bullet_fast;
-            bullet_v = (bullet_fast)?0.8:0.3;
+            bullet_v = (bullet_fast)?1.6:0.6;
             QString str = (bullet_fast)?":/res/bullet/1/purple.png":":/res/bullet/1/black.png";
             cos = std::cos(angle+2*i*M_PI/bullet_count);
             sin = std::sin(angle+2*i*M_PI/bullet_count);

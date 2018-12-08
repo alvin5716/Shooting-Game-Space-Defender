@@ -78,7 +78,7 @@ void Laser::move() {
         //lifetimer
         if(lifetimer!=-1) --lifetimer; //if lifetime is -1, it won't die
         if(lifetimer==0) {
-            dead_timer=37;
+            dead_timer=19;
         }
     } else --prepare_timer;
 }
