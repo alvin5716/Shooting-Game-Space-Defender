@@ -1217,7 +1217,7 @@ void MainWindow::bossCorpse(int x, int y) {
         break;
     }
     new_effect->fadein();
-    new_effect->moveTo(Game::FrameWidth/2,200,246);
+    new_effect->moveTo(Game::FrameWidth/2,200,123);
     newEffectInit(new_effect);
 }
 void MainWindow::pointAdd(int point) {
