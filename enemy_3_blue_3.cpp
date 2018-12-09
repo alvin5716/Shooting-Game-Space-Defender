@@ -16,20 +16,20 @@ void Enemy_3_Blue_3::skill() {
     testIfSecPhase([this](){
         invulnerable = true;
         img=":/res/enemy/3/blue_2.png";
-        shoot_timer = -540;
-        shoot_cd = 60;
-        skill_timer = -400;
+        shoot_timer = -270;
+        shoot_cd = 30;
+        skill_timer = -200;
         emit useSkill("阿茲卡班的逃犯");
         this->redMagicShield();
     },
     [this](){
         //skill
-        if(skill_timer==-200) moveTo(Game::FrameWidth/2,80,350);
+        if(skill_timer==-100) moveTo(Game::FrameWidth/2,80,175);
         //skill timer
-        if(skill_timer<=300) {
+        if(skill_timer<=150) {
             ++skill_timer;
-            if(skill_timer==150) {
-                moveTo(player->getX(),80,125);
+            if(skill_timer==75) {
+                moveTo(player->getX(),80,63);
             }
         } else skill_timer=0;
     },
@@ -40,20 +40,20 @@ void Enemy_3_Blue_3::skill() {
 std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
     Bullet* new_bullet;
-    const short interval = 120;
+    const short interval = 60;
     //center
-    if(shoot_timer==-150) {
+    if(shoot_timer==-75) {
         new_bullet = center = new Bullet(":/res/bullet/1/purple.png",30,shootXPos(),shootYPos());
-        center->addTimeData(150);
-        new_bullet->moveTo(Game::FrameWidth/2,Game::FrameHeight/2,150);
+        center->addTimeData(75);
+        new_bullet->moveTo(Game::FrameWidth/2,Game::FrameHeight/2,75);
         new_bullet->setInvulnerable();
         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
         new_bullets->push_back(new_bullet);
     //laser
-    } else if(use_laser && shoot_timer==30) {
+    } else if(use_laser && shoot_timer==15) {
         use_laser=false;
         for(int i=0;i<2;++i) {
-            new_bullet = new Laser(":/res/bullet/laser/purple.png",18,M_PI+(2+shoot_count_yellow)*M_PI/5,(i==0)?M_PI/400:-M_PI/400,360,Game::FrameWidth/2,Game::FrameHeight/2,0);
+            new_bullet = new Laser(":/res/bullet/laser/purple.png",18,M_PI+(2+shoot_count_yellow)*M_PI/5,(i==0)?M_PI/200:-M_PI/200,180,Game::FrameWidth/2,Game::FrameHeight/2,0);
             new_bullet->setZValue(-1);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
@@ -68,7 +68,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
         bullet_radius = 14;
         bullet_count = 80;
         bullet_v = 0;
-        bullet_a = -0.0012;
+        bullet_a = -0.0048;
         bullet_d = std::sqrt(std::pow(Game::FrameHeight/2,2)+std::pow(Game::FrameWidth/2,2))+bullet_radius;
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
@@ -92,11 +92,11 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
             //bullet
             bullet_radius = 6;
             bullet_count = 18;
-            bullet_a = 0.0005;
+            bullet_a = 0.002;
             //shoot
             for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
                 double rand_angle = (i+t*0.33+(double)(qrand()%30)/30)*2*M_PI/bullet_count;
-                bullet_v = 0.09+(double)(qrand()%9)/100;
+                bullet_v = 0.18+(double)(qrand()%17)/100;
                 sin = std::sin(rand_angle);
                 cos = std::cos(rand_angle);
                 new_bullet = new Bullet(":/res/bullet/1/black.png",bullet_radius,center->getX()+bullet_radius*2*cos,center->getY()+bullet_radius*2*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);

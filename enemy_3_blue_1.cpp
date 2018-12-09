@@ -16,15 +16,15 @@ void Enemy_3_Blue_1::skill() {
     testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy/3/blue_2.png";
-        shoot_timer = -850;
-        shoot_cd = 600;
-        skill_timer = -200;
+        shoot_timer = -425;
+        shoot_cd = 300;
+        skill_timer = -100;
         emit useSkill("神秘的魔法石");
         this->redMagicShield();
     },
     [this](){
         //skill
-        if(skill_timer==0) moveTo(Game::FrameWidth/2,220,240);
+        if(skill_timer==0) moveTo(Game::FrameWidth/2,220,120);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     },
@@ -34,20 +34,20 @@ void Enemy_3_Blue_1::skill() {
 }
 std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
     //magic stone
-    if(shoot_timer==-450) {
+    if(shoot_timer==-225) {
         double bullet_v, bullet_a, cos, sin;
         int bullet_radius;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         bullet_radius = 60;
         bullet_v = 0;
-        bullet_a = 0.015;
+        bullet_a = 0.06;
         cos = std::cos(face_to_left?-M_PI/6:-M_PI*5/6);
         sin = std::sin(face_to_left?-M_PI/6:-M_PI*5/6);
         new_bullet = magicstone = new Bullet(":/res/bullet/other/magicball.png",0,shootXPos(),shootYPos());
-        magicstone->addTimeData(125,bullet_radius)
-                ->addTimeData(50,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin)
-                ->addWallData(player,2.6);
+        magicstone->addTimeData(63,bullet_radius)
+                ->addTimeData(25,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin)
+                ->addWallData(player,5.2);
         connect(magicstone,SIGNAL(triggered()),this,SLOT(shootSmallBullet()));
         new_bullet->setInvulnerable();
         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -61,14 +61,14 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         double bullet_v, bullet_v_2, bullet_a, cos, sin, init_pos;
         int bullet_count;
         //bullet v, a and count
-        bullet_v_2 = 0.3;
+        bullet_v_2 = 0.6;
         bullet_count = 14;
         angle = angleofvector(player->getX()-x,player->getY()-y);
         //shoot
         for(int j=0;j<2;++j) {
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-                bullet_v = (j==0)?0.1:0;
-                bullet_a = (j==0)?0.008:0.006;
+                bullet_v = (j==0)?0.2:0;
+                bullet_a = (j==0)?0.032:0.024;
                 init_pos = (j==0)?0.5:0;
                 double shoot_angle = angle+(i+(mode?0.5:0)+0.5*j)*M_PI/(bullet_count/2);
                 cos = std::cos(shoot_angle);
@@ -77,7 +77,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
                                         magicstone->getX()+magicstone->getRadius()*cos*init_pos,
                                         magicstone->getY()+magicstone->getRadius()*sin*init_pos,
                                         bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-                new_bullet->addTimeData(250,bullet_v_2*cos,bullet_v_2*sin,0,0);
+                new_bullet->addTimeData(125,bullet_v_2*cos,bullet_v_2*sin,0,0);
                 new_bullet->fadein(1500);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
@@ -87,11 +87,11 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         mode=!mode;
     }
     //move
-    const int interval=180;
-    if(shoot_timer==shoot_cd-200 || shoot_timer==shoot_cd/2-100 || shoot_timer==shoot_cd+10 || shoot_timer==shoot_cd+190) {
-        if(player->getX()<0+radius+10) moveTo(0+radius+10,this->y,(shoot_timer==shoot_cd+10 || shoot_timer==shoot_cd+190)?150:220);
-        else if(player->getX()>Game::FrameWidth-radius-10) moveTo(Game::FrameWidth-radius-10,this->y,(shoot_timer==shoot_cd+10 || shoot_timer==shoot_cd+190)?150:220);
-        else moveTo(player->getX(),this->y,220);
+    const int interval=90;
+    if(shoot_timer==shoot_cd-100 || shoot_timer==shoot_cd/2-50 || shoot_timer==shoot_cd+5 || shoot_timer==shoot_cd+95) {
+        if(player->getX()<0+radius+10) moveTo(0+radius+10,this->y,(shoot_timer==shoot_cd+5 || shoot_timer==shoot_cd+95)?75:110);
+        else if(player->getX()>Game::FrameWidth-radius-10) moveTo(Game::FrameWidth-radius-10,this->y,(shoot_timer==shoot_cd+5 || shoot_timer==shoot_cd+95)?75:110);
+        else moveTo(player->getX(),this->y,110);
         setVulnerable();
     }
     //thunder
@@ -102,8 +102,8 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         bullet_radius = 8;
         //shoot
         for(int i=0;i<19;++i) {
-            bullet_v = 0.2;
-            bullet_a = 0.025;
+            bullet_v = 0.4;
+            bullet_a = 0.1;
             Bullet* new_bullet;
             new_bullet = new Bullet(":/res/bullet/1/yellow.png",bullet_radius,shootXPos(),shootYPos());
             int aim_x, aim_y;
@@ -117,9 +117,9 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
                 aim_x = this->shootXPos()+(i-9)*16;
                 aim_y = this->shootYPos();
             }
-            new_bullet->moveTo(aim_x,aim_y,50);
-            new_bullet->addTimeData(50)
-                    ->addTimeData(20,0,bullet_v,0,bullet_a);
+            new_bullet->moveTo(aim_x,aim_y,25);
+            new_bullet->addTimeData(25)
+                    ->addTimeData(10,0,bullet_v,0,bullet_a);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullet->fadein();
             new_bullets->push_back(new_bullet);

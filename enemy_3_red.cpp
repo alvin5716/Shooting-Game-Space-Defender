@@ -12,8 +12,8 @@ std::vector<Bullet*>* Enemy_3_Red::shoot() {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a and count
-        bullet_v = 1.5;
-        bullet_a = 0.008;
+        bullet_v = 3;
+        bullet_a = 0.032;
         if(shoot_timer==shoot_cd) {
             angle = angleofvector(player->getX()-x,player->getY()-y);
             sin = std::sin(angle);
@@ -25,7 +25,7 @@ std::vector<Bullet*>* Enemy_3_Red::shoot() {
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
-        if(shoot_timer==shoot_cd+108) shoot_timer = 0;
+        if(shoot_timer==shoot_cd+144) shoot_timer = 0;
         return new_bullets;
     }
     return nullptr;

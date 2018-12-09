@@ -7,22 +7,22 @@ Enemy_3_Green::Enemy_3_Green(Character* player, int health, int radius, int shoo
 
 }
 std::vector<Bullet*>* Enemy_3_Green::shoot() {
-    const int interval=18;
+    const int interval=9;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         double bullet_v, bullet_a, bullet_count, cos, sin, t;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a and count
         t = (shoot_timer-shoot_cd)/interval;
-        bullet_v = 1.2;
-        bullet_a = 0.001+t*0.00005;
+        bullet_v = 2.4;
+        bullet_a = 0.004+t*0.0002;
         bullet_count = 8;
         if(shoot_timer==shoot_cd) angle = angleofvector(player->getX()-x,player->getY()-y);
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
             cos = std::cos(angle+i*M_PI/(bullet_count/2));
             sin = std::sin(angle+i*M_PI/(bullet_count/2));
-            new_bullet = new Bullet_Sin(QString(":/res/bullet/1/green.png"),200,15,12,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = new Bullet_Sin(QString(":/res/bullet/1/green.png"),100,15,12,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }

@@ -8,7 +8,8 @@ Enemy_3_Blue::Enemy_3_Blue(Character* player, int bossSkillHP, int health, int r
     point=20;
     mode=false;
     setInvulnerable();
-    skill_timer=-200-shoot_cd_init;
+    skill_timer=-100-shoot_cd_init;
+    skill_dir = (bool)qrand()%2;
     this->beABoss(bossSkillHP);
     connect(this,SIGNAL(useSkill(QString)),this,SIGNAL(killItsBullets()));
     connect(this,SIGNAL(deadSignal()),this,SIGNAL(killItsBullets()));
@@ -20,21 +21,21 @@ void Enemy_3_Blue::deadSet() {
     emit useSkill("");
 }
 void Enemy_3_Blue::skill() {
-    const int interval = 700;
+    const int interval = 350;
     if(skill_timer>=0&&skill_timer%interval==0) {
         if(skill_timer>=interval*2) skill_timer=0;
-        if(skill_timer==0) {
-            moveTo(Game::FrameWidth/2+80+qrand()%(Game::FrameWidth/2-350),185+qrand()%50,375);
+        if(skill_timer==0 && skill_dir || skill_timer==interval*1 && !skill_dir) {
+            moveTo(Game::FrameWidth/2+80+qrand()%(Game::FrameWidth/2-350),185+qrand()%50,188);
             show_img_force_set();
-        } else if(skill_timer==interval*1) {
-            moveTo(Game::FrameWidth/2-80-qrand()%(Game::FrameWidth/2-350),185+qrand()%50,375);
+        } else if(skill_timer==0 && !skill_dir || skill_timer==interval*1 && skill_dir) {
+            moveTo(Game::FrameWidth/2-80-qrand()%(Game::FrameWidth/2-350),185+qrand()%50,188);
             show_img_force_set();
         }
     }
     ++skill_timer;
 }
 std::vector<Bullet*>* Enemy_3_Blue::shoot() {
-    const int interval=30;
+    const int interval=15;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         double bullet_v, cos, sin, shoot_angle;
         int bullet_count, t;
@@ -49,12 +50,12 @@ std::vector<Bullet*>* Enemy_3_Blue::shoot() {
         }
         //shoot
         for(int i=-6;i<=6;++i) {
-            bullet_v = 1.4+std::abs(i)*0.06;
+            bullet_v = 2.8+std::abs(i)*0.12;
             if (angle>M_PI/5&&angle<4*M_PI/5) shoot_angle = angle+i*M_PI/(bullet_count/2)+M_PI+t*(mode?1:-1)*M_PI/(bullet_count*2.5);
             else shoot_angle = i*M_PI/(bullet_count/2)-M_PI/2+t*(mode?1:-1)*M_PI/(bullet_count*2.5);
             cos = std::cos(shoot_angle);
             sin = std::sin(shoot_angle);
-            new_bullet = new Bullet_Sin(QString(":/res/bullet/1/blue.png"),250,20,8,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,0,0.008);
+            new_bullet = new Bullet_Sin(QString(":/res/bullet/1/blue.png"),125,20,8,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,0,0.032);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }

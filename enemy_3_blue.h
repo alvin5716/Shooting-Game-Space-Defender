@@ -17,7 +17,7 @@ public slots:
     void deadSet();
 private:
     double angle;
-    bool mode;
+    bool mode, skill_dir;
 };
 
 #endif // ENEMY_3_BLUE_H

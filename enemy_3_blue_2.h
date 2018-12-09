@@ -13,7 +13,7 @@ public:
     std::vector<Bullet*>* shoot2();
 private:
     Effect* room;
-    int room_radius_rate, omega_seed;
+    int omega_seed;
     static constexpr int room_radius = 200;
     short shoot_count;
     double angle, omega;

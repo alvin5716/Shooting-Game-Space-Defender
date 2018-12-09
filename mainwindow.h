@@ -65,7 +65,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
-    void newMagicEffect(int show_w, int show_h, double x, double y, int lifetime=350);
+    void newMagicEffect(int show_w, int show_h, double x, double y, int lifetime=175);
     void tickFreeze();
     inline bool tickCheck(unsigned int tick);
     inline bool tickCheck(unsigned int tick_init, unsigned int interval, unsigned int times);
@@ -100,7 +100,7 @@ private:
     int gamestate, level;
     QString strBossBG;
     bool isPlayerPosHigh, levelIntroShowing;
-    static constexpr int StartTick = 7273;
+    static constexpr int StartTick = 0;
 
 private slots:
     void newEnemyInit(Enemy* new_enemy);

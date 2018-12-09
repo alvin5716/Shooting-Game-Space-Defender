@@ -7,7 +7,7 @@ Enemy_3_Pink::Enemy_3_Pink(Character* player, int health, int radius, int shoot_
     point=4;
 }
 std::vector<Bullet*>* Enemy_3_Pink::shoot() {
-    const int interval=30;
+    const int interval=15;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         double bullet_v, bullet_a, bullet_v_2, bullet_a_2, cos, sin;
         int t, bullet_count;
@@ -15,10 +15,10 @@ std::vector<Bullet*>* Enemy_3_Pink::shoot() {
         Bullet* new_bullet;
         //bullet v, a and count
         t = (shoot_timer-shoot_cd)/interval;
-        bullet_v = 2.5;
-        bullet_a = -0.018;
-        bullet_v_2 = 1;
-        bullet_a_2 = 0.015-t*0.0012;
+        bullet_v = 5;
+        bullet_a = -0.072;
+        bullet_v_2 = 2;
+        bullet_a_2 = 0.06-t*0.0048;
         bullet_count = 14;
         if(shoot_timer==shoot_cd) angle = angleofvector(player->getX()-x,player->getY()-y);
         //shoot
@@ -29,7 +29,7 @@ std::vector<Bullet*>* Enemy_3_Pink::shoot() {
             new_bullet = new Bullet(QString(":/res/bullet/1/pink.png"),12,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             cos = std::cos(shoot_angle+(mode?M_PI/5:-M_PI/5));
             sin = std::sin(shoot_angle+(mode?M_PI/5:-M_PI/5));
-            new_bullet->addTimeData(175,bullet_v_2*cos,bullet_v_2*sin,bullet_a_2*cos,bullet_a_2*sin);
+            new_bullet->addTimeData(88,bullet_v_2*cos,bullet_v_2*sin,bullet_a_2*cos,bullet_a_2*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }

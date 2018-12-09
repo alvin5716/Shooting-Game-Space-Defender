@@ -602,12 +602,12 @@ void MainWindow::doTick() {
                 newEnemyInit(new_enemy);
                 tickFreeze();
             } else if(tickCheck(4550,275,3)) { //9100+550i, 3 times
-                int t = (tick-4550)/275;
+                const int t = timesCount(4550,275);
                 new_enemy = new Enemy_2_Pink(player,11,30,20,70,Game::FrameWidth/2,-30,0,0,0,0,false,true);
                 new_enemy->moveTo(80+t*60,50+t*60);
                 newEnemyInit(new_enemy);
             } else if(tickCheck(4688,275,3)) { //9375+550i, 3 times
-                int t = (tick-4688)/275;
+                const int t = timesCount(4688,275);
                 new_enemy = new Enemy_2_Pink(player,11,30,20,70,Game::FrameWidth/2,-30,0,0,0,0,false,true);
                 new_enemy->moveTo(Game::FrameWidth-80-t*60,50+t*60);
                 newEnemyInit(new_enemy);
@@ -757,34 +757,36 @@ void MainWindow::doTick() {
             break;
         //level 3
         case 3:
-            if(tickCheck(500,250,5)) {  //500+250i, 5 times
-                for(int i=0;i<2;++i) newMagicEffect(120,120,(i==0)?300-60*((tick-500)/250):Game::FrameWidth-300+60*((tick-500)/250),80+100*((tick-500)/250));
-            } else if(tickCheck(700,250,5)) {  //700+250i, 5 times
+            if(tickCheck(250,125,5)) {  //500+250i, 5 times
+                const int t = timesCount(250,125);
+                for(int i=0;i<2;++i) newMagicEffect(120,120,(i==0)?300-60*t:Game::FrameWidth-300+60*t,80+100*t);
+            } else if(tickCheck(350,125,5)) {  //700+250i, 5 times
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Green(player,3,40,280,50,(i==0)?300-60*((tick-700)/250):Game::FrameWidth-300+60*((tick-700)/250),80+100*((tick-700)/250),(i==0)?0.1:-0.1,0,0,-0.0006);
+                    const int t = timesCount(350,125);
+                    new_enemy = new Enemy_3_Green(player,3,40,140,25,(i==0)?300-60*t:Game::FrameWidth-300+60*t,80+100*t,(i==0)?0.2:-0.2,0,0,-0.0024);
                     new_enemy->fadein();
                     newEnemyInit(new_enemy);
                 }
-            } else if(tickCheck(2700)) {  //2700
+            } else if(tickCheck(1350)) {  //2700
                 for(int i=0;i<2;++i) newMagicEffect(150,150,(i==0)?100:Game::FrameWidth-100,150);
-            } else if(tickCheck(2900)) {  //2900
+            } else if(tickCheck(1450)) {  //2900
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Red(player,14,50,250,120,(i==0)?100:Game::FrameWidth-100,150,(i==0)?0:-0.001,0,(i==0)?0:0.001,0,false,true);
+                    new_enemy = new Enemy_3_Red(player,14,50,125,60,(i==0)?100:Game::FrameWidth-100,150,(i==0)?0:-0.002,0,(i==0)?0:0.004,0,false,true);
                     new_enemy->fadein();
                     newEnemyInit(new_enemy);
                 }
-            } else if(tickCheck(3800)) {  //3800
-                newMagicEffect(180,180,Game::FrameWidth/2,220,725);
-                for(int t=0;t<2;++t) for(int i=0;i<2;++i) newMagicEffect(120,120,(i==0)?300-80*t:Game::FrameWidth-300+80*t,80+100*t,725);
-            } else if(tickCheck(4000)) {  //4000
-                new_boss = new Enemy_3_Green(player,45,60,50,375,Game::FrameWidth/2,220);
+            } else if(tickCheck(1900)) {  //3800
+                newMagicEffect(180,180,Game::FrameWidth/2,220,363);
+                for(int t=0;t<2;++t) for(int i=0;i<2;++i) newMagicEffect(120,120,(i==0)?300-80*t:Game::FrameWidth-300+80*t,80+100*t,363);
+            } else if(tickCheck(2000)) {  //4000
+                new_boss = new Enemy_3_Green(player,45,60,25,188,Game::FrameWidth/2,220);
                 new_boss->setInvulnerable();
                 new_boss->fadein();
                 newBossInit(new_boss);
-            } else if(tickCheck(4125,125,2)) {  //4125+125i, 2 times
-                const int t=timesCount(4125,125);
+            } else if(tickCheck(2063,63,2)) {  //4125+125i, 2 times
+                const int t=timesCount(2063,63);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Red(player,5,40,250,100+175*(1-t),(i==0)?300-80*t:Game::FrameWidth-300+80*t,80+100*t);
+                    new_enemy = new Enemy_3_Red(player,5,40,125,50+88*(1-t),(i==0)?300-80*t:Game::FrameWidth-300+80*t,80+100*t);
                     new_enemy->setInvulnerable();
                     new_effect = new_enemy->showShield();
                     newEffectInit(new_effect);
@@ -792,30 +794,30 @@ void MainWindow::doTick() {
                     new_enemy->fadein();
                     newEnemyInit(new_enemy);
                 }
-            } else if(tickCheck(4251)) { //4251
+            } else if(tickCheck(2127)) { //4251
                 tickFreeze();
                 new_boss->setVulnerable();
-            } else if(tickCheck(4500)) { //4500
+            } else if(tickCheck(2250)) { //4500
                 newMagicEffect(180,180,Game::FrameWidth/2,250);
-            } else if(tickCheck(4700)) { //4700
-                new_enemy = new Enemy_3_Yellow(player,30,60,250,120,Game::FrameWidth/2,250);
+            } else if(tickCheck(2350)) { //4700
+                new_enemy = new Enemy_3_Yellow(player,30,60,125,60,Game::FrameWidth/2,250);
                 new_enemy->fadein();
                 newEnemyInit(new_enemy);
                 tickFreeze();
-            } else if(tickCheck(4950,250,8)) { //4950+250i, 8 times
-                const int t=timesCount(4950,250);
-                new_enemy = new Enemy_3_Yellow(player,9,40,500,50,(t%2==0)?-40:Game::FrameWidth+40,50+60*((t>=4)?7-t:t),(t%2==0)?1.5:-1.5,0,0,0,true);
+            } else if(tickCheck(2475,125,8)) { //4950+250i, 8 times
+                const int t=timesCount(2475,125);
+                new_enemy = new Enemy_3_Yellow(player,9,40,250,25,(t%2==0)?-40:Game::FrameWidth+40,50+60*((t>=4)?7-t:t),(t%2==0)?3:-3,0,0,0,true);
                 newEnemyInit(new_enemy);
                 if(t==7) tickFreeze();
-            } else if(tickCheck(7000)) { //7000
+            } else if(tickCheck(3500)) { //7000
                 newMagicEffect(180,180,Game::FrameWidth/2,100);
                 for(int i=0;i<2;++i) newMagicEffect(120,120,(i==0)?80:Game::FrameWidth-80,Game::FrameHeight-70);
-            } else if(tickCheck(7200)) { //7200
-                new_boss = new Enemy_3_Yellow(player,60,60,300,50,Game::FrameWidth/2,100);
+            } else if(tickCheck(3600)) { //7200
+                new_boss = new Enemy_3_Yellow(player,60,60,150,25,Game::FrameWidth/2,100);
                 new_boss->fadein();
                 newBossInit(new_boss);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Green(player,5,40,250,120,(i==0)?80:Game::FrameWidth-80,Game::FrameHeight-70,(i==0)?1.3:-1.3,0,0,0,true);
+                    new_enemy = new Enemy_3_Green(player,5,40,125,60,(i==0)?80:Game::FrameWidth-80,Game::FrameHeight-70,(i==0)?2.6:-2.6,0,0,0,true);
                     new_enemy->setInvulnerable();
                     new_effect = new_enemy->showShield();
                     newEffectInit(new_effect);
@@ -824,29 +826,29 @@ void MainWindow::doTick() {
                     newEnemyInit(new_enemy);
                 }
                 tickFreeze();
-            } else if(tickCheck(7500)) { //7500
+            } else if(tickCheck(3750)) { //7500
                 newMagicEffect(180,180,Game::FrameWidth/2,250);
-            } else if(tickCheck(7700)) {  //7700
-                new_enemy = new Enemy_3_Pink(player,40,60,120,100,Game::FrameWidth/2,250);
+            } else if(tickCheck(3850)) {  //7700
+                new_enemy = new Enemy_3_Pink(player,40,60,60,50,Game::FrameWidth/2,250);
                 new_enemy->fadein();
                 newEnemyInit(new_enemy);
                 tickFreeze();
-            } else if(tickCheck(7900,375,4)) { //7900+375i, 4 times
-                if(timesCount(7900,375)==3) tickFreeze();
+            } else if(tickCheck(3950,188,4)) { //7900+375i, 4 times
+                if(timesCount(3950,188)==3) tickFreeze();
                 for(int i=-1;i<=1;++i) {
                     new_enemy = new Enemy_3_Pink(player,(i==0)?6:3,40,400,150,Game::FrameWidth/2+i*(Game::FrameWidth/2+40),-40+std::abs(i)*100);
-                    new_enemy->moveTo(Game::FrameWidth/2+i*100,240+std::abs(i)*87,400);
+                    new_enemy->moveTo(Game::FrameWidth/2+i*100,240+std::abs(i)*87,300);
                     newEnemyInit(new_enemy);
                 }
-            } else if(tickCheck(9275)) { //9275
+            } else if(tickCheck(4638)) { //9275
                 newMagicEffect(180,180,Game::FrameWidth/2,100);
                 for(int i=0;i<2;++i) newMagicEffect(120,120,(i==0)?80:Game::FrameWidth-80,70);
-            } else if(tickCheck(9475)) { //9475
-                new_boss = new Enemy_3_Pink_Cross(player,35,60,110,50,Game::FrameWidth/2,100);
+            } else if(tickCheck(4738)) { //9475
+                new_boss = new Enemy_3_Pink_Cross(player,35,60,55,25,Game::FrameWidth/2,100);
                 new_boss->fadein();
                 newBossInit(new_boss);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Green(player,5,40,130,150,(i==0)?80:Game::FrameWidth-80,70);
+                    new_enemy = new Enemy_3_Green(player,5,40,65,75,(i==0)?80:Game::FrameWidth-80,70);
                     new_enemy->setInvulnerable();
                     new_effect = new_enemy->showShield();
                     newEffectInit(new_effect);
@@ -855,7 +857,7 @@ void MainWindow::doTick() {
                     newEnemyInit(new_enemy);
                 }
                 tickFreeze();
-            } else if(tickCheck(9578,361,3)) {  //9578+361i, 3 times, warning bar fade in
+            } else if(tickCheck(4789,181,3)) {  //9578+361i, 3 times, warning bar fade in
                 QGraphicsOpacityEffect *fadein = new QGraphicsOpacityEffect(this);
                 ui->WarningBar->setGraphicsEffect(fadein);
                 QPropertyAnimation *fadeinAni = new QPropertyAnimation(fadein,"opacity");
@@ -865,7 +867,7 @@ void MainWindow::doTick() {
                 fadeinAni->setEasingCurve(QEasingCurve::InQuad);
                 fadeinAni->start(QPropertyAnimation::DeleteWhenStopped);
                 ui->WarningBar->show();
-            } else if(tickCheck(9763,361,3)) {  //9763+361i, 3 times, warning bar fade out
+            } else if(tickCheck(4881,181,3)) {  //9763+361i, 3 times, warning bar fade out
                 QGraphicsOpacityEffect *fadeout = new QGraphicsOpacityEffect(this);
                 ui->WarningBar->setGraphicsEffect(fadeout);
                 QPropertyAnimation *fadeoutAni = new QPropertyAnimation(fadeout,"opacity");
@@ -874,30 +876,30 @@ void MainWindow::doTick() {
                 fadeoutAni->setEndValue(0);
                 fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
                 fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
-            } else if(tickCheck(10725)) {  //10725
-                new_effect = new Effect(QString(":/res/effect/magic_blue.png"),120,120,256,256,350,Game::FrameWidth/2,200,0,0,0,0,true);
+            } else if(tickCheck(5363)) {  //10725
+                new_effect = new Effect(QString(":/res/effect/magic_blue.png"),120,120,256,256,175,Game::FrameWidth/2,200,0,0,0,0,true);
                 new_effect->setOpacity(0.6);
                 new_effect->fadein();
                 newEffectInit(new_effect);
-            } else if(tickCheck(10925)) {  //10925, BOSS 1
+            } else if(tickCheck(5463)) {  //10925, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
-                new_boss = new Enemy_3_Blue_1(player,250,80,35,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+                new_boss = new Enemy_3_Blue_1(player,250,80,18,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 ui->BossLives->setText("5");
                 tickFreeze();
-            } else if(tickCheck(10927)) {  //10927
+            } else if(tickCheck(5465)) {  //10927
                 ui->BossLives->setText("4");
-                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,400);
-            } else if(tickCheck(11175)) {  //11175, BOSS 2
-                new_boss = new Enemy_3_Blue_2(player,330,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,200);
+            } else if(tickCheck(5588)) {  //11175, BOSS 2
+                new_boss = new Enemy_3_Blue_2(player,330,80,50,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Green(player,5,30,230,300,(i==0)?160:Game::FrameWidth-160,150);
+                    new_enemy = new Enemy_3_Green(player,5,30,115,150,(i==0)?160:Game::FrameWidth-160,150);
                     newEnemyInit(new_enemy);
                     new_enemy->setInvulnerable();
                     new_enemy->fadein(1000);
@@ -907,16 +909,16 @@ void MainWindow::doTick() {
                     connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SLOT(killItself()));
                 }
                 tickFreeze();
-            } else if(tickCheck(11177)) {  //11177
+            } else if(tickCheck(5590)) {  //11177
                 ui->BossLives->setText("3");
-                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,400);
-            } else if(tickCheck(11425)) {  //11425, BOSS 3
-                new_boss = new Enemy_3_Blue_3(player,370,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,200);
+            } else if(tickCheck(5713)) {  //11425, BOSS 3
+                new_boss = new Enemy_3_Blue_3(player,370,80,25,100,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Red(player,5,30,250,300,(i==0)?160:Game::FrameWidth-160,150);
+                    new_enemy = new Enemy_3_Red(player,5,30,125,75,(i==0)?160:Game::FrameWidth-160,150);
                     newEnemyInit(new_enemy);
                     new_enemy->setInvulnerable();
                     new_enemy->fadein(1000);
@@ -926,16 +928,16 @@ void MainWindow::doTick() {
                     connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SLOT(killItself()));
                 }
                 tickFreeze();
-            } else if(tickCheck(11427)) {  //11427
+            } else if(tickCheck(5715)) {  //11427
                 ui->BossLives->setText("2");
-                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,400);
-            } else if(tickCheck(11675)) {  //11675, BOSS 4
-                new_boss = new Enemy_3_Blue_4(player,395,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,200);
+            } else if(tickCheck(5838)) {  //11675, BOSS 4
+                new_boss = new Enemy_3_Blue_4(player,395,80,50,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Yellow(player,5,30,500,300,(i==0)?160:Game::FrameWidth-160,150);
+                    new_enemy = new Enemy_3_Yellow(player,5,30,250,150,(i==0)?160:Game::FrameWidth-160,150);
                     newEnemyInit(new_enemy);
                     new_enemy->setInvulnerable();
                     new_enemy->fadein(1000);
@@ -945,15 +947,15 @@ void MainWindow::doTick() {
                     connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SLOT(killItself()));
                 }
                 tickFreeze();
-            } else if(tickCheck(11677)) {  //11677
+            } else if(tickCheck(5840)) {  //11677
                 ui->BossLives->setText("1");
-                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,400);
-            } else if(tickCheck(11925)) {  //11925, BOSS 5
-                new_boss = new Enemy_3_Blue_5(player,500,80,100,400,Game::FrameWidth/2,200,0,0,0,0,0,true);
+                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,200);
+            } else if(tickCheck(5963)) {  //11925, BOSS 5
+                new_boss = new Enemy_3_Blue_5(player,500,80,60,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Pink(player,5,30,300,300,(i==0)?160:Game::FrameWidth-160,150);
+                    new_enemy = new Enemy_3_Pink(player,5,30,150,150,(i==0)?160:Game::FrameWidth-160,150);
                     newEnemyInit(new_enemy);
                     new_enemy->setInvulnerable();
                     new_enemy->fadein(1000);
@@ -963,11 +965,11 @@ void MainWindow::doTick() {
                     connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SLOT(killItself()));
                 }
                 tickFreeze();
-            } else if(tickCheck(11927)) {  //11927, END
+            } else if(tickCheck(5965)) {  //11927, END
                 ui->BossLives->hide();
                 ui->BossSkill->hide();
                 if(player!=nullptr) player->gameEndSetting();
-            } else if(tickCheck(12600)) {  //12600, WIN LIST
+            } else if(tickCheck(6300)) {  //12600, WIN LIST
                 ticking=false;
                 //Point
                 ui->PlayerPoint_list->display(ui->PlayerPoint->value());
@@ -1005,7 +1007,8 @@ void MainWindow::doTick() {
                 }
                 tickFreeze();
             } else if(tickCheck(2750,150,10)) {
-                new_enemy = new Enemy_4_Green(player,7,40,40,63,((tick-5500)/200%2==0)?-40:Game::FrameWidth+40,-40,((tick-5500)/200%2==0)?3.4:-3.4,3.4,((tick-5500)/200%2==0)?-0.028:0.028,-0.028,false,true);
+                const int t = timesCount(5500,200);
+                new_enemy = new Enemy_4_Green(player,7,40,40,63,(t%2==0)?-40:Game::FrameWidth+40,-40,(t%2==0)?3.4:-3.4,3.4,(t%2==0)?-0.028:0.028,-0.028,false,true);
                 newEnemyInit(new_enemy);
                 if(tickCheck(2750+150*9)) tickFreeze();
             } else if(tickCheck(3075)) {
