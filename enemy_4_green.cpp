@@ -3,7 +3,7 @@
 Enemy_4_Green::Enemy_4_Green(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4(QString(":/res/enemy/4/green.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
-    move_speed = 0.85;
+    move_speed = 1.7;
     setInvulnerable();
 }
 
@@ -22,7 +22,7 @@ std::vector<Bullet*>* Enemy_4_Green::shoot() {
     if(shoot_timer>=shoot_cd) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
-        double sin, cos, angle = angleofvector(player->getX()-x,player->getY()-y), bullet_v=move_speed+0.5;
+        double sin, cos, angle = angleofvector(player->getX()-x,player->getY()-y), bullet_v=move_speed+1;
         for(int i=0;i<2;++i) {
             sin = std::sin(angle+(i?1:-1)*2*M_PI/20);
             cos = std::cos(angle+(i?1:-1)*2*M_PI/20);

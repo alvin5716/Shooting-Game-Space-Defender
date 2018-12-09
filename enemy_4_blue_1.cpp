@@ -18,14 +18,14 @@ void Enemy_4_Blue_1::skill() {
     testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy/4/blue_2.png";
-        shoot_timer = -200;
-        shoot_cd = 350;
-        skill_timer = -420;
+        shoot_timer = -100;
+        shoot_cd = 175;
+        skill_timer = -210;
         emit useSkill("忒修斯之船");
     },
     [this](){
         //skill
-        if(skill_timer==-220) moveTo(Game::FrameWidth/2,250,150);
+        if(skill_timer==-110) moveTo(Game::FrameWidth/2,250,75);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     },
@@ -66,8 +66,8 @@ std::vector<Bullet*>* Enemy_4_Blue_1::shoot2() {
             emit shakeScreen(static_cast<short>(shakeLevel::largeShake));
             for(int i=0;i<bullet_count;++i) {
                 boat_bullets[i] = new_bullet = new Bullet(QString(":/res/bullet/2/purple.png"),bullet_radius,x,y);
-                new_bullet->moveTo(this->bulletPos(i),250);
-                new_bullet->addTimeData(250);
+                new_bullet->moveTo(this->bulletPos(i),125);
+                new_bullet->addTimeData(125);
                 new_bullet->setInvulnerable();
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
@@ -89,7 +89,7 @@ std::vector<Bullet*>* Enemy_4_Blue_1::shoot2() {
                 double angle = angleofvector(player->getX()-bullet_x,player->getY()-bullet_y);
                 double launch_angle = angle+M_PI*((qrand()%(21+i*14)-(10+i*7))/100.0);
                 double sin = std::sin(launch_angle), cos = std::cos(launch_angle);
-                double bullet_v = qrand()%10/10.0, bullet_a =0.003;
+                double bullet_v = qrand()%10/10.0*2, bullet_a =0.012;
                 QString bullet_img = rainbowBullet(img_num[launchPosNum[i]]);
                 new_bullet = new Bullet(bullet_img,bullet_radius,bullet_x,bullet_y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -100,7 +100,7 @@ std::vector<Bullet*>* Enemy_4_Blue_1::shoot2() {
                 oldBullet->setImg(rainbowBullet(img_num[launchPosNum[i]]));
                 oldBullet->fadein();
             }
-            this->shoot_cd = 25;
+            this->shoot_cd = 15;
         }
         shoot_timer = 0;
         return new_bullets;

@@ -10,11 +10,11 @@ Enemy_4_Blue::Enemy_4_Blue(Character* player, int bossSkillHP, int health, int r
     connect(this,SIGNAL(useSkill(QString)),this,SIGNAL(killItsBullets()));
     connect(this,SIGNAL(deadSignal()),this,SIGNAL(killItsBullets()));
     connect(this,SIGNAL(deadSignal()),this,SLOT(deadSet()));
-    skill_timer=-250;
+    skill_timer=-125;
 }
 
 void Enemy_4_Blue::skill() {
-    const int interval = 350;
+    const int interval = 175;
     if(skill_timer>=interval) {
         skill_timer=0;
         double aim_x, aim_y;
@@ -55,7 +55,7 @@ void Enemy_4_Blue::skill() {
             aim_y=y;
         }
         //move
-        moveTo(aim_x,aim_y,125);
+        moveTo(aim_x,aim_y,63);
     }
     ++skill_timer;
 }
@@ -66,7 +66,7 @@ void Enemy_4_Blue::deadSet() {
 }
 
 std::vector<Bullet*>* Enemy_4_Blue::shoot() {
-    constexpr int interval=35, shoot_count=4;
+    constexpr int interval=18, shoot_count=4;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
@@ -88,7 +88,7 @@ std::vector<Bullet*>* Enemy_4_Blue::shoot() {
             setVulnerable();
         }
         double sin, cos, sin_x, cos_x;
-        constexpr double bullet_v=1.7;
+        constexpr double bullet_v=3.4;
         constexpr int bullet_xd=20;
         for(int i=0;i<2;++i) {
             for(int j=0;j<2;++j) {

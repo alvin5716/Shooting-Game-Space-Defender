@@ -4,7 +4,7 @@
 Enemy_4_Yellow::Enemy_4_Yellow(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
 :Enemy_4(QString(":/res/enemy/4/yellow.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
-    move_speed=0.4;
+    move_speed=0.8;
     setInvulnerable();
 }
 
@@ -28,11 +28,11 @@ void Enemy_4_Yellow::skill() {
 
 std::vector<Bullet*>* Enemy_4_Yellow::shoot() {
     if(prep_timer>0) return nullptr;
-    constexpr int interval=180, shoot_count=3, bullet_count=80;
+    constexpr int interval=90, shoot_count=3, bullet_count=80;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
-        double sin, cos, angle = angleofvector(player->getX()-x,player->getY()-y), bullet_v=3.2, bullet_a=-0.08, bullet_v_t=0.6;
+        double sin, cos, angle = angleofvector(player->getX()-x,player->getY()-y), bullet_v=6.4, bullet_a=-0.32, bullet_v_t=1.2;
         const int t=(shoot_timer-shoot_cd)/interval;
         for(int i=0;i<bullet_count;++i) {
             if(t%2==0?i%(bullet_count/4)<12:i%(bullet_count/4)>7) continue;

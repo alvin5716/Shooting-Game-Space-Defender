@@ -13,17 +13,17 @@ void Enemy_4_Blue_4::skill() {
     testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy/4/blue_2.png";
-        shoot_timer = -500;
-        shoot_cd = 20;
-        skill_timer = -420;
+        shoot_timer = -250;
+        shoot_cd = 10;
+        skill_timer = -210;
         emit useSkill("芝諾悖論-飛矢不動");
     },
     [this](){
         //skill
-        if(skill_timer==-220) moveTo(player->getX(),120,150);
+        if(skill_timer==-110) moveTo(player->getX(),120,75);
         //skill timer
-        if(++skill_timer>=200) {
-            moveTo(player->getX(),120,200);
+        if(++skill_timer>=100) {
+            moveTo(player->getX(),120,100);
             skill_timer=0;
         }
     },
@@ -39,13 +39,13 @@ std::vector<Bullet*>* Enemy_4_Blue_4::shoot2() {
         {
             double angle = angleofvector(player->getX()-x,player->getY()-y);
             double sin, cos;
-            double constexpr bullet_v=3.2;
+            double constexpr bullet_v=6.4;
             if(++shoot_count>5 && bow_count>=10) {
                 setVulnerable();
                 // arrow center
                 sin = std::sin(angle);
                 cos = std::cos(angle);
-                Enemy* new_enemy = new Enemy_Temp(this,Enemy_Temp::enemy_4_blue_4_shoot,player,17+qrand()%6,qrand()%20,x,y,bullet_v*cos,bullet_v*sin);
+                Enemy* new_enemy = new Enemy_Temp(this,Enemy_Temp::enemy_4_blue_4_shoot,player,8+qrand()%5,qrand()%10,x,y,bullet_v*cos,bullet_v*sin);
                 new_enemy->setImg(":/res/bullet/2/purple.png");
                 new_enemy->setShowSize(24,24);
                 new_enemy->show();
@@ -67,7 +67,7 @@ std::vector<Bullet*>* Enemy_4_Blue_4::shoot2() {
         }
         //bow
         {
-            double constexpr bullet_v_2=2.5, bullet_a=-0.025;
+            double constexpr bullet_v_2=5, bullet_a=-0.1;
             double angle = angleofvector(player->getX()-x,player->getY()-y);
             double sin = std::sin(angle), cos = std::cos(angle);
             double sinv, cosv, sina, cosa;

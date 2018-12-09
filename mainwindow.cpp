@@ -988,44 +988,44 @@ void MainWindow::doTick() {
             break;
         //level 4
         case 4:
-            if(tickCheck(500,450,3)) {
+            if(tickCheck(250,225,3)) {
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_4_Green(player,5,40,80,125,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
+                    new_enemy = new Enemy_4_Green(player,5,40,40,63,i?-40:Game::FrameWidth+40,-40,i?3.4:-3.4,3.4,i?-0.028:0.028,-0.028,false,true);
                     newEnemyInit(new_enemy);
                 }
-            } else if(tickCheck(2200,1000,3)) {
+            } else if(tickCheck(1100,500,3)) {
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_4_Red(player,5,40,270,400,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,true);
+                    new_enemy = new Enemy_4_Red(player,5,40,135,200,i?-40:Game::FrameWidth+40,-40,i?3.4:-3.4,3.4,i?-0.028:0.028,-0.028,true);
                     newEnemyInit(new_enemy);
                 }
-            } else if(tickCheck(5200)) {
+            } else if(tickCheck(2600)) {
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_4_Yellow(player,12,40,400,200,i?-40:Game::FrameWidth+40,-40,i?1.7:-1.7,1.7,i?-0.007:0.007,-0.007,false,true);
+                    new_enemy = new Enemy_4_Yellow(player,12,40,200,100,i?-40:Game::FrameWidth+40,-40,i?3.4:-3.4,3.4,i?-0.028:0.028,-0.028,false,true);
                     newEnemyInit(new_enemy);
                 }
                 tickFreeze();
-            } else if(tickCheck(5500,300,10)) {
-                new_enemy = new Enemy_4_Green(player,7,40,80,125,((tick-5500)/200%2==0)?-40:Game::FrameWidth+40,-40,((tick-5500)/200%2==0)?1.7:-1.7,1.7,((tick-5500)/200%2==0)?-0.007:0.007,-0.007,false,true);
+            } else if(tickCheck(2750,150,10)) {
+                new_enemy = new Enemy_4_Green(player,7,40,40,63,((tick-5500)/200%2==0)?-40:Game::FrameWidth+40,-40,((tick-5500)/200%2==0)?3.4:-3.4,3.4,((tick-5500)/200%2==0)?-0.028:0.028,-0.028,false,true);
                 newEnemyInit(new_enemy);
-                if(tickCheck(5500+300*9)) tickFreeze();
-            } else if(tickCheck(6150)) {
-                new_boss = new Enemy_4_Yellow(player,25,55,350,200,Game::FrameWidth/2,-40,0,1.7,0,-0.007,false,true);
+                if(tickCheck(2750+150*9)) tickFreeze();
+            } else if(tickCheck(3075)) {
+                new_boss = new Enemy_4_Yellow(player,25,55,175,100,Game::FrameWidth/2,-40,0,3.4,0,-0.028,false,true);
                 newBossInit(new_boss);
-            } else if(tickCheck(8600,500,3)) {
-                const int t = timesCount(8600,500);
+            } else if(tickCheck(4300,250,3)) {
+                const int t = timesCount(4300,250);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_4_Pink(player,9,40,10,10,i?220-t*80:Game::FrameWidth-220+t*80,-40,0,0.9,0,0.00045);
+                    new_enemy = new Enemy_4_Pink(player,9,40,5,5,i?220-t*80:Game::FrameWidth-220+t*80,-40,0,1.8,0,0.0018);
                     newEnemyInit(new_enemy);
                 }
-            } else if(tickCheck(11000,200,10)) {
-                new_enemy = new Enemy_4_Red(player,5,40,400,400,qrand()%(Game::FrameWidth-80)+40,-40,0,1.2,0,-0.00045,true);
+            } else if(tickCheck(5500,100,10)) {
+                new_enemy = new Enemy_4_Red(player,5,40,200,200,qrand()%(Game::FrameWidth-80)+40,-40,0,2.4,0,-0.0018,true);
                 newEnemyInit(new_enemy);
-                if(timesCount(11000,200)==9) tickFreeze();
-            } else if(tickCheck(11500,400,4)) {
-                const int t = timesCount(11500,400);
-                new_enemy = new Enemy_4_Pink(player,5,40,10,10,t%2?70:Game::FrameWidth-70,-40,t%2?0.1:-0.1,0.9,t%2?-0.00001:0.00001,0.00045);
+                if(timesCount(5500,100)==9) tickFreeze();
+            } else if(tickCheck(5750,200,4)) {
+                const int t = timesCount(5750,200);
+                new_enemy = new Enemy_4_Pink(player,5,40,5,5,t%2?70:Game::FrameWidth-70,-40,t%2?0.2:-0.2,1.8,t%2?-0.00004:0.00004,0.0018);
                 newEnemyInit(new_enemy);
-            } else if(tickCheck(12903,361,3)) { //12403+361i, 3 times, warning bar fade in
+            } else if(tickCheck(6452,181,3)) { //12403+361i, 3 times, warning bar fade in
                 QGraphicsOpacityEffect *fadein = new QGraphicsOpacityEffect(this);
                 ui->WarningBar->setGraphicsEffect(fadein);
                 QPropertyAnimation *fadeinAni = new QPropertyAnimation(fadein,"opacity");
@@ -1035,7 +1035,7 @@ void MainWindow::doTick() {
                 fadeinAni->setEasingCurve(QEasingCurve::InQuad);
                 fadeinAni->start(QPropertyAnimation::DeleteWhenStopped);
                 ui->WarningBar->show();
-            } else if(tickCheck(13088,361,3)) { //12588+361i, 3 times, warning bar fade out
+            } else if(tickCheck(6544,181,3)) { //12588+361i, 3 times, warning bar fade out
                 QGraphicsOpacityEffect *fadeout = new QGraphicsOpacityEffect(this);
                 ui->WarningBar->setGraphicsEffect(fadeout);
                 QPropertyAnimation *fadeoutAni = new QPropertyAnimation(fadeout,"opacity");
@@ -1044,40 +1044,40 @@ void MainWindow::doTick() {
                 fadeoutAni->setEndValue(0);
                 fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
                 fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
-            } else if(tickCheck(14048)) { //14048, BOSS 1
+            } else if(tickCheck(7024)) { //14048, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
-                new_boss = new Enemy_4_Blue_1(player,270,60,70,400,Game::FrameWidth/2,-60,0,0,0,0,false,true);
+                new_boss = new Enemy_4_Blue_1(player,270,60,35,200,Game::FrameWidth/2,-60,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
-                new_boss->moveTo(Game::FrameWidth/2,200,330);
+                new_boss->moveTo(Game::FrameWidth/2,200,165);
                 newBossInit(new_boss);
                 ui->BossLives->setText("5");
                 tickFreeze();
-            } else if(tickCheck(14050)) { //14050
+            } else if(tickCheck(7026)) { //14050
                 ui->BossLives->setText("4");
-            } else if(tickCheck(14298)) { //14298, BOSS 2
-                new_boss = new Enemy_4_Blue_2(player,250,60,70,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            } else if(tickCheck(7149)) { //14298, BOSS 2
+                new_boss = new Enemy_4_Blue_2(player,250,60,35,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
-            } else if(tickCheck(14300)) { //14300
+            } else if(tickCheck(7151)) { //14300
                 ui->BossLives->setText("3");
-            } else if(tickCheck(14548)) { //14548, BOSS 3
-                new_boss = new Enemy_4_Blue_3(player,330,60,70,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            } else if(tickCheck(7274)) { //14548, BOSS 3
+                new_boss = new Enemy_4_Blue_3(player,330,60,35,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
-            } else if(tickCheck(14550)) { //14550
+            } else if(tickCheck(7276)) { //14550
                 ui->BossLives->setText("2");
-            } else if(tickCheck(14798)) { //14798, BOSS 4
-                new_boss = new Enemy_4_Blue_4(player,450,60,70,400,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            } else if(tickCheck(7399)) { //14798, BOSS 4
+                new_boss = new Enemy_4_Blue_4(player,450,60,35,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
-            } else if(tickCheck(14800)) { //14800
+            } else if(tickCheck(7401)) { //14800
                 ui->BossLives->setText("1");
             }
             break;

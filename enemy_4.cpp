@@ -5,5 +5,5 @@ Enemy_4::Enemy_4(QString img, int img_w, int img_h, int show_w, int show_h, Char
 {
     setCanBeMirrored();
     move_speed = 1;
-    prep_timer = 150;
+    prep_timer = 75;
 }

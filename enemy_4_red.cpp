@@ -3,7 +3,7 @@
 Enemy_4_Red::Enemy_4_Red(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool stopable)
 :Enemy_4(QString(":/res/enemy/4/red.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,true,stopable)
 {
-    move_speed=1.6;
+    move_speed=3.2;
     setInvulnerable();
 }
 
@@ -25,11 +25,11 @@ void Enemy_4_Red::skill() {
 
 std::vector<Bullet*>* Enemy_4_Red::shoot() {
     if(prep_timer>0) return nullptr;
-    constexpr int interval=10, shoot_count=15;
+    constexpr int interval=5, shoot_count=15;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0 && (shoot_timer-shoot_cd)/interval<shoot_count) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
-        double sin, cos, angle = angleofvector(player->getX()-x,player->getY()-y), bullet_v=3.6;
+        double sin, cos, angle = angleofvector(player->getX()-x,player->getY()-y), bullet_v=7.2;
         sin = std::sin(angle);
         cos = std::cos(angle);
         new_bullet = new Bullet(QString(":/res/bullet/1/red.png"),12,x,y,bullet_v*cos,bullet_v*sin);

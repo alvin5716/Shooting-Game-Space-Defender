@@ -19,14 +19,14 @@ void Enemy_4_Blue_3::skill() {
     testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy/4/blue_2.png";
-        shoot_timer = -270;
-        shoot_cd = 45;
-        skill_timer = -420;
+        shoot_timer = -135;
+        shoot_cd = 21;
+        skill_timer = -210;
         emit useSkill("膽小鬼賽局");
     },
     [this](){
         //skill
-        if(skill_timer==-220) moveTo(Game::FrameWidth/2,120,150);
+        if(skill_timer==-110) moveTo(Game::FrameWidth/2,120,75);
         //skill timer
         if(skill_timer<0) {
             ++skill_timer;
@@ -34,16 +34,19 @@ void Enemy_4_Blue_3::skill() {
             ++skill_timer;
             this->bounceable = true;
             this->stopable = false;
-            this->setAcceleration(0,0.008);
+            this->setAcceleration(0,0.032);
         } else {
-            if(player->getX()>this->x+this->radius) this->xa=0.01;
-            else if(player->getX()<this->x-this->radius) this->xa=-0.01;
-            else if (this->xv>0) this->xa=-0.015;
-            else if (this->xv<0) this->xa=0.015;
+            if(player->getX()>this->x+this->radius) this->xa=0.04;
+            else if(player->getX()<this->x-this->radius) this->xa=-0.04;
+            else if(this->x<player->getX()+5 && this->x>player->getX()-5) {
+                this->xv=0;
+                this->xa=0;
+            } else if (this->xv>0) this->xa=-0.06;
+            else if (this->xv<0) this->xa=0.06;
             else this->xa=0.0;
 
-            if(this->xv>1.2) this->xv=1.2;
-            else if(this->xv<-1.2) this->xv=-1.2;
+            if(this->xv>2.4) this->xv=2.4;
+            else if(this->xv<-2.4) this->xv=-2.4;
 
             if(this->y<120) {
                 this->y=120;
@@ -60,7 +63,7 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //purple
-        double constexpr bullet_v=2.2;
+        double constexpr bullet_v=4.4;
         double sin, cos;
         for(int i=0;i<2;++i) {
             double angle = M_PI/2+(i?1:-1)*M_PI/5;
@@ -75,7 +78,7 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
         if(dust_falling) {
             int x0 = (int)std::round(player->getX())%bullet_count;
             for(int i=0;i<=bullet_count;++i) {
-                new_bullet = new Bullet(QString(":/res/bullet/1/black.png"),10,x0+i*(Game::FrameWidth/bullet_count),qrand()%17-8,0,qrand()%10/30.0,0,0.008);
+                new_bullet = new Bullet(QString(":/res/bullet/1/black.png"),10,x0+i*(Game::FrameWidth/bullet_count),qrand()%17-8,0,qrand()%10/30.0*2,0,0.032);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullet->fadein();
                 new_bullets->push_back(new_bullet);

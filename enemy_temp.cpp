@@ -15,14 +15,14 @@ std::vector<Bullet*>* Enemy_Temp::shoot() {
 }
 
 std::vector<Bullet*>* Enemy_Temp::enemy_4_pink_shoot() {
-    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%20==0) {
+    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%10==0) {
         double bullet_v, bullet_a, bullet_count, cos, sin, t;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a and count
-        t = (shoot_timer-shoot_cd)/20;
-        bullet_v = 0.5;
-        bullet_a = 0.0005+t*0.00001;
+        t = (shoot_timer-shoot_cd)/10;
+        bullet_v = 1;
+        bullet_a = 0.002+t*0.00004;
         bullet_count = 4;
         if(shoot_timer==shoot_cd) angle=angleofvector(player->getX()-x,player->getY()-y);
         //shoot
@@ -34,21 +34,21 @@ std::vector<Bullet*>* Enemy_Temp::enemy_4_pink_shoot() {
             if(real_shooter!=nullptr) connect(real_shooter,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
-        if(shoot_timer==shoot_cd+280) killItself();
+        if(shoot_timer==shoot_cd+140) killItself();
         return new_bullets;
     }
     return nullptr;
 }
 
 std::vector<Bullet*>* Enemy_Temp::enemy_4_pink_shoot_2() {
-    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%20==0) {
+    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%10==0) {
         double bullet_v, bullet_a, bullet_count, cos, sin, t;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a and count
-        t = (shoot_timer-shoot_cd)/20;
-        bullet_v = 0.5;
-        bullet_a = 0.0005+t*0.00001;
+        t = (shoot_timer-shoot_cd)/10;
+        bullet_v = 1;
+        bullet_a = 0.002+t*0.00004;
         bullet_count = 4;
         if(shoot_timer==shoot_cd) angle=angleofvector(player->getX()-x,player->getY()-y);
         //shoot
@@ -60,7 +60,7 @@ std::vector<Bullet*>* Enemy_Temp::enemy_4_pink_shoot_2() {
             if(real_shooter!=nullptr) connect(real_shooter,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
-        if(shoot_timer==shoot_cd+120) killItself();
+        if(shoot_timer==shoot_cd+60) killItself();
         return new_bullets;
     }
     return nullptr;
@@ -71,7 +71,7 @@ std::vector<Bullet*>* Enemy_Temp::enemy_4_blue_4_shoot() {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //shoot
-        new_bullet = new Bullet_Nether(QString(":/res/bullet/2/purple.png"),12,nullptr,2400,x,y);
+        new_bullet = new Bullet_Nether(QString(":/res/bullet/2/purple.png"),12,nullptr,1200,x,y);
         new_bullet->fadein(200);
         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
         if(real_shooter!=nullptr) connect(real_shooter,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
