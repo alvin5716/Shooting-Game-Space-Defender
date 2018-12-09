@@ -12,14 +12,14 @@ void Enemy_2_Blue_5::skill() {
     testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy/2/blue_2.png";
-        shoot_timer = -120;
-        shoot_cd = 350;
-        skill_timer = -200;
+        shoot_timer = -60;
+        shoot_cd = 175;
+        skill_timer = -100;
         emit useSkill("七彩霓虹燈");
     },
     [this](){
         //skill
-        if(skill_timer==0) moveTo(Game::FrameWidth/2,300,240);
+        if(skill_timer==0) moveTo(Game::FrameWidth/2,300,120);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     });
@@ -39,11 +39,11 @@ std::vector<Bullet*>* Enemy_2_Blue_5::shoot2() {
             for(int k=-1;k<=1;++k) {
                 for(int j=0;j<7;++j) {
                     for(int i=-3;i<=3;++i) {
-                        bullet_v = 0.15+0.25*j;
+                        bullet_v = 0.3+0.5*j;
                         cos = std::cos(angle+i*2*M_PI/7+(mode?M_PI/7:0)+k*M_PI/14);
                         sin = std::sin(angle+i*2*M_PI/7+(mode?M_PI/7:0)+k*M_PI/14);
                         new_bullet = new Bullet(rainbowBullet(i),bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin);
-                        new_bullet->rotateAround(x,y+radius,0.003+0.00085*j,mode);
+                        new_bullet->rotateAround(x,y+radius,0.012+0.0034*j,mode);
                         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                         new_bullet->fadein(1200);
                         new_bullets->push_back(new_bullet);
@@ -54,8 +54,8 @@ std::vector<Bullet*>* Enemy_2_Blue_5::shoot2() {
             shoot_timer = 0;
             mode=!mode;
             for(int i=-3;i<=3;++i) {
-                phi = i*2*M_PI/7+(mode?M_PI/7:0)-M_PI/2+angle;
-                new_laser = new Laser(rainbowLaser(i),8,phi,mode?M_PI/775:-M_PI/775,150,x,y+radius,200);
+                phi = i*2*M_PI/7+(mode?M_PI/7:0)+angle;
+                new_laser = new Laser(rainbowLaser(i),8,phi,mode?M_PI*2/775:-M_PI*2/775,75,x,y+radius,100);
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
                 new_bullets->push_back(new_laser);
             }

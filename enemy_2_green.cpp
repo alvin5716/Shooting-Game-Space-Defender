@@ -8,14 +8,14 @@ Enemy_2_Green::Enemy_2_Green(Character* player, int health, int radius, int shoo
 }
 
 std::vector<Bullet*>* Enemy_2_Green::shoot() {
-    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%11==0) {
+    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%6==0) {
         double bullet_v, bullet_a, bullet_count, cos, sin, t;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a and count
-        t = (shoot_timer-shoot_cd)/11;
-        bullet_v = 1.2;
-        bullet_a = 0.001+t*0.00005;
+        t = (shoot_timer-shoot_cd)/6;
+        bullet_v = 2.4;
+        bullet_a = 0.004+t*0.0002;
         bullet_count = 16;
         if(shoot_timer==shoot_cd) angle = angleofvector(player->getX()-x,player->getY()-y);
         //shoot
@@ -26,7 +26,7 @@ std::vector<Bullet*>* Enemy_2_Green::shoot() {
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
-        if(shoot_timer==shoot_cd+55) shoot_timer = 0;
+        if(shoot_timer==shoot_cd+24) shoot_timer = 0;
         return new_bullets;
     }
     return nullptr;

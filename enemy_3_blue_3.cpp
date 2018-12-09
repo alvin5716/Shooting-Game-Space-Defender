@@ -53,7 +53,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     } else if(use_laser && shoot_timer==30) {
         use_laser=false;
         for(int i=0;i<2;++i) {
-            new_bullet = new Laser(":/res/bullet/laser/purple.png",18,M_PI/2+(2+shoot_count_yellow)*M_PI/5,(i==0)?M_PI/400:-M_PI/400,360,Game::FrameWidth/2,Game::FrameHeight/2,0);
+            new_bullet = new Laser(":/res/bullet/laser/purple.png",18,M_PI+(2+shoot_count_yellow)*M_PI/5,(i==0)?M_PI/400:-M_PI/400,360,Game::FrameWidth/2,Game::FrameHeight/2,0);
             new_bullet->setZValue(-1);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

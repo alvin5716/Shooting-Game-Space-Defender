@@ -19,14 +19,15 @@ void Enemy_2_Blue::deadSet() {
     emit useSkill("");
 }
 std::vector<Bullet*>* Enemy_2_Blue::shoot() {
-    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%200==0) {
+    const int interval = 100;
+    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         double bullet_v, bullet_count, cos, sin;
         int t, bullet_radius;
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a and count
-        t = (shoot_timer-shoot_cd)/200;
-        bullet_v = 0.8;
+        t = (shoot_timer-shoot_cd)/interval;
+        bullet_v = 1.6;
         bullet_count = 30;
         bullet_radius = 8;
         if(shoot_timer==shoot_cd) {
@@ -39,14 +40,12 @@ std::vector<Bullet*>* Enemy_2_Blue::shoot() {
                 cos = (j?1:-1)*std::cos(angle+i*M_PI/(bullet_count/2)+t*M_PI/30);
                 sin = std::sin(angle+i*M_PI/(bullet_count/2)+t*M_PI/30);
                 new_bullet = new Bullet(QString(":/res/bullet/2/blue.png"),bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin);
-                new_bullet->rotateAround(x,y,0.001,j==0);
+                new_bullet->rotateAround(x,y,0.004,j==0);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }
         }
-        if(shoot_timer==shoot_cd+200) {
-            shoot_timer = 0;
-        }
+        if(shoot_timer==shoot_cd+interval) shoot_timer = 0;
         return new_bullets;
     }
     return nullptr;

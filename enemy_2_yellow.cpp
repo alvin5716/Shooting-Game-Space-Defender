@@ -15,7 +15,7 @@ std::vector<Bullet*>* Enemy_2_Yellow::shoot() {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a and count
-        bullet_v = 0.85;
+        bullet_v = 1.7;
         bullet_count = 48;
         angle=angleofvector(player->getX()-x,player->getY()-y);
         //shoot
@@ -26,7 +26,7 @@ std::vector<Bullet*>* Enemy_2_Yellow::shoot() {
             else
                 k = ((i+3+bullet_count/2)/3%2==0)?((i+3+bullet_count/2)%3):3-((i+3+bullet_count/2)%3);
             bullet_radius = (k==3)?16:8;
-            bullet_a = 0.0002+k*0.0005;
+            bullet_a = 0.0008+k*0.002;
             cos = std::cos(angle+i*M_PI/(bullet_count/2));
             sin = std::sin(angle+i*M_PI/(bullet_count/2));
             new_bullet = new Bullet(QString(":/res/bullet/2/yellow.png"),bullet_radius,x,y+radius*3/4,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);

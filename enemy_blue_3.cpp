@@ -67,7 +67,7 @@ std::vector<Bullet*>* Enemy_Blue_3::shoot2() {
         if(usinglaser && (count==0 || count==3)){
             //laser
             QString str=(count==0)?":/res/bullet/laser/blue.png":":/res/bullet/laser/black.png";
-            new_laser = new Laser(str,30,(count==0)?-5*M_PI/8-M_PI/5:5*M_PI/8+M_PI/5,(count==0)?M_PI/275:-M_PI/275,188,x,y,50);
+            new_laser = new Laser(str,30,(count==0?-5*M_PI/8-M_PI/5:5*M_PI/8+M_PI/5)+M_PI/2,(count==0)?M_PI/275:-M_PI/275,188,x,y,50);
             connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
             new_bullets->push_back(new_laser);
             //bullet

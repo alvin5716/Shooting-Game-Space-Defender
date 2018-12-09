@@ -15,14 +15,14 @@ void Enemy_2_Blue_3::skill() {
     testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy/2/blue_2.png";
-        shoot_timer = -170;
-        shoot_cd = 120;
-        skill_timer = -200;
+        shoot_timer = -85;
+        shoot_cd = 60;
+        skill_timer = -100;
         emit useSkill("幻彩色波紋疾走");
     },
     [this](){
         //skill
-        if(skill_timer==0) moveTo(Game::FrameWidth/2,190,75);
+        if(skill_timer==0) moveTo(Game::FrameWidth/2,190,38);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     });
@@ -35,8 +35,8 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
         double bullet_v, bullet_a, sin, cos, angle;
         int bullet_count, bullet_count_2;
         //bullet v, a
-        bullet_v = 1.6;
-        bullet_a = 0.00017;
+        bullet_v = 3.2;
+        bullet_a = 0.00068;
         bullet_count = 16;
         bullet_count_2 = 38;
         //shoot
@@ -98,7 +98,7 @@ std::vector<Bullet*>* Enemy_2_Blue_3::shoot2() {
                     cos = std::cos(angle+i*M_PI/bullet_count*2);
                     sin = std::sin(angle+i*M_PI/bullet_count*2);
                     new_bullet = new Bullet(rainbowBullet(j),6,x,y+radius,bullet_v*cos,bullet_v*sin);
-                    new_bullet->rotateAround(x,y+radius,0.0032,j==-3);
+                    new_bullet->rotateAround(x,y+radius,0.0128,j==-3);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
                 }

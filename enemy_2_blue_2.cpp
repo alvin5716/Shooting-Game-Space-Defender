@@ -13,14 +13,14 @@ void Enemy_2_Blue_2::skill() {
     testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy/2/blue_2.png";
-        shoot_timer = -420;
-        shoot_cd = 40;
-        skill_timer = -200;
+        shoot_timer = -210;
+        shoot_cd = 20;
+        skill_timer = -100;
         emit useSkill("七色光雨");
     },
     [this](){
         //skill
-        if(skill_timer==0) moveTo(Game::FrameWidth/2,325,240);
+        if(skill_timer==0) moveTo(Game::FrameWidth/2,325,120);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     });
@@ -29,7 +29,7 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
     if(!aim_summoned) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         for(int i=0;i<7;++i) {
-            aim[i] = new Bullet(rainbowBullet(i-3),7,((double)Game::FrameWidth*(i+1))/8,8,1+i*0.2,0,0,0);
+            aim[i] = new Bullet(rainbowBullet(i-3),7,((double)Game::FrameWidth*(i+1))/8,8,2+i*0.4,0);
             aim[i]->addWallData(true);
             aim[i]->setInvulnerable();
             aim[i]->setOpacity(0);
@@ -47,7 +47,7 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
         int bullet_radius;
         //bullet v, a
         bullet_radius = 6;
-        bullet_v = 2.5;
+        bullet_v = 5;
         bullet_a = 0;
         //shoot
         for(int i=-3;i<=3;++i) {
@@ -55,7 +55,7 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
             sin = std::sin(angle);
             cos = std::cos(angle);
             new_bullet = new Bullet(rainbowBullet(i),bullet_radius,x,y+radius,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-            new_bullet->addWallData(0.05*(qrand()%40),0.0025);
+            new_bullet->addWallData(0.1*(qrand()%40),0.01);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullet->fadein(1800);
             new_bullets->push_back(new_bullet);
@@ -75,7 +75,7 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
             }
             break;
         case 20:
-            new_laser = new Laser(QString(":/res/bullet/laser/purple.png"),16,-M_PI/2,0,150,0,stick[0]->getY(),200);
+            new_laser = new Laser(QString(":/res/bullet/laser/purple.png"),16,0,0,100,0,stick[0]->getY(),100);
             connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
             for(int i=0;i<2;++i) connect(new_laser,SIGNAL(deadSignal()),stick[i],SLOT(killItself()));
             new_bullets->push_back(new_laser);

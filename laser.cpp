@@ -7,7 +7,7 @@ Laser::Laser(QString img, int radius, double angle, double omega, int lifetime, 
     :Bullet(img,radius,x,y)
 {
     this->setInvulnerable();
-    this->angle=angle+M_PI/2;
+    this->angle=angle;
     while(this->angle>=2*M_PI) this->angle-=2*M_PI;
     while(this->angle<0) this->angle+=2*M_PI;
     this->omega=omega;
