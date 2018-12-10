@@ -24,10 +24,10 @@ void Enemy_3_Blue::skill() {
     const int interval = 350;
     if(skill_timer>=0&&skill_timer%interval==0) {
         if(skill_timer>=interval*2) skill_timer=0;
-        if(skill_timer==0 && skill_dir || skill_timer==interval*1 && !skill_dir) {
+        if((skill_timer==0 && skill_dir) || (skill_timer==interval*1 && !skill_dir)) {
             moveTo(Game::FrameWidth/2+80+qrand()%(Game::FrameWidth/2-350),185+qrand()%50,188);
             show_img_force_set();
-        } else if(skill_timer==0 && !skill_dir || skill_timer==interval*1 && skill_dir) {
+        } else if((skill_timer==0 && !skill_dir) || (skill_timer==interval*1 && skill_dir)) {
             moveTo(Game::FrameWidth/2-80-qrand()%(Game::FrameWidth/2-350),185+qrand()%50,188);
             show_img_force_set();
         }

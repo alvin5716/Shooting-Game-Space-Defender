@@ -23,6 +23,7 @@ Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, 
     canBeMirrored=false;
     attackable=true;
     floatable=false;
+    show_img_setting=false;
     float_timer=0;
     ++character_count;
     qDebug() << "character count:" << character_count;
@@ -49,11 +50,11 @@ void Character::move() {
     setSpeed(xv+xa,yv+ya);
 }
 void Character::show_img_force_set() {
-    img_timer=img_timer/15*15;
+    show_img_setting=true;
 }
 void Character::show_img_set() {
     //image move
-    if(img_timer%15==0) {
+    if(img_timer%15==0 || show_img_setting) {
         if(img_timer>=15*4) img_timer=0;
         if(!canBeMirrored) {
             QRect cutFrame(img_w*(img_timer/15),0,img_w,img_h);
@@ -69,6 +70,7 @@ void Character::show_img_set() {
             QPixmap cutImg = mirroredImg.copy(cutFrame);
             setPixmap(cutImg.scaled(show_w,show_h));
         }
+        show_img_setting=false;
     }
     ++img_timer;
 }

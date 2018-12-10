@@ -20,7 +20,7 @@ void Enemy_4_Blue_3::skill() {
         invulnerable=true;
         img=":/res/enemy/4/blue_2.png";
         shoot_timer = -135;
-        shoot_cd = 21;
+        shoot_cd = 23;
         skill_timer = -210;
         emit useSkill("膽小鬼賽局");
     },

@@ -1082,6 +1082,32 @@ void MainWindow::doTick() {
                 tickFreeze();
             } else if(tickCheck(7401)) { //14800
                 ui->BossLives->setText("1");
+            } else if(tickCheck(7524)) { //7524, BOSS 5
+                new_boss = new Enemy_4_Blue_5(player,350,60,35,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
+                new_boss->fadein(1500);
+                newBossInit(new_boss);
+                tickFreeze();
+            } else if(tickCheck(7526)) { //7526
+                ui->BossLives->hide();
+                ui->BossSkill->hide();
+                if(player!=nullptr) player->gameEndSetting();
+            } else if(tickCheck(7840)) { //7840, WIN LIST
+                ticking=false;
+                //Point
+                ui->PlayerPoint_list->display(ui->PlayerPoint->value());
+                //Health
+                ui->PlayerLife_list->display(ui->PlayerLife->value());
+                ui->PlayerLife_listBonus->display(5);
+                //Shield
+                ui->PlayerSkill_list->display(ui->PlayerSkill->value());
+                ui->PlayerSkill_listBonus->display(2);
+                //Total
+                ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
+                //List
+                ui->EndList->setCurrentIndex(Game::EndListPageWon);
+                ui->EndList->show();
+                //game state
+                gamestate=Game::GameStateWon;
             }
             break;
         default:

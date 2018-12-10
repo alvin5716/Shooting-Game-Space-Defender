@@ -75,6 +75,7 @@ protected:
     QString img;
 private:
     static int character_count;
+    bool show_img_setting;
 };
 
 #endif // CHARACTER_H
