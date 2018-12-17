@@ -14,6 +14,10 @@ std::vector<Bullet*>* Enemy_Temp::shoot() {
     return (this->*shoot_func_ptr)();
 }
 
+Effect* Enemy_Temp::disappear() const{
+    return nullptr;
+}
+
 std::vector<Bullet*>* Enemy_Temp::enemy_4_pink_shoot() {
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%10==0) {
         double bullet_v, bullet_a, bullet_count, cos, sin, t;

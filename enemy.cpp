@@ -5,7 +5,8 @@
 #include "game.h"
 
 Enemy::Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Character(img,img_w,img_h,show_w,show_h,health,radius,x,y,xv,yv,xa,ya)
+    :Character(img,img_w,img_h,show_w,show_h,health,radius,x,y,xv,yv,xa,ya),
+      death_img_w(img_w), death_img_h(img_h)
 {
     disappearTime=200;
     point=2;
@@ -26,11 +27,15 @@ Enemy::Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Characte
 }
 void Enemy::diedFromPlayer() {
     emit pointGive((int)point);
+    emit soundPlay(Game::SoundCymbal);
 }
 void Enemy::outOfFrame() {
     if(x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius) {
         dead=true;
     }
+}
+void Enemy::noPoint() {
+    this->point=0;
 }
 std::vector<Bullet*>* Enemy::shoot() {
     if(shoot_timer>=shoot_cd) shoot_timer = 0;
@@ -121,6 +126,10 @@ void Enemy::testIfSecPhase(skillFunc initialize, skillFunc secPhaseSkill, skillF
 void Enemy::setDisappearTime(int disappearTime) {
     this->disappearTime=disappearTime;
 }
+void Enemy::attacked() {
+    Character::attacked();
+    if(!invulnerable) emit soundPlay(Game::SoundHit);
+}
 void Enemy::skill() {return;}
 bool Enemy::isBoss() const{
     return boss;
@@ -128,8 +137,19 @@ bool Enemy::isBoss() const{
 bool Enemy::isSecPhase() const{
     return secPhase;
 }
+void Enemy::setDeathImg(QString death_img) {
+    this->death_img = death_img;
+}
+void Enemy::setDeathImg(QString death_img, int death_img_w, int death_img_h) {
+    this->death_img = death_img;
+    this->death_img_w = death_img_w;
+    this->death_img_h = death_img_h;
+}
 Effect* Enemy::disappear() const {
-    Effect* corpse = new Effect((death_img=="")?img:death_img,img_w,img_h,show_w,show_h,disappearTime/8,imgX()+show_w/2,imgY()+show_h/2,(death_img=="")?xv:0,(death_img=="")?yv:0,(death_img=="")?xa:0,(death_img=="")?ya:0);
+    Effect* corpse = new Effect((death_img=="")?img:death_img,
+                                death_img_w,death_img_h,
+                                show_w * death_img_w / img_w, show_h * death_img_h / img_h,
+                                disappearTime/8,imgX()+show_w/2,imgY()+show_h/2,(death_img=="")?xv:0,(death_img=="")?yv:0,(death_img=="")?xa:0,(death_img=="")?ya:0);
     corpse->setZValue(-1);
     //if needed, face to left
     if(canBeMirrored&&face_to_left) {

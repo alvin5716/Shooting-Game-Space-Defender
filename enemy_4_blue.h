@@ -12,6 +12,10 @@ public:
     void skill() override;
 public slots:
     void deadSet();
+    void small_enemy_died();
+protected:
+    int small_enemy_timer;
+    Enemy* small_enemy;
 private:
     double angle[2];
     double attack_x, attack_y;

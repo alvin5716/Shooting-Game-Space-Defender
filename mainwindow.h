@@ -53,6 +53,7 @@
 #include "flash.h"
 #include "effect.h"
 #include "shield.h"
+#include <QMediaPlayer>
 
 namespace Ui {
 class MainWindow;
@@ -101,6 +102,7 @@ private:
     int gamestate, level;
     QString strBossBG;
     bool isPlayerPosHigh, levelIntroShowing;
+    std::vector<QMediaPlayer*> audioers;
     static constexpr int StartTick = 0;
 
 private slots:
@@ -121,6 +123,9 @@ private slots:
     void sceneVibrate(short vibrate_count = 0);
     void sceneVibrateVertical(short vibrate_count = 0);
     void bossSkillLengthSetting(QString skill);
+    void soundPlay(Game::Sound sound);
+    void killAllBullets();
+    void killOtherEnemies(Enemy*);
 
 signals:
     void doMove();

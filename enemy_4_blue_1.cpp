@@ -21,7 +21,7 @@ void Enemy_4_Blue_1::skill() {
         shoot_timer = -100;
         shoot_cd = 175;
         skill_timer = -210;
-        emit useSkill("忒修斯之船");
+        emit useSkill("「忒修斯之船」");
     },
     [this](){
         //skill

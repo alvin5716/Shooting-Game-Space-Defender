@@ -1,9 +1,8 @@
 #include "player.h"
 #include "bullet.h"
 #include <QDebug>
-#include "game.h"
 
-double Player::speed=3.5;
+double Player::speed=7;
 
 Player::Player(int health, int radius, int shoot_cd, double x, double y, double xv, double yv, double xa, double ya)
     :Character(QString(":/res/player.png"),42,32,50,40,health,radius,x,y,xv,yv,xa,ya)
@@ -43,6 +42,7 @@ void Player::attacked() {
     if(health>0 && !invulnerable) {
         health-=1;
         setInvulnerable();
+        emit soundPlay(Game::SoundBd);
         emit healthChanged(health);
     }
     if(health<=0) {

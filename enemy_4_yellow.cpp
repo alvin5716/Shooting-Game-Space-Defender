@@ -5,7 +5,8 @@ Enemy_4_Yellow::Enemy_4_Yellow(Character* player, int health, int radius, int sh
 :Enemy_4(QString(":/res/enemy/4/yellow.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     move_speed=0.8;
-    setInvulnerable();
+    invulnerable = true;
+    interval = 90;
 }
 
 void Enemy_4_Yellow::skill() {
@@ -13,7 +14,7 @@ void Enemy_4_Yellow::skill() {
         --prep_timer;
         return;
     }
-    setVulnerable();
+    if(!invulnerable_after_init) invulnerable = false;
     constexpr int safe=40;
     if(x>player->getX()-radius-safe && x<player->getX()+radius+safe) {
         double speed;
@@ -26,9 +27,13 @@ void Enemy_4_Yellow::skill() {
     }
 }
 
+void Enemy_4_Yellow::setInterval(int interval) {
+    this->interval = interval;
+}
+
 std::vector<Bullet*>* Enemy_4_Yellow::shoot() {
     if(prep_timer>0) return nullptr;
-    constexpr int interval=90, shoot_count=3, bullet_count=80;
+    constexpr int shoot_count=3, bullet_count=80;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;

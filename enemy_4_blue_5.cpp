@@ -1,15 +1,18 @@
 #include "enemy_4_blue_5.h"
 #include "game.h"
 #include <cfloat>
+#include "enemy_4_pink.h"
 
 Enemy_4_Blue_5::Enemy_4_Blue_5(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_4_Blue(player,200,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_4_Blue(player,150,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     point+=10;
-    death_img=":/res/enemy/4/blue.png";
+    setDeathImg(":/res/enemy/4/blue_3.png",181,142);
     setDisappearTime(5000);
+    prep_count=0;
 }
 void Enemy_4_Blue_5::skill() {
+    double angle_seed = qrand()%5;
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
@@ -17,11 +20,13 @@ void Enemy_4_Blue_5::skill() {
         shoot_timer = -150;
         shoot_cd = 120;
         skill_timer = -210;
-        emit useSkill("遠距傳送悖論");
+        emit useSkill("「遠距傳送悖論」");
+        emit killOtherEnemies(this);
+        emit killAllBullets();
     },
     [this](){
         //skill
-        if(skill_timer==-110) moveTo(Game::FrameWidth/2,Game::FrameHeight/2-100,125);
+        if(skill_timer==-110) moveTo(Game::FrameWidth/2,100,125);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
         else {
@@ -29,14 +34,27 @@ void Enemy_4_Blue_5::skill() {
             this->show_img_force_set();
         }
     },
-    [this](){
+    [this,angle_seed](){
         Enemy_4_Blue::skill();
+        if(small_enemy_timer>0) --small_enemy_timer;
+        else if(small_enemy==nullptr || small_enemy->isDead()) {
+            double angle = ((4.5-angle_seed)/10.0)/5*M_PI;
+            angle = (player->getX()<this->x?angle+M_PI/7:-angle-M_PI/7) - M_PI/2;
+            double cos = std::cos(angle);
+            double sin = std::sin(angle);
+            small_enemy = new Enemy_4_Pink(player,4,40,5,5,this->x,this->y,2*cos,2*sin,-0.04*cos,-0.04*sin);
+            small_enemy->fadein(1000);
+            small_enemy->noPoint();
+            connect(this,SIGNAL(useSkill(QString)),small_enemy,SLOT(killItself()));
+            connect(small_enemy,SIGNAL(deadSignal()),this,SLOT(small_enemy_died()));
+            emit summonEnemy(small_enemy);
+        }
     });
 }
 std::vector<Bullet*>* Enemy_4_Blue_5::shoot2() {
     auto single_shoot = [this](std::vector<Bullet*>* new_bullets, bool snipe)->void{
         Bullet* new_bullet;
-        const int bullet_count=8;
+        const int bullet_count=7;
         double sin, cos;
         const double angle=angleofvector(player->getX()-x,player->getY()-y) + (snipe?0:M_PI/bullet_count);
         const int bullet_radius = 10;
@@ -50,12 +68,13 @@ std::vector<Bullet*>* Enemy_4_Blue_5::shoot2() {
         for(QPoint shoot_point: shoot_points) {
             const int rand_seed = qrand()%8;
             const double bullet_a = 0.003+rand_seed/8000.0, bullet_v_t = 1.8+rand_seed/10.0;
-            for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
-                double shoot_ang = angle+(i+qrand()%50/50.0)*M_PI/(bullet_count/2);
+            for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
+                double shoot_ang = angle+(i+qrand()%50/50.0)*2*M_PI/bullet_count;
                 cos = std::cos(shoot_ang);
                 sin = std::sin(shoot_ang);
-                new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),bullet_radius,shoot_point.x()*(face_to_left?-1:1)+this->x+bullet_radius*2*cos,shoot_point.y()+this->y+bullet_radius*2*sin,0,0,bullet_a*cos,bullet_a*sin);
+                new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),bullet_radius,shoot_point.x()*(face_to_left?-1:1)+this->x,shoot_point.y()+this->y);
                 new_bullet->fadein(500);
+                new_bullet->addTimeData(31,0,0,bullet_a*cos,bullet_a*sin);
                 new_bullet->setVTerminal(bullet_v_t);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
@@ -75,7 +94,8 @@ std::vector<Bullet*>* Enemy_4_Blue_5::shoot2() {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         single_shoot(new_bullets, false);
         //move
-        setVulnerable();
+        if(prep_count>=3) setVulnerable();
+        else ++prep_count;
         double distance = std::sqrt(std::pow(this->x-player->getX(),2) + std::pow(this->y-player->getY(),2));
         if(distance > max_distance) {
             double angle=angleofvector(player->getX()-x,player->getY()-y);

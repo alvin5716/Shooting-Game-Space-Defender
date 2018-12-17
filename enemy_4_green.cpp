@@ -4,7 +4,7 @@ Enemy_4_Green::Enemy_4_Green(Character* player, int health, int radius, int shoo
     :Enemy_4(QString(":/res/enemy/4/green.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     move_speed = 1.7;
-    setInvulnerable();
+    invulnerable = true;
 }
 
 void Enemy_4_Green::skill() {
@@ -12,7 +12,7 @@ void Enemy_4_Green::skill() {
         --prep_timer;
         return;
     }
-    setVulnerable();
+    if(!invulnerable_after_init) invulnerable = false;
     double angle = angleofvector(player->getX()-x,player->getY()-y);
     setSpeed(move_speed*std::cos(angle),move_speed*std::sin(angle));
 }

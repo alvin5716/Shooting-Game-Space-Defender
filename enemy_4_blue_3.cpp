@@ -1,5 +1,6 @@
 #include "enemy_4_blue_3.h"
 #include "enemy_temp.h"
+#include "enemy_4_red.h"
 #include "game.h"
 #include <QDebug>
 
@@ -15,6 +16,7 @@ Enemy_4_Blue_3::Enemy_4_Blue_3(Character* player, int health, int radius, int sh
     this->dust_falling=false;
 }
 void Enemy_4_Blue_3::skill() {
+    double angle_seed = qrand()%10;
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
@@ -22,7 +24,8 @@ void Enemy_4_Blue_3::skill() {
         shoot_timer = -135;
         shoot_cd = 23;
         skill_timer = -210;
-        emit useSkill("膽小鬼賽局");
+        emit useSkill("「懦夫賽局」");
+        emit killAllBullets();
     },
     [this](){
         //skill
@@ -38,12 +41,13 @@ void Enemy_4_Blue_3::skill() {
         } else {
             if(player->getX()>this->x+this->radius) this->xa=0.04;
             else if(player->getX()<this->x-this->radius) this->xa=-0.04;
-            else if(this->x<player->getX()+5 && this->x>player->getX()-5) {
-                this->xv=0;
-                this->xa=0;
-            } else if (this->xv>0) this->xa=-0.06;
-            else if (this->xv<0) this->xa=0.06;
-            else this->xa=0.0;
+            else if(std::abs(this->xv)>0.15){
+                if (this->xv>0) this->xa=-0.06;
+                else if (this->xv<0) this->xa=0.06;
+            } else {
+                this->xa=0.0;
+                this->xv = 0;
+            }
 
             if(this->xv>2.4) this->xv=2.4;
             else if(this->xv<-2.4) this->xv=-2.4;
@@ -54,8 +58,21 @@ void Enemy_4_Blue_3::skill() {
             }
         }
     },
-    [this](){
+    [this,angle_seed](){
         Enemy_4_Blue::skill();
+        if(small_enemy_timer>0) --small_enemy_timer;
+        else if(small_enemy==nullptr || small_enemy->isDead()) {
+            double angle = ((angle_seed-4.5)/10.0)/5*M_PI;
+            angle += (angle>0?M_PI/3:-M_PI/3) - M_PI/2;
+            double cos = std::cos(angle);
+            double sin = std::sin(angle);
+            small_enemy = new Enemy_4_Red(player,6,40,75,150,this->x,this->y,5*cos,5*sin,-0.08*cos,-0.08*sin);
+            small_enemy->fadein(1000);
+            small_enemy->noPoint();
+            connect(this,SIGNAL(useSkill(QString)),small_enemy,SLOT(killItself()));
+            connect(small_enemy,SIGNAL(deadSignal()),this,SLOT(small_enemy_died()));
+            emit summonEnemy(small_enemy);
+        }
     });
 }
 std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {

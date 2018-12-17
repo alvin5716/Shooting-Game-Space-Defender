@@ -70,5 +70,11 @@
         <file>res/effect/magic_blue.png</file>
         <file>res/effect/wind.png</file>
         <file>res/effect/golden_wind.png</file>
+        <file>res/sound/cymbal.wav</file>
+        <file>res/sound/fire.wav</file>
+        <file>res/sound/shoot01.wav</file>
+        <file>res/enemy/4/blue_3.png</file>
+        <file>res/sound/hit.wav</file>
+        <file>res/sound/bd.wav</file>
     </qresource>
 </RCC>

@@ -11,6 +11,7 @@ public:
     std::vector<Bullet*>* shoot2() override;
 private:
     static const int max_distance = 160;
+    int prep_count;
 };
 
 #endif // ENEMY_4_BLUE_5_H

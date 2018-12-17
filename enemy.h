@@ -8,6 +8,7 @@
 #include "shield.h"
 #include <functional>
 
+
 typedef std::function<void()> skillFunc;
 
 class Enemy : public Character
@@ -21,10 +22,12 @@ public:
     void outOfFrame();
     bool isBoss() const;
     bool isSecPhase() const;
-    Effect* disappear() const;
+    virtual Effect* disappear() const;
     void setDisappearTime(int disappearTime);
     Shield* showShield(QString str=":/res/effect/shield2.png",int img_w=70, int img_h=70);
     void setFloatable(bool floatable=true) override final;
+    void noPoint();
+    void attacked() override;
     ~Enemy();
 public slots:
     virtual void move();
@@ -36,6 +39,8 @@ signals:
     void pointGive(int);
     void shakeScreen(short);
     void shakeScreenVertical(short);
+    void killAllBullets();
+    void killOtherEnemies(Enemy*);
 protected:
     void beABoss(int bossSkillHP);
     void setBossHPToSkill();
@@ -47,6 +52,9 @@ protected:
     Character* player;
     int disappearTime;
     QString death_img;
+    int death_img_w, death_img_h;
+    void setDeathImg(QString death_img);
+    void setDeathImg(QString death_img, int death_img_w, int death_img_h);
     void testIfSecPhase(skillFunc initialize, skillFunc secPhaseSkill);
     void testIfSecPhase(skillFunc initialize, skillFunc secPhaseSkill, skillFunc FirPhaseSkill);
 private:

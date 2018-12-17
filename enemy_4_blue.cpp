@@ -11,6 +11,13 @@ Enemy_4_Blue::Enemy_4_Blue(Character* player, int bossSkillHP, int health, int r
     connect(this,SIGNAL(deadSignal()),this,SIGNAL(killItsBullets()));
     connect(this,SIGNAL(deadSignal()),this,SLOT(deadSet()));
     skill_timer=-125;
+    small_enemy_timer = 63;
+    small_enemy = nullptr;
+}
+
+void Enemy_4_Blue::small_enemy_died() {
+    this->small_enemy = nullptr;
+    this->small_enemy_timer = 125;
 }
 
 void Enemy_4_Blue::skill() {

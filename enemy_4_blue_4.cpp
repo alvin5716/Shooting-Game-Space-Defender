@@ -1,6 +1,7 @@
 #include "enemy_4_blue_4.h"
 #include "enemy_temp.h"
 #include "game.h"
+#include "enemy_4_yellow.h"
 #include <QDebug>
 
 Enemy_4_Blue_4::Enemy_4_Blue_4(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
@@ -9,6 +10,7 @@ Enemy_4_Blue_4::Enemy_4_Blue_4(Character* player, int health, int radius, int sh
     shoot_count=0;
 }
 void Enemy_4_Blue_4::skill() {
+    double angle_seed = qrand()%10;
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
@@ -16,7 +18,8 @@ void Enemy_4_Blue_4::skill() {
         shoot_timer = -250;
         shoot_cd = 10;
         skill_timer = -210;
-        emit useSkill("芝諾悖論-飛矢不動");
+        emit useSkill("「飛矢不動悖論」");
+        emit killAllBullets();
     },
     [this](){
         //skill
@@ -27,8 +30,23 @@ void Enemy_4_Blue_4::skill() {
             skill_timer=0;
         }
     },
-    [this](){
+    [this,angle_seed](){
         Enemy_4_Blue::skill();
+        if(small_enemy_timer>0) --small_enemy_timer;
+        else if(small_enemy==nullptr || small_enemy->isDead()) {
+            double angle = ((angle_seed-4.5)/10.0)/5*M_PI;
+            angle += (angle>0?M_PI/3:-M_PI/3) - M_PI/2;
+            double cos = std::cos(angle);
+            double sin = std::sin(angle);
+            Enemy_4_Yellow* new_enemy;
+            small_enemy = new_enemy = new Enemy_4_Yellow(player,9,40,110,220,this->x,this->y,5*cos,5*sin,-0.08*cos,-0.08*sin,true);
+            new_enemy->setInterval(110);
+            small_enemy->fadein(1000);
+            small_enemy->noPoint();
+            connect(this,SIGNAL(useSkill(QString)),small_enemy,SLOT(killItself()));
+            connect(small_enemy,SIGNAL(deadSignal()),this,SLOT(small_enemy_died()));
+            emit summonEnemy(small_enemy);
+        }
     });
 }
 std::vector<Bullet*>* Enemy_4_Blue_4::shoot2() {

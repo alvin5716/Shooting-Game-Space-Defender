@@ -26,7 +26,7 @@ Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, 
     show_img_setting=false;
     float_timer=0;
     ++character_count;
-    qDebug() << "character count:" << character_count;
+    //qDebug() << "character count:" << character_count;
 }
 void Character::setPosition(double x, double y) {
     this->x=x;
@@ -261,5 +261,5 @@ void Character::setShowSize(int show_w, int show_h) {
 }
 Character::~Character() {
     --character_count;
-    qDebug() << "character count:" << character_count;
+    //qDebug() << "character count:" << character_count;
 }

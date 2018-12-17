@@ -8,7 +8,7 @@ Enemy_2_Blue_3::Enemy_2_Blue_3(Character* player, int health, int radius, int sh
     shoot_count=0;
     rotater=0;
     setDisappearTime(5000);
-    death_img=":/res/enemy/2/blue_3.png";
+    setDeathImg(":/res/enemy/2/blue_3.png");
 }
 void Enemy_2_Blue_3::skill() {
     //second phase

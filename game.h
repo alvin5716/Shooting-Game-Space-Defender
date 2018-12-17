@@ -8,10 +8,10 @@ namespace Game {
     static constexpr unsigned int BossTick1 = 3302;
     static constexpr unsigned int BossTick2 = 5752;
     static constexpr unsigned int BossTick3 = 4740;
-    static constexpr unsigned int BossTick4 = 6402;
+    static constexpr unsigned int BossTick4 = 7202;
 
     enum GamePage {
-        GamePageMenu,
+        GamePageMenu = 0,
         GamePagePlaying,
         GamePageLevelSelecting
     };
@@ -28,6 +28,14 @@ namespace Game {
         EndListPageWon,
         EndListPageFailed,
         EndListPagePaused
+    };
+
+    enum Sound {
+        SoundCymbal = 0,
+        SoundFire,
+        SoundShoot01,
+        SoundHit,
+        SoundBd
     };
 
 }

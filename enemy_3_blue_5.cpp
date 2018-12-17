@@ -9,7 +9,7 @@ Enemy_3_Blue_5::Enemy_3_Blue_5(Character* player, int health, int radius, int sh
     :Enemy_3_Blue(player,350,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     point+=10;
-    death_img=":/res/enemy/3/blue_3.png";
+    setDeathImg(":/res/enemy/3/blue_3.png");
     setDisappearTime(5000);
     angle=0;
     for(int i=0;i<7;++i) fireballs[i]=nullptr;

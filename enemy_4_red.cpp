@@ -1,10 +1,12 @@
 #include "enemy_4_red.h"
+#include "game.h"
 
-Enemy_4_Red::Enemy_4_Red(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool stopable)
-:Enemy_4(QString(":/res/enemy/4/red.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,true,stopable)
+Enemy_4_Red::Enemy_4_Red(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool single_attack)
+:Enemy_4(QString(":/res/enemy/4/red.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,true,true)
+    ,single_attack(single_attack),leaving(false)
 {
     move_speed=3.2;
-    setInvulnerable();
+    invulnerable = true;
 }
 
 void Enemy_4_Red::skill() {
@@ -12,11 +14,11 @@ void Enemy_4_Red::skill() {
         --prep_timer;
         return;
     }
-    setVulnerable();
-    if(shoot_timer<shoot_cd) {
+    if(!invulnerable_after_init) invulnerable = false;
+    if(shoot_timer<move_time) {
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         setSpeed(move_speed*std::cos(angle),move_speed*std::sin(angle));
-    } else if(shoot_timer==shoot_cd){
+    } else if(shoot_timer==move_time){
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         constexpr int back=300;
         moveTo(x-back*std::cos(angle),y-back*std::sin(angle));
@@ -24,9 +26,9 @@ void Enemy_4_Red::skill() {
 }
 
 std::vector<Bullet*>* Enemy_4_Red::shoot() {
-    if(prep_timer>0) return nullptr;
-    constexpr int interval=5, shoot_count=15;
-    if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0 && (shoot_timer-shoot_cd)/interval<shoot_count) {
+    if(prep_timer>0 || leaving) return nullptr;
+    const int interval=5, shoot_count=15;
+    if(shoot_timer>=move_time && (shoot_timer-move_time)%interval==0 && (shoot_timer-move_time)/interval<shoot_count) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         double sin, cos, angle = angleofvector(player->getX()-x,player->getY()-y), bullet_v=7.2;
@@ -37,6 +39,13 @@ std::vector<Bullet*>* Enemy_4_Red::shoot() {
         new_bullets->push_back(new_bullet);
         return new_bullets;
     }
-    if(shoot_timer>=shoot_cd+interval*(shoot_count+15)) shoot_timer=0;
+    if(shoot_timer>=move_time+interval*shoot_count+shoot_cd) {
+        if(single_attack) {
+            leaving=true;
+            bounceable=false;
+            if(this->x<Game::FrameWidth-this->x) setSpeed(-3,0);
+            else setSpeed(3,0);
+        } else shoot_timer=0;
+    }
     return nullptr;
 }

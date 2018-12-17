@@ -9,6 +9,7 @@
 #include <QGraphicsOpacityEffect>
 #include <cmath>
 #include <algorithm>
+#include "game.h"
 
 class Character : public QObject, public QGraphicsPixmapItem
 {
@@ -57,6 +58,8 @@ signals:
     void killItsBullets();
     void bouncedAtX();
     void bouncedAtY();
+    void soundPlay(Game::Sound) const;
+
 public slots:
     void fadein(int time=800);
     void fadeout(int time=500);

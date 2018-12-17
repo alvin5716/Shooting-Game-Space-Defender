@@ -29,3 +29,7 @@ void Enemy_4_Pink::attacked() {
         emit summonEnemy(new_enemy);
     }
 }
+
+void Enemy_4_Pink::setInvulnerable() {
+    Character::setInvulnerable();
+}

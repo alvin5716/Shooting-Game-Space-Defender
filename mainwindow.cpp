@@ -10,6 +10,7 @@
 #include <iterator>
 #include <ctime>
 #include "game.h"
+#include <QDir>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -68,6 +69,21 @@ MainWindow::MainWindow(QWidget *parent) :
     gamestate=Game::GameStateMenu;
     //level intro
     ui->levelIntro->hide();
+    //audioer
+    audioers.resize(5);
+    for(QMediaPlayer*& audioer: audioers) {
+        audioer = new QMediaPlayer;
+    }
+    audioers.at((int)Game::SoundCymbal)->setMedia(QUrl::fromLocalFile("C:/Users/USER/Documents/GitHub/Shooting-Game-Space-Defender/res/sound/cymbal.wav"));
+    audioers.at((int)Game::SoundCymbal)->setVolume(15);
+    audioers.at((int)Game::SoundFire)->setMedia(QUrl::fromLocalFile("C:/Users/USER/Documents/GitHub/Shooting-Game-Space-Defender/res/sound/fire.wav"));
+    audioers.at((int)Game::SoundFire)->setVolume(30);
+    audioers.at((int)Game::SoundShoot01)->setMedia(QUrl::fromLocalFile("C:/Users/USER/Documents/GitHub/Shooting-Game-Space-Defender/res/sound/shoot01.wav"));
+    audioers.at((int)Game::SoundShoot01)->setVolume(30);
+    audioers.at((int)Game::SoundHit)->setMedia(QUrl::fromLocalFile("C:/Users/USER/Documents/GitHub/Shooting-Game-Space-Defender/res/sound/hit.wav"));
+    audioers.at((int)Game::SoundHit)->setVolume(20);
+    audioers.at((int)Game::SoundBd)->setMedia(QUrl::fromLocalFile("C:/Users/USER/Documents/GitHub/Shooting-Game-Space-Defender/res/sound/bd.wav"));
+    audioers.at((int)Game::SoundBd)->setVolume(70);
 }
 void MainWindow::levelSelect() {
     ui->stackedWidget->setCurrentIndex(Game::GamePageLevelSelecting);
@@ -106,14 +122,17 @@ void MainWindow::start() {
     //boss lives count
     ui->BossLives->hide();
     ui->BossLives->setText("");
+    bossLivesOpacityEff->setOpacity(0.7);
     //boss skill name
     ui->BossSkill->hide();
     ui->BossSkill->setText("");
+    bossSkillOpacityEff->setOpacity(0.7);
     //boss health bar
     ui->BossHealth->hide();
     ui->BossHealth->setGeometry(70,40,720,30);
     ui->BossHealth->setFormat("");
     ui->BossHealth->setValue(0);
+    bossHealthOpacityEff->setOpacity(0.7);
     //warning bar
     ui->WarningBar->hide();
     //skill times
@@ -133,6 +152,7 @@ void MainWindow::start() {
     //player
     if(player!=nullptr) delete player;
     player = new Player(5,5,7,Game::FrameWidth/2,Game::FrameHeight-100);
+    connect(player,SIGNAL(soundPlay(Game::Sound)),this,SLOT(soundPlay(Game::Sound)));
     isPlayerPosHigh=false;
     ui->PlayerLife->display(player->getHealth());
     scene->addItem(player);
@@ -243,14 +263,14 @@ void MainWindow::doTick() {
         //boss lives, skill bar and health bar
         if(!isPlayerPosHigh && player->getY()<280) {
             isPlayerPosHigh=true;
-            bossHealthOpacityEff->setOpacity(0.5);
-            bossLivesOpacityEff->setOpacity(0.5);
-            bossSkillOpacityEff->setOpacity(0.5);
+            bossHealthOpacityEff->setOpacity(0.3);
+            bossLivesOpacityEff->setOpacity(0.3);
+            bossSkillOpacityEff->setOpacity(0.3);
         } else if(isPlayerPosHigh && player->getY()>=280) {
             isPlayerPosHigh=false;
-            bossHealthOpacityEff->setOpacity(1);
-            bossLivesOpacityEff->setOpacity(1);
-            bossSkillOpacityEff->setOpacity(1);
+            bossHealthOpacityEff->setOpacity(0.7);
+            bossLivesOpacityEff->setOpacity(0.7);
+            bossSkillOpacityEff->setOpacity(0.7);
         }
         //player skill
         if(use_skill && !player->isUsingSkill() && skill_times>0 && !player->isInvulnerable()) { //init
@@ -913,7 +933,7 @@ void MainWindow::doTick() {
                 ui->BossLives->setText("3");
                 for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,200);
             } else if(tickCheck(5713)) {  //11425, BOSS 3
-                new_boss = new Enemy_3_Blue_3(player,370,80,25,100,Game::FrameWidth/2,200,0,0,0,0,0,true);
+                new_boss = new Enemy_3_Blue_3(player,370,80,50,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
@@ -996,8 +1016,9 @@ void MainWindow::doTick() {
                     newEnemyInit(new_enemy);
                 }
             } else if(tickCheck(1100,500,3)) {
+                const int t = timesCount(1100,500);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_4_Red(player,5,40,135,200,i?-40:Game::FrameWidth+40,-40,i?3.4:-3.4,3.4,i?-0.028:0.028,-0.028,true);
+                    new_enemy = new Enemy_4_Red(player,t==0?9:12,40,75,200,i?-40:Game::FrameWidth+40,-40,i?3.4:-3.4,3.4,i?-0.028:0.028,-0.028,false);
                     newEnemyInit(new_enemy);
                 }
             } else if(tickCheck(2600)) {
@@ -1020,15 +1041,16 @@ void MainWindow::doTick() {
                     new_enemy = new Enemy_4_Pink(player,9,40,5,5,i?220-t*80:Game::FrameWidth-220+t*80,-40,0,1.8,0,0.0018);
                     newEnemyInit(new_enemy);
                 }
-            } else if(tickCheck(5500,100,10)) {
-                new_enemy = new Enemy_4_Red(player,5,40,200,200,qrand()%(Game::FrameWidth-80)+40,-40,0,2.4,0,-0.0018,true);
+            } else if(tickCheck(5500,100,18)) {
+                int t = timesCount(5500,100);
+                new_enemy = new Enemy_4_Red(player,t>8?7:4,40,75,200,qrand()%(Game::FrameWidth-80)+40,-40,0,2.4,0,-0.0018,true);
                 newEnemyInit(new_enemy);
-                if(timesCount(5500,100)==9) tickFreeze();
-            } else if(tickCheck(5750,200,4)) {
+                if(t==17) tickFreeze();
+            } else if(tickCheck(5750,200,7)) {
                 const int t = timesCount(5750,200);
-                new_enemy = new Enemy_4_Pink(player,5,40,5,5,t%2?70:Game::FrameWidth-70,-40,t%2?0.2:-0.2,1.8,t%2?-0.00004:0.00004,0.0018);
+                new_enemy = new Enemy_4_Pink(player,t>8?7:4,40,5,5,t%2?70:Game::FrameWidth-70,-40,t%2?0.2:-0.2,1.8,t%2?-0.00004:0.00004,0.0018);
                 newEnemyInit(new_enemy);
-            } else if(tickCheck(6452,181,3)) { //12403+361i, 3 times, warning bar fade in
+            } else if(tickCheck(7252,181,3)) { //12403+361i, 3 times, warning bar fade in
                 QGraphicsOpacityEffect *fadein = new QGraphicsOpacityEffect(this);
                 ui->WarningBar->setGraphicsEffect(fadein);
                 QPropertyAnimation *fadeinAni = new QPropertyAnimation(fadein,"opacity");
@@ -1038,7 +1060,7 @@ void MainWindow::doTick() {
                 fadeinAni->setEasingCurve(QEasingCurve::InQuad);
                 fadeinAni->start(QPropertyAnimation::DeleteWhenStopped);
                 ui->WarningBar->show();
-            } else if(tickCheck(6544,181,3)) { //12588+361i, 3 times, warning bar fade out
+            } else if(tickCheck(7344,181,3)) { //12588+361i, 3 times, warning bar fade out
                 QGraphicsOpacityEffect *fadeout = new QGraphicsOpacityEffect(this);
                 ui->WarningBar->setGraphicsEffect(fadeout);
                 QPropertyAnimation *fadeoutAni = new QPropertyAnimation(fadeout,"opacity");
@@ -1047,7 +1069,7 @@ void MainWindow::doTick() {
                 fadeoutAni->setEndValue(0);
                 fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
                 fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
-            } else if(tickCheck(7024)) { //14048, BOSS 1
+            } else if(tickCheck(7824)) { //14048, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
                 new_boss = new Enemy_4_Blue_1(player,270,60,35,200,Game::FrameWidth/2,-60,0,0,0,0,false,true);
@@ -1056,42 +1078,42 @@ void MainWindow::doTick() {
                 newBossInit(new_boss);
                 ui->BossLives->setText("5");
                 tickFreeze();
-            } else if(tickCheck(7026)) { //14050
+            } else if(tickCheck(7826)) { //14050
                 ui->BossLives->setText("4");
-            } else if(tickCheck(7149)) { //14298, BOSS 2
-                new_boss = new Enemy_4_Blue_2(player,250,60,35,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            } else if(tickCheck(7949)) { //14298, BOSS 2
+                new_boss = new Enemy_4_Blue_2(player,250,60,45,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
-            } else if(tickCheck(7151)) { //14300
+            } else if(tickCheck(7951)) { //14300
                 ui->BossLives->setText("3");
-            } else if(tickCheck(7274)) { //14548, BOSS 3
-                new_boss = new Enemy_4_Blue_3(player,330,60,35,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            } else if(tickCheck(8074)) { //14548, BOSS 3
+                new_boss = new Enemy_4_Blue_3(player,330,60,45,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
-            } else if(tickCheck(7276)) { //14550
+            } else if(tickCheck(8076)) { //14550
                 ui->BossLives->setText("2");
-            } else if(tickCheck(7399)) { //14798, BOSS 4
-                new_boss = new Enemy_4_Blue_4(player,450,60,35,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            } else if(tickCheck(8199)) { //14798, BOSS 4
+                new_boss = new Enemy_4_Blue_4(player,450,60,55,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
-            } else if(tickCheck(7401)) { //14800
+            } else if(tickCheck(8201)) { //14800
                 ui->BossLives->setText("1");
-            } else if(tickCheck(7524)) { //7524, BOSS 5
-                new_boss = new Enemy_4_Blue_5(player,350,60,35,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
+            } else if(tickCheck(8324)) { //8324, BOSS 5
+                new_boss = new Enemy_4_Blue_5(player,280,60,55,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
-            } else if(tickCheck(7526)) { //7526
+            } else if(tickCheck(8326)) { //8326
                 ui->BossLives->hide();
                 ui->BossSkill->hide();
                 if(player!=nullptr) player->gameEndSetting();
-            } else if(tickCheck(7840)) { //7840, WIN LIST
+            } else if(tickCheck(8640)) { //8640, WIN LIST
                 ticking=false;
                 //Point
                 ui->PlayerPoint_list->display(ui->PlayerPoint->value());
@@ -1176,6 +1198,7 @@ void MainWindow::newEnemyInit(Enemy* new_enemy) {
         connect(new_enemy,SIGNAL(pointGive(int)),this,SLOT(pointAdd(int)));
         connect(new_enemy,SIGNAL(summonEffect(Effect*)),this,SLOT(newEffectInit(Effect*)));
         connect(new_enemy,SIGNAL(summonEnemy(Enemy*)),this,SLOT(newEnemyInit(Enemy*)));
+        connect(new_enemy,SIGNAL(soundPlay(Game::Sound)),this,SLOT(soundPlay(Game::Sound)));
     }
 }
 void MainWindow::newBossInit(Enemy* new_boss) {
@@ -1196,6 +1219,18 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     connect(new_boss,SIGNAL(deadSignal()),ui->BossSkill,SLOT(hide()));
     connect(new_boss,SIGNAL(shakeScreen(short)),this,SLOT(sceneVibrate(short)));
     connect(new_boss,SIGNAL(shakeScreenVertical(short)),this,SLOT(sceneVibrateVertical(short)));
+    connect(new_boss,SIGNAL(killAllBullets()),this,SLOT(killAllBullets()));
+    connect(new_boss,SIGNAL(killOtherEnemies(Enemy*)),this,SLOT(killOtherEnemies(Enemy*)));
+}
+void MainWindow::killAllBullets() {
+    for(Bullet* enemy_bullet: enemy_bullets) {
+        enemy_bullet->killItself();
+    }
+}
+void MainWindow::killOtherEnemies(Enemy* this_enemy) {
+    for(Enemy* enemy: enemies) {
+        if(enemy!=this_enemy) enemy->killItself();
+    }
 }
 void MainWindow::bossSkillLengthSetting(QString skill) {
     int length=skill.length();
@@ -1218,6 +1253,14 @@ void MainWindow::pauseAndResume() {
         gamestate=Game::GameStatePlaying;
     }
     return;
+}
+void MainWindow::soundPlay(Game::Sound sound) {
+    QMediaPlayer*& audioer = audioers.at((int)sound);
+    if(!(audioer->state()==QMediaPlayer::PlayingState)) audioer->play();
+    else {
+        audioer->stop();
+        audioer->play();
+    }
 }
 void MainWindow::bossCorpse(int x, int y) {
     QString str;
