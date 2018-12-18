@@ -76,5 +76,7 @@
         <file>res/enemy/4/blue_3.png</file>
         <file>res/sound/hit.wav</file>
         <file>res/sound/bd.wav</file>
+        <file>res/sound/warning.wav</file>
+        <file>res/sound/warning02.wav</file>
     </qresource>
 </RCC>

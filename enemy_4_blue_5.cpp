@@ -94,7 +94,7 @@ std::vector<Bullet*>* Enemy_4_Blue_5::shoot2() {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         single_shoot(new_bullets, false);
         //move
-        if(prep_count>=3) setVulnerable();
+        if(prep_count>=2) setVulnerable();
         else ++prep_count;
         double distance = std::sqrt(std::pow(this->x-player->getX(),2) + std::pow(this->y-player->getY(),2));
         if(distance > max_distance) {

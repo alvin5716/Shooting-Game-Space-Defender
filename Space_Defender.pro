@@ -86,7 +86,8 @@ SOURCES += \
     spreadrng.cpp \
     enemy_4_blue_3.cpp \
     enemy_4_blue_1.cpp \
-    enemy_4_blue_5.cpp
+    enemy_4_blue_5.cpp \
+    keycontrolbutton.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -152,7 +153,8 @@ HEADERS += \
     spreadrng.h \
     enemy_4_blue_3.h \
     enemy_4_blue_1.h \
-    enemy_4_blue_5.h
+    enemy_4_blue_5.h \
+    keycontrolbutton.h
 
 FORMS += \
         mainwindow.ui

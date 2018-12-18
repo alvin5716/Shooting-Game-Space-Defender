@@ -35,7 +35,9 @@ namespace Game {
         SoundFire,
         SoundShoot01,
         SoundHit,
-        SoundBd
+        SoundBd,
+        SoundWarning,
+        SoundWarning02
     };
 
 }

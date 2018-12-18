@@ -81,13 +81,13 @@ background-color:  black;
        <number>1</number>
       </property>
       <widget class="QWidget" name="StartPage">
-       <widget class="QPushButton" name="startButton">
+       <widget class="KeyControlButton" name="startButton">
         <property name="geometry">
          <rect>
           <x>480</x>
-          <y>520</y>
-          <width>221</width>
-          <height>71</height>
+          <y>540</y>
+          <width>211</width>
+          <height>51</height>
          </rect>
         </property>
         <property name="font">
@@ -107,13 +107,13 @@ background-color: transparent;</string>
          <string/>
         </property>
        </widget>
-       <widget class="QPushButton" name="QuitButton">
+       <widget class="KeyControlButton" name="QuitButton">
         <property name="geometry">
          <rect>
-          <x>490</x>
-          <y>670</y>
-          <width>191</width>
-          <height>71</height>
+          <x>510</x>
+          <y>680</y>
+          <width>161</width>
+          <height>51</height>
          </rect>
         </property>
         <property name="font">
@@ -1095,7 +1095,7 @@ background-image: url(&quot;:/res/title1.png&quot;);
           <x>70</x>
           <y>540</y>
           <width>1021</width>
-          <height>201</height>
+          <height>211</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -1111,6 +1111,9 @@ color: white;
 }
 QPushButton:hover {
 background-color: grey;
+}
+QLabel {
+border: 0;
 }</string>
         </property>
         <property name="frameShape">
@@ -1119,7 +1122,7 @@ background-color: grey;
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QPushButton" name="LevelButton_1">
+        <widget class="KeyControlButton" name="LevelButton_1">
          <property name="geometry">
           <rect>
            <x>40</x>
@@ -1144,7 +1147,7 @@ background-color: grey;
           <string>1</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="LevelButton_2">
+        <widget class="KeyControlButton" name="LevelButton_2">
          <property name="geometry">
           <rect>
            <x>180</x>
@@ -1169,7 +1172,7 @@ background-color: grey;
           <string>2</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="LevelButton_3">
+        <widget class="KeyControlButton" name="LevelButton_3">
          <property name="geometry">
           <rect>
            <x>320</x>
@@ -1260,7 +1263,7 @@ background-color: grey;
           <string>...</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="LevelButton_4">
+        <widget class="KeyControlButton" name="LevelButton_4">
          <property name="geometry">
           <rect>
            <x>460</x>
@@ -1334,6 +1337,13 @@ color: white;</string>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>KeyControlButton</class>
+   <extends>QPushButton</extends>
+   <header>keycontrolbutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

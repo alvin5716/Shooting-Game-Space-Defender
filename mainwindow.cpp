@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     player(nullptr),dot(nullptr),secret(0),oriImg2(nullptr)
 {
     ui->setupUi(this);
-    ui->stackedWidget->setCurrentIndex(Game::GamePageMenu);
+    this->setGamePage(Game::GamePageMenu);
     //boss objects
     bossHealthOpacityEff = new QGraphicsOpacityEffect(this);
     bossLivesOpacityEff = new QGraphicsOpacityEffect(this);
@@ -43,6 +43,20 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->LevelButton_2,SIGNAL(clicked(bool)),this,SLOT(start2()));
     connect(ui->LevelButton_3,SIGNAL(clicked(bool)),this,SLOT(start3()));
     connect(ui->LevelButton_4,SIGNAL(clicked(bool)),this,SLOT(start4()));
+    //key control button
+    auto keyControlButtonsConnect = [](std::vector<KeyControlButton*>& buttons, KeyControlButton::arrowPos arrow_pos) {
+        for(std::vector<KeyControlButton*>::iterator i=buttons.begin(); i!=buttons.end(); ++i) {
+            connect(*i,SIGNAL(downSelect()),
+                    i==buttons.end()-1?*(buttons.begin()):*(i+1),SLOT(selectThis()));
+            connect(*i,SIGNAL(upSelect()),
+                    i==buttons.begin()?*(buttons.end()-1):*(i-1),SLOT(selectThis()));
+            (*i)->setArrowPos(arrow_pos);
+        }
+    };
+    std::vector<KeyControlButton*> menuButtons({ui->startButton, ui->QuitButton});
+    keyControlButtonsConnect(menuButtons,KeyControlButton::arrowPosLeft);
+    std::vector<KeyControlButton*> levelButtons({ui->LevelButton_1, ui->LevelButton_2, ui->LevelButton_3, ui->LevelButton_4});
+    keyControlButtonsConnect(levelButtons,KeyControlButton::arrowPosDown);
     //focus policy
     setFocusPolicy(Qt::NoFocus);
     //flash
@@ -70,23 +84,40 @@ MainWindow::MainWindow(QWidget *parent) :
     //level intro
     ui->levelIntro->hide();
     //audioer
-    audioers.resize(5);
+    audioers.resize(7);
     for(QMediaPlayer*& audioer: audioers) {
-        audioer = new QMediaPlayer;
+        audioer = new QMediaPlayer(nullptr,QMediaPlayer::LowLatency);
     }
-    audioers.at((int)Game::SoundCymbal)->setMedia(QUrl::fromLocalFile("C:/Users/USER/Documents/GitHub/Shooting-Game-Space-Defender/res/sound/cymbal.wav"));
-    audioers.at((int)Game::SoundCymbal)->setVolume(15);
-    audioers.at((int)Game::SoundFire)->setMedia(QUrl::fromLocalFile("C:/Users/USER/Documents/GitHub/Shooting-Game-Space-Defender/res/sound/fire.wav"));
-    audioers.at((int)Game::SoundFire)->setVolume(30);
-    audioers.at((int)Game::SoundShoot01)->setMedia(QUrl::fromLocalFile("C:/Users/USER/Documents/GitHub/Shooting-Game-Space-Defender/res/sound/shoot01.wav"));
-    audioers.at((int)Game::SoundShoot01)->setVolume(30);
-    audioers.at((int)Game::SoundHit)->setMedia(QUrl::fromLocalFile("C:/Users/USER/Documents/GitHub/Shooting-Game-Space-Defender/res/sound/hit.wav"));
-    audioers.at((int)Game::SoundHit)->setVolume(20);
-    audioers.at((int)Game::SoundBd)->setMedia(QUrl::fromLocalFile("C:/Users/USER/Documents/GitHub/Shooting-Game-Space-Defender/res/sound/bd.wav"));
-    audioers.at((int)Game::SoundBd)->setVolume(70);
+    auto soundSet = [this](Game::Sound sound, int vol, QString url) {
+        audioers.at((int)sound)->setMedia(QUrl::fromLocalFile("C:/Users/USER/Documents/GitHub/Shooting-Game-Space-Defender/"+url));
+        audioers.at((int)sound)->setVolume(vol);
+    };
+    soundSet(Game::SoundCymbal,10,"res/sound/cymbal.wav");
+    soundSet(Game::SoundFire,30,"res/sound/fire.wav");
+    soundSet(Game::SoundShoot01,30,"res/sound/shoot01.wav");
+    soundSet(Game::SoundHit,20,"res/sound/hit.wav");
+    soundSet(Game::SoundBd,70,"res/sound/bd.wav");
+    soundSet(Game::SoundWarning,70,"res/sound/warning.wav");
+    soundSet(Game::SoundWarning02,60,"res/sound/warning02.wav");
 }
+
+void MainWindow::setGamePage(Game::GamePage page) {
+    ui->stackedWidget->setCurrentIndex((int)page);
+    KeyControlButton::unselect();
+    switch (page) {
+    case Game::GamePageMenu:
+        ui->startButton->selectThis();
+        break;
+    case Game::GamePageLevelSelecting:
+        ui->LevelButton_1->selectThis();
+        break;
+    default:
+        break;
+    }
+}
+
 void MainWindow::levelSelect() {
-    ui->stackedWidget->setCurrentIndex(Game::GamePageLevelSelecting);
+    this->setGamePage(Game::GamePageLevelSelecting);
 }
 void MainWindow::start1() {
     level=1;
@@ -166,7 +197,7 @@ void MainWindow::start() {
     dot->setZValue(100);
     newEffectInit(dot);
     //page
-    ui->stackedWidget->setCurrentIndex(Game::GamePagePlaying);
+    this->setGamePage(Game::GamePagePlaying);
     //game state
     gamestate=Game::GameStatePlaying;
     //boss tick
@@ -201,6 +232,30 @@ void MainWindow::start() {
     connect(timer,SIGNAL(timeout()),this,SLOT(doTick()));
     connect(timer,SIGNAL(timeout()),ui->graphicsView,SLOT(update()));
 }
+void MainWindow::warningFadeIn() {
+    soundPlay(Game::SoundWarning);
+    QGraphicsOpacityEffect *fadein = new QGraphicsOpacityEffect(this);
+    ui->WarningBar->setGraphicsEffect(fadein);
+    QPropertyAnimation *fadeinAni = new QPropertyAnimation(fadein,"opacity");
+    fadeinAni->setDuration(1400);
+    fadeinAni->setStartValue(0);
+    fadeinAni->setEndValue(1);
+    fadeinAni->setEasingCurve(QEasingCurve::InQuad);
+    fadeinAni->start(QPropertyAnimation::DeleteWhenStopped);
+    ui->WarningBar->show();
+}
+void MainWindow::warningFadeOut() {
+    soundPlay(Game::SoundWarning02);
+    QGraphicsOpacityEffect *fadeout = new QGraphicsOpacityEffect(this);
+    ui->WarningBar->setGraphicsEffect(fadeout);
+    QPropertyAnimation *fadeoutAni = new QPropertyAnimation(fadeout,"opacity");
+    fadeoutAni->setDuration(1400);
+    fadeoutAni->setStartValue(1);
+    fadeoutAni->setEndValue(0);
+    fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
+    fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
+}
+
 void MainWindow::doTick() {
     //focus
     setFocus();
@@ -439,24 +494,9 @@ void MainWindow::doTick() {
                 }
                 tickFreeze();
             } else if(tickCheck(3352,181,3)) { //6703+361i, 3 times, warning bar fade in
-                QGraphicsOpacityEffect *fadein = new QGraphicsOpacityEffect(this);
-                ui->WarningBar->setGraphicsEffect(fadein);
-                QPropertyAnimation *fadeinAni = new QPropertyAnimation(fadein,"opacity");
-                fadeinAni->setDuration(1400);
-                fadeinAni->setStartValue(0);
-                fadeinAni->setEndValue(1);
-                fadeinAni->setEasingCurve(QEasingCurve::InQuad);
-                fadeinAni->start(QPropertyAnimation::DeleteWhenStopped);
-                ui->WarningBar->show();
+                this->warningFadeIn();
             } else if(tickCheck(3444,181,3)) { //6888+361i, 3 times, warning bar fade out
-                QGraphicsOpacityEffect *fadeout = new QGraphicsOpacityEffect(this);
-                ui->WarningBar->setGraphicsEffect(fadeout);
-                QPropertyAnimation *fadeoutAni = new QPropertyAnimation(fadeout,"opacity");
-                fadeoutAni->setDuration(1400);
-                fadeoutAni->setStartValue(1);
-                fadeoutAni->setEndValue(0);
-                fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
-                fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
+                this->warningFadeOut();
             } else if(tickCheck(3925)) { //7850, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
@@ -658,24 +698,9 @@ void MainWindow::doTick() {
                 connect(new_boss,SIGNAL(deadSignal()),new_enemy,SLOT(killItself()));
                 tickFreeze();
             } else if(tickCheck(5802,181,3)) { //11603+361i, 3 times, warning bar fade in
-                QGraphicsOpacityEffect *fadein = new QGraphicsOpacityEffect(this);
-                ui->WarningBar->setGraphicsEffect(fadein);
-                QPropertyAnimation *fadeinAni = new QPropertyAnimation(fadein,"opacity");
-                fadeinAni->setDuration(1400);
-                fadeinAni->setStartValue(0);
-                fadeinAni->setEndValue(1);
-                fadeinAni->setEasingCurve(QEasingCurve::InQuad);
-                fadeinAni->start(QPropertyAnimation::DeleteWhenStopped);
-                ui->WarningBar->show();
+                this->warningFadeIn();
             } else if(tickCheck(5894,181,3)) { //11788+361i, 3 times, warning bar fade out
-                QGraphicsOpacityEffect *fadeout = new QGraphicsOpacityEffect(this);
-                ui->WarningBar->setGraphicsEffect(fadeout);
-                QPropertyAnimation *fadeoutAni = new QPropertyAnimation(fadeout,"opacity");
-                fadeoutAni->setDuration(1400);
-                fadeoutAni->setStartValue(1);
-                fadeoutAni->setEndValue(0);
-                fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
-                fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
+                this->warningFadeOut();
             } else if(tickCheck(6374)) { //12748, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
@@ -878,24 +903,9 @@ void MainWindow::doTick() {
                 }
                 tickFreeze();
             } else if(tickCheck(4789,181,3)) {  //9578+361i, 3 times, warning bar fade in
-                QGraphicsOpacityEffect *fadein = new QGraphicsOpacityEffect(this);
-                ui->WarningBar->setGraphicsEffect(fadein);
-                QPropertyAnimation *fadeinAni = new QPropertyAnimation(fadein,"opacity");
-                fadeinAni->setDuration(1400);
-                fadeinAni->setStartValue(0);
-                fadeinAni->setEndValue(1);
-                fadeinAni->setEasingCurve(QEasingCurve::InQuad);
-                fadeinAni->start(QPropertyAnimation::DeleteWhenStopped);
-                ui->WarningBar->show();
+                this->warningFadeIn();
             } else if(tickCheck(4881,181,3)) {  //9763+361i, 3 times, warning bar fade out
-                QGraphicsOpacityEffect *fadeout = new QGraphicsOpacityEffect(this);
-                ui->WarningBar->setGraphicsEffect(fadeout);
-                QPropertyAnimation *fadeoutAni = new QPropertyAnimation(fadeout,"opacity");
-                fadeoutAni->setDuration(1400);
-                fadeoutAni->setStartValue(1);
-                fadeoutAni->setEndValue(0);
-                fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
-                fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
+                this->warningFadeOut();
             } else if(tickCheck(5363)) {  //10725
                 new_effect = new Effect(QString(":/res/effect/magic_blue.png"),120,120,256,256,175,Game::FrameWidth/2,200,0,0,0,0,true);
                 new_effect->setOpacity(0.6);
@@ -1018,7 +1028,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(1100,500,3)) {
                 const int t = timesCount(1100,500);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_4_Red(player,t==0?9:12,40,75,200,i?-40:Game::FrameWidth+40,-40,i?3.4:-3.4,3.4,i?-0.028:0.028,-0.028,false);
+                    new_enemy = new Enemy_4_Red(player,7+3*t,40,75,200,i?-40:Game::FrameWidth+40,-40,i?3.4:-3.4,3.4,i?-0.028:0.028,-0.028,false);
                     newEnemyInit(new_enemy);
                 }
             } else if(tickCheck(2600)) {
@@ -1051,24 +1061,9 @@ void MainWindow::doTick() {
                 new_enemy = new Enemy_4_Pink(player,t>8?7:4,40,5,5,t%2?70:Game::FrameWidth-70,-40,t%2?0.2:-0.2,1.8,t%2?-0.00004:0.00004,0.0018);
                 newEnemyInit(new_enemy);
             } else if(tickCheck(7252,181,3)) { //12403+361i, 3 times, warning bar fade in
-                QGraphicsOpacityEffect *fadein = new QGraphicsOpacityEffect(this);
-                ui->WarningBar->setGraphicsEffect(fadein);
-                QPropertyAnimation *fadeinAni = new QPropertyAnimation(fadein,"opacity");
-                fadeinAni->setDuration(1400);
-                fadeinAni->setStartValue(0);
-                fadeinAni->setEndValue(1);
-                fadeinAni->setEasingCurve(QEasingCurve::InQuad);
-                fadeinAni->start(QPropertyAnimation::DeleteWhenStopped);
-                ui->WarningBar->show();
+                this->warningFadeIn();
             } else if(tickCheck(7344,181,3)) { //12588+361i, 3 times, warning bar fade out
-                QGraphicsOpacityEffect *fadeout = new QGraphicsOpacityEffect(this);
-                ui->WarningBar->setGraphicsEffect(fadeout);
-                QPropertyAnimation *fadeoutAni = new QPropertyAnimation(fadeout,"opacity");
-                fadeoutAni->setDuration(1400);
-                fadeoutAni->setStartValue(1);
-                fadeoutAni->setEndValue(0);
-                fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
-                fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
+                this->warningFadeOut();
             } else if(tickCheck(7824)) { //14048, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
@@ -1177,7 +1172,7 @@ void MainWindow::backToMenu() {
     emit killEffects();
     dot=nullptr;
     //menu
-    ui->stackedWidget->setCurrentIndex(Game::GamePageMenu);
+    this->setGamePage(Game::GamePageMenu);
     //game state
     gamestate=Game::GameStateMenu;
 }
