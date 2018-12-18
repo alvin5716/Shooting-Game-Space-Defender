@@ -10,8 +10,8 @@ public:
     void skill() override;
     std::vector<Bullet*>* shoot2() override;
 private:
-    short shoot_count, bow_count;
-    bool dust_falling;
+    short fall_count;
+    bool dust_falling, purple_shooting;
 };
 
 #endif // ENEMY_4_BLUE_3_H
