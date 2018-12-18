@@ -97,8 +97,8 @@ MainWindow::MainWindow(QWidget *parent) :
     soundSet(Game::SoundShoot01,30,"res/sound/shoot01.wav");
     soundSet(Game::SoundHit,20,"res/sound/hit.wav");
     soundSet(Game::SoundBd,70,"res/sound/bd.wav");
-    soundSet(Game::SoundWarning,50,"res/sound/warning.wav");
-    soundSet(Game::SoundWarning02,40,"res/sound/warning02.wav");
+    soundSet(Game::SoundWarning,30,"res/sound/warning.wav");
+    soundSet(Game::SoundWarning02,20,"res/sound/warning02.wav");
 }
 
 void MainWindow::setGamePage(Game::GamePage page) {
