@@ -72,6 +72,9 @@ public:
     inline bool tickCheck(unsigned int tick);
     inline bool tickCheck(unsigned int tick_init, unsigned int interval, unsigned int times);
     inline int timesCount(unsigned int tick_init, unsigned int interval);
+    void setGamePage(Game::GamePage page);
+    void warningFadeIn();
+    void warningFadeOut();
     void pauseAndResume();
     void backToMenu();
     void redFlash();
