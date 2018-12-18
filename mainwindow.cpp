@@ -97,8 +97,8 @@ MainWindow::MainWindow(QWidget *parent) :
     soundSet(Game::SoundShoot01,30,"res/sound/shoot01.wav");
     soundSet(Game::SoundHit,20,"res/sound/hit.wav");
     soundSet(Game::SoundBd,70,"res/sound/bd.wav");
-    soundSet(Game::SoundWarning,70,"res/sound/warning.wav");
-    soundSet(Game::SoundWarning02,60,"res/sound/warning02.wav");
+    soundSet(Game::SoundWarning,50,"res/sound/warning.wav");
+    soundSet(Game::SoundWarning02,40,"res/sound/warning02.wav");
 }
 
 void MainWindow::setGamePage(Game::GamePage page) {
@@ -924,7 +924,7 @@ void MainWindow::doTick() {
                 ui->BossLives->setText("4");
                 for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,200);
             } else if(tickCheck(5588)) {  //11175, BOSS 2
-                new_boss = new Enemy_3_Blue_2(player,330,80,50,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
+                new_boss = new Enemy_3_Blue_2(player,320,80,50,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);

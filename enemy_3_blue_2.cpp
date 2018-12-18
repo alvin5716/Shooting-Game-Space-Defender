@@ -4,7 +4,7 @@
 #include "game.h"
 
 Enemy_3_Blue_2::Enemy_3_Blue_2(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy_3_Blue(player,190,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy_3_Blue(player,180,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     room=nullptr;
     mode=false;
@@ -17,7 +17,7 @@ void Enemy_3_Blue_2::skill() {
         invulnerable=true;
         img=":/res/enemy/3/blue_2.png";
         shoot_timer = -450;
-        shoot_cd = 100;
+        shoot_cd = 220;
         skill_timer = -100;
         emit useSkill("消失的密室");
         this->redMagicShield();
@@ -93,7 +93,11 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 sin = std::sin(angle+i*2*M_PI/bullet_count);
                 cos = std::cos(angle+i*2*M_PI/bullet_count);
                 Bullet_Distance* new_bullet_distance;
-                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/1/purple.png",bullet_radius,player,room_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/1/black.png",bullet_radius,player,room_radius,shootXPos(),shootYPos());
+                int dis_stop = (8-t)*15;
+                new_bullet->moveTo(shootXPos()+dis_stop*cos,shootYPos()+dis_stop*sin,60);
+                new_bullet->addTimeData(60) //move to initial pos
+                        ->addTimeData(5,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin); //shoot
                 connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){ new_bullet_distance->fadeout(150); });
                 connect(new_bullet_distance,&Bullet_Distance::leaveArea,[=](){ new_bullet_distance->fadein(150); });
                 connect(player,SIGNAL(healthChanged(int)),new_bullet_distance,SLOT(disable()));
@@ -141,8 +145,12 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 sin = std::sin(angle+i*2*M_PI/bullet_count);
                 cos = std::cos(angle+i*2*M_PI/bullet_count);
                 Bullet_Distance* new_bullet_distance;
-                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/1/black.png",1,player,room_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-                new_bullet->addTimeData(10,bullet_radius);
+                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/1/purple.png",10,player,room_radius,shootXPos(),shootYPos());
+                int dis_stop = (5-t)*20;
+                new_bullet->moveTo(shootXPos()+dis_stop*cos,shootYPos()+dis_stop*sin,60);
+                new_bullet->addTimeData(60) //move to initial pos
+                        ->addTimeData(5,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin) //shoot
+                        ->addTimeData(50,bullet_radius); //zoom
                 connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){ new_bullet_distance->fadeout(100); });
                 connect(new_bullet_distance,&Bullet_Distance::leaveArea,[=](){ new_bullet_distance->fadein(100); });
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -153,7 +161,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 if(++shoot_count>2) shoot_count=0;
                 moveTo(Game::FrameWidth/2+(qrand()%121-60),140+(qrand()%41-20),100);
                 shoot_cd = 200;
-                shoot_timer = 0;
+                shoot_timer = 80;
                 isBulletFaster=false;
                 mode=!mode;
             }
@@ -182,6 +190,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 new_bullets->push_back(new_bullet);
             }
         }
+        if(shoot_timer==-13) shoot_timer=80;
     }
     if(new_bullets->size()>0) return new_bullets;
     return nullptr;

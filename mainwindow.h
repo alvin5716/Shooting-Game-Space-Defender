@@ -106,7 +106,7 @@ private:
     QString strBossBG;
     bool isPlayerPosHigh, levelIntroShowing;
     std::vector<QMediaPlayer*> audioers;
-    static constexpr int StartTick = 0;
+    static constexpr int StartTick = 5587;
 
 private slots:
     void newEnemyInit(Enemy* new_enemy);
