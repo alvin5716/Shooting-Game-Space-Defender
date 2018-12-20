@@ -17,7 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     timer(nullptr),freezeTimer(nullptr),
     ticking(false),left(false),right(false),up(false),down(false),use_skill(false),
-    player(nullptr),dot(nullptr),secret(0),oriImg2(nullptr)
+    player(nullptr),dot(nullptr),secret(0),
+    oriImg2(nullptr),cutImg(nullptr),oriImg(nullptr)
 {
     ui->setupUi(this);
     this->setGamePage(Game::GamePageMenu);
@@ -43,20 +44,49 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->LevelButton_2,SIGNAL(clicked(bool)),this,SLOT(start2()));
     connect(ui->LevelButton_3,SIGNAL(clicked(bool)),this,SLOT(start3()));
     connect(ui->LevelButton_4,SIGNAL(clicked(bool)),this,SLOT(start4()));
+    auto buttonsConnect = [this](std::vector<KeyControlButton*>& buttons, const char* slot) {
+        for(KeyControlButton* button: buttons) {
+            connect(button,SIGNAL(clicked()),this,slot);
+        }
+    };
+    std::vector<KeyControlButton*> restartButtons({ui->restartButton,
+                                                ui->restartButton_2,
+                                                ui->restartButton_3});
+    buttonsConnect(restartButtons,SLOT(restart()));
+    std::vector<KeyControlButton*> backtomenuButtons({ui->menuButton,
+                                                ui->menuButton_2,
+                                                ui->menuButton_3});
+    buttonsConnect(backtomenuButtons,SLOT(backToMenu()));
+    connect(ui->continueButton,SIGNAL(clicked(bool)),this,SLOT(pauseAndResume()));
     //key control button
-    auto keyControlButtonsConnect = [](std::vector<KeyControlButton*>& buttons, KeyControlButton::arrowPos arrow_pos) {
+    auto keyControlButtonsConnect = [this](std::vector<KeyControlButton*>& buttons, KeyControlButton::arrowPos arrow_pos) {
         for(std::vector<KeyControlButton*>::iterator i=buttons.begin(); i!=buttons.end(); ++i) {
             connect(*i,SIGNAL(downSelect()),
                     i==buttons.end()-1?*(buttons.begin()):*(i+1),SLOT(selectThis()));
             connect(*i,SIGNAL(upSelect()),
                     i==buttons.begin()?*(buttons.end()-1):*(i-1),SLOT(selectThis()));
             (*i)->setArrowPos(arrow_pos);
+            connect((*i),SIGNAL(soundPlay(Game::Sound)),this,SLOT(soundPlay(Game::Sound)));
         }
     };
-    std::vector<KeyControlButton*> menuButtons({ui->startButton, ui->QuitButton});
+    std::vector<KeyControlButton*> menuButtons({ui->startButton,
+                                                ui->QuitButton});
     keyControlButtonsConnect(menuButtons,KeyControlButton::arrowPosLeft);
-    std::vector<KeyControlButton*> levelButtons({ui->LevelButton_1, ui->LevelButton_2, ui->LevelButton_3, ui->LevelButton_4});
+    std::vector<KeyControlButton*> levelButtons({ui->LevelButton_1,
+                                                 ui->LevelButton_2,
+                                                 ui->LevelButton_3,
+                                                 ui->LevelButton_4});
     keyControlButtonsConnect(levelButtons,KeyControlButton::arrowPosDown);
+    std::vector<KeyControlButton*> pauseListButtons({ui->menuButton,
+                                                ui->restartButton,
+                                                ui->continueButton});
+    keyControlButtonsConnect(pauseListButtons,KeyControlButton::arrowPosLeft);
+    std::vector<KeyControlButton*> loseListButtons({ui->menuButton_2,
+                                                ui->restartButton_2});
+    keyControlButtonsConnect(loseListButtons,KeyControlButton::arrowPosLeft);
+    std::vector<KeyControlButton*> winListButtons({ui->menuButton_3,
+                                                ui->restartButton_3});
+    keyControlButtonsConnect(winListButtons,KeyControlButton::arrowPosLeft);
     //focus policy
     setFocusPolicy(Qt::NoFocus);
     //flash
@@ -84,7 +114,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //level intro
     ui->levelIntro->hide();
     //audioer
-    audioers.resize(7);
+    audioers.resize(8);
     for(QMediaPlayer*& audioer: audioers) {
         audioer = new QMediaPlayer(nullptr,QMediaPlayer::LowLatency);
     }
@@ -93,12 +123,13 @@ MainWindow::MainWindow(QWidget *parent) :
         audioers.at((int)sound)->setVolume(vol);
     };
     soundSet(Game::SoundCymbal,10,"res/sound/cymbal.wav");
-    soundSet(Game::SoundFire,30,"res/sound/fire.wav");
+    soundSet(Game::SoundFire,10,"res/sound/fire.wav");
     soundSet(Game::SoundShoot01,30,"res/sound/shoot01.wav");
     soundSet(Game::SoundHit,20,"res/sound/hit.wav");
     soundSet(Game::SoundBd,70,"res/sound/bd.wav");
     soundSet(Game::SoundWarning,30,"res/sound/warning.wav");
     soundSet(Game::SoundWarning02,20,"res/sound/warning02.wav");
+    soundSet(Game::SoundSnare,15,"res/sound/snare.wav");
 }
 
 void MainWindow::setGamePage(Game::GamePage page) {
@@ -110,6 +141,24 @@ void MainWindow::setGamePage(Game::GamePage page) {
         break;
     case Game::GamePageLevelSelecting:
         ui->LevelButton_1->selectThis();
+        break;
+    default:
+        break;
+    }
+}
+
+void MainWindow::setEndListPage(Game::EndListPage page) {
+    ui->EndList->setCurrentIndex((int)page);
+    KeyControlButton::unselect();
+    switch (page) {
+    case Game::EndListPagePaused:
+        ui->menuButton->selectThis();
+        break;
+    case Game::EndListPageFailed:
+        ui->menuButton_2->selectThis();
+        break;
+    case Game::EndListPageWon:
+        ui->menuButton_3->selectThis();
         break;
     default:
         break;
@@ -258,7 +307,7 @@ void MainWindow::warningFadeOut() {
 
 void MainWindow::doTick() {
     //focus
-    setFocus();
+    if(gamestate==Game::GameStatePlaying) setFocus();
     //level intro
     if((tick==250 || gamestate!=Game::GameStatePlaying) && levelIntroShowing) {
         levelIntroShowing = false;
@@ -586,7 +635,7 @@ void MainWindow::doTick() {
                 //Total
                 ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
                 //List
-                ui->EndList->setCurrentIndex(Game::EndListPageWon);
+                this->setEndListPage(Game::EndListPageWon);
                 ui->EndList->show();
                 //game state
                 gamestate=Game::GameStateWon;
@@ -794,7 +843,7 @@ void MainWindow::doTick() {
                 //Total
                 ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
                 //List
-                ui->EndList->setCurrentIndex(Game::EndListPageWon);
+                this->setEndListPage(Game::EndListPageWon);
                 ui->EndList->show();
                 //game state
                 gamestate=Game::GameStateWon;
@@ -1012,7 +1061,7 @@ void MainWindow::doTick() {
                 //Total
                 ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
                 //List
-                ui->EndList->setCurrentIndex(Game::EndListPageWon);
+                this->setEndListPage(Game::EndListPageWon);
                 ui->EndList->show();
                 //game state
                 gamestate=Game::GameStateWon;
@@ -1121,7 +1170,7 @@ void MainWindow::doTick() {
                 //Total
                 ui->PlayerTotalPoint->display(ui->PlayerPoint->value()+ui->PlayerLife->value()*5+ui->PlayerSkill->value()*2);
                 //List
-                ui->EndList->setCurrentIndex(Game::EndListPageWon);
+                this->setEndListPage(Game::EndListPageWon);
                 ui->EndList->show();
                 //game state
                 gamestate=Game::GameStateWon;
@@ -1134,11 +1183,11 @@ void MainWindow::doTick() {
     //draw
     if(gamestate!=Game::GameStatePaused) emit doImgMove();
     //player death
-    if(player->isDead()) {
+    if(player->isDead() && gamestate!=Game::GameStateFailed) {
         //game end
         player->gameEndSetting();
         player->setOpacity(0.5);
-        ui->EndList->setCurrentIndex(Game::EndListPageFailed);
+        this->setEndListPage(Game::EndListPageFailed);
         ui->EndList->show();
         //game state
         gamestate=Game::GameStateFailed;
@@ -1240,7 +1289,7 @@ void MainWindow::newMagicEffect(int show_w, int show_h, double x, double y, int 
 }
 void MainWindow::pauseAndResume() {
     if(gamestate==Game::GameStatePlaying) {
-        ui->EndList->setCurrentIndex(Game::EndListPagePaused);
+        this->setEndListPage(Game::EndListPagePaused);
         ui->EndList->show();
         gamestate=Game::GameStatePaused;
     } else {
@@ -1423,10 +1472,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
             if(gamestate==Game::GameStateWon||gamestate==Game::GameStateFailed||gamestate==Game::GameStatePaused) backToMenu();
             break;
         case Qt::Key_R:
-            if(gamestate==Game::GameStateWon||gamestate==Game::GameStateFailed||gamestate==Game::GameStatePaused) {
-                backToMenu();
-                start();
-            }
+            if(gamestate==Game::GameStateWon||gamestate==Game::GameStateFailed||gamestate==Game::GameStatePaused) restart();
             break;
         case Qt::Key_F11:
             if(!(this->windowState()==Qt::WindowFullScreen)) this->setWindowState(Qt::WindowFullScreen);
@@ -1471,6 +1517,10 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
         }
     }
 }
+void MainWindow::restart() {
+    backToMenu();
+    start();
+}
 void MainWindow::keyReleaseEvent(QKeyEvent *e) {
     if (!e->isAutoRepeat()) {
         switch (e->key()) {
@@ -1500,6 +1550,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e) {
         }
     }
 }
+
 MainWindow::~MainWindow()
 {
     delete ui;

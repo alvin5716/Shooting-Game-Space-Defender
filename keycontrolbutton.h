@@ -2,9 +2,9 @@
 #define KEYCONTROLBUTTON_H
 
 #include <QPushButton>
-#include <QLabel>
 #include <QKeyEvent>
-
+#include "game.h"
+#include "flashlabel.h"
 
 class KeyControlButton : public QPushButton
 {
@@ -23,14 +23,14 @@ public:
     ~KeyControlButton();
 public slots:
     void selectThis();
-    void unselectThis();
 signals:
     void upSelect();
     void downSelect();
+    void soundPlay(Game::Sound);
 private:
     static KeyControlButton* selected_one;
-    bool selected;
-    QLabel* arrow;
+    static FlashLabel* arrow;
+    bool isSelected();
     arrowPos arrow_pos;
 };
 

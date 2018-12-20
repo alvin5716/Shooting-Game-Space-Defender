@@ -87,7 +87,8 @@ SOURCES += \
     enemy_4_blue_3.cpp \
     enemy_4_blue_1.cpp \
     enemy_4_blue_5.cpp \
-    keycontrolbutton.cpp
+    keycontrolbutton.cpp \
+    flashlabel.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -154,7 +155,8 @@ HEADERS += \
     enemy_4_blue_3.h \
     enemy_4_blue_1.h \
     enemy_4_blue_5.h \
-    keycontrolbutton.h
+    keycontrolbutton.h \
+    flashlabel.h
 
 FORMS += \
         mainwindow.ui

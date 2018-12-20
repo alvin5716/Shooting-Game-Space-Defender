@@ -78,5 +78,6 @@
         <file>res/sound/bd.wav</file>
         <file>res/sound/warning.wav</file>
         <file>res/sound/warning02.wav</file>
+        <file>res/sound/snare.wav</file>
     </qresource>
 </RCC>

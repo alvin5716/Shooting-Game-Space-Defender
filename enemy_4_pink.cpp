@@ -23,7 +23,7 @@ void Enemy_4_Pink::skill() {
 }
 
 void Enemy_4_Pink::attacked() {
-    Character::attacked();
+    Enemy_4::attacked();
     if(health<=0) {
         Enemy* new_enemy = new Enemy_Temp(nullptr,Enemy_Temp::enemy_4_pink_shoot_2,player,shoot_cd,shoot_cd_init,x,y);
         emit summonEnemy(new_enemy);

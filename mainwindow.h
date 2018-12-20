@@ -73,10 +73,9 @@ public:
     inline bool tickCheck(unsigned int tick_init, unsigned int interval, unsigned int times);
     inline int timesCount(unsigned int tick_init, unsigned int interval);
     void setGamePage(Game::GamePage page);
+    void setEndListPage(Game::EndListPage page);
     void warningFadeIn();
     void warningFadeOut();
-    void pauseAndResume();
-    void backToMenu();
     void redFlash();
     ~MainWindow();
 
@@ -119,6 +118,9 @@ private slots:
     void start3();
     void start4();
     void doTick();
+    void restart();
+    void pauseAndResume();
+    void backToMenu();
     void tickContinueCheck();
     void pointAdd(int);
     void bossCorpse(int,int);
