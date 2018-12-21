@@ -31,7 +31,7 @@ void Enemy_4_Blue_3::skill() {
     },
     [this](){
         //skill
-        if(skill_timer==-110) moveTo(Game::FrameWidth/2,120,75);
+        if(skill_timer==-110) moveTo(Game::FrameWidth/2,80,75);
         //skill timer
         if(skill_timer<0) {
             ++skill_timer;
@@ -54,8 +54,8 @@ void Enemy_4_Blue_3::skill() {
             if(this->xv>2.4) this->xv=2.4;
             else if(this->xv<-2.4) this->xv=-2.4;
 
-            if(this->y<120) {
-                this->y=120;
+            if(this->y<80) {
+                this->y=80;
                 this->yv=0;
             }
         }
