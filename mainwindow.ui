@@ -1244,7 +1244,7 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Abyssinica SIL'; font-size:12pt; font-weight:600; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'TW Cen MT'; font-size:56px; font-weight:400;&quot;&gt;LEVEL 4&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微軟正黑體'; font-size:56px;&quot;&gt;智慧星&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微軟正黑體'; font-size:32px;&quot;&gt;生物行為很複雜的星球&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微軟正黑體'; font-size:32px;&quot;&gt;生物行為較特別的星球&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </widget>
@@ -1277,9 +1277,9 @@ background-image: url(&quot;:/res/title1.png&quot;);
         <property name="geometry">
          <rect>
           <x>70</x>
-          <y>540</y>
+          <y>490</y>
           <width>1021</width>
-          <height>211</height>
+          <height>251</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -1310,7 +1310,7 @@ border: 0;
          <property name="geometry">
           <rect>
            <x>40</x>
-           <y>50</y>
+           <y>80</y>
            <width>101</width>
            <height>101</height>
           </rect>
@@ -1335,7 +1335,7 @@ border: 0;
          <property name="geometry">
           <rect>
            <x>180</x>
-           <y>50</y>
+           <y>80</y>
            <width>101</width>
            <height>101</height>
           </rect>
@@ -1360,7 +1360,7 @@ border: 0;
          <property name="geometry">
           <rect>
            <x>320</x>
-           <y>50</y>
+           <y>80</y>
            <width>101</width>
            <height>101</height>
           </rect>
@@ -1385,7 +1385,7 @@ border: 0;
          <property name="geometry">
           <rect>
            <x>600</x>
-           <y>50</y>
+           <y>80</y>
            <width>101</width>
            <height>101</height>
           </rect>
@@ -1407,7 +1407,7 @@ border: 0;
          <property name="geometry">
           <rect>
            <x>740</x>
-           <y>50</y>
+           <y>80</y>
            <width>101</width>
            <height>101</height>
           </rect>
@@ -1429,7 +1429,7 @@ border: 0;
          <property name="geometry">
           <rect>
            <x>880</x>
-           <y>50</y>
+           <y>80</y>
            <width>101</width>
            <height>101</height>
           </rect>
@@ -1451,7 +1451,7 @@ border: 0;
          <property name="geometry">
           <rect>
            <x>460</x>
-           <y>50</y>
+           <y>80</y>
            <width>101</width>
            <height>101</height>
           </rect>
@@ -1472,34 +1472,34 @@ border: 0;
           <string>4</string>
          </property>
         </widget>
-       </widget>
-       <widget class="QLabel" name="label_2">
-        <property name="geometry">
-         <rect>
-          <x>410</x>
-          <y>440</y>
-          <width>341</width>
-          <height>91</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>微軟正黑體</family>
-          <pointsize>24</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: transparent;
+        <widget class="QLabel" name="label_2">
+         <property name="geometry">
+          <rect>
+           <x>340</x>
+           <y>-5</y>
+           <width>341</width>
+           <height>91</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>微軟正黑體</family>
+           <pointsize>24</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: transparent;
 color: white;</string>
-        </property>
-        <property name="text">
-         <string>選擇一個關卡</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
+         </property>
+         <property name="text">
+          <string>選擇一個關卡</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
        </widget>
       </widget>
      </widget>

@@ -18,15 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
     timer(nullptr),freezeTimer(nullptr),
     ticking(false),left(false),right(false),up(false),down(false),use_skill(false),
     player(nullptr),dot(nullptr),secret(0),
-    oriImg2(nullptr),cutImg(nullptr),oriImg(nullptr)
+    oriImg2(nullptr),cutImg(nullptr),oriImg(nullptr),
+    bossHealthOpacityEff(this), bossLivesOpacityEff(this)
 {
     ui->setupUi(this);
     this->setGamePage(Game::GamePageMenu);
     //boss objects
-    bossHealthOpacityEff = new QGraphicsOpacityEffect(this);
-    bossLivesOpacityEff = new QGraphicsOpacityEffect(this);
-    ui->BossHealth->setGraphicsEffect(bossHealthOpacityEff);
-    ui->BossLives->setGraphicsEffect(bossLivesOpacityEff);
+    ui->BossHealth->setGraphicsEffect(&bossHealthOpacityEff);
+    ui->BossLives->setGraphicsEffect(&bossLivesOpacityEff);
     //level
     level = 1;
     //scene
@@ -37,6 +36,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
     //qrand
     qsrand(time(nullptr));
+    //endlist
+    ui->EndList->hide();
+    EndListAni = new WidgetAnimationer(ui->EndList);
+    EndListAni->setOpacity(0.6);
     //button
     connect(ui->startButton,SIGNAL(clicked(bool)),this,SLOT(levelSelect()));
     connect(ui->QuitButton,SIGNAL(clicked(bool)),qApp,SLOT(quit()));
@@ -59,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent) :
     buttonsConnect(backtomenuButtons,SLOT(backToMenu()));
     connect(ui->continueButton,SIGNAL(clicked(bool)),this,SLOT(pauseAndResume()));
     //key control button
-    auto keyControlButtonsConnect = [this](std::vector<KeyControlButton*>& buttons, KeyControlButton::arrowPos arrow_pos) {
+    auto keyControlButtonsConnect = [this](std::vector<KeyControlButton*>& buttons, KeyControlButton::ArrowPos arrow_pos) {
         for(std::vector<KeyControlButton*>::iterator i=buttons.begin(); i!=buttons.end(); ++i) {
             connect(*i,SIGNAL(downSelect()),
                     i==buttons.end()-1?*(buttons.begin()):*(i+1),SLOT(selectThis()));
@@ -71,48 +74,36 @@ MainWindow::MainWindow(QWidget *parent) :
     };
     std::vector<KeyControlButton*> menuButtons({ui->startButton,
                                                 ui->QuitButton});
-    keyControlButtonsConnect(menuButtons,KeyControlButton::arrowPosLeft);
+    keyControlButtonsConnect(menuButtons,KeyControlButton::ArrowPosLeft);
     std::vector<KeyControlButton*> levelButtons({ui->LevelButton_1,
                                                  ui->LevelButton_2,
                                                  ui->LevelButton_3,
                                                  ui->LevelButton_4});
-    keyControlButtonsConnect(levelButtons,KeyControlButton::arrowPosDown);
+    keyControlButtonsConnect(levelButtons,KeyControlButton::ArrowPosDown);
     std::vector<KeyControlButton*> pauseListButtons({ui->menuButton,
                                                 ui->restartButton,
                                                 ui->continueButton});
-    keyControlButtonsConnect(pauseListButtons,KeyControlButton::arrowPosLeft);
+    keyControlButtonsConnect(pauseListButtons,KeyControlButton::ArrowPosLeft);
     std::vector<KeyControlButton*> loseListButtons({ui->menuButton_2,
                                                 ui->restartButton_2});
-    keyControlButtonsConnect(loseListButtons,KeyControlButton::arrowPosLeft);
+    keyControlButtonsConnect(loseListButtons,KeyControlButton::ArrowPosLeft);
     std::vector<KeyControlButton*> winListButtons({ui->menuButton_3,
                                                 ui->restartButton_3});
-    keyControlButtonsConnect(winListButtons,KeyControlButton::arrowPosLeft);
+    keyControlButtonsConnect(winListButtons,KeyControlButton::ArrowPosLeft);
     //focus policy
     setFocusPolicy(Qt::NoFocus);
     //flash
     flash = new Flash(ui->GamePage);
-    //end list
-    QGraphicsOpacityEffect *half_opacity = new QGraphicsOpacityEffect(this);
-    half_opacity->setOpacity(0.6);
-    ui->EndList->setGraphicsEffect(half_opacity);
-    ui->EndList->setAutoFillBackground(true);
     //boss skill name animation
-    bossSkillOpacityEff = new QGraphicsOpacityEffect(this);
-    ui->BossSkill->setGraphicsEffect(bossSkillOpacityEff);
-    bossSkillFadeinAni = new QPropertyAnimation(bossSkillOpacityEff,"opacity");
-    bossSkillFadeinAni->setDuration(3500);
-    bossSkillFadeinAni->setStartValue(0);
-    bossSkillFadeinAni->setEndValue(1);
-    bossSkillFadeinAni->setEasingCurve(QEasingCurve::OutCubic);
-    bossSkillMoveInAni = new QPropertyAnimation(ui->BossSkill,"geometry");
-    bossSkillMoveInAni->setDuration(2000);
-    bossSkillMoveInAni->setStartValue(QRect(200,80,280,50));
-    bossSkillMoveInAni->setEndValue(QRect(510,80,280,50));
-    bossSkillMoveInAni->setEasingCurve(QEasingCurve::OutCubic);
+    bossSkillAni = new WidgetAnimationer(ui->BossSkill);
+    bossSkillAni->setFadeDir(WidgetAnimationer::FadeDirectionLeft);
     //game state
     gamestate=Game::GameStateMenu;
     //level intro
     ui->levelIntro->hide();
+    //level
+    levelSelectAni = new WidgetAnimationer(ui->selectFrame);
+    levelSelectAni->setFadeDir(WidgetAnimationer::FadeDirectionDown);
     //audioer
     audioers.resize(8);
     for(QMediaPlayer*& audioer: audioers) {
@@ -141,6 +132,7 @@ void MainWindow::setGamePage(Game::GamePage page) {
         break;
     case Game::GamePageLevelSelecting:
         ui->LevelButton_1->selectThis();
+        levelSelectAni->animationStart();
         break;
     default:
         break;
@@ -149,16 +141,20 @@ void MainWindow::setGamePage(Game::GamePage page) {
 
 void MainWindow::setEndListPage(Game::EndListPage page) {
     ui->EndList->setCurrentIndex((int)page);
+    EndListAni->animationStart();
     KeyControlButton::unselect();
     switch (page) {
     case Game::EndListPagePaused:
-        ui->menuButton->selectThis();
+        ui->continueButton->selectThis();
+        ui->continueButton->disableClick(1000);
         break;
     case Game::EndListPageFailed:
-        ui->menuButton_2->selectThis();
+        ui->restartButton_2->selectThis();
+        ui->restartButton_2->disableClick(1000);
         break;
     case Game::EndListPageWon:
-        ui->menuButton_3->selectThis();
+        ui->restartButton_3->selectThis();
+        ui->restartButton_3->disableClick(1000);
         break;
     default:
         break;
@@ -202,17 +198,17 @@ void MainWindow::start() {
     //boss lives count
     ui->BossLives->hide();
     ui->BossLives->setText("");
-    bossLivesOpacityEff->setOpacity(0.7);
+    bossLivesOpacityEff.setOpacity(0.7);
     //boss skill name
     ui->BossSkill->hide();
     ui->BossSkill->setText("");
-    bossSkillOpacityEff->setOpacity(0.7);
+    bossSkillAni->setOpacity(0.7);
     //boss health bar
     ui->BossHealth->hide();
     ui->BossHealth->setGeometry(70,40,720,30);
     ui->BossHealth->setFormat("");
     ui->BossHealth->setValue(0);
-    bossHealthOpacityEff->setOpacity(0.7);
+    bossHealthOpacityEff.setOpacity(0.7);
     //warning bar
     ui->WarningBar->hide();
     //skill times
@@ -308,6 +304,7 @@ void MainWindow::warningFadeOut() {
 void MainWindow::doTick() {
     //focus
     if(gamestate==Game::GameStatePlaying) setFocus();
+    else KeyControlButton::setFocusOnSelectedOne();
     //level intro
     if((tick==250 || gamestate!=Game::GameStatePlaying) && levelIntroShowing) {
         levelIntroShowing = false;
@@ -367,14 +364,14 @@ void MainWindow::doTick() {
         //boss lives, skill bar and health bar
         if(!isPlayerPosHigh && player->getY()<280) {
             isPlayerPosHigh=true;
-            bossHealthOpacityEff->setOpacity(0.3);
-            bossLivesOpacityEff->setOpacity(0.3);
-            bossSkillOpacityEff->setOpacity(0.3);
+            bossHealthOpacityEff.setOpacity(0.3);
+            bossLivesOpacityEff.setOpacity(0.3);
+            bossSkillAni->setOpacity(0.3);
         } else if(isPlayerPosHigh && player->getY()>=280) {
             isPlayerPosHigh=false;
-            bossHealthOpacityEff->setOpacity(0.7);
-            bossLivesOpacityEff->setOpacity(0.7);
-            bossSkillOpacityEff->setOpacity(0.7);
+            bossHealthOpacityEff.setOpacity(0.7);
+            bossLivesOpacityEff.setOpacity(0.7);
+            bossSkillAni->setOpacity(0.7);
         }
         //player skill
         if(use_skill && !player->isUsingSkill() && skill_times>0 && !player->isInvulnerable()) { //init
@@ -956,10 +953,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(4881,181,3)) {  //9763+361i, 3 times, warning bar fade out
                 this->warningFadeOut();
             } else if(tickCheck(5363)) {  //10725
-                new_effect = new Effect(QString(":/res/effect/magic_blue.png"),120,120,256,256,175,Game::FrameWidth/2,200,0,0,0,0,true);
-                new_effect->setOpacity(0.6);
-                new_effect->fadein();
-                newEffectInit(new_effect);
+                newMagicEffect(256,256,Game::FrameWidth/2,200,175,Game::MagicTypeBlue);
             } else if(tickCheck(5463)) {  //10925, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
@@ -971,17 +965,18 @@ void MainWindow::doTick() {
                 tickFreeze();
             } else if(tickCheck(5465)) {  //10927
                 ui->BossLives->setText("4");
-                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,200);
+                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?80:Game::FrameWidth-80,150,200,Game::MagicTypeBlue);
             } else if(tickCheck(5588)) {  //11175, BOSS 2
                 new_boss = new Enemy_3_Blue_2(player,320,80,50,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Green(player,5,30,115,150,(i==0)?160:Game::FrameWidth-160,150);
+                    new_enemy = new Enemy_3_Green(player,5,30,115,150,(i==0)?80:Game::FrameWidth-80,150,0,0,0,0,false,true);
                     newEnemyInit(new_enemy);
                     new_enemy->setInvulnerable();
                     new_enemy->fadein(1000);
+                    new_enemy->moveTo((i==0)?160:Game::FrameWidth-160,150,100);
                     new_effect = new_enemy->showShield();
                     newEffectInit(new_effect);
                     connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SIGNAL(killItsBullets()));
@@ -990,17 +985,18 @@ void MainWindow::doTick() {
                 tickFreeze();
             } else if(tickCheck(5590)) {  //11177
                 ui->BossLives->setText("3");
-                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,200);
+                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?80:Game::FrameWidth-80,150,200,Game::MagicTypeBlue);
             } else if(tickCheck(5713)) {  //11425, BOSS 3
                 new_boss = new Enemy_3_Blue_3(player,370,80,50,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Red(player,5,30,125,75,(i==0)?160:Game::FrameWidth-160,150);
+                    new_enemy = new Enemy_3_Red(player,5,30,125,120,(i==0)?80:Game::FrameWidth-80,150,0,0,0,0,false,true);
                     newEnemyInit(new_enemy);
                     new_enemy->setInvulnerable();
                     new_enemy->fadein(1000);
+                    new_enemy->moveTo((i==0)?160:Game::FrameWidth-160,150,100);
                     new_effect = new_enemy->showShield();
                     newEffectInit(new_effect);
                     connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SIGNAL(killItsBullets()));
@@ -1009,17 +1005,18 @@ void MainWindow::doTick() {
                 tickFreeze();
             } else if(tickCheck(5715)) {  //11427
                 ui->BossLives->setText("2");
-                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,200);
+                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?80:Game::FrameWidth-80,150,200,Game::MagicTypeBlue);
             } else if(tickCheck(5838)) {  //11675, BOSS 4
                 new_boss = new Enemy_3_Blue_4(player,395,80,50,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Yellow(player,5,30,250,150,(i==0)?160:Game::FrameWidth-160,150);
+                    new_enemy = new Enemy_3_Yellow(player,5,30,250,150,(i==0)?80:Game::FrameWidth-80,150,0,0,0,0,false,true);
                     newEnemyInit(new_enemy);
                     new_enemy->setInvulnerable();
                     new_enemy->fadein(1000);
+                    new_enemy->moveTo((i==0)?160:Game::FrameWidth-160,150,100);
                     new_effect = new_enemy->showShield();
                     newEffectInit(new_effect);
                     connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SIGNAL(killItsBullets()));
@@ -1028,16 +1025,17 @@ void MainWindow::doTick() {
                 tickFreeze();
             } else if(tickCheck(5840)) {  //11677
                 ui->BossLives->setText("1");
-                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?160:Game::FrameWidth-160,150,200);
+                for(int i=0;i<2;++i) newMagicEffect(100,100,(i==0)?80:Game::FrameWidth-80,150,200,Game::MagicTypeBlue);
             } else if(tickCheck(5963)) {  //11925, BOSS 5
                 new_boss = new Enemy_3_Blue_5(player,500,80,60,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_3_Pink(player,5,30,150,150,(i==0)?160:Game::FrameWidth-160,150);
+                    new_enemy = new Enemy_3_Pink(player,5,30,150,150,(i==0)?80:Game::FrameWidth-80,150,0,0,0,0,false,true);
                     newEnemyInit(new_enemy);
                     new_enemy->setInvulnerable();
                     new_enemy->fadein(1000);
+                    new_enemy->moveTo((i==0)?160:Game::FrameWidth-160,150,100);
                     new_effect = new_enemy->showShield();
                     newEffectInit(new_effect);
                     connect(new_boss,SIGNAL(useSkill(QString)),new_enemy,SIGNAL(killItsBullets()));
@@ -1197,6 +1195,7 @@ void MainWindow::doTick() {
     if(gamestate==Game::GameStatePlaying) ++gametime;
 }
 void MainWindow::backToMenu() {
+    if(gamestate==Game::GameStatePlaying||gamestate==Game::GameStateMenu) return;
     ticking=false;
     //kill timer
     delete timer;
@@ -1253,9 +1252,8 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     ui->BossHealth->setValue(new_boss->getHealth());
     ui->BossSkill->setText("");
     connect(new_boss,SIGNAL(healthChanged(int)),ui->BossHealth,SLOT(setValue(int)));
-    connect(new_boss,SIGNAL(useSkill(QString)),bossSkillFadeinAni,SLOT(start()));
     connect(new_boss,SIGNAL(useSkill(QString)),this,SLOT(bossSkillLengthSetting(QString)));
-    connect(new_boss,SIGNAL(useSkill(QString)),bossSkillMoveInAni,SLOT(start()));
+    connect(new_boss,SIGNAL(useSkill(QString)),bossSkillAni,SLOT(animationStart3500()));
     connect(new_boss,SIGNAL(useSkill(QString)),ui->BossSkill,SLOT(show()));
     connect(new_boss,SIGNAL(useSkill(QString)),ui->BossSkill,SLOT(setText(QString)));
     connect(new_boss,SIGNAL(useSkill(QString)),flash,SLOT(flash()));
@@ -1278,11 +1276,11 @@ void MainWindow::killOtherEnemies(Enemy* this_enemy) {
 }
 void MainWindow::bossSkillLengthSetting(QString skill) {
     int length=skill.length();
-    bossSkillMoveInAni->setStartValue(QRect(480-length*50,80,length*50,50));
-    bossSkillMoveInAni->setEndValue(QRect(790-length*50,80,length*50,50));
+    bossSkillAni->setGeometry(QRect(790-length*50,80,length*50,50));
 }
-void MainWindow::newMagicEffect(int show_w, int show_h, double x, double y, int lifetime) {
-    new_effect = new Effect(QString(":/res/effect/magic.png"),100,100,show_w,show_h,lifetime,x,y,0,0,0,0,true);
+void MainWindow::newMagicEffect(int show_w, int show_h, double x, double y, int lifetime, Game::MagicType type) {
+    bool white = type==Game::MagicTypeWhite;
+    new_effect = new Effect(QString(white?":/res/effect/magic.png":":/res/effect/magic_blue.png"),white?100:120,white?100:120,show_w,show_h,lifetime,x,y,0,0,0,0,true);
     new_effect->setOpacity(0.6);
     new_effect->fadein();
     newEffectInit(new_effect);
@@ -1292,7 +1290,7 @@ void MainWindow::pauseAndResume() {
         this->setEndListPage(Game::EndListPagePaused);
         ui->EndList->show();
         gamestate=Game::GameStatePaused;
-    } else {
+    } else if(gamestate==Game::GameStatePaused) {
         ui->EndList->hide();
         gamestate=Game::GameStatePlaying;
     }
@@ -1466,13 +1464,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
             break;
         case Qt::Key_Escape:
         case Qt::Key_P:
-            if(gamestate==Game::GameStatePlaying||gamestate==Game::GameStatePaused) pauseAndResume();
-            break;
-        case Qt::Key_M:
-            if(gamestate==Game::GameStateWon||gamestate==Game::GameStateFailed||gamestate==Game::GameStatePaused) backToMenu();
-            break;
-        case Qt::Key_R:
-            if(gamestate==Game::GameStateWon||gamestate==Game::GameStateFailed||gamestate==Game::GameStatePaused) restart();
+            if(gamestate==Game::GameStatePlaying) pauseAndResume();
             break;
         case Qt::Key_F11:
             if(!(this->windowState()==Qt::WindowFullScreen)) this->setWindowState(Qt::WindowFullScreen);
@@ -1518,6 +1510,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
     }
 }
 void MainWindow::restart() {
+    if(gamestate==Game::GameStatePlaying||gamestate==Game::GameStateMenu) return;
     backToMenu();
     start();
 }

@@ -54,6 +54,7 @@
 #include "effect.h"
 #include "shield.h"
 #include <QMediaPlayer>
+#include "animationwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -67,7 +68,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
-    void newMagicEffect(int show_w, int show_h, double x, double y, int lifetime=175);
+    void newMagicEffect(int show_w, int show_h, double x, double y, int lifetime=175, Game::MagicType type=Game::MagicTypeWhite);
     void tickFreeze();
     inline bool tickCheck(unsigned int tick);
     inline bool tickCheck(unsigned int tick_init, unsigned int interval, unsigned int times);
@@ -99,12 +100,12 @@ private:
     Shield *dot;
     int secret;
     QPixmap *oriImg2, *cutImg, *oriImg;
-    QGraphicsOpacityEffect* bossSkillOpacityEff, *bossHealthOpacityEff, *bossLivesOpacityEff;
-    QPropertyAnimation* bossSkillFadeinAni, *bossSkillMoveInAni;
     int gamestate, level;
     QString strBossBG;
     bool isPlayerPosHigh, levelIntroShowing;
+    QGraphicsOpacityEffect bossHealthOpacityEff, bossLivesOpacityEff;
     std::vector<QMediaPlayer*> audioers;
+    WidgetAnimationer* EndListAni, *levelSelectAni, *bossSkillAni;
     static constexpr int StartTick = 0;
 
 private slots:

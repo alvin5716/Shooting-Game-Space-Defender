@@ -11,15 +11,17 @@ class KeyControlButton : public QPushButton
     Q_OBJECT
 public:
     KeyControlButton(QWidget* parent=nullptr);
-    enum arrowPos{
-        arrowPosUp,
-        arrowPosDown,
-        arrowPosLeft,
-        arrowPosRight,
+    enum ArrowPos {
+        ArrowPosUp,
+        ArrowPosDown,
+        ArrowPosLeft,
+        ArrowPosRight,
     };
     void keyPressEvent(QKeyEvent *e);
-    void setArrowPos(arrowPos arrow_pos);
+    void setArrowPos(ArrowPos arrow_pos);
     static void unselect();
+    static bool setFocusOnSelectedOne();
+    void disableClick(int duration);
     ~KeyControlButton();
 public slots:
     void selectThis();
@@ -31,7 +33,9 @@ private:
     static KeyControlButton* selected_one;
     static FlashLabel* arrow;
     bool isSelected();
-    arrowPos arrow_pos;
+    ArrowPos arrow_pos;
+    bool clickable;
+    QTimer* disableClickTimer;
 };
 
 #endif // KEYCONTROLBUTTON_H

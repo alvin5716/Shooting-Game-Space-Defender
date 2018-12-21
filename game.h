@@ -41,6 +41,11 @@ namespace Game {
         SoundSnare
     };
 
+    enum MagicType {
+        MagicTypeWhite,
+        MagicTypeBlue
+    };
+
 }
 
 #endif // GAME_H

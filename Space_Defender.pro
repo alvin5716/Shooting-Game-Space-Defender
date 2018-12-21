@@ -156,7 +156,8 @@ HEADERS += \
     enemy_4_blue_1.h \
     enemy_4_blue_5.h \
     keycontrolbutton.h \
-    flashlabel.h
+    flashlabel.h \
+    animationwidget.h
 
 FORMS += \
         mainwindow.ui
