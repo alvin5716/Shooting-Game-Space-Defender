@@ -19,7 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ticking(false),left(false),right(false),up(false),down(false),use_skill(false),
     player(nullptr),dot(nullptr),secret(0),
     oriImg2(nullptr),cutImg(nullptr),oriImg(nullptr),
-    bossHealthOpacityEff(this), bossLivesOpacityEff(this)
+    bossHealthOpacityEff(this), bossLivesOpacityEff(this),
+    dialogueProcessing(false), dialogueWidget(nullptr)
 {
     ui->setupUi(this);
     this->setGamePage(Game::GamePageMenu);
@@ -104,6 +105,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //level
     levelSelectAni = new WidgetAnimationer(ui->selectFrame);
     levelSelectAni->setFadeDir(WidgetAnimationer::FadeDirectionDown);
+    //dialogue
     //audioer
     audioers.resize(8);
     for(QMediaPlayer*& audioer: audioers) {
@@ -303,8 +305,10 @@ void MainWindow::warningFadeOut() {
 
 void MainWindow::doTick() {
     //focus
-    if(gamestate==Game::GameStatePlaying) setFocus();
-    else KeyControlButton::setFocusOnSelectedOne();
+    if(gamestate==Game::GameStatePlaying) {
+        if(dialogueProcessing) dialogueWidget->setFocus();
+        else this->setFocus();
+    } else KeyControlButton::setFocusOnSelectedOne();
     //level intro
     if((tick==250 || gamestate!=Game::GameStatePlaying) && levelIntroShowing) {
         levelIntroShowing = false;
@@ -360,7 +364,7 @@ void MainWindow::doTick() {
         //move
         emit doMove();
     }
-    if(gamestate==Game::GameStatePlaying) {
+    if(gamestate==Game::GameStatePlaying && !dialogueProcessing) {
         //boss lives, skill bar and health bar
         if(!isPlayerPosHigh && player->getY()<280) {
             isPlayerPosHigh=true;
@@ -477,7 +481,12 @@ void MainWindow::doTick() {
         switch(level) {
         //level 1
         case 1:
-            if(tickCheck(250,63,7)) {
+            if(tickCheck(220)) {
+                dialogueStart({Dialogue("你好啊，旅行者",":/res/enemy/1/green.png",QRect(10,0,20,20)),
+                               Dialogue("可以請你們離開嗎",":/res/enemy/1/green.png",QRect(10,0,20,20)),
+                               Dialogue("我們不會傷害你們的...",":/res/enemy/1/green.png",QRect(10,0,20,20)),
+                              });
+            } if(tickCheck(250,63,7)) {
                 //250+63i, 7 times
                 for(int i=0;i<2;++i) {
                     new_enemy = new Enemy_Green(player,3,27.75,0,0,(i==0)?120:Game::FrameWidth-120,-27,0,1.6,(i==0)?0.0048:-0.0048,0.004);
@@ -1223,6 +1232,19 @@ void MainWindow::backToMenu() {
     this->setGamePage(Game::GamePageMenu);
     //game state
     gamestate=Game::GameStateMenu;
+}
+void MainWindow::dialogueStart(std::initializer_list<Dialogue> list) {
+    if(dialogueWidget!=nullptr) delete dialogueWidget;
+    dialogueWidget = new DialogueWidget(QRect(60,669,731,211),0.8,ui->GamePage);
+    connect(dialogueWidget,SIGNAL(end()),this,SLOT(dialogueEnd()));
+    this->dialogueProcessing = true;
+    dialogueWidget->show();
+    dialogueWidget->start(list);
+}
+void MainWindow::dialogueEnd() {
+    this->dialogueProcessing = false;
+    dialogueWidget->hide();
+    if(dialogueWidget!=nullptr) delete dialogueWidget;
 }
 void MainWindow::newEffectInit(Effect* new_effect) {
     if(new_effect!=nullptr) {

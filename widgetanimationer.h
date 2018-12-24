@@ -21,7 +21,8 @@ public:
         :animatedWidget(animatedWidget), opacityEffect(animatedWidget->parentWidget()),
         fadeinAnimation(&opacityEffect,"opacity"),
         moveInAnimation(animatedWidget,"geometry"),
-        fadeDir(FadeDirectionLeft), opacity(1.0), geometry(animatedWidget->geometry())
+        fadeDir(FadeDirectionLeft), opacity(1.0), geometry(animatedWidget->geometry()),
+        length(310)
     {
         opacityEffect.setOpacity(opacity);
         animatedWidget->setGraphicsEffect(&opacityEffect);
@@ -51,10 +52,10 @@ public slots:
         //geo
         QRect geo(geometry);
         switch(fadeDir) {
-            case FadeDirectionLeft: geo.moveLeft(geo.x()-310); break;
-            case FadeDirectionRight: geo.moveLeft(geo.x()+310); break;
-            case FadeDirectionUp: geo.moveTop(geo.y()-310); break;
-            case FadeDirectionDown: geo.moveTop(geo.y()+310); break;
+            case FadeDirectionLeft: geo.moveLeft(geo.x()-length); break;
+            case FadeDirectionRight: geo.moveLeft(geo.x()+length); break;
+            case FadeDirectionUp: geo.moveTop(geo.y()-length); break;
+            case FadeDirectionDown: geo.moveTop(geo.y()+length); break;
         }
         moveInAnimation.setStartValue(geo);
         moveInAnimation.setEndValue(geometry);
@@ -64,6 +65,9 @@ public slots:
     void animationStart3500() {
         animationStart(3500);
     }
+    void setLength(int length=310) {
+        this->length = length;
+    }
 private:
     QWidget* animatedWidget;
     QGraphicsOpacityEffect opacityEffect;
@@ -71,6 +75,7 @@ private:
     FadeDirection fadeDir;
     double opacity;
     QRect geometry;
+    int length;
 };
 
 #endif // ANIMATIONWIDGET_H

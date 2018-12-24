@@ -54,7 +54,8 @@
 #include "effect.h"
 #include "shield.h"
 #include <QMediaPlayer>
-#include "animationwidget.h"
+#include "widgetanimationer.h"
+#include "dialoguewidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -78,6 +79,7 @@ public:
     void warningFadeIn();
     void warningFadeOut();
     void redFlash();
+    void dialogueStart(std::initializer_list<Dialogue> list);
     ~MainWindow();
 
 private:
@@ -106,7 +108,9 @@ private:
     QGraphicsOpacityEffect bossHealthOpacityEff, bossLivesOpacityEff;
     std::vector<QMediaPlayer*> audioers;
     WidgetAnimationer* EndListAni, *levelSelectAni, *bossSkillAni;
+    bool dialogueProcessing;
     static constexpr int StartTick = 0;
+    DialogueWidget* dialogueWidget;
 
 private slots:
     void newEnemyInit(Enemy* new_enemy);
@@ -132,6 +136,7 @@ private slots:
     void soundPlay(Game::Sound sound);
     void killAllBullets();
     void killOtherEnemies(Enemy*);
+    void dialogueEnd();
 
 signals:
     void doMove();
