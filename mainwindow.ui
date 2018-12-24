@@ -1116,6 +1116,9 @@ p, li { white-space: pre-wrap; }
          <string notr="true">background-color: transparent;
 border: 0;</string>
         </property>
+        <property name="currentIndex">
+         <number>3</number>
+        </property>
         <widget class="QWidget" name="page">
          <widget class="QTextBrowser" name="levelIntro2">
           <property name="geometry">
@@ -1243,7 +1246,7 @@ background-color: transparent;</string>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Abyssinica SIL'; font-size:12pt; font-weight:600; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'TW Cen MT'; font-size:56px; font-weight:400;&quot;&gt;LEVEL 4&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微軟正黑體'; font-size:56px;&quot;&gt;智慧星&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微軟正黑體'; font-size:56px;&quot;&gt;智多星&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微軟正黑體'; font-size:32px;&quot;&gt;生物行為較特別的星球&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>

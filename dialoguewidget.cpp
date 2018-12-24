@@ -25,6 +25,7 @@ DialogueWidget::DialogueWidget(QRect geometry, double opacity, QWidget* parent)
                                "}");
     dialogueText->setFont(QFont("微軟正黑體",18,QFont::Bold));
     dialogueText->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    dialogueText->setWordWrap(true);
     dialogueImg->setGeometry(0,0,220,210);
     dialogueImg->setStyleSheet("QLabel {"
                                "    border-style: solid;"
@@ -57,13 +58,21 @@ void DialogueWidget::showNextDialogue() {
     QRect cutFrame(dialogue.img_frame);
     QPixmap oriImg(dialogue.img);
     QPixmap cutImg = oriImg.copy(cutFrame);
-    dialogueImg->setPixmap(cutImg.scaled(dialogueImg->width(),dialogueImg->height()));
+    if(cutImg.width()>=cutImg.height()) {
+        int w=dialogueImg->width();
+        int h=cutImg.height()*dialogueImg->width()/cutImg.width();
+        dialogueImg->setPixmap(cutImg.scaled(w,h));
+    } else {
+        int w=cutImg.width()*dialogueImg->height()/cutImg.height();
+        int h=dialogueImg->height();
+        dialogueImg->setPixmap(cutImg.scaled(w,h));
+    }
     dialogueText->setText(dialogue.content);
 }
 void DialogueWidget::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
     case Qt::Key_Z:
-        showNextDialogue();
+        if(!event->isAutoRepeat()) showNextDialogue();
         break;
     default:
         QWidget::keyPressEvent(event);

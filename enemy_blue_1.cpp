@@ -6,7 +6,7 @@ Enemy_Blue_1::Enemy_Blue_1(Character* player, int health, int radius, int shoot_
 {
     point+=10;
     clockwise=false;
-    setDisappearTime(5000);
+    setDisappearTime(-1);
     bullet_fast=false;
     setDeathImg(":/res/enemy/1/blue_3.png");
 }

@@ -41,6 +41,7 @@ signals:
     void shakeScreenVertical(short);
     void killAllBullets();
     void killOtherEnemies(Enemy*);
+    void dialogueStart();
 protected:
     void beABoss(int bossSkillHP);
     void setBossHPToSkill();

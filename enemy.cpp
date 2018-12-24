@@ -149,7 +149,7 @@ Effect* Enemy::disappear() const {
     Effect* corpse = new Effect((death_img=="")?img:death_img,
                                 death_img_w,death_img_h,
                                 show_w * death_img_w / img_w, show_h * death_img_h / img_h,
-                                disappearTime/8,imgX()+show_w/2,imgY()+show_h/2,(death_img=="")?xv:0,(death_img=="")?yv:0,(death_img=="")?xa:0,(death_img=="")?ya:0);
+                                disappearTime==-1?-1:disappearTime/8,imgX()+show_w/2,imgY()+show_h/2,(death_img=="")?xv:0,(death_img=="")?yv:0,(death_img=="")?xa:0,(death_img=="")?ya:0);
     corpse->setZValue(-1);
     //if needed, face to left
     if(canBeMirrored&&face_to_left) {
@@ -162,7 +162,7 @@ Effect* Enemy::disappear() const {
         corpse->float_timer = this->float_timer;
     }
     //disappear time
-    corpse->fadeout(disappearTime);
+    if(disappearTime!=-1) corpse->fadeout(disappearTime);
     return corpse;
 }
 Enemy::~Enemy() {
