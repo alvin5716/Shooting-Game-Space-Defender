@@ -18,7 +18,7 @@ private:
     double angle;
     Bullet* magicstone;
     bool shoot_small_bullets, mode;
-    short triggered_count;
+    short triggered_count, skill_timer_2;
 };
 
 #endif // ENEMY_3_BLUE_1_H

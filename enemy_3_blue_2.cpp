@@ -93,7 +93,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 sin = std::sin(angle+i*2*M_PI/bullet_count);
                 cos = std::cos(angle+i*2*M_PI/bullet_count);
                 Bullet_Distance* new_bullet_distance;
-                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/1/black.png",bullet_radius,player,room_radius,shootXPos(),shootYPos());
+                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/2/purple.png",bullet_radius,player,room_radius,shootXPos(),shootYPos());
                 int dis_stop = (8-t)*15;
                 new_bullet->moveTo(shootXPos()+dis_stop*cos,shootYPos()+dis_stop*sin,60);
                 new_bullet->addTimeData(60) //move to initial pos
@@ -145,7 +145,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 sin = std::sin(angle+i*2*M_PI/bullet_count);
                 cos = std::cos(angle+i*2*M_PI/bullet_count);
                 Bullet_Distance* new_bullet_distance;
-                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/1/purple.png",10,player,room_radius,shootXPos(),shootYPos());
+                new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/1/black.png",10,player,room_radius,shootXPos(),shootYPos());
                 int dis_stop = (5-t)*20;
                 new_bullet->moveTo(shootXPos()+dis_stop*cos,shootYPos()+dis_stop*sin,60);
                 new_bullet->addTimeData(60) //move to initial pos

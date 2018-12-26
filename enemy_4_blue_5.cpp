@@ -8,7 +8,7 @@ Enemy_4_Blue_5::Enemy_4_Blue_5(Character* player, int health, int radius, int sh
 {
     point+=10;
     setDeathImg(":/res/enemy/4/blue_3.png",181,142);
-    setDisappearTime(5000);
+    setDisappearTime(-1);
     prep_count=0;
 }
 void Enemy_4_Blue_5::skill() {
@@ -27,8 +27,9 @@ void Enemy_4_Blue_5::skill() {
     [this](){
         //skill
         if(skill_timer==-110) moveTo(Game::FrameWidth/2,100,125);
+        else if(skill_timer==15) emit dialogueStart();
         //skill timer
-        if(skill_timer<=0) ++skill_timer;
+        if(skill_timer<=15) ++skill_timer;
         else {
             setSpeed(player->getX()>this->x?DBL_MIN:-DBL_MIN,0);
             this->show_img_force_set();

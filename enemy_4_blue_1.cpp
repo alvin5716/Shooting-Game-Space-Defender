@@ -10,7 +10,7 @@ Enemy_4_Blue_1::Enemy_4_Blue_1(Character* player, int health, int radius, int sh
     rng = new SpreadRNG(0,bullet_count-1);
     for(int i=0;i<bullet_count;++i) {
         boat_bullets[i]=nullptr;
-        img_num[i]=6;
+        img_num[i]=2;
     }
 }
 void Enemy_4_Blue_1::skill() {
@@ -26,11 +26,14 @@ void Enemy_4_Blue_1::skill() {
     [this](){
         //skill
         if(skill_timer==-110) moveTo(Game::FrameWidth/2,250,75);
+        else if(skill_timer==-35) emit dialogueStart(1);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     },
     [this](){
         Enemy_4_Blue::skill();
+        if(skill_timer_2==165) emit dialogueStart();
+        if(skill_timer_2<=165) ++skill_timer_2;
     });
 }
 
@@ -65,7 +68,7 @@ std::vector<Bullet*>* Enemy_4_Blue_1::shoot2() {
         if(first) {
             emit shakeScreen(static_cast<short>(shakeLevel::largeShake));
             for(int i=0;i<bullet_count;++i) {
-                boat_bullets[i] = new_bullet = new Bullet(QString(":/res/bullet/2/purple.png"),bullet_radius,x,y);
+                boat_bullets[i] = new_bullet = new Bullet(QString(":/res/bullet/2/yellow.png"),bullet_radius,x,y);
                 new_bullet->moveTo(this->bulletPos(i),125);
                 new_bullet->addTimeData(125);
                 new_bullet->setInvulnerable();

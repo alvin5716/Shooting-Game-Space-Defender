@@ -30,6 +30,8 @@ void Enemy_3_Blue_1::skill() {
     },
     [this](){
         Enemy_3_Blue::skill();
+        if(skill_timer_2==165) emit dialogueStart();
+        if(skill_timer_2<=165) ++skill_timer_2;
     });
 }
 std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {

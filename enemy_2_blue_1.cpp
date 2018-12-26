@@ -21,6 +21,10 @@ void Enemy_2_Blue_1::skill() {
         if(skill_timer==0) moveTo(Game::FrameWidth/2-180,200,120);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
+    },
+    [this](){
+        if(skill_timer==165) emit dialogueStart();
+        if(skill_timer<=165) ++skill_timer;
     });
 }
 std::vector<Bullet*>* Enemy_2_Blue_1::shoot2() {

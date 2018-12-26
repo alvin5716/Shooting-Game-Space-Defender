@@ -24,6 +24,7 @@ void Enemy_4_Blue_2::skill() {
     [this](){
         //skill
         if(skill_timer==-110) moveTo(Game::FrameWidth/2,120,75);
+        else if(skill_timer==-35) emit dialogueStart();
         else if(skill_timer==-10) {
             Effect* bang = new Effect(":/res/effect/golden_wind.png",120,120,0,0,100,Game::FrameWidth/2,120,0,0,0,0,true);
             bang->zoom(800,800,100);

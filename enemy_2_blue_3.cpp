@@ -7,7 +7,7 @@ Enemy_2_Blue_3::Enemy_2_Blue_3(Character* player, int health, int radius, int sh
     point+=10;
     shoot_count=0;
     rotater=0;
-    setDisappearTime(5000);
+    setDisappearTime(-1);
     setDeathImg(":/res/enemy/2/blue_3.png");
 }
 void Enemy_2_Blue_3::skill() {

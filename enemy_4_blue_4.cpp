@@ -24,6 +24,7 @@ void Enemy_4_Blue_4::skill() {
     [this](){
         //skill
         if(skill_timer==-110) moveTo(player->getX(),120,75);
+        else if(skill_timer==-35) emit dialogueStart();
         //skill timer
         if(++skill_timer>=100) {
             moveTo(player->getX(),120,100);

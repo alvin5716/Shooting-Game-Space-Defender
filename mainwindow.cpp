@@ -488,7 +488,7 @@ void MainWindow::doTick() {
                                Dialogue("是，長官。",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("再複習一次你的任務！",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("收到。本次任務是要到各個星球探查「智多星」的座標位置，並與他們的首領交流。",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("很好，在那之後，我們會再進一步給你指示。",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("很好，在那之後，向我們回報你們的對話。",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("還有記得，你的駕駛座旁邊有個翻譯裝置，可以用來跟那些外星生物溝通",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("前提是它們本身也要有一定的智力才行，不然就算翻譯出來也只會是一堆雜音而已",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("所以你得在這裡先找到能講話的生物談話。",":/res/player.png",QRect(0,0,43,33)),
@@ -675,7 +675,11 @@ void MainWindow::doTick() {
             break;
         //level 2
         case 2:
-            if(tickCheck(250,131,5)) { //500+262i, 5 times
+            if(tickCheck(220)) {
+                dialogueStart({Dialogue("前面就是那個彩色的星球了。",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("不過他們好像已經發現我了，要小心一點。",":/res/player.png",QRect(0,0,43,33))
+                              });
+            } else if(tickCheck(250,131,5)) { //500+262i, 5 times
                 for(int i=0;i<2;++i) {
                     new_enemy = new Enemy_2_Green(player,3,35,150,100,(i==0)?-35:Game::FrameWidth+35,250,(i==0)?2.4:-2.4,-1,0,0.004);
                     newEnemyInit(new_enemy);
@@ -787,6 +791,17 @@ void MainWindow::doTick() {
                 ui->BossHealth->setGeometry(100,40,690,30);
                 new_boss = new Enemy_2_Blue_1(player,340,60,50,200,Game::FrameWidth/2,-59,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+                connect(new_boss,&Enemy::dialogueStart,[this](){
+                    dialogueStart({Dialogue("外星人，走開！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
+                                   Dialogue("抱歉就這樣隨便闖進來了，但我只是想問你們...",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("外外！討厭！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
+                                   Dialogue("(喔不，他是智障)",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("去去去！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
+                                   Dialogue("好好好，我滾就是了",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("不要走！去死！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
+                                   Dialogue("(??????)",":/res/player.png",QRect(0,0,43,33))
+                                  });
+                });
                 new_boss->moveTo(Game::FrameWidth/2,200,165);
                 newBossInit(new_boss);
                 ui->BossLives->setText("5");
@@ -862,6 +877,10 @@ void MainWindow::doTick() {
                 ui->BossLives->hide();
                 ui->BossSkill->hide();
                 if(player!=nullptr) player->gameEndSetting();
+            } else if(tickCheck(7163)) {
+                dialogueStart({Dialogue("啊呀啊嘎嗚...",":/res/enemy/2/blue_3.png",QRect(5,2,25,25)),
+                               Dialogue("(看來是問不到東西了，繼續往這個方向飛看看好了)",":/res/player.png",QRect(0,0,43,33))
+                                });
             } else if(tickCheck(7213)) { //14425, WIN LIST
                 ticking=false;
                 //Point
@@ -883,7 +902,12 @@ void MainWindow::doTick() {
             break;
         //level 3
         case 3:
-            if(tickCheck(250,125,5)) {  //500+250i, 5 times
+            if(tickCheck(220)) {
+                dialogueStart({Dialogue("剛剛飛到一半，突然被吸到了這個奇怪的地方.",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("被吸進來後，儀器突然都失靈了，連塔台的訊號都收不到",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("這裡到底是哪裡啊...",":/res/player.png",QRect(0,0,43,33)),
+                              });
+            } else if(tickCheck(250,125,5)) {  //500+250i, 5 times
                 const int t = timesCount(250,125);
                 for(int i=0;i<2;++i) newMagicEffect(120,120,(i==0)?300-60*t:Game::FrameWidth-300+60*t,80+100*t);
             } else if(tickCheck(350,125,5)) {  //700+250i, 5 times
@@ -994,6 +1018,19 @@ void MainWindow::doTick() {
                 ui->BossHealth->setGeometry(100,40,690,30);
                 new_boss = new Enemy_3_Blue_1(player,250,80,18,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+                connect(new_boss,&Enemy::dialogueStart,[this](){
+                    dialogueStart({Dialogue("哈利，這是我們宿命的對決。",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
+                                   Dialogue("蛤？誰是哈利？",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("不用裝傻了，你就是命中註定，我最大的敵手",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
+                                   Dialogue("(為什麼又是一個智障啊？)",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("根據我的占卜，在今天的這個時刻，會有一個外星生物進入我們的維度。",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
+                                   Dialogue("只要打敗你，我們就能取得你們的「科技」",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
+                                   Dialogue("再加上我們的「魔法」，我們就能到你們的維度裡稱霸！",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
+                                   Dialogue("(他好像不是智障啊，而且怎麼聽起來不太妙的感覺...)",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("成為我們進步的踏腳石吧，哈利！",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
+                                   Dialogue("所以說那個名字到底是誰啊",":/res/player.png",QRect(0,0,43,33))
+                                  });
+                });
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 ui->BossLives->setText("5");
@@ -1081,6 +1118,15 @@ void MainWindow::doTick() {
                 ui->BossLives->hide();
                 ui->BossSkill->hide();
                 if(player!=nullptr) player->gameEndSetting();
+            } else if(tickCheck(6250)) {
+                dialogueStart({Dialogue("占卜的結果...不是這樣的啊...",":/res/enemy/3/blue_3.png",QRect(4,3,39,39)),
+                               Dialogue("別說那個了，你知道「智多星」的位置嗎？",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("智多星啊，他們星球的生物是很長壽的種族。",":/res/enemy/3/blue_3.png",QRect(4,3,39,39)),
+                               Dialogue("他們的首領幾千年前有來過我們這裡，教了我的祖先很多魔法以外的實戰技巧",":/res/enemy/3/blue_3.png",QRect(4,3,39,39)),
+                               Dialogue("本來想說以後稱霸宇宙以後，好好感謝他們的。",":/res/enemy/3/blue_3.png",QRect(4,3,39,39)),
+                               Dialogue("所以你知道要怎麼到他們那裡嗎？",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("要去那裡那還不簡單，我們有跟他們星球往來，所以我有設直達的傳送陣。",":/res/enemy/3/blue_3.png",QRect(4,3,39,39)),
+                              });
             } else if(tickCheck(6300)) {  //12600, WIN LIST
                 ticking=false;
                 //Point
@@ -1107,6 +1153,14 @@ void MainWindow::doTick() {
                     new_enemy = new Enemy_4_Green(player,5,40,40,63,i?-40:Game::FrameWidth+40,-40,i?3.4:-3.4,3.4,i?-0.028:0.028,-0.028,false,true);
                     newEnemyInit(new_enemy);
                 }
+            } else if(tickCheck(310)) {
+                dialogueStart({Dialogue("慢著，你是來見我們首領的地球人嗎？",":/res/enemy/4/green.png",QRect(87,39,58,58)),
+                               Dialogue("哇，雜魚說話了！",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("你們星球的人真沒禮貌...",":/res/enemy/4/green.png",QRect(87,39,58,58)),
+                               Dialogue("對...對不起，可以帶我去見他嗎？",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("沒那麼簡單，首領說要我們先測試你一下",":/res/enemy/4/green.png",QRect(87,39,58,58)),
+                               Dialogue("居然還要測試...？",":/res/player.png",QRect(0,0,43,33))
+                              });
             } else if(tickCheck(1100,500,3)) {
                 const int t = timesCount(1100,500);
                 for(int i=0;i<2;++i) {
@@ -1151,6 +1205,26 @@ void MainWindow::doTick() {
                 ui->BossHealth->setGeometry(100,40,690,30);
                 new_boss = new Enemy_4_Blue_1(player,270,60,35,200,Game::FrameWidth/2,-60,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+                connect(new_boss,&Enemy::dialogueStart,[this](int x){
+                    switch(x) {
+                    case 0:
+                        dialogueStart({Dialogue("你是首領嗎？怎麼好像只是其他隻的放大版而已...",":/res/player.png",QRect(0,0,43,33)),
+                                       Dialogue("我所嚮往的是如我們的母星一般，外表黯淡，但內心的光芒隱隱透出。大智若愚，曖曖含光。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                       Dialogue("先別說這個了。你會在這裡是因為我向你們星球傳了無線電訊號，我需要有人幫忙。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                       Dialogue("幫忙？",":/res/player.png",QRect(0,0,43,33)),
+                                       Dialogue("其實說起來有點不好意思...",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                       Dialogue("我們之前開發的機械智慧因為不明原因開始暴走了。沒弄好的話，這幾十光年內的星球可能都有危險。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                       Dialogue("幾十光年的話不是也包括我們嗎？那麼那東西在哪裡？",":/res/player.png",QRect(0,0,43,33)),
+                                       Dialogue("這個我們留到我打累了以後再說吧。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                       Dialogue("等...等一下，又要打？",":/res/player.png",QRect(0,0,43,33)),
+                                       Dialogue("當然啊，如果你沒有一定的能力，帶你去只會扯後腿而已。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                       Dialogue("這問題不是你們搞出來的嗎！",":/res/player.png",QRect(0,0,43,33))
+                                      });
+                        break;
+                    case 1:
+                        dialogueStart({Dialogue("當一艘船的各個零件被漸漸汰換，最後所有零件都被更換時，它還是原本那艘船嗎？",":/res/enemy/4/blue_2.png",QRect(87,39,58,58))});
+                    }
+                });
                 new_boss->moveTo(Game::FrameWidth/2,200,165);
                 newBossInit(new_boss);
                 ui->BossLives->setText("5");
@@ -1160,6 +1234,9 @@ void MainWindow::doTick() {
             } else if(tickCheck(7949)) { //14298, BOSS 2
                 new_boss = new Enemy_4_Blue_2(player,250,60,45,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+                connect(new_boss,&Enemy::dialogueStart,[this](){
+                    dialogueStart({Dialogue("宇宙幾乎是無限大的，且到處都充滿了星體，那為什麼宇宙不是一片光亮的呢？",":/res/enemy/4/blue_2.png",QRect(87,39,58,58))});
+                });
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
@@ -1168,6 +1245,11 @@ void MainWindow::doTick() {
             } else if(tickCheck(8074)) { //14548, BOSS 3
                 new_boss = new Enemy_4_Blue_3(player,330,60,45,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+                connect(new_boss,&Enemy::dialogueStart,[this](){
+                    dialogueStart({Dialogue("兩個人開著車子朝彼此前進，到最後一刻仍不轉彎的人便是贏家，但如果兩個人都不轉彎......",":/res/enemy/4/blue_2.png",QRect(87,39,58,58)),
+                                  Dialogue("這種賽局模式可以套用到許多實力之中，來解釋為何賽局雙方通常都寧願當「膽小鬼」。",":/res/enemy/4/blue_2.png",QRect(87,39,58,58))
+                                  });
+                });
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
@@ -1176,6 +1258,11 @@ void MainWindow::doTick() {
             } else if(tickCheck(8199)) { //14798, BOSS 4
                 new_boss = new Enemy_4_Blue_4(player,450,60,55,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
+                connect(new_boss,&Enemy::dialogueStart,[this](){
+                    dialogueStart({Dialogue("一支飛行中的箭矢在每個瞬間都是靜止的，代表這跟箭矢是靜止箭矢的集合，",":/res/enemy/4/blue_2.png",QRect(87,39,58,58)),
+                                   Dialogue("所以飛行的箭矢是靜止的。這個敘述明顯有錯才會造成這個矛盾結論，那是錯在哪裡呢？",":/res/enemy/4/blue_2.png",QRect(87,39,58,58))
+                                  });
+                });
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
@@ -1183,6 +1270,12 @@ void MainWindow::doTick() {
                 ui->BossLives->setText("1");
             } else if(tickCheck(8324)) { //8324, BOSS 5
                 new_boss = new Enemy_4_Blue_5(player,280,60,55,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
+                connect(new_boss,&Enemy::dialogueStart,[this](){
+                    dialogueStart({Dialogue("當你進入機器A，它將你身上的粒子全部掃瞄並在機器B用不一樣的粒子做出來，",":/res/enemy/4/blue_2.png",QRect(87,39,58,58)),
+                                   Dialogue("然後把機器A裡的你拆解回粒子。這樣算是同一個你被「傳送」過去的嗎？",":/res/enemy/4/blue_2.png",QRect(87,39,58,58)),
+                                   Dialogue("你話也太多了......",":/res/player.png",QRect(0,0,43,33))
+                                  });
+                });
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
@@ -1190,6 +1283,17 @@ void MainWindow::doTick() {
                 ui->BossLives->hide();
                 ui->BossSkill->hide();
                 if(player!=nullptr) player->gameEndSetting();
+            } else if(tickCheck(8590)) {
+                dialogueStart({Dialogue("嗚，雖然我有放水，不過好久沒動了，好累。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
+                               Dialogue("你還真行耶，看來我找對人了。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
+                               Dialogue("這是當然的了！所以那個機械智慧在哪裡？到底發生了什麼事？",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("我們之前嘗試開發機械智慧，但是最後失敗了。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
+                               Dialogue("最後我們把失敗品丟到了另一顆無生命的星球上。但最近呢，有很多鄰近的星球卻說他們受到了這些機械的攻擊。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
+                               Dialogue("我不清楚它們是怎麼重獲新生的，別說是自主行動了，他們理論上根本已經沒有能源能執行任何動作了。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
+                               Dialogue("一開始我也不相信，但受害星球的描述真的都與它們相似。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
+                               Dialogue("總之我建議先到他們的據點星球旁的那顆星球，迷霧星。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
+                               Dialogue("那裡的大氣很糟，我們可以躲在那裡觀察他們而不容易被發現。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58))
+                               });
             } else if(tickCheck(8640)) { //8640, WIN LIST
                 ticking=false;
                 //Point
@@ -1208,6 +1312,8 @@ void MainWindow::doTick() {
                 //game state
                 gamestate=Game::GameStateWon;
             }
+            break;
+        case 5:
             break;
         default:
             qDebug() << "error: can't get what level is selected";
@@ -1268,7 +1374,7 @@ void MainWindow::dialogueStart(std::initializer_list<Dialogue> list) {
     dialogueWidget->start(list);
 }
 void MainWindow::dialogueEnd() {
-    ++tick;
+    if(ticking) ++tick;
     this->dialogueProcessing = false;
     dialogueWidget->hide();
     if(dialogueWidget!=nullptr) delete dialogueWidget;

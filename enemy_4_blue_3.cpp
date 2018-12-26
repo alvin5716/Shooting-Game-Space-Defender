@@ -26,12 +26,13 @@ void Enemy_4_Blue_3::skill() {
         shoot_timer = 0;
         shoot_cd = 23;
         skill_timer = -210;
-        emit useSkill("「懦夫賽局」");
+        emit useSkill("「膽小鬼賽局」");
         emit killAllBullets();
     },
     [this](){
         //skill
         if(skill_timer==-110) moveTo(Game::FrameWidth/2,80,75);
+        else if(skill_timer==-35) emit dialogueStart();
         //skill timer
         if(skill_timer<0) {
             ++skill_timer;
@@ -81,12 +82,12 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
     if(shoot_timer>=shoot_cd) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
-        //black falling dust
+        //falling dust
         const int bullet_count = 15;
         if(dust_falling) {
             int x0 = (int)std::round(player->getX())%bullet_count;
             for(int i=0;i<=bullet_count;++i) {
-                new_bullet = new Bullet(QString(":/res/bullet/1/black.png"),10,x0+i*(Game::FrameWidth/bullet_count),qrand()%17-8,0,qrand()%10/30.0*2,0,0.032);
+                new_bullet = new Bullet(QString(":/res/bullet/1/yellow.png"),10,x0+i*(Game::FrameWidth/bullet_count),qrand()%17-8,0,qrand()%10/30.0*2,0,0.032);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullet->fadein();
                 new_bullets->push_back(new_bullet);
