@@ -72,12 +72,13 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
         bullet_d = std::sqrt(std::pow(Game::FrameHeight/2,2)+std::pow(Game::FrameWidth/2,2))+bullet_radius;
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
-            if(i<=3 && i>=-3) continue;
+            if(i<=3 && i>=-4) continue;
             sin = std::sin(angle+i*2*M_PI/bullet_count);
             cos = std::cos(angle+i*2*M_PI/bullet_count);
             Bullet_Nether* new_bullet_nether;
             new_bullet = new_bullet_nether = new Bullet_Nether(":/res/bullet/1/yellow.png",bullet_radius,center,1000,center->getX()+bullet_d*cos,center->getY()+bullet_d*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             new_bullet_nether->setFadeoutTime(100);
+            new_bullet->moveAsTrigFunction(100,bullet_radius,true);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }
@@ -91,7 +92,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
         else {
             //bullet
             bullet_radius = 6;
-            bullet_count = 18;
+            bullet_count = 16;
             bullet_a = 0.002;
             //shoot
             for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {

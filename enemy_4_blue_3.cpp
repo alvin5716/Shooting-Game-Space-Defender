@@ -24,7 +24,7 @@ void Enemy_4_Blue_3::skill() {
         invulnerable=true;
         img=":/res/enemy/4/blue_2.png";
         shoot_timer = 0;
-        shoot_cd = 23;
+        shoot_cd = 25;
         skill_timer = -210;
         emit useSkill("「膽小鬼賽局」");
         emit killAllBullets();
@@ -107,7 +107,8 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
                 new_bullets->push_back(new_bullet);
             }
         }
-        if(fall_count>=2 && !purple_shooting) {
+        if(fall_count>=2 && shoot_cd==25) shoot_cd=22;
+        else if(fall_count>=1 && !purple_shooting) {
             purple_shooting=true;
             shoot_timer=-100;
         } else shoot_timer=0;

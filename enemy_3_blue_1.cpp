@@ -10,6 +10,7 @@ Enemy_3_Blue_1::Enemy_3_Blue_1(Character* player, int health, int radius, int sh
     magicstone=nullptr;
     shoot_small_bullets=false;
     triggered_count=0;
+    skill_timer_2=0;
 }
 void Enemy_3_Blue_1::skill() {
     //second phase

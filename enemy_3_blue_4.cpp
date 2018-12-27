@@ -16,7 +16,7 @@ void Enemy_3_Blue_4::skill() {
         invulnerable=true;
         img=":/res/enemy/3/blue_2.png";
         shoot_timer = -400;
-        shoot_cd = 43;
+        shoot_cd = 80;
         skill_timer = -100;
         emit useSkill("火盃的考驗");
         this->redMagicShield();
@@ -34,7 +34,6 @@ void Enemy_3_Blue_4::skill() {
 std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
     Bullet* new_bullet;
-    const int interval = shoot_cd;
     //bowl
     if(shoot_timer==-200) {
         int aim_x, aim_y;
@@ -65,24 +64,26 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
             }
         }
     //flame
-    } else if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
+    } else if(shoot_timer>=shoot_cd) {
         setVulnerable();
         double cos, sin, bullet_v, bullet_a;
-        int t = (shoot_timer-shoot_cd)/interval, bullet_radius;
+        int bullet_radius;
         bullet_radius = 8;
         bullet_a = -0.02;
-        for(int i=0;i<10;++i) {
-            bullet_v = 0.2+(double)(qrand()%7)/10;
-            cos = std::cos(angle+i*M_PI/5);
-            sin = std::sin(angle+i*M_PI/5);
-            new_bullet = new Bullet(QString(":/res/bullet/1/red.png"),bullet_radius,t==0?80:Game::FrameWidth-80,170,bullet_v*cos,bullet_v*sin,0,bullet_a);
-            new_bullet->addWallData(player,3.6,0);
-            connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
-            connect(new_bullet,&Bullet::triggered,[=](){ new_bullet->setImg(":/res/bullet/2/red.png"); });
-            new_bullets->push_back(new_bullet);
+        for(int j=0;j<2;++j) {
+            for(int i=0;i<10;++i) {
+                bullet_v = 0.2+(double)(qrand()%7)/10;
+                cos = std::cos(angle+i*M_PI/5);
+                sin = std::sin(angle+i*M_PI/5);
+                new_bullet = new Bullet(QString(":/res/bullet/1/red.png"),bullet_radius,j==0?80:Game::FrameWidth-80,170,bullet_v*cos,bullet_v*sin,0,bullet_a);
+                new_bullet->addWallData(player,3.6,0);
+                connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+                connect(new_bullet,&Bullet::triggered,[=](){ new_bullet->setImg(":/res/bullet/2/red.png"); });
+                new_bullets->push_back(new_bullet);
+            }
         }
         angle += M_PI/20;
-        if(shoot_timer==shoot_cd+interval) shoot_timer=0;
+        shoot_timer=0;
     }
     //yellow bullets
     if(this->health<130) {

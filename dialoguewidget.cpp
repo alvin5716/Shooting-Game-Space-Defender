@@ -74,6 +74,9 @@ void DialogueWidget::keyPressEvent(QKeyEvent *event) {
     case Qt::Key_Z:
         if(!event->isAutoRepeat()) showNextDialogue();
         break;
+    case Qt::Key_X:
+        if(!event->isAutoRepeat()) emit end();
+        break;
     default:
         QWidget::keyPressEvent(event);
     }

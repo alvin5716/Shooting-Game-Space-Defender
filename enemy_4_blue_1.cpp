@@ -12,6 +12,7 @@ Enemy_4_Blue_1::Enemy_4_Blue_1(Character* player, int health, int radius, int sh
         boat_bullets[i]=nullptr;
         img_num[i]=2;
     }
+    skill_timer_2=0;
 }
 void Enemy_4_Blue_1::skill() {
     //second phase
@@ -32,7 +33,7 @@ void Enemy_4_Blue_1::skill() {
     },
     [this](){
         Enemy_4_Blue::skill();
-        if(skill_timer_2==165) emit dialogueStart();
+        if(skill_timer_2==165) emit dialogueStart(0);
         if(skill_timer_2<=165) ++skill_timer_2;
     });
 }

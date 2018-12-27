@@ -1210,7 +1210,8 @@ void MainWindow::doTick() {
                     case 0:
                         dialogueStart({Dialogue("你是首領嗎？怎麼好像只是其他隻的放大版而已...",":/res/player.png",QRect(0,0,43,33)),
                                        Dialogue("我所嚮往的是如我們的母星一般，外表黯淡，但內心的光芒隱隱透出。大智若愚，曖曖含光。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
-                                       Dialogue("先別說這個了。你會在這裡是因為我向你們星球傳了無線電訊號，我需要有人幫忙。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                       Dialogue("......",":/res/player.png",QRect(0,0,43,33)),
+                                       Dialogue("重點不是這個，你會在這裡是因為我向你們星球傳了無線電訊號，我需要有人幫忙。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
                                        Dialogue("幫忙？",":/res/player.png",QRect(0,0,43,33)),
                                        Dialogue("其實說起來有點不好意思...",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
                                        Dialogue("我們之前開發的機械智慧因為不明原因開始暴走了。沒弄好的話，這幾十光年內的星球可能都有危險。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
@@ -1273,7 +1274,7 @@ void MainWindow::doTick() {
                 connect(new_boss,&Enemy::dialogueStart,[this](){
                     dialogueStart({Dialogue("當你進入機器A，它將你身上的粒子全部掃瞄並在機器B用不一樣的粒子做出來，",":/res/enemy/4/blue_2.png",QRect(87,39,58,58)),
                                    Dialogue("然後把機器A裡的你拆解回粒子。這樣算是同一個你被「傳送」過去的嗎？",":/res/enemy/4/blue_2.png",QRect(87,39,58,58)),
-                                   Dialogue("你話也太多了......",":/res/player.png",QRect(0,0,43,33))
+                                   Dialogue("你話也太多了吧...",":/res/player.png",QRect(0,0,43,33))
                                   });
                 });
                 new_boss->fadein(1500);
