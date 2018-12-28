@@ -4,7 +4,7 @@
 #include "game.h"
 #include <QDebug>
 
-Enemy_4_Blue_3::Enemy_4_Blue_3(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+Enemy_4_Blue_3::Enemy_4_Blue_3(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4_Blue(player,180,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     fall_count=0;
@@ -26,7 +26,7 @@ void Enemy_4_Blue_3::skill() {
         shoot_timer = 0;
         shoot_cd = 25;
         skill_timer = -210;
-        emit useSkill("「膽小鬼賽局」");
+        emit useSkill("「賽局理論-膽小鬼賽局」");
         emit killAllBullets();
     },
     [this](){

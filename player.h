@@ -1,8 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "character.h"
-#include "bullet.h"
 #include <QTimer>
+
+class Bullet;
 
 class Player : public Character
 {
@@ -18,6 +19,7 @@ public:
     void coolDown();
     void gameEndSetting();
     void setHealthTo999();
+    bool isMaxHealth() const;
     static double speed;
     static constexpr double nonShootingSpeed = 7;
     static constexpr double shootingSpeed = 3;

@@ -4,7 +4,7 @@
 #include <QDebug>
 #include "game.h"
 
-Enemy::Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+Enemy::Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Character(img,img_w,img_h,show_w,show_h,health,radius,x,y,xv,yv,xa,ya),
       death_img_w(img_w), death_img_h(img_h)
 {
@@ -145,7 +145,7 @@ void Enemy::setDeathImg(QString death_img, int death_img_w, int death_img_h) {
     this->death_img_w = death_img_w;
     this->death_img_h = death_img_h;
 }
-Effect* Enemy::disappear() const {
+Effect* Enemy::disappear() {
     Effect* corpse = new Effect((death_img=="")?img:death_img,
                                 death_img_w,death_img_h,
                                 show_w * death_img_w / img_w, show_h * death_img_h / img_h,

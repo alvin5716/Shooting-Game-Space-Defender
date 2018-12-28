@@ -14,6 +14,9 @@ Player::Player(int health, int radius, int shoot_cd, double x, double y, double 
     skill_cd=skill_timer=187;
     vulnerable_func_count=0;
 }
+bool Player::isMaxHealth() const {
+    return this->health==5;
+}
 void Player::move() {
     //move object
     Character::move();

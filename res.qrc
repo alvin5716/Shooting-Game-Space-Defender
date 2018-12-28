@@ -79,5 +79,7 @@
         <file>res/sound/warning.wav</file>
         <file>res/sound/warning02.wav</file>
         <file>res/sound/snare.wav</file>
+        <file>res/bullet/other/big.png</file>
+        <file>res/bullet/other/ice.png</file>
     </qresource>
 </RCC>

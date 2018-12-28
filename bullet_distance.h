@@ -2,6 +2,7 @@
 #define BULLET_DISTANCE_H
 
 #include "bullet.h"
+#include <vector>
 
 class Bullet_Distance : public Bullet
 {
@@ -11,11 +12,12 @@ public:
 public slots:
     void move();
     void disable(int time=250);
+    void addNewCenter(Character* center);
 signals:
     void enterArea();
     void leaveArea();
 private:
-    Character* center;
+    std::vector<Character*> centers;
     int distance, disabled_timer;
     bool isInArea;
 };

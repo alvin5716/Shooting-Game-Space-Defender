@@ -3,7 +3,7 @@
 #include "game.h"
 #include <QDebug>
 
-Enemy_4_Blue_1::Enemy_4_Blue_1(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+Enemy_4_Blue_1::Enemy_4_Blue_1(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4_Blue(player,150,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     first = true;
@@ -22,7 +22,7 @@ void Enemy_4_Blue_1::skill() {
         shoot_timer = -100;
         shoot_cd = 175;
         skill_timer = -210;
-        emit useSkill("「忒修斯之船」");
+        emit useSkill("「形上學-忒修斯之船」");
     },
     [this](){
         //skill

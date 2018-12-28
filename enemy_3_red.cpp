@@ -1,7 +1,7 @@
 #include "enemy_3_red.h"
 #include "bullet_sin.h"
 
-Enemy_3_Red::Enemy_3_Red(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+Enemy_3_Red::Enemy_3_Red(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_3(QString(":/res/enemy/3/red.png"),54,43,std::round(radius*2.512),radius*2,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     point=3;

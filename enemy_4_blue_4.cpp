@@ -4,10 +4,11 @@
 #include "enemy_4_yellow.h"
 #include <QDebug>
 
-Enemy_4_Blue_4::Enemy_4_Blue_4(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+Enemy_4_Blue_4::Enemy_4_Blue_4(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4_Blue(player,300,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     shoot_count=0;
+    bow_count=0;
 }
 void Enemy_4_Blue_4::skill() {
     double angle_seed = qrand()%10;
@@ -18,7 +19,7 @@ void Enemy_4_Blue_4::skill() {
         shoot_timer = -250;
         shoot_cd = 10;
         skill_timer = -210;
-        emit useSkill("「飛矢不動悖論」");
+        emit useSkill("「芝諾悖論-飛矢不動」");
         emit killAllBullets();
     },
     [this](){

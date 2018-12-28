@@ -1,7 +1,7 @@
 #include "enemy_4_red.h"
 #include "game.h"
 
-Enemy_4_Red::Enemy_4_Red(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool single_attack)
+Enemy_4_Red::Enemy_4_Red(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool single_attack)
 :Enemy_4(QString(":/res/enemy/4/red.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,true,true)
     ,single_attack(single_attack),leaving(false)
 {

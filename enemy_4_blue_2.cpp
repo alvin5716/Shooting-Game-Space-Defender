@@ -3,7 +3,7 @@
 #include "game.h"
 #include "enemy_4_green.h"
 
-Enemy_4_Blue_2::Enemy_4_Blue_2(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+Enemy_4_Blue_2::Enemy_4_Blue_2(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4_Blue(player,140,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     shoot_count=0;
@@ -18,7 +18,7 @@ void Enemy_4_Blue_2::skill() {
         shoot_timer = -265;
         shoot_cd = 9;
         skill_timer = -210;
-        emit useSkill("「光度佯謬」");
+        emit useSkill("「物理宇宙學-光度佯謬」");
         emit killAllBullets();
     },
     [this](){

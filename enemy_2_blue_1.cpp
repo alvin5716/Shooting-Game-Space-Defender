@@ -1,7 +1,7 @@
 #include "enemy_2_blue_1.h"
 #include <QDebug>
 
-Enemy_2_Blue_1::Enemy_2_Blue_1(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+Enemy_2_Blue_1::Enemy_2_Blue_1(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_2_Blue(player,180,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     mode=false;

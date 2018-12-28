@@ -1,8 +1,8 @@
 #ifndef BULLETDATA_H
 #define BULLETDATA_H
 
-#include "character.h"
 #include "bullet.h"
+#include "player.h"
 
 class BulletData
 {

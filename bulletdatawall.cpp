@@ -20,14 +20,14 @@ BulletDataWall::BulletDataWall(Bullet* bullet, double vertical_v, double vertica
     this->data.vertical.v=vertical_v;
     this->data.vertical.a=vertical_a;
 }
-BulletDataWall::BulletDataWall(Bullet* bullet, Character* player, double v)
+BulletDataWall::BulletDataWall(Bullet* bullet, Player* player, double v)
     :BulletData(bullet), type(BulletDataWallType::magicStone)
 {
     this->infinite = true;
     this->data.magicStone.player=player;
     this->data.magicStone.v=v;
 }
-BulletDataWall::BulletDataWall(Bullet* bullet, Character* player, double v, double a)
+BulletDataWall::BulletDataWall(Bullet* bullet, Player* player, double v, double a)
     :BulletData(bullet), type(BulletDataWallType::shootAtPlayer)
 {
     this->data.shootAtPlayer.player=player;

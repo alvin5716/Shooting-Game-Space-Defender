@@ -22,7 +22,7 @@ BulletDataTime::BulletDataTime(Bullet* bullet, int wait_time, double xv, double 
     this->data.updateVA.xa=xa;
     this->data.updateVA.ya=ya;
 }
-BulletDataTime::BulletDataTime(Bullet* bullet, int wait_time, Character* player, double v, double a)
+BulletDataTime::BulletDataTime(Bullet* bullet, int wait_time, Player* player, double v, double a)
     :BulletData(bullet), wait_time(wait_time), type(BulletDataTimeType::shootAtPlayer)
 {
     this->data.shootAtPlayer.player=player;

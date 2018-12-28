@@ -4,6 +4,7 @@
 #include "bulletdatacontinuous.h"
 #include <cmath>
 #include <QDebug>
+#include "player.h"
 
 Bullet::Bullet(QString img, int radius, double x, double y, double xv, double yv, double xa, double ya)
     :Character(img,50,50,(int)round(radius*2.2),(int)round(radius*2.2),1,radius,x,y,xv,yv,xa,ya)
@@ -75,7 +76,7 @@ Bullet* Bullet::addTimeData(int wait_time, double xv, double yv, double xa, doub
     this->addData(bullet_data);
     return this;
 }
-Bullet* Bullet::addTimeData(int wait_time, Character* player, double v, double a) {
+Bullet* Bullet::addTimeData(int wait_time, Player* player, double v, double a) {
     BulletData* bullet_data = new BulletDataTime(this,wait_time,player,v,a);
     this->addData(bullet_data);
     return this;
@@ -101,12 +102,12 @@ Bullet* Bullet::addWallData(double vertical_v, double vertical_a) {
     this->addData(bullet_data);
     return this;
 }
-Bullet* Bullet::addWallData(Character* player, double v) {
+Bullet* Bullet::addWallData(Player* player, double v) {
     BulletData* bullet_data = new BulletDataWall(this,player,v);
     this->addData(bullet_data);
     return this;
 }
-Bullet* Bullet::addWallData(Character* player, double v, double a) {
+Bullet* Bullet::addWallData(Player* player, double v, double a) {
     BulletData* bullet_data = new BulletDataWall(this,player,v,a);
     this->addData(bullet_data);
     return this;
@@ -144,8 +145,7 @@ Bullet* Bullet::moveAsPeriodicFunction(int T, int r, double (*periodic_func)(dou
     this->addData(bullet_data);
     return this;
 }
-// clear all bullet data
-Bullet::~Bullet() {
+void Bullet::clearData() {
     if(this->data_head!=nullptr) {
         BulletData *ptr = this->data_head;
         while(ptr->next()!=nullptr) {
@@ -154,5 +154,10 @@ Bullet::~Bullet() {
             delete temp;
         }
         delete ptr;
+        this->data_head=nullptr;
     }
+}
+// clear all bullet data
+Bullet::~Bullet() {
+    this->clearData();
 }

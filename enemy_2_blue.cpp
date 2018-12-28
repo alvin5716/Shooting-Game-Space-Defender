@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <cmath>
 
-Enemy_2_Blue::Enemy_2_Blue(Character* player, int bossSkillHP, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+Enemy_2_Blue::Enemy_2_Blue(Player* player, int bossSkillHP, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy(QString(":/res/enemy/2/blue.png"),35,35,std::round(radius*2.167),std::round(radius*2.167),player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     invulnerable=true;
