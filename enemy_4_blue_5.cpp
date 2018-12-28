@@ -3,13 +3,14 @@
 #include <cfloat>
 #include "enemy_4_pink.h"
 
-Enemy_4_Blue_5::Enemy_4_Blue_5(Character* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+QPoint Enemy_4_Blue_5::corpse_pos(0,0);
+
+Enemy_4_Blue_5::Enemy_4_Blue_5(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4_Blue(player,150,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     point+=10;
-    setDeathImg(":/res/enemy/4/blue_3.png",181,142);
-    setDisappearTime(-1);
     prep_count=0;
+    setDisappearTime(-1);
 }
 void Enemy_4_Blue_5::skill() {
     double angle_seed = qrand()%5;
@@ -20,7 +21,7 @@ void Enemy_4_Blue_5::skill() {
         shoot_timer = -150;
         shoot_cd = 120;
         skill_timer = -210;
-        emit useSkill("「遠距傳送悖論」");
+        emit useSkill("「形上學-遠距傳送悖論」");
         emit killOtherEnemies(this);
         emit killAllBullets();
     },
@@ -113,4 +114,15 @@ std::vector<Bullet*>* Enemy_4_Blue_5::shoot2() {
         return new_bullets;
     }
     return nullptr;
+}
+Effect* Enemy_4_Blue_5::disappear() {
+    if(!player->isMaxHealth()) setDeathImg(":/res/enemy/4/blue_3.png",181,142);
+    else setDeathImg(":/res/enemy/4/blue.png",200,153);
+    Effect* corpse = Enemy::disappear();
+    corpse_pos.setX(corpse->getX());
+    corpse_pos.setY(corpse->getY());
+    return corpse;
+}
+QPoint Enemy_4_Blue_5::getCorpsePos() {
+    return corpse_pos;
 }

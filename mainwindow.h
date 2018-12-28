@@ -47,6 +47,7 @@
 #include "enemy_4_blue_3.h"
 #include "enemy_4_blue_4.h"
 #include "enemy_4_blue_5.h"
+#include "enemy_4_blue_6.h"
 #include <QKeyEvent>
 #include <vector>
 #include <list>
@@ -109,7 +110,7 @@ private:
     std::vector<QMediaPlayer*> audioers;
     WidgetAnimationer* EndListAni, *levelSelectAni, *bossSkillAni;
     bool dialogueProcessing;
-    static constexpr int StartTick = 5462;
+    static constexpr int StartTick = 0;
     DialogueWidget* dialogueWidget;
 
 private slots:
@@ -142,6 +143,7 @@ signals:
     void doMove();
     void doImgMove();
     void killEffects();
+    void killEffectsWithoutDot();
 };
 
 #endif // MAINWINDOW_H
