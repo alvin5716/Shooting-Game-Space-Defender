@@ -7,7 +7,6 @@
 Enemy_4_Blue_3::Enemy_4_Blue_3(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4_Blue(player,180,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
-    this->setBossHPToSkill();
     shoot_timer2=0;
     fall_count=0;
     connect(this,&Enemy_4_Blue_3::bouncedAtY,[this](){

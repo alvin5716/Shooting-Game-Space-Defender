@@ -17,8 +17,8 @@ void Enemy_4_Blue_6::skill() {
         img=":/res/enemy/4/blue_2.png";
         shoot_timer = -130;
         shoot_cd = 120;
-        skill_timer = -360;
-        emit useSkill("「復冰」");
+        skill_timer = -260;
+        emit useSkill("「重力奇異點」");
         emit killAllBullets();
     },
     [this](){
@@ -34,57 +34,6 @@ void Enemy_4_Blue_6::skill() {
 }
 std::vector<Bullet*>* Enemy_4_Blue_6::shoot2() {
     if(shoot_timer>=shoot_cd) {
-        std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
-        Bullet* new_bullet;
-        if(ice_shooting) { //ice
-            setVulnerable();
-            const int bullet_radius = 55, bullet_count = 10;
-            const double bullet_v = 2.1;
-            int x0 = -qrand()%(Game::FrameWidth/bullet_count);
-            for(int i=0;i<=bullet_count+1;++i) {
-                Bullet_Ice* new_bullet_ice;
-                double bullet_x = x0+i*(Game::FrameWidth/bullet_count);
-                double bullet_y = bullet_radius*3/8.0*(std::abs((i%4)-2)+1);
-                new_bullet = new_bullet_ice = new Bullet_Ice(QString(":/res/bullet/other/ice.png"),bullet_radius,nullptr,90,bullet_x,bullet_y,0,0,0,0.05);
-                connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
-                connect(this,SIGNAL(newCenter(Character*)),new_bullet_ice,SLOT(addNewCenter(Character*)));
-                new_bullet->fadein(500);
-                new_bullet->setVTerminal(bullet_v);
-                new_bullets->push_back(new_bullet);
-            }
-        }
-        ice_shooting = !ice_shooting;
-        { //yellow ball
-            const double angle = angleofvector(player->getX()-x,player->getY()-y);
-            const double sin = std::sin(angle), cos = std::cos(angle);
-            const int bullet_radius = 70;
-            const double bullet_v = 4.2;
-            new_bullet = new Bullet_Nether(QString(":/res/bullet/other/big.png"),bullet_radius*2,nullptr,1000,x-bullet_radius*cos,y-bullet_radius*sin,bullet_v*cos,bullet_v*sin);
-            new_bullet->addTimeData(30,bullet_radius);
-            connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
-            new_bullet->setOpacity(0.9);
-            new_bullet->fadein(500);
-            new_bullet->setInvulnerable();
-            emit newCenter(new_bullet);
-            new_bullets->push_back(new_bullet);
-        }
-        shoot_timer=0;
-        shoot_cd = 120-std::min(300-health,240)/4;
-        return new_bullets;
-    }
-    return nullptr;
-}
 
-Bullet_Ice::Bullet_Ice(QString img, int radius, Character* center, int distance, double x,double y,double xv,double yv,double xa,double ya)
-    :Bullet_Distance(img,radius,center,distance,x,y,xv,yv,xa,ya)
-{
-    int max_radius = radius;
-    connect(this,&Bullet_Ice::enterArea,[this,max_radius](){
-        this->clearData();
-        this->addTimeData((int)std::round(70.0*(this->radius-5)/(max_radius-5)),5);
-    });
-    connect(this,&Bullet_Ice::leaveArea,[this,max_radius](){
-        this->clearData();
-        this->addTimeData((int)std::round(280.0*(max_radius-this->radius)/(max_radius-5)),max_radius);
-    });
+    }
 }
