@@ -1189,7 +1189,11 @@ void MainWindow::doTick() {
                 }
             } else if(tickCheck(5500,100,18)) {
                 int t = timesCount(5500,100);
-                new_enemy = new Enemy_4_Red(player,t>8?7:4,40,75,200,qrand()%(Game::FrameWidth-80)+40,-40,0,2.4,0,-0.0018,true);
+                static int x = qrand()%(Game::FrameWidth-80)+40;
+                x += qrand()%201-100;
+                if(x>Game::FrameWidth-40) x = 2*(Game::FrameWidth-40)-x;
+                else if(x<40) x = 80-x;
+                new_enemy = new Enemy_4_Red(player,t>8?7:4,40,75,200,x,-40,0,2.4,0,-0.0018,true);
                 newEnemyInit(new_enemy);
                 if(t==17) tickFreeze();
             } else if(tickCheck(5750,200,7)) {
@@ -1205,26 +1209,20 @@ void MainWindow::doTick() {
                 ui->BossHealth->setGeometry(100,40,690,30);
                 new_boss = new Enemy_4_Blue_1(player,270,60,35,200,Game::FrameWidth/2,-60,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
-                connect(new_boss,&Enemy::dialogueStart,[this](int x){
-                    switch(x) {
-                    case 0:
-                        dialogueStart({Dialogue("你是首領嗎？怎麼好像只是其他隻的放大版而已...",":/res/player.png",QRect(0,0,43,33)),
-                                       Dialogue("我所嚮往的是如我們的母星一般，外表黯淡，但內心的光芒隱隱透出。大智若愚，曖曖含光。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
-                                       Dialogue("......",":/res/player.png",QRect(0,0,43,33)),
-                                       Dialogue("重點不是這個，你會在這裡是因為我向你們星球傳了無線電訊號，我需要有人幫忙。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
-                                       Dialogue("幫忙？",":/res/player.png",QRect(0,0,43,33)),
-                                       Dialogue("其實說起來有點不好意思...",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
-                                       Dialogue("我們之前開發的機械智慧因為不明原因開始暴走了。沒弄好的話，這幾十光年內的星球可能都有危險。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
-                                       Dialogue("幾十光年的話不是也包括我們嗎？那麼那東西在哪裡？",":/res/player.png",QRect(0,0,43,33)),
-                                       Dialogue("這個我們留到我打累了以後再說吧。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
-                                       Dialogue("等...等一下，又要打？",":/res/player.png",QRect(0,0,43,33)),
-                                       Dialogue("當然啊，如果你沒有一定的能力，帶你去只會扯後腿而已。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
-                                       Dialogue("這問題不是你們搞出來的嗎！",":/res/player.png",QRect(0,0,43,33))
-                                      });
-                        break;
-                    case 1:
-                        dialogueStart({Dialogue("當一艘船的各個零件被漸漸汰換，最後所有零件都被更換時，它還是原本那艘船嗎？",":/res/enemy/4/blue_2.png",QRect(87,39,58,58))});
-                    }
+                connect(new_boss,&Enemy::dialogueStart,[this](){
+                    dialogueStart({Dialogue("你是首領嗎？怎麼好像只是其他隻的放大版而已...",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("我所嚮往的是如我們的母星一般，外表黯淡，但內心的光芒隱隱透出。大智若愚，曖曖含光。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                   Dialogue("......",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("重點不是這個，你會在這裡是因為我向你們星球傳了無線電訊號，我需要有人幫忙。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                   Dialogue("幫忙？",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("其實說起來有點不好意思...",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                   Dialogue("我們之前開發的機械智慧因為不明原因開始暴走了。沒弄好的話，這幾十光年內的星球可能都有危險。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                   Dialogue("幾十光年的話不是也包括我們嗎？那麼那東西在哪裡？",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("這個我們留到我打累了以後再說吧。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                   Dialogue("等...等一下，又要打？",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("當然啊，如果你沒有一定的能力，帶你去只會扯後腿而已。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                   Dialogue("這問題不是你們搞出來的嗎！",":/res/player.png",QRect(0,0,43,33))
+                                  });
                 });
                 new_boss->moveTo(Game::FrameWidth/2,200,165);
                 newBossInit(new_boss);
@@ -1235,9 +1233,6 @@ void MainWindow::doTick() {
             } else if(tickCheck(7949)) { //14298, BOSS 2
                 new_boss = new Enemy_4_Blue_2(player,250,60,45,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
-                connect(new_boss,&Enemy::dialogueStart,[this](){
-                    dialogueStart({Dialogue("宇宙幾乎是無限大的，且到處都充滿了星體，那為什麼宇宙不是一片光亮的呢？",":/res/enemy/4/blue_2.png",QRect(87,39,58,58))});
-                });
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
@@ -1246,11 +1241,6 @@ void MainWindow::doTick() {
             } else if(tickCheck(8074)) { //14548, BOSS 3
                 new_boss = new Enemy_4_Blue_3(player,330,60,45,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
-                connect(new_boss,&Enemy::dialogueStart,[this](){
-                    dialogueStart({Dialogue("兩個人開著車子朝彼此前進，到最後一刻仍不轉彎的人便是贏家，但如果兩個人都不轉彎......",":/res/enemy/4/blue_2.png",QRect(87,39,58,58)),
-                                  Dialogue("這種賽局模式可以套用到許多實例之中，來解釋為何賽局雙方通常都寧願當「膽小鬼」。",":/res/enemy/4/blue_2.png",QRect(87,39,58,58))
-                                  });
-                });
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
@@ -1259,11 +1249,6 @@ void MainWindow::doTick() {
             } else if(tickCheck(8199)) { //14798, BOSS 4
                 new_boss = new Enemy_4_Blue_4(player,450,60,55,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
-                connect(new_boss,&Enemy::dialogueStart,[this](){
-                    dialogueStart({Dialogue("一支飛行中的箭矢在每個瞬間都是靜止的，代表這跟箭矢是靜止箭矢的集合，",":/res/enemy/4/blue_2.png",QRect(87,39,58,58)),
-                                   Dialogue("所以飛行的箭矢是靜止的。這個敘述明顯有錯才會造成這個矛盾結論，那是錯在哪裡呢？",":/res/enemy/4/blue_2.png",QRect(87,39,58,58))
-                                  });
-                });
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
@@ -1271,12 +1256,6 @@ void MainWindow::doTick() {
                 ui->BossLives->setText("1");
             } else if(tickCheck(8324)) { //8324, BOSS 5
                 new_boss = new Enemy_4_Blue_5(player,300,60,55,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
-                connect(new_boss,&Enemy::dialogueStart,[this](){
-                    dialogueStart({Dialogue("當你進入機器A，它將你身上的粒子全部掃瞄並在機器B用不一樣的粒子做出來，",":/res/enemy/4/blue_2.png",QRect(87,39,58,58)),
-                                   Dialogue("然後把機器A裡的你拆解回粒子。這樣算是同一個你被「傳送」過去的嗎？",":/res/enemy/4/blue_2.png",QRect(87,39,58,58)),
-                                   Dialogue("你話也太多了吧...",":/res/player.png",QRect(0,0,43,33))
-                                  });
-                });
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
@@ -1392,6 +1371,7 @@ void MainWindow::backToMenu() {
 void MainWindow::dialogueStart(std::initializer_list<Dialogue> list) {
     if(dialogueWidget!=nullptr) delete dialogueWidget;
     dialogueWidget = new DialogueWidget(QRect(60,669,731,211),0.8,ui->GamePage);
+    connect(dialogueWidget,SIGNAL(soundPlay(Game::Sound)),this,SLOT(soundPlay(Game::Sound)));
     connect(dialogueWidget,SIGNAL(end()),this,SLOT(dialogueEnd()));
     this->dialogueProcessing = true;
     dialogueWidget->show();

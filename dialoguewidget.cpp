@@ -50,7 +50,10 @@ void DialogueWidget::start(std::initializer_list<Dialogue> dialogues) {
     showNextDialogue();
 }
 void DialogueWidget::showNextDialogue() {
-    if(++this->current_dia>=dialogues.size()) {
+    //sound
+    if(current_dia!=-1) emit soundPlay(Game::SoundSnare);
+    //final
+    if(++this->current_dia>=(signed int)dialogues.size()) {
         emit end();
         return;
     }

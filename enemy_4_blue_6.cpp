@@ -18,7 +18,7 @@ void Enemy_4_Blue_6::skill() {
         shoot_timer = -130;
         shoot_cd = 120;
         skill_timer = -360;
-        emit useSkill("「熱力學-復冰」");
+        emit useSkill("「復冰」");
         emit killAllBullets();
     },
     [this](){
@@ -30,7 +30,6 @@ void Enemy_4_Blue_6::skill() {
         }
         //skill timer
         if(skill_timer<=0) ++skill_timer;
-        else Enemy_4_Blue::skill();
     });
 }
 std::vector<Bullet*>* Enemy_4_Blue_6::shoot2() {
@@ -40,14 +39,16 @@ std::vector<Bullet*>* Enemy_4_Blue_6::shoot2() {
         if(ice_shooting) { //ice
             setVulnerable();
             const int bullet_radius = 55, bullet_count = 10;
-            const double bullet_v = 1.2;
+            const double bullet_v = 2.1;
             int x0 = -qrand()%(Game::FrameWidth/bullet_count);
             for(int i=0;i<=bullet_count+1;++i) {
                 Bullet_Ice* new_bullet_ice;
-                new_bullet = new_bullet_ice = new Bullet_Ice(QString(":/res/bullet/other/ice.png"),bullet_radius,nullptr,100,x0+i*(Game::FrameWidth/bullet_count),bullet_radius*3/8.0,0,0,0,0.05);
+                double bullet_x = x0+i*(Game::FrameWidth/bullet_count);
+                double bullet_y = bullet_radius*3/8.0*(std::abs((i%4)-2)+1);
+                new_bullet = new_bullet_ice = new Bullet_Ice(QString(":/res/bullet/other/ice.png"),bullet_radius,nullptr,90,bullet_x,bullet_y,0,0,0,0.05);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 connect(this,SIGNAL(newCenter(Character*)),new_bullet_ice,SLOT(addNewCenter(Character*)));
-                new_bullet->fadein();
+                new_bullet->fadein(500);
                 new_bullet->setVTerminal(bullet_v);
                 new_bullets->push_back(new_bullet);
             }
@@ -58,7 +59,7 @@ std::vector<Bullet*>* Enemy_4_Blue_6::shoot2() {
             const double sin = std::sin(angle), cos = std::cos(angle);
             const int bullet_radius = 70;
             const double bullet_v = 4.2;
-            new_bullet = new Bullet_Nether(QString(":/res/bullet/other/big.png"),bullet_radius+50,nullptr,1000,x,y,bullet_v*cos,bullet_v*sin);
+            new_bullet = new Bullet_Nether(QString(":/res/bullet/other/big.png"),bullet_radius*2,nullptr,1000,x-bullet_radius*cos,y-bullet_radius*sin,bullet_v*cos,bullet_v*sin);
             new_bullet->addTimeData(30,bullet_radius);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullet->setOpacity(0.9);
@@ -68,7 +69,7 @@ std::vector<Bullet*>* Enemy_4_Blue_6::shoot2() {
             new_bullets->push_back(new_bullet);
         }
         shoot_timer=0;
-        shoot_cd = 120-std::min(300-health,250)/4.4;
+        shoot_cd = 120-std::min(300-health,240)/4;
         return new_bullets;
     }
     return nullptr;
@@ -80,10 +81,10 @@ Bullet_Ice::Bullet_Ice(QString img, int radius, Character* center, int distance,
     int max_radius = radius;
     connect(this,&Bullet_Ice::enterArea,[this,max_radius](){
         this->clearData();
-        this->addTimeData((int)std::round(30.0*(this->radius-5)/(max_radius-5)),5);
+        this->addTimeData((int)std::round(70.0*(this->radius-5)/(max_radius-5)),5);
     });
     connect(this,&Bullet_Ice::leaveArea,[this,max_radius](){
         this->clearData();
-        this->addTimeData((int)std::round(300.0*(max_radius-this->radius)/(max_radius-5)),max_radius);
+        this->addTimeData((int)std::round(280.0*(max_radius-this->radius)/(max_radius-5)),max_radius);
     });
 }

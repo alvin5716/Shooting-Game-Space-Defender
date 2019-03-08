@@ -3,7 +3,7 @@
 #include <cfloat>
 #include "enemy_4_pink.h"
 
-QPoint Enemy_4_Blue_5::corpse_pos(0,0);
+QPoint Enemy_4_Blue_5::corpse_pos(Game::FrameWidth/2,120);
 
 Enemy_4_Blue_5::Enemy_4_Blue_5(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4_Blue(player,150,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
@@ -21,7 +21,7 @@ void Enemy_4_Blue_5::skill() {
         shoot_timer = -150;
         shoot_cd = 120;
         skill_timer = -210;
-        emit useSkill("「形上學-遠距傳送悖論」");
+        emit useSkill("「遠距傳送悖論」");
         emit killOtherEnemies(this);
         emit killAllBullets();
     },

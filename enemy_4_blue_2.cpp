@@ -18,7 +18,7 @@ void Enemy_4_Blue_2::skill() {
         shoot_timer = -265;
         shoot_cd = 9;
         skill_timer = -210;
-        emit useSkill("「物理宇宙學-光度佯謬」");
+        emit useSkill("「光度佯謬」");
         emit killAllBullets();
     },
     [this](){

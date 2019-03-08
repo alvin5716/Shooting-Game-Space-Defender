@@ -11,7 +11,8 @@ public:
     std::vector<Bullet*>* shoot2() override;
 private:
     short fall_count;
-    bool dust_falling, purple_shooting;
+    int shoot_timer2;
+    bool purple_shooting;
 };
 
 #endif // ENEMY_4_BLUE_3_H

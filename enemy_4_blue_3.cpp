@@ -7,15 +7,16 @@
 Enemy_4_Blue_3::Enemy_4_Blue_3(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4_Blue(player,180,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
+    this->setBossHPToSkill();
+    shoot_timer2=0;
     fall_count=0;
     connect(this,&Enemy_4_Blue_3::bouncedAtY,[this](){
         emit shakeScreenVertical(static_cast<short>(shakeLevel::largeShake));
-        this->dust_falling = true;
+        shoot_timer2=0;
         setVulnerable();
         if(fall_count<2) ++fall_count;
     });
     this->purple_shooting=false;
-    this->dust_falling=false;
 }
 void Enemy_4_Blue_3::skill() {
     double angle_seed = qrand()%10;
@@ -24,9 +25,9 @@ void Enemy_4_Blue_3::skill() {
         invulnerable=true;
         img=":/res/enemy/4/blue_2.png";
         shoot_timer = 0;
-        shoot_cd = 25;
+        shoot_cd = 32;
         skill_timer = -210;
-        emit useSkill("「賽局理論-膽小鬼賽局」");
+        emit useSkill("「膽小鬼賽局」");
         emit killAllBullets();
     },
     [this](){
@@ -79,40 +80,44 @@ void Enemy_4_Blue_3::skill() {
     });
 }
 std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
+    std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
     if(shoot_timer>=shoot_cd) {
-        std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
-        //falling dust
-        const int bullet_count = 15;
-        if(dust_falling) {
-            int x0 = (int)std::round(player->getX())%bullet_count;
-            for(int i=0;i<=bullet_count;++i) {
-                new_bullet = new Bullet(QString(":/res/bullet/1/yellow.png"),10,x0+i*(Game::FrameWidth/bullet_count),qrand()%17-8,0,qrand()%10/30.0*2,0,0.032);
-                connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
-                new_bullet->fadein();
-                new_bullets->push_back(new_bullet);
-            }
-            dust_falling=false;
-        }
-        //purple
         if(purple_shooting) {
             double const bullet_v=4.4;
             double sin, cos;
-            for(int i=0;i<2;++i) {
-                double angle = M_PI/2+(i?1:-1)*M_PI/5;
-                sin = std::sin(angle);
-                cos = std::cos(angle);
-                new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),14,x+cos*radius,y+sin*radius,bullet_v*cos,bullet_v*sin);
+            for(int j=0;j<2;++j) {
+                for(int i=0;i<2;++i) {
+                    double angle = M_PI/2+(i?1:-1)*M_PI*(3-j)/15;
+                    sin = std::sin(angle);
+                    cos = std::cos(angle);
+                    new_bullet = new Bullet(QString(":/res/bullet/2/purple.png"),16,x+cos*radius,y+sin*radius,bullet_v*cos,bullet_v*sin);
+                    connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+                    new_bullets->push_back(new_bullet);
+                }
+            }
+        }
+        if(fall_count>=1 && !purple_shooting) {
+            purple_shooting=true;
+            shoot_timer=-100;
+        } else shoot_timer=0;
+    }
+    if(fall_count>=2) {
+        Bullet* new_bullet;
+        const int shoot_cd2 = 100;
+        if(shoot_timer2<=shoot_cd2+32) ++shoot_timer2;
+        if(shoot_timer2>=shoot_cd2 && (shoot_timer2-shoot_cd2)%8==0) {
+            const int bullet_count = 30;
+            for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
+                double angle = qrand()%100/100.0*M_PI/(bullet_count/2);
+                double cos = std::cos(angle+i*M_PI/(bullet_count/2));
+                double sin = std::sin(angle+i*M_PI/(bullet_count/2));
+                const double bullet_v = 3, bullet_a = 0.02;
+                new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),13,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }
         }
-        if(fall_count>=2 && shoot_cd==25) shoot_cd=22;
-        else if(fall_count>=1 && !purple_shooting) {
-            purple_shooting=true;
-            shoot_timer=-100;
-        } else shoot_timer=0;
-        return new_bullets;
     }
-    return nullptr;
+    return (new_bullets->size()==0 ? nullptr : new_bullets);
 }

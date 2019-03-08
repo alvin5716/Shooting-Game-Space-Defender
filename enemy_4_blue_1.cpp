@@ -19,21 +19,20 @@ void Enemy_4_Blue_1::skill() {
     testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy/4/blue_2.png";
-        shoot_timer = -100;
+        shoot_timer = -50;
         shoot_cd = 175;
-        skill_timer = -210;
-        emit useSkill("「形上學-忒修斯之船」");
+        skill_timer = -180;
+        emit useSkill("「忒修斯之船」");
     },
     [this](){
         //skill
         if(skill_timer==-110) moveTo(Game::FrameWidth/2,250,75);
-        else if(skill_timer==-35) emit dialogueStart(1);
         //skill timer
         if(skill_timer<=0) ++skill_timer;
     },
     [this](){
         Enemy_4_Blue::skill();
-        if(skill_timer_2==165) emit dialogueStart(0);
+        if(skill_timer_2==165) emit dialogueStart();
         if(skill_timer_2<=165) ++skill_timer_2;
     });
 }
@@ -93,7 +92,7 @@ std::vector<Bullet*>* Enemy_4_Blue_1::shoot2() {
                 double angle = angleofvector(player->getX()-bullet_x,player->getY()-bullet_y);
                 double launch_angle = angle+M_PI*((qrand()%(21+i*14)-(10+i*7))/100.0);
                 double sin = std::sin(launch_angle), cos = std::cos(launch_angle);
-                double bullet_v = qrand()%10/10.0*2, bullet_a =0.012;
+                double bullet_v = qrand()%15/15.0*2, bullet_a =0.012;
                 QString bullet_img = rainbowBullet(img_num[launchPosNum[i]]);
                 new_bullet = new Bullet(bullet_img,bullet_radius,bullet_x,bullet_y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -104,7 +103,7 @@ std::vector<Bullet*>* Enemy_4_Blue_1::shoot2() {
                 oldBullet->setImg(rainbowBullet(img_num[launchPosNum[i]]));
                 oldBullet->fadein();
             }
-            this->shoot_cd = 15;
+            this->shoot_cd = 13;
         }
         shoot_timer = 0;
         return new_bullets;

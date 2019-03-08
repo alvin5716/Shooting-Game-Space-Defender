@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "widgetanimationer.h"
 #include <QLabel>
+#include "game.h"
 
 class Dialogue {
 public:
@@ -24,11 +25,12 @@ public:
     void keyPressEvent(QKeyEvent *event);
 signals:
     void end();
+    void soundPlay(Game::Sound);
 private:
     WidgetAnimationer* dialogueAni;
     QLabel* dialogueImg, *dialogueText;
     std::vector<Dialogue> dialogues;
-    unsigned int current_dia;
+    int current_dia;
 };
 
 #endif // DIALOGUEWIDGET_H

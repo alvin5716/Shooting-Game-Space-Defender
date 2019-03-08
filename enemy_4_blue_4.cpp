@@ -19,7 +19,7 @@ void Enemy_4_Blue_4::skill() {
         shoot_timer = -250;
         shoot_cd = 10;
         skill_timer = -210;
-        emit useSkill("「芝諾悖論-飛矢不動」");
+        emit useSkill("「飛矢不動悖論」");
         emit killAllBullets();
     },
     [this](){
