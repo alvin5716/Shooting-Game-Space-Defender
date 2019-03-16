@@ -73,7 +73,8 @@ void Enemy_4_Blue::deadSet() {
 }
 
 std::vector<Bullet*>* Enemy_4_Blue::shoot() {
-    constexpr int interval=18, shoot_count=4;
+    const int interval=18*(shoot_cd/45.0), shoot_count=4;
+    const double bullet_v=3.4*(45.0/shoot_cd);
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
@@ -95,7 +96,6 @@ std::vector<Bullet*>* Enemy_4_Blue::shoot() {
             setVulnerable();
         }
         double sin, cos, sin_x, cos_x;
-        constexpr double bullet_v=3.4;
         constexpr int bullet_xd=20;
         for(int i=0;i<2;++i) {
             for(int j=0;j<2;++j) {

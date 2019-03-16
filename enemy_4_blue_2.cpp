@@ -16,17 +16,17 @@ void Enemy_4_Blue_2::skill() {
         invulnerable=true;
         img=":/res/enemy/4/blue_2.png";
         shoot_timer = -265;
-        shoot_cd = 9;
+        shoot_cd = 12;
         skill_timer = -210;
         emit useSkill("「光度佯謬」");
         emit killAllBullets();
     },
     [this](){
         //skill
-        if(skill_timer==-110) moveTo(Game::FrameWidth/2,120,75);
+        if(skill_timer==-110) moveTo(Game::FrameWidth/2,200,75);
         else if(skill_timer==-35) emit dialogueStart();
         else if(skill_timer==-10) {
-            Effect* bang = new Effect(":/res/effect/golden_wind.png",120,120,0,0,100,Game::FrameWidth/2,120,0,0,0,0,true);
+            Effect* bang = new Effect(":/res/effect/golden_wind.png",120,120,0,0,100,Game::FrameWidth/2,200,0,0,0,0,true);
             bang->zoom(800,800,100);
             bang->rotateStart();
             bang->setOpacity(0.85);
@@ -58,35 +58,35 @@ void Enemy_4_Blue_2::skill() {
 }
 
 std::vector<Bullet*>* Enemy_4_Blue_2::shoot2() {
-    const int interval=6;
+    const int interval=8;
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         setVulnerable();
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         int t = (shoot_timer-shoot_cd)/interval;
         double constexpr bullet_a=0.012;
-        double bullet_v=1.4, bullet_op=0.9-t*0.15;
+        double bullet_v=1.2, bullet_op=0.9-t*0.15;
         double sin, cos;
         int bullet_radius;
         for(int i=0;i<shoot_times;++i) {
             if(shoot_timer==shoot_cd){
                 xp=player->getX();
                 yp=player->getY();
-                angle[i]=rng->generate()*M_PI/100;
+                angle[i]=rng->generate()*M_PI/100 + angleofvector(xp-Game::FrameWidth/2,yp-200) - M_PI/2;
                 xd[i] = 40+qrand()%120;
             }
             bullet_v+=i*0.2;
             sin = std::sin(angle[i]);
             cos = std::cos(angle[i]);
-            double angle_p = angleofvector(xp-Game::FrameWidth/2,yp);
+            double angle_p = angleofvector(xp-Game::FrameWidth/2,yp-200);
             double angle_dif = angle[i]-angle_p;
             bullet_radius = std::max(15-(int)std::abs(angle_dif*5),11)*(1-t*0.06);
-            new_bullet = new Bullet(QString(":/res/bullet/other/yellow_hex.png"),bullet_radius,Game::FrameWidth/2+cos*xd[i],sin*xd[i],bullet_v*cos,bullet_v*sin);
+            new_bullet = new Bullet(QString(":/res/bullet/other/yellow_hex.png"),bullet_radius,Game::FrameWidth/2+cos*xd[i],200+sin*xd[i],bullet_v*cos,bullet_v*sin);
             double constexpr sc = (double)2/std::sqrt(3);
             new_bullet->setScale(sc);
             double sinp = std::sin(angle_p), cosp = std::cos(angle_p);
-            new_bullet->gravityFrom(Game::FrameWidth/2+cosp*(xd[i]+600),sinp*(xd[i]+600),bullet_a*std::pow(std::abs(angle_dif),3.2*std::sin(angle_dif)+0.15));
-            new_bullet->setVTerminal(6.4);
+            new_bullet->gravityFrom(Game::FrameWidth/2+cosp*(xd[i]+400),200+sinp*(xd[i]+400),bullet_a*std::pow(std::abs(angle_dif),2.7*std::sin(angle_dif)+0.15));
+            //new_bullet->setVTerminal(1);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullet->setOpacity(bullet_op);
             new_bullet->fadein();

@@ -12,7 +12,8 @@ Bullet::Bullet(QString img, int radius, double x, double y, double xv, double yv
     terminal_v = 0;
     this->data_head = nullptr;
     this->setPositionByData = false;
-    this->rotatable=false;
+    this->lookForward = false;
+    this->rotating = img.startsWith(":/res/bullet/3/");
 }
 
 void Bullet::setVTerminal(double terminal_v) {
@@ -39,15 +40,22 @@ void Bullet::move() {
 
 void Bullet::img_move() {
     Character::img_move();
-    if(rotatable) {
+    if(lookForward) {
         double angle = angleofvector(this->xv,this->yv);
         this->setTransformOriginPoint(show_w/2,show_h/2);
         setRotation(angle/M_PI*180);
+    } else if(rotating) {
+        this->setTransformOriginPoint(show_w/2,show_h/2);
+        setRotation(this->rotation()+360.0/63);
     }
 }
 
-void Bullet::setRotatable(bool rotatable) {
-    this->rotatable=rotatable;
+void Bullet::setLookForward(bool lookForward) {
+    this->lookForward=lookForward;
+}
+
+void Bullet::setRotating(bool rotating) {
+    this->rotating=rotating;
 }
 
 void Bullet::addData(BulletData* bullet_data) {

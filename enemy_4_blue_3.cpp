@@ -104,7 +104,7 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
     if(fall_count>=2) {
         Bullet* new_bullet;
         const int shoot_cd2 = 100;
-        if(shoot_timer2<=shoot_cd2+32) ++shoot_timer2;
+        if(shoot_timer2<=shoot_cd2+24) ++shoot_timer2;
         if(shoot_timer2>=shoot_cd2 && (shoot_timer2-shoot_cd2)%8==0) {
             const int bullet_count = 30;
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {

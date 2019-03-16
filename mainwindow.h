@@ -110,7 +110,7 @@ private:
     std::vector<QMediaPlayer*> audioers;
     WidgetAnimationer* EndListAni, *levelSelectAni, *bossSkillAni;
     bool dialogueProcessing;
-    static const int StartTick = 8589;
+    static const int StartTick = 0;
     DialogueWidget* dialogueWidget;
 
 private slots:
@@ -131,8 +131,8 @@ private slots:
     void pointAdd(int);
     void bossCorpse(int,int);
     void healthColorChange(QString);
-    void sceneVibrate(short vibrate_count = 0);
-    void sceneVibrateVertical(short vibrate_count = 0);
+    void sceneVibrate(short vibrate_count = 0, bool withSound = true);
+    void sceneVibrateVertical(short vibrate_count = 0, bool withSound = true);
     void bossSkillLengthSetting(QString skill);
     void soundPlay(Game::Sound sound);
     void killAllBullets();

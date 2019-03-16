@@ -107,7 +107,7 @@ MainWindow::MainWindow(QWidget *parent) :
     levelSelectAni->setFadeDir(WidgetAnimationer::FadeDirectionDown);
     //dialogue
     //audioer
-    audioers.resize(8);
+    audioers.resize(9);
     for(QMediaPlayer*& audioer: audioers) {
         audioer = new QMediaPlayer(nullptr,QMediaPlayer::LowLatency);
     }
@@ -123,6 +123,7 @@ MainWindow::MainWindow(QWidget *parent) :
     soundSet(Game::SoundWarning,30,"res/sound/warning.wav");
     soundSet(Game::SoundWarning02,20,"res/sound/warning02.wav");
     soundSet(Game::SoundSnare,15,"res/sound/snare.wav");
+    soundSet(Game::SoundShake,40,"res/sound/shake.wav");
 }
 
 void MainWindow::setGamePage(Game::GamePage page) {
@@ -410,7 +411,7 @@ void MainWindow::doTick() {
         Character* real_attacker = player->testAttackedBy(attackers);
         if(real_attacker!=nullptr) {
             ui->PlayerLife->display(player->getHealth());
-            sceneVibrate(static_cast<short>(Enemy::shakeLevel::mediumShake));
+            sceneVibrate(static_cast<short>(Enemy::shakeLevel::mediumShake),false);
             redFlash();
         }
         for(int i=0;i<(int)enemies.size();++i) { //enemies
@@ -1207,7 +1208,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(7824)) { //14048, BOSS 1
                 ui->BossLives->show();
                 ui->BossHealth->setGeometry(100,40,690,30);
-                new_boss = new Enemy_4_Blue_1(player,270,60,35,200,Game::FrameWidth/2,-60,0,0,0,0,false,true);
+                new_boss = new Enemy_4_Blue_1(player,270,60,36,200,Game::FrameWidth/2,-60,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 connect(new_boss,&Enemy::dialogueStart,[this](){
                     dialogueStart({Dialogue("你是首領嗎？怎麼好像只是其他隻的放大版而已...",":/res/player.png",QRect(0,0,43,33)),
@@ -1231,7 +1232,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(7826)) { //14050
                 ui->BossLives->setText("4");
             } else if(tickCheck(7949)) { //14298, BOSS 2
-                new_boss = new Enemy_4_Blue_2(player,250,60,45,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
+                new_boss = new Enemy_4_Blue_2(player,250,60,41,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
@@ -1239,7 +1240,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(7951)) { //14300
                 ui->BossLives->setText("3");
             } else if(tickCheck(8074)) { //14548, BOSS 3
-                new_boss = new Enemy_4_Blue_3(player,330,60,45,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
+                new_boss = new Enemy_4_Blue_3(player,330,60,43,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
@@ -1247,7 +1248,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(8076)) { //14550
                 ui->BossLives->setText("2");
             } else if(tickCheck(8199)) { //14798, BOSS 4
-                new_boss = new Enemy_4_Blue_4(player,450,60,55,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
+                new_boss = new Enemy_4_Blue_4(player,450,60,50,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
@@ -1255,7 +1256,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(8201)) { //14800
                 ui->BossLives->setText("1");
             } else if(tickCheck(8324)) { //8324, BOSS 5
-                new_boss = new Enemy_4_Blue_5(player,300,60,55,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
+                new_boss = new Enemy_4_Blue_5(player,300,60,45,200,Game::FrameWidth/2,200,0,0,0,0,false,true);
                 new_boss->fadein(1500);
                 newBossInit(new_boss);
                 tickFreeze();
@@ -1541,11 +1542,12 @@ void MainWindow::redFlash() {
     red_flash->setFlashTime(400,400);
     red_flash->flash(true);
 }
-void MainWindow::sceneVibrate(short vibrate_count) {
+void MainWindow::sceneVibrate(short vibrate_count, bool withSound) {
     static QPropertyAnimation* vibrateAni=nullptr;
     static short vibrate_count_temp=0;
     bool firstVib=false;
     vibrate_count_temp = vibrate_count+1;
+    if(withSound) soundPlay(Game::SoundShake);
     if(vibrate_count<10) {
         if(vibrateAni!=nullptr) delete vibrateAni;
         else firstVib=true;
@@ -1556,10 +1558,10 @@ void MainWindow::sceneVibrate(short vibrate_count) {
         if(vibrate_count==9) {
             vibrateAni->setEndValue(QRect(0,0,Game::FrameWidth,Game::FrameHeight));
         } else {
-            vibrateAni->setEndValue(QRect((vibrate_count%2==0?-1:1)*(5-vibrate_count*vibrate_count*0.05),0,Game::FrameWidth,Game::FrameHeight));
+            vibrateAni->setEndValue(QRect((vibrate_count%2==0?-1:1)*(5-(vibrate_count<0?-1:1)*vibrate_count*vibrate_count*0.05),0,Game::FrameWidth,Game::FrameHeight));
         }
         connect(vibrateAni,&QPropertyAnimation::finished,[=](){
-            sceneVibrate(vibrate_count_temp);
+            sceneVibrate(vibrate_count_temp,false);
         });
         vibrateAni->start(QAbstractAnimation::KeepWhenStopped);
     } else {
@@ -1567,11 +1569,12 @@ void MainWindow::sceneVibrate(short vibrate_count) {
         vibrateAni=nullptr;
     }
 }
-void MainWindow::sceneVibrateVertical(short vibrate_count) {
+void MainWindow::sceneVibrateVertical(short vibrate_count, bool withSound) {
     static QPropertyAnimation* vibrateAni=nullptr;
     static short vibrate_count_temp=0;
     bool firstVib=false;
     vibrate_count_temp = vibrate_count+1;
+    if(withSound) soundPlay(Game::SoundShake);
     if(vibrate_count<10) {
         if(vibrateAni!=nullptr) delete vibrateAni;
         else firstVib=true;
@@ -1582,10 +1585,10 @@ void MainWindow::sceneVibrateVertical(short vibrate_count) {
         if(vibrate_count==9) {
             vibrateAni->setEndValue(QRect(0,0,Game::FrameWidth,Game::FrameHeight));
         } else {
-            vibrateAni->setEndValue(QRect(0,(vibrate_count%2==0?-1:1)*(5-vibrate_count*vibrate_count*0.05),Game::FrameWidth,Game::FrameHeight));
+            vibrateAni->setEndValue(QRect(0,(vibrate_count%2==0?-1:1)*(5-(vibrate_count<0?-1:1)*vibrate_count*vibrate_count*0.05),Game::FrameWidth,Game::FrameHeight));
         }
         connect(vibrateAni,&QPropertyAnimation::finished,[=](){
-            sceneVibrateVertical(vibrate_count_temp);
+            sceneVibrateVertical(vibrate_count_temp,false);
         });
         vibrateAni->start(QAbstractAnimation::KeepWhenStopped);
     } else {

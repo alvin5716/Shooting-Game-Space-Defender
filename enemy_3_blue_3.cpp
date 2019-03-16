@@ -43,7 +43,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     const short interval = 60;
     //center
     if(shoot_timer==-75) {
-        new_bullet = center = new Bullet(":/res/bullet/1/purple.png",30,shootXPos(),shootYPos());
+        new_bullet = center = new Bullet(":/res/bullet/3/purple.png",30,shootXPos(),shootYPos());
         center->addTimeData(75);
         new_bullet->moveTo(Game::FrameWidth/2,Game::FrameHeight/2,75);
         new_bullet->setInvulnerable();
@@ -76,7 +76,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
             sin = std::sin(angle+i*2*M_PI/bullet_count);
             cos = std::cos(angle+i*2*M_PI/bullet_count);
             Bullet_Nether* new_bullet_nether;
-            new_bullet = new_bullet_nether = new Bullet_Nether(":/res/bullet/1/yellow.png",bullet_radius,center,1000,center->getX()+bullet_d*cos,center->getY()+bullet_d*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = new_bullet_nether = new Bullet_Nether(":/res/bullet/3/yellow.png",bullet_radius,center,1000,center->getX()+bullet_d*cos,center->getY()+bullet_d*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             new_bullet_nether->setFadeoutTime(100);
             new_bullet->moveAsTrigFunction(100,bullet_radius,true);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));

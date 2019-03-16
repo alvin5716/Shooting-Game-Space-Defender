@@ -103,7 +103,7 @@ std::vector<Bullet*>* Enemy_4_Blue_1::shoot2() {
                 oldBullet->setImg(rainbowBullet(img_num[launchPosNum[i]]));
                 oldBullet->fadein();
             }
-            this->shoot_cd = 13;
+            this->shoot_cd = 15;
         }
         shoot_timer = 0;
         return new_bullets;

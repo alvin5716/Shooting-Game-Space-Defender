@@ -44,7 +44,7 @@ void Enemy_4_Blue_5::skill() {
             angle = (player->getX()<this->x?angle+M_PI/7:-angle-M_PI/7) - M_PI/2;
             double cos = std::cos(angle);
             double sin = std::sin(angle);
-            small_enemy = new Enemy_4_Pink(player,4,40,5,5,this->x,this->y,2*cos,2*sin,-0.04*cos,-0.04*sin);
+            small_enemy = new Enemy_4_Pink(player,6,40,5,5,this->x,this->y,1*cos,1*sin,-0.025*cos,-0.025*sin);
             small_enemy->fadein(1000);
             small_enemy->noPoint();
             connect(this,SIGNAL(useSkill(QString)),small_enemy,SLOT(killItself()));

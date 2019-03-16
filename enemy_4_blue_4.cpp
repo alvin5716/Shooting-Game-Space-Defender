@@ -16,7 +16,7 @@ void Enemy_4_Blue_4::skill() {
     testIfSecPhase([this](){
         invulnerable=true;
         img=":/res/enemy/4/blue_2.png";
-        shoot_timer = -250;
+        shoot_timer = -70;
         shoot_cd = 10;
         skill_timer = -210;
         emit useSkill("「飛矢不動悖論」");
@@ -60,7 +60,7 @@ std::vector<Bullet*>* Enemy_4_Blue_4::shoot2() {
             double angle = angleofvector(player->getX()-x,player->getY()-y);
             double sin, cos;
             double constexpr bullet_v=6.4;
-            if(++shoot_count>5 && bow_count>=10) {
+            if(++shoot_count>5 && bow_count>=12) {
                 setVulnerable();
                 // arrow center
                 sin = std::sin(angle);
@@ -101,7 +101,7 @@ std::vector<Bullet*>* Enemy_4_Blue_4::shoot2() {
                 new_bullets->push_back(new_bullet);
             }
             shoot_timer=0;
-            if(bow_count<10) ++bow_count;
+            if(bow_count<12) ++bow_count;
             return new_bullets;
         }
     }

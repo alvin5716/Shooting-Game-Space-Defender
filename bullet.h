@@ -18,7 +18,8 @@ public:
     Bullet(QString img, int radius, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0);
     void img_move() override;
     void setVTerminal(double terminal_v);
-    void setRotatable(bool rotatable=true);
+    void setLookForward(bool lookForward=true);
+    void setRotating(bool rotating=true);
     // time data
     Bullet* addTimeData(int wait_time);
     Bullet* addTimeData(int wait_time, int aim_radius);
@@ -50,7 +51,7 @@ signals:
 protected:
     void addData(BulletData* bullet_data);
     double terminal_v;
-    bool setPositionByData, rotatable;
+    bool setPositionByData, lookForward, rotating;
     BulletData* data_head;
 };
 
