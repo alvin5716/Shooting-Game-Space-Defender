@@ -82,11 +82,8 @@ std::vector<Bullet*>* Enemy_4_Blue_2::shoot2() {
             double angle_dif = angle[i]-angle_p;
             bullet_radius = std::max(15-(int)std::abs(angle_dif*5),11)*(1-t*0.06);
             new_bullet = new Bullet(QString(":/res/bullet/other/yellow_hex.png"),bullet_radius,Game::FrameWidth/2+cos*xd[i],200+sin*xd[i],bullet_v*cos,bullet_v*sin);
-            double constexpr sc = (double)2/std::sqrt(3);
-            new_bullet->setScale(sc);
             double sinp = std::sin(angle_p), cosp = std::cos(angle_p);
             new_bullet->gravityFrom(Game::FrameWidth/2+cosp*(xd[i]+400),200+sinp*(xd[i]+400),bullet_a*std::pow(std::abs(angle_dif),2.7*std::sin(angle_dif)+0.15));
-            //new_bullet->setVTerminal(1);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullet->setOpacity(bullet_op);
             new_bullet->fadein();

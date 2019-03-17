@@ -14,10 +14,23 @@ Bullet::Bullet(QString img, int radius, double x, double y, double xv, double yv
     this->setPositionByData = false;
     this->lookForward = false;
     this->rotating = img.startsWith(":/res/bullet/3/");
+    if(img == ":/res/bullet/other/yellow_hex.png") {
+        double const sc = (double)2/std::sqrt(3);
+        this->setScale(sc);
+    }
 }
 
 void Bullet::setVTerminal(double terminal_v) {
     this->terminal_v = terminal_v;
+}
+
+void Bullet::setImg(QString img) {
+    Character::setImg(img);
+    this->rotating = img.startsWith(":/res/bullet/3/");
+    if(img == ":/res/bullet/other/yellow_hex.png") {
+        double const sc = (double)2/std::sqrt(3);
+        this->setScale(sc);
+    }
 }
 
 void Bullet::move() {

@@ -20,6 +20,7 @@ public:
     void setVTerminal(double terminal_v);
     void setLookForward(bool lookForward=true);
     void setRotating(bool rotating=true);
+    void setImg(QString img) override;
     // time data
     Bullet* addTimeData(int wait_time);
     Bullet* addTimeData(int wait_time, int aim_radius);
