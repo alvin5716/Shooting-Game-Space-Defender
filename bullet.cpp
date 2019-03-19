@@ -67,7 +67,7 @@ void Bullet::setLookForward(bool lookForward) {
     this->lookForward=lookForward;
 }
 
-void Bullet::setRotating(bool rotating) {
+void Bullet::rotateStart() {
     this->rotating=rotating;
 }
 

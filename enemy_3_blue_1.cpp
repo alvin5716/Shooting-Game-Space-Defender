@@ -68,7 +68,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
         bullet_count = 14;
         angle = angleofvector(player->getX()-x,player->getY()-y);
         //rotate start
-        magicstone->setRotating();
+        magicstone->rotateStart();
         //shoot
         for(int j=0;j<2;++j) {
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
@@ -84,7 +84,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
                                         bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 new_bullet->addTimeData(125,bullet_v_2*cos,bullet_v_2*sin,0,0);
                 new_bullet->fadein(1500);
-                new_bullet->setRotating();
+                new_bullet->rotateStart();
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }

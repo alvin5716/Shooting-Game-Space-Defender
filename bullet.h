@@ -19,7 +19,7 @@ public:
     void img_move() override;
     void setVTerminal(double terminal_v);
     void setLookForward(bool lookForward=true);
-    void setRotating(bool rotating=true);
+    void rotateStart();
     void setImg(QString img) override;
     // time data
     Bullet* addTimeData(int wait_time);
