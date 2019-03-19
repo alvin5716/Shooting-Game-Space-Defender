@@ -10,7 +10,7 @@ Enemy_4_Pink::Enemy_4_Pink(Player* player, int health, int radius, int shoot_cd,
 }
 
 void Enemy_4_Pink::skill() {
-    if(already_enter) {
+    if(already_enter && !dead) {
         if(x<0+radius || x>Game::FrameWidth-radius || y<0+radius || y>Game::FrameHeight-radius) {
             setAcceleration(0,0);
             setSpeed(0,0);

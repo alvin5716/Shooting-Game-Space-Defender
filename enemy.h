@@ -28,6 +28,7 @@ public:
     void setFloatable(bool floatable=true) override final;
     void noPoint();
     void attacked() override;
+    void prepEffect(QString img, int img_w, int img_h);
     ~Enemy();
 public slots:
     virtual void move();

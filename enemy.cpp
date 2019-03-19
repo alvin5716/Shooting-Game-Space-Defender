@@ -34,6 +34,18 @@ void Enemy::outOfFrame() {
         dead=true;
     }
 }
+void Enemy::prepEffect(QString img, int img_w, int img_h) {
+    const int scale = 2, time = 50;
+    int show_w = (img_w<img_h)?this->radius*2*scale:this->radius*2*scale/img_h*img_w;
+    int show_h = (img_h<img_w)?this->radius*2*scale:this->radius*2*scale/img_w*img_h;
+    Effect* new_effect = new Effect(img,img_w,img_h,show_w,show_h,time,this->x,this->y);
+    new_effect->rotateStart(time);
+    new_effect->moveWith(this);
+    new_effect->fadein(200);
+    new_effect->zoom(0,0,time);
+    connect(this,SIGNAL(deadSignal()),new_effect,SLOT(killItself()));
+    emit summonEffect(new_effect);
+}
 void Enemy::noPoint() {
     this->point=0;
 }

@@ -77,7 +77,7 @@ std::vector<Bullet*>* Enemy_4_Blue_6::shoot2() {
             double bullet_angle = rng->generate()/40.0*M_PI/5+player_angle;
             const double cos = std::cos(bullet_angle), sin = std::sin(bullet_angle);
             const double bullet_v = 3.5, bullet_a = 0.008, bullet_radius = 12;
-            new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),bullet_radius,this->x,this->y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = new Bullet(QString(":/res/bullet/4/purple.png"),bullet_radius,this->x,this->y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
             shoot_timer2=0;

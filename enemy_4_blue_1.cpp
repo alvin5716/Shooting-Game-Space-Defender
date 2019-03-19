@@ -68,7 +68,7 @@ std::vector<Bullet*>* Enemy_4_Blue_1::shoot2() {
         if(first) {
             emit shakeScreen(static_cast<short>(shakeLevel::largeShake));
             for(int i=0;i<bullet_count;++i) {
-                boat_bullets[i] = new_bullet = new Bullet(QString(":/res/bullet/2/yellow.png"),bullet_radius,x,y);
+                boat_bullets[i] = new_bullet = new Bullet(QString(":/res/bullet/4/yellow.png"),bullet_radius,x,y);
                 new_bullet->moveTo(this->bulletPos(i),125);
                 new_bullet->addTimeData(125);
                 new_bullet->setInvulnerable();
@@ -115,25 +115,25 @@ QString Enemy_4_Blue_1::rainbowBullet(int i) const{
     QString str;
     switch(i) {
     case 0:
-        str=":/res/bullet/2/pink.png";
+        str=":/res/bullet/4/pink.png";
         break;
     case 1:
-        str=":/res/bullet/2/red.png";
+        str=":/res/bullet/4/red.png";
         break;
     case 2:
-        str=":/res/bullet/2/yellow.png";
+        str=":/res/bullet/4/yellow.png";
         break;
     case 3:
-        str=":/res/bullet/2/green.png";
+        str=":/res/bullet/4/green.png";
         break;
     case 4:
-        str=":/res/bullet/2/blue.png";
+        str=":/res/bullet/4/blue.png";
         break;
     case 5:
-        str=":/res/bullet/2/indigo.png";
+        str=":/res/bullet/4/indigo.png";
         break;
     case 6:
-        str=":/res/bullet/2/purple.png";
+        str=":/res/bullet/4/purple.png";
         break;
     }
     return str;

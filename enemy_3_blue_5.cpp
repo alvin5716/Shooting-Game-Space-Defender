@@ -43,6 +43,7 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
     Bullet* new_bullet;
     const int interval = 12;
+    if(shoot_timer==shoot_cd-50+(shoot_cd>=50?0:interval*15+shoot_cd)) prepEffect(":/res/bullet/3/red.png",50,50);
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         setVulnerable();
         double cos, sin, bullet_v, bullet_a;
@@ -146,10 +147,11 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
                 new_bullets->push_back(new_bullet);
             }
         }
-        if(shoot_timer==shoot_cd+interval*15) {
+        if(shoot_timer==shoot_cd) {
+            if(health<40) shoot_timer=shoot_cd=35;
+            else if(health<130) shoot_timer=shoot_cd=45;
+        } else if(shoot_timer==shoot_cd+interval*15) {
             shoot_timer=0;
-            if(health<50) shoot_cd=35;
-            else if(health<150) shoot_cd=45;
         }
     }
     if(new_bullets->size()>0) return new_bullets;

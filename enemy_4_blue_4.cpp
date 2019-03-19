@@ -66,7 +66,7 @@ std::vector<Bullet*>* Enemy_4_Blue_4::shoot2() {
                 sin = std::sin(angle);
                 cos = std::cos(angle);
                 Enemy* new_enemy = new Enemy_Temp(this,Enemy_Temp::enemy_4_blue_4_shoot,player,8+qrand()%5,qrand()%10,x,y,bullet_v*cos,bullet_v*sin);
-                new_enemy->setImg(":/res/bullet/2/purple.png");
+                new_enemy->setImg(":/res/bullet/4/purple.png");
                 new_enemy->setShowSize(24,24);
                 new_enemy->show();
                 connect(this,SIGNAL(killItsBullets()),new_enemy,SLOT(killItself()));
@@ -76,7 +76,7 @@ std::vector<Bullet*>* Enemy_4_Blue_4::shoot2() {
                     for(int i=0;i<2;++i) {
                         sin = std::sin(angle);
                         cos = std::cos(angle);
-                        new_bullet = new Bullet(QString(":/res/bullet/2/purple.png"),12,x-cos*12*j-sin*(i?1:-1)*9*j,y-sin*12*j+cos*(i?1:-1)*9*j,bullet_v*cos,bullet_v*sin);
+                        new_bullet = new Bullet(QString(":/res/bullet/4/purple.png"),12,x-cos*12*j-sin*(i?1:-1)*9*j,y-sin*12*j+cos*(i?1:-1)*9*j,bullet_v*cos,bullet_v*sin);
                         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                         new_bullets->push_back(new_bullet);
                     }

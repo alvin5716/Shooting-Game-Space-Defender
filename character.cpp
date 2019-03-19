@@ -12,7 +12,7 @@ Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, 
     :radius(radius), health(health),
       img_w(img_w), img_h(img_h), show_w(show_w), show_h(show_h), img_timer(0),
       x(x), y(y), xv(xv), yv(yv), xa(xa), ya(ya),
-      dead(false), invulnerable(false), whiteized(false), img(img)
+      dead(false), invulnerable(false), whiteized(false), img(img), origin(nullptr)
 {
     setPos(x-show_w/2,y-show_h/2);
     QRect cutFrame(0,0,img_w,img_h);
@@ -27,6 +27,9 @@ Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, 
     float_timer=0;
     ++character_count;
     //qDebug() << "character count:" << character_count;
+}
+void Character::moveWith(Character* origin) {
+    this->origin = origin;
 }
 void Character::setPosition(double x, double y) {
     this->x=x;
@@ -46,6 +49,7 @@ void Character::setAcceleration(double xa, double ya) {
 }
 void Character::move() {
     //move object
+    if(origin!=nullptr) setPosition(x+origin->xv,y+origin->yv);
     setPosition(x+xv,y+yv);
     setSpeed(xv+xa,yv+ya);
 }

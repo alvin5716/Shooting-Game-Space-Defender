@@ -103,7 +103,7 @@ std::vector<Bullet*>* Enemy_4_Blue::shoot() {
                 cos = std::cos(angle[j]);
                 sin_x = std::sin(angle[j]+(i?M_PI/2:-M_PI/2));
                 cos_x = std::cos(angle[j]+(i?M_PI/2:-M_PI/2));
-                new_bullet = new Bullet(QString(":/res/bullet/1/blue.png"),r,attack_x+cos*radius/2+cos_x*bullet_xd*t,attack_y+sin*radius/2+sin_x*bullet_xd*t,bullet_v*cos,bullet_v*sin);
+                new_bullet = new Bullet(QString(":/res/bullet/4/blue.png"),r,attack_x+cos*radius/2+cos_x*bullet_xd*t,attack_y+sin*radius/2+sin_x*bullet_xd*t,bullet_v*cos,bullet_v*sin);
                 new_bullet->addWallData(false,false);
                 new_bullet->fadein();
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));

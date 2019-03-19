@@ -79,7 +79,6 @@
         <file>res/sound/warning.wav</file>
         <file>res/sound/warning02.wav</file>
         <file>res/sound/snare.wav</file>
-        <file>res/bullet/other/big.png</file>
         <file>res/sound/shake.wav</file>
         <file>res/bullet/3/blue.png</file>
         <file>res/bullet/3/green.png</file>
@@ -87,5 +86,12 @@
         <file>res/bullet/3/purple.png</file>
         <file>res/bullet/3/red.png</file>
         <file>res/bullet/3/yellow.png</file>
+        <file>res/bullet/4/blue.png</file>
+        <file>res/bullet/4/green.png</file>
+        <file>res/bullet/4/indigo.png</file>
+        <file>res/bullet/4/pink.png</file>
+        <file>res/bullet/4/purple.png</file>
+        <file>res/bullet/4/red.png</file>
+        <file>res/bullet/4/yellow.png</file>
     </qresource>
 </RCC>

@@ -74,7 +74,8 @@ std::vector<Bullet*>* Enemy_4_Blue_5::shoot2() {
                 double shoot_ang = angle+(i+qrand()%50/50.0)*2*M_PI/bullet_count;
                 cos = std::cos(shoot_ang);
                 sin = std::sin(shoot_ang);
-                new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),bullet_radius,shoot_point.x()*(face_to_left?-1:1)+this->x,shoot_point.y()+this->y);
+                const int d = qrand()%30;
+                new_bullet = new Bullet(QString(":/res/bullet/4/purple.png"),bullet_radius,shoot_point.x()*(face_to_left?-1:1)+this->x+d*cos,shoot_point.y()+this->y+d*sin);
                 new_bullet->fadein(500);
                 new_bullet->addTimeData(31,0,0,bullet_a*cos,bullet_a*sin);
                 new_bullet->setVTerminal(bullet_v_t);

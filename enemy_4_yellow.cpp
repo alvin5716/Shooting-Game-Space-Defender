@@ -43,7 +43,7 @@ std::vector<Bullet*>* Enemy_4_Yellow::shoot() {
             if(t%2==0?i%(bullet_count/4)<12:i%(bullet_count/4)>7) continue;
             sin = std::sin(angle+i*M_PI/(bullet_count/2));
             cos = std::cos(angle+i*M_PI/(bullet_count/2));
-            new_bullet = new Bullet(QString(":/res/bullet/1/yellow.png"),16,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = new Bullet(QString(":/res/bullet/4/yellow.png"),16,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             new_bullet->setVTerminal(bullet_v_t);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

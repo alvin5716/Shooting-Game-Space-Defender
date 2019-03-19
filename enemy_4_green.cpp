@@ -26,7 +26,7 @@ std::vector<Bullet*>* Enemy_4_Green::shoot() {
         for(int i=0;i<2;++i) {
             sin = std::sin(angle+(i?1:-1)*2*M_PI/20);
             cos = std::cos(angle+(i?1:-1)*2*M_PI/20);
-            new_bullet = new Bullet(QString(":/res/bullet/1/green.png"),12,x,y,bullet_v*cos,bullet_v*sin);
+            new_bullet = new Bullet(QString(":/res/bullet/4/green.png"),12,x,y,bullet_v*cos,bullet_v*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }

@@ -36,6 +36,7 @@ public:
     virtual void attacked();
     void moveTo(double x, double y, double t=63);
     void moveTo(QPoint pos, double t=63);
+    void moveWith(Character* origin);
     void whiteize(int time=30);
     void setCanBeMirrored(bool canBeMirrored=true);
     void setFaceToLeft(bool face_to_left=true);
@@ -79,6 +80,7 @@ protected:
 private:
     static int character_count;
     bool show_img_setting;
+    Character* origin;
 };
 
 #endif // CHARACTER_H

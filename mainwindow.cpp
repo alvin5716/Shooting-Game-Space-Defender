@@ -1160,7 +1160,7 @@ void MainWindow::doTick() {
                                Dialogue("你們星球的人真沒禮貌...",":/res/enemy/4/green.png",QRect(87,39,58,58)),
                                Dialogue("對...對不起，可以帶我去見他嗎？",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("沒那麼簡單，首領說要我們先測試你一下",":/res/enemy/4/green.png",QRect(87,39,58,58)),
-                               Dialogue("居然還要測試...？",":/res/player.png",QRect(0,0,43,33))
+                               Dialogue("怎麼這麼麻煩？",":/res/player.png",QRect(0,0,43,33))
                               });
             } else if(tickCheck(1100,500,3)) {
                 const int t = timesCount(1100,500);

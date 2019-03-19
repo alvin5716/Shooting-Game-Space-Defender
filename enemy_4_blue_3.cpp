@@ -101,6 +101,9 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
             shoot_timer=-100;
         } else shoot_timer=0;
     }
+    if((fall_count>=2 && shoot_timer2==50)||(purple_shooting && shoot_timer==-18)) {
+        prepEffect(":/res/bullet/4/purple.png",50,50);
+    }
     if(fall_count>=2) {
         Bullet* new_bullet;
         const int shoot_cd2 = 100;
@@ -112,7 +115,7 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
                 double cos = std::cos(angle+i*M_PI/(bullet_count/2));
                 double sin = std::sin(angle+i*M_PI/(bullet_count/2));
                 const double bullet_v = 3, bullet_a = 0.02;
-                new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),13,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new Bullet(QString(":/res/bullet/4/purple.png"),13,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }

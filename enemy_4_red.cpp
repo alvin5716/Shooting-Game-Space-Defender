@@ -18,6 +18,7 @@ void Enemy_4_Red::skill() {
     if(shoot_timer<move_time) {
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         setSpeed(move_speed*std::cos(angle),move_speed*std::sin(angle));
+        if(shoot_timer==move_time-50) prepEffect(":/res/bullet/4/red.png",50,50);
     } else if(shoot_timer==move_time){
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         constexpr int back=300;
@@ -34,7 +35,7 @@ std::vector<Bullet*>* Enemy_4_Red::shoot() {
         double sin, cos, angle = angleofvector(player->getX()-x,player->getY()-y), bullet_v=7.2;
         sin = std::sin(angle);
         cos = std::cos(angle);
-        new_bullet = new Bullet(QString(":/res/bullet/1/red.png"),12,x,y,bullet_v*cos,bullet_v*sin);
+        new_bullet = new Bullet(QString(":/res/bullet/4/red.png"),12,x,y,bullet_v*cos,bullet_v*sin);
         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
         new_bullets->push_back(new_bullet);
         return new_bullets;
