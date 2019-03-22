@@ -130,7 +130,3 @@ bool BulletDataContinuous::skill() {
     }
     return false;
 }
-BulletDataContinuous::~BulletDataContinuous()
-{
-
-}

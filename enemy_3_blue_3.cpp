@@ -19,7 +19,7 @@ void Enemy_3_Blue_3::skill() {
         shoot_timer = -270;
         shoot_cd = 30;
         skill_timer = -200;
-        emit useSkill("阿茲卡班的逃犯");
+        emit useSkill("魔法監獄的逃犯");
         this->redMagicShield();
     },
     [this](){
@@ -43,8 +43,16 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     const short interval = 60;
     //center
     if(shoot_timer==-75) {
-        new_bullet = center = new Bullet(":/res/bullet/3/purple.png",30,shootXPos(),shootYPos());
-        center->addTimeData(75);
+        //black
+        new_bullet = center = new Bullet(":/res/bullet/1/purple.png",35,shootXPos(),shootYPos());
+        new_bullet->addTimeData(75);
+        new_bullet->moveTo(Game::FrameWidth/2,Game::FrameHeight/2,75);
+        new_bullet->setInvulnerable();
+        connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
+        new_bullets->push_back(new_bullet);
+        //purple rotate
+        new_bullet = new Bullet(":/res/bullet/3/purple.png",25,shootXPos(),shootYPos());
+        new_bullet->addTimeData(75);
         new_bullet->moveTo(Game::FrameWidth/2,Game::FrameHeight/2,75);
         new_bullet->setInvulnerable();
         connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -53,7 +61,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     } else if(use_laser && shoot_timer==15) {
         use_laser=false;
         for(int i=0;i<2;++i) {
-            new_bullet = new Laser(":/res/bullet/laser/purple.png",18,M_PI+(2+shoot_count_yellow)*M_PI/5,(i==0)?M_PI/200:-M_PI/200,180,Game::FrameWidth/2,Game::FrameHeight/2,0);
+            new_bullet = new Laser(":/res/bullet/laser/yellow.png",18,M_PI+(2+shoot_count_yellow)*M_PI/5,(i==0)?M_PI/200:-M_PI/200,180,Game::FrameWidth/2,Game::FrameHeight/2,0);
             new_bullet->setZValue(-1);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

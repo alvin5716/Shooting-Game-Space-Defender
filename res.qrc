@@ -93,5 +93,7 @@
         <file>res/bullet/4/purple.png</file>
         <file>res/bullet/4/red.png</file>
         <file>res/bullet/4/yellow.png</file>
+        <file>res/sound/magic_shield.wav</file>
+        <file>res/sound/magic_smite.wav</file>
     </qresource>
 </RCC>

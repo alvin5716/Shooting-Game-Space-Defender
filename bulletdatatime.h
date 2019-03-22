@@ -14,7 +14,6 @@ public:
     BulletDataTime(Bullet* bullet, int wait_time, Player* player, double v, double a);
     BulletDataTime(Bullet* bullet, int wait_time, double x, double y, int time);
     bool skill() override;
-    ~BulletDataTime() override;
 private:
     int wait_time;
     BulletDataTimeType type;

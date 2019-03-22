@@ -107,7 +107,7 @@ MainWindow::MainWindow(QWidget *parent) :
     levelSelectAni->setFadeDir(WidgetAnimationer::FadeDirectionDown);
     //dialogue
     //audioer
-    audioers.resize(9);
+    audioers.resize(11);
     for(QMediaPlayer*& audioer: audioers) {
         audioer = new QMediaPlayer(nullptr,QMediaPlayer::LowLatency);
     }
@@ -124,6 +124,8 @@ MainWindow::MainWindow(QWidget *parent) :
     soundSet(Game::SoundWarning02,20,"res/sound/warning02.wav");
     soundSet(Game::SoundSnare,15,"res/sound/snare.wav");
     soundSet(Game::SoundShake,40,"res/sound/shake.wav");
+    soundSet(Game::SoundMagicShield,40,"res/sound/magic_shield.wav");
+    soundSet(Game::SoundMagicSmite,40,"res/sound/magic_smite.wav");
 }
 
 void MainWindow::setGamePage(Game::GamePage page) {
@@ -388,6 +390,7 @@ void MainWindow::doTick() {
             newEffectInit(new_effect);
             --skill_times;
             ui->PlayerSkill->display(skill_times);
+            soundPlay(Game::SoundMagicShield);
         }
         if(player->isUsingSkill()) {
             for(Bullet* enemy_bullet : enemy_bullets) { //continuous
@@ -796,7 +799,7 @@ void MainWindow::doTick() {
                     dialogueStart({Dialogue("外星人，走開！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
                                    Dialogue("抱歉就這樣隨便闖進來了，但我只是想問你們...",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("外外！討厭！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
-                                   Dialogue("(喔不，他是智障)",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("(喔不，他是笨蛋)",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("去去去！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
                                    Dialogue("好好好，我滾就是了",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("不要走！去死！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
@@ -904,7 +907,7 @@ void MainWindow::doTick() {
         //level 3
         case 3:
             if(tickCheck(220)) {
-                dialogueStart({Dialogue("剛剛飛到一半，突然被吸到了這個奇怪的地方.",":/res/player.png",QRect(0,0,43,33)),
+                dialogueStart({Dialogue("剛剛飛到一半，突然被吸到了這個奇怪的空間。",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("被吸進來後，儀器突然都失靈了，連塔台的訊號都收不到",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("這裡到底是哪裡啊...",":/res/player.png",QRect(0,0,43,33)),
                               });
@@ -1023,11 +1026,11 @@ void MainWindow::doTick() {
                     dialogueStart({Dialogue("哈利，這是我們宿命的對決。",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
                                    Dialogue("蛤？誰是哈利？",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("不用裝傻了，你就是命中註定，我最大的敵手",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
-                                   Dialogue("(為什麼又是一個智障啊？)",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("(為什麼又是一個笨蛋啊？)",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("根據我的占卜，在今天的這個時刻，會有一個外星生物進入我們的維度。",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
                                    Dialogue("只要打敗你，我們就能取得你們的「科技」",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
                                    Dialogue("再加上我們的「魔法」，我們就能到你們的維度裡稱霸！",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
-                                   Dialogue("(他好像不是智障啊，而且怎麼聽起來不太妙的感覺...)",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("聽起來好像不是笨蛋耶，而且感覺不太妙...",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("成為我們進步的踏腳石吧，哈利！",":/res/enemy/3/blue.png",QRect(4,3,39,39)),
                                    Dialogue("所以說那個名字到底是誰啊",":/res/player.png",QRect(0,0,43,33))
                                   });
@@ -1190,15 +1193,15 @@ void MainWindow::doTick() {
                 }
             } else if(tickCheck(5500,100,18)) {
                 int t = timesCount(5500,100);
-                static int x = qrand()%(Game::FrameWidth-80)+40;
+                static int x = qrand()%(Game::FrameWidth-400)+200;
                 x += qrand()%201-100;
-                if(x>Game::FrameWidth-40) x = 2*(Game::FrameWidth-40)-x;
-                else if(x<40) x = 80-x;
+                if(x>Game::FrameWidth-200) x = 2*(Game::FrameWidth-200)-x;
+                else if(x<200) x = 400-x;
                 new_enemy = new Enemy_4_Red(player,t>8?7:4,40,75,200,x,-40,0,2.4,0,-0.0018,true);
                 newEnemyInit(new_enemy);
                 if(t==17) tickFreeze();
-            } else if(tickCheck(5750,200,7)) {
-                const int t = timesCount(5750,200);
+            } else if(tickCheck(5750,240,7)) {
+                const int t = timesCount(5750,240);
                 new_enemy = new Enemy_4_Pink(player,t>8?7:4,40,5,5,t%2?70:Game::FrameWidth-70,-40,t%2?0.2:-0.2,1.8,t%2?-0.00004:0.00004,0.0018);
                 newEnemyInit(new_enemy);
             } else if(tickCheck(7252,181,3)) { //12403+361i, 3 times, warning bar fade in

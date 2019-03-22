@@ -11,6 +11,18 @@
 
 typedef std::function<void()> skillFunc;
 
+class PrepEffectInfo {
+public:
+    friend class Enemy;
+    PrepEffectInfo(QString img, int img_w, int img_h);
+    PrepEffectInfo& setTime(int time = 70);
+    PrepEffectInfo& setScale(int scale = 2.8);
+private:
+    QString img;
+    int img_w, img_h;
+    int time, scale;
+};
+
 class Enemy : public Character
 {
     Q_OBJECT
@@ -28,6 +40,7 @@ public:
     void setFloatable(bool floatable=true) override final;
     void noPoint();
     void attacked() override;
+    void prepEffect(PrepEffectInfo PrepInfo);
     void prepEffect(QString img, int img_w, int img_h);
     ~Enemy();
 public slots:

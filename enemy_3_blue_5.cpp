@@ -16,6 +16,7 @@ Enemy_3_Blue_5::Enemy_3_Blue_5(Player* player, int health, int radius, int shoot
     centerball=nullptr;
     randSeed=0;
     count=4;
+    this->setBossHPToSkill();
 }
 void Enemy_3_Blue_5::skill() {
     //second phase
@@ -43,7 +44,10 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
     Bullet* new_bullet;
     const int interval = 12;
-    if(shoot_timer==shoot_cd-50+(shoot_cd>=50?0:interval*15+shoot_cd)) prepEffect(":/res/bullet/3/red.png",50,50);
+    const int prepTime = 70;
+    PrepEffectInfo prepInfo(":/res/bullet/3/red.png",50,50);
+    prepInfo.setTime(prepTime);
+    if(shoot_timer==shoot_cd-prepTime+(shoot_cd>=prepTime?0:interval*15+shoot_cd)) prepEffect(prepInfo);
     if(shoot_timer>=shoot_cd && (shoot_timer-shoot_cd)%interval==0) {
         setVulnerable();
         double cos, sin, bullet_v, bullet_a;

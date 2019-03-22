@@ -68,7 +68,7 @@ void Bullet::setLookForward(bool lookForward) {
 }
 
 void Bullet::rotateStart() {
-    this->rotating=rotating;
+    this->rotating=true;
 }
 
 void Bullet::addData(BulletData* bullet_data) {

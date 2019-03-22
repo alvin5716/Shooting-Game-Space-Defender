@@ -18,8 +18,14 @@ void Enemy_4_Red::skill() {
     if(shoot_timer<move_time) {
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         setSpeed(move_speed*std::cos(angle),move_speed*std::sin(angle));
-        if(shoot_timer==move_time-50) prepEffect(":/res/bullet/4/red.png",50,50);
-    } else if(shoot_timer==move_time){
+        const int prepTime = 50;
+        if(shoot_timer==move_time-prepTime) {
+            PrepEffectInfo prepInfo(":/res/bullet/4/red.png",50,50);
+            prepInfo.setTime(prepTime);
+            prepInfo.setScale(2);
+            prepEffect(prepInfo);
+        }
+    } else if(shoot_timer==move_time) {
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         constexpr int back=300;
         moveTo(x-back*std::cos(angle),y-back*std::sin(angle));

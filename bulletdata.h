@@ -12,7 +12,7 @@ public:
     BulletData* next() const;
     void setNext(BulletData* next_data);
     virtual bool skill() = 0;
-    virtual ~BulletData();
+    ~BulletData();
 protected:
     BulletData* next_data;
     Bullet* bullet;

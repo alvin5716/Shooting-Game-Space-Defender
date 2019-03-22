@@ -117,7 +117,3 @@ bool BulletDataWall::skill() {
     }
     return false;
 }
-BulletDataWall::~BulletDataWall()
-{
-
-}

@@ -101,12 +101,15 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
             shoot_timer=-100;
         } else shoot_timer=0;
     }
-    if((fall_count>=2 && shoot_timer2==50)||(purple_shooting && shoot_timer==-18)) {
-        prepEffect(":/res/bullet/4/purple.png",50,50);
+    const int shoot_cd2 = 100;
+    const int prepTime = 70;
+    if((fall_count>=2 && shoot_timer2==shoot_cd2-prepTime)||(purple_shooting && shoot_timer==shoot_cd-prepTime)) {
+        PrepEffectInfo prepInfo(":/res/bullet/4/purple.png",50,50);
+        prepInfo.setTime(prepTime);
+        prepEffect(prepInfo);
     }
     if(fall_count>=2) {
         Bullet* new_bullet;
-        const int shoot_cd2 = 100;
         if(shoot_timer2<=shoot_cd2+24) ++shoot_timer2;
         if(shoot_timer2>=shoot_cd2 && (shoot_timer2-shoot_cd2)%8==0) {
             const int bullet_count = 30;
