@@ -110,7 +110,7 @@ private:
     std::vector<QMediaPlayer*> audioers;
     WidgetAnimationer* EndListAni, *levelSelectAni, *bossSkillAni;
     bool dialogueProcessing;
-    static const int StartTick = 5587;
+    static const int StartTick = 0;
     DialogueWidget* dialogueWidget;
 
 private slots:
