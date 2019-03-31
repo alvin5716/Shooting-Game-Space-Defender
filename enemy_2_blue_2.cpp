@@ -75,7 +75,7 @@ std::vector<Bullet*>* Enemy_2_Blue_2::shoot2() {
             }
             break;
         case 20:
-            new_laser = new Laser(QString(":/res/bullet/laser/purple.png"),16,0,0,100,0,stick[0]->getY(),100);
+            new_laser = new Laser(QString(":/res/bullet/laser/purple.png"),this,16,0,0,100,0,stick[0]->getY(),100);
             connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
             for(int i=0;i<2;++i) connect(new_laser,SIGNAL(deadSignal()),stick[i],SLOT(killItself()));
             new_bullets->push_back(new_laser);

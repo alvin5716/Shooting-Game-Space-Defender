@@ -11,6 +11,7 @@ Enemy_4_Blue_5::Enemy_4_Blue_5(Player* player, int health, int radius, int shoot
     point+=10;
     prep_count=0;
     setDisappearTime(-1);
+    setSummonCD(200);
 }
 void Enemy_4_Blue_5::skill() {
     double angle_seed = qrand()%5;
@@ -38,7 +39,7 @@ void Enemy_4_Blue_5::skill() {
     },
     [this,angle_seed](){
         Enemy_4_Blue::skill();
-        if(small_enemy_timer>0) --small_enemy_timer;
+        if(summon_timer>0) --summon_timer;
         else if(small_enemy==nullptr || small_enemy->isDead()) {
             double angle = ((4.5-angle_seed)/10.0)/5*M_PI;
             angle = (player->getX()<this->x?angle+M_PI/7:-angle-M_PI/7) - M_PI/2;

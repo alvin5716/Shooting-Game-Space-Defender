@@ -11,13 +11,16 @@ Enemy_4_Blue::Enemy_4_Blue(Player* player, int bossSkillHP, int health, int radi
     connect(this,SIGNAL(deadSignal()),this,SIGNAL(killItsBullets()));
     connect(this,SIGNAL(deadSignal()),this,SLOT(deadSet()));
     skill_timer=-125;
-    small_enemy_timer = 63;
+    summon_timer = 63;
     small_enemy = nullptr;
+    summon_cd = 125;
 }
-
+void Enemy_4_Blue::setSummonCD(int summon_cd) {
+    this->summon_cd = summon_cd;
+}
 void Enemy_4_Blue::small_enemy_died() {
     this->small_enemy = nullptr;
-    this->small_enemy_timer = 125;
+    this->summon_timer = this->summon_cd;
 }
 
 void Enemy_4_Blue::skill() {

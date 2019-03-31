@@ -17,10 +17,12 @@ public:
     PrepEffectInfo(QString img, int img_w, int img_h);
     PrepEffectInfo& setTime(int time = 70);
     PrepEffectInfo& setScale(int scale = 2.8);
+    PrepEffectInfo& setSound(bool withSound = true);
 private:
     QString img;
     int img_w, img_h;
     int time, scale;
+    bool withSound;
 };
 
 class Enemy : public Character

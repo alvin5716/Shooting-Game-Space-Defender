@@ -90,7 +90,8 @@ SOURCES += \
     keycontrolbutton.cpp \
     flashlabel.cpp \
     dialoguewidget.cpp \
-    enemy_4_blue_6.cpp
+    enemy_4_blue_6.cpp \
+    widgetanimationer.cpp
 
 HEADERS += \
         mainwindow.h \

@@ -41,7 +41,8 @@ namespace Game {
         SoundSnare,
         SoundShake,
         SoundMagicShield,
-        SoundMagicSmite
+        SoundMagicSmite,
+        SoundLaser
     };
 
     enum MagicType {

@@ -5,7 +5,7 @@
 #include "game.h"
 
 PrepEffectInfo::PrepEffectInfo(QString img, int img_w, int img_h)
-    :img(img),img_w(img_w),img_h(img_h),time(70),scale(2.8)
+    :img(img),img_w(img_w),img_h(img_h),time(70),scale(2.8),withSound(true)
 {
 
 }
@@ -17,6 +17,11 @@ PrepEffectInfo& PrepEffectInfo::setTime(int time) {
 
 PrepEffectInfo& PrepEffectInfo::setScale(int scale) {
     this->scale = scale;
+    return *this;
+}
+
+PrepEffectInfo& PrepEffectInfo::setSound(bool withSound) {
+    this->withSound = withSound;
     return *this;
 }
 
@@ -54,6 +59,7 @@ void Enemy::outOfFrame() {
 void Enemy::prepEffect(PrepEffectInfo prepInfo) {
     const int scale = prepInfo.scale, time = prepInfo.time;
     const int img_h = prepInfo.img_h, img_w = prepInfo.img_w;
+    const bool withSound = prepInfo.withSound;
     int show_w = (img_w<img_h)?this->radius*2*scale:this->radius*2*scale/img_h*img_w;
     int show_h = (img_h<img_w)?this->radius*2*scale:this->radius*2*scale/img_w*img_h;
     Effect* new_effect = new Effect(prepInfo.img,img_w,img_h,show_w,show_h,time,this->x,this->y);
@@ -63,7 +69,7 @@ void Enemy::prepEffect(PrepEffectInfo prepInfo) {
     new_effect->zoom(0,0,time);
     connect(this,SIGNAL(deadSignal()),new_effect,SLOT(killItself()));
     emit summonEffect(new_effect);
-    emit soundPlay(Game::SoundMagicSmite);
+    if(withSound) emit soundPlay(Game::SoundMagicSmite);
 }
 
 void Enemy::prepEffect(QString img, int img_w, int img_h) {

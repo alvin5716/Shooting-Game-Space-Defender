@@ -3,10 +3,12 @@
 
 #include "bullet.h"
 
+class Enemy;
+
 class Laser : public Bullet
 {
 public:
-    Laser(QString img, int radius, double angle, double omega=0, int lifetime=63, double x=0, double y=0, int prepare_time=75);
+    Laser(QString img, Enemy* shooter, int radius, double angle, double omega=0, int lifetime=63, double x=0, double y=0, int prepare_time=75);
     Character* testAttackedBy(Character* attacker);
     double getAngle() const;
 public slots:

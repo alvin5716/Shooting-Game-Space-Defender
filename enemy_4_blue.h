@@ -14,9 +14,11 @@ public slots:
     void deadSet();
     void small_enemy_died();
 protected:
-    int small_enemy_timer;
+    void setSummonCD(int summon_cd);
+    int summon_timer;
     Enemy* small_enemy;
 private:
+    int summon_cd;
     double angle[2];
     double attack_x, attack_y;
 };

@@ -2,10 +2,12 @@
 #include "effect.h"
 #include <QDebug>
 #include "game.h"
+#include "enemy.h"
 
-Laser::Laser(QString img, int radius, double angle, double omega, int lifetime, double x, double y, int prepare_time)
+Laser::Laser(QString img, Enemy* shooter, int radius, double angle, double omega, int lifetime, double x, double y, int prepare_time)
     :Bullet(img,radius,x,y)
 {
+    if(shooter!=nullptr) connect(this,SIGNAL(soundPlay(Game::Sound)),shooter,SIGNAL(soundPlay(Game::Sound)));
     this->setInvulnerable();
     this->angle=angle;
     while(this->angle>=2*M_PI) this->angle-=2*M_PI;
@@ -67,6 +69,9 @@ void Laser::move() {
         setOpacity(0.8);
         fadein(1);
         preparing=false;
+        emit soundPlay(Game::SoundLaser);
+    } else if(prepare_timer == 70) {
+        emit soundPlay(Game::SoundMagicSmite);
     }
     //move object
     setPosition(x+xv,y+yv);
@@ -76,7 +81,7 @@ void Laser::move() {
     while(angle<0) angle+=2*M_PI;
     if(!preparing) {
         //lifetimer
-        if(lifetimer!=-1) --lifetimer; //if lifetime is -1, it won't die
+        if(lifetimer!=0 && lifetimer!=-1) --lifetimer; //if lifetime is -1, it won't die
         if(lifetimer==0) {
             dead_timer=19;
         }

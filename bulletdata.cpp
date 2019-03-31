@@ -7,7 +7,7 @@ BulletData::BulletData(Bullet* bullet)
     :next_data(nullptr), bullet(bullet), infinite(false)
 {
     ++bulletdata_count;
-    qDebug() << "bullet data count:" << bulletdata_count;
+    //qDebug() << "bullet data count:" << bulletdata_count;
 }
 bool BulletData::isInfinite() const{
     return infinite;
@@ -20,5 +20,5 @@ BulletData* BulletData::next() const {
 }
 BulletData::~BulletData() {
     --bulletdata_count;
-    qDebug() << "bullet data count:" << bulletdata_count;
+    //qDebug() << "bullet data count:" << bulletdata_count;
 }

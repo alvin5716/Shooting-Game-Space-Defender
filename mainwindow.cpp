@@ -104,10 +104,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->levelIntro->hide();
     //level
     levelSelectAni = new WidgetAnimationer(ui->selectFrame);
-    levelSelectAni->setFadeDir(WidgetAnimationer::FadeDirectionDown);
+    levelSelectAni->setFadeDir(WidgetAnimationer::FadeDirectionNone);
+    levelSelectAni->setExpandDir(WidgetAnimationer::ExpandDirectionHor);
     //dialogue
     //audioer
-    audioers.resize(11);
+    audioers.resize(12);
     for(QMediaPlayer*& audioer: audioers) {
         audioer = new QMediaPlayer(nullptr,QMediaPlayer::LowLatency);
     }
@@ -126,6 +127,7 @@ MainWindow::MainWindow(QWidget *parent) :
     soundSet(Game::SoundShake,40,"res/sound/shake.wav");
     soundSet(Game::SoundMagicShield,40,"res/sound/magic_shield.wav");
     soundSet(Game::SoundMagicSmite,40,"res/sound/magic_smite.wav");
+    soundSet(Game::SoundLaser,40,"res/sound/laser.wav");
 }
 
 void MainWindow::setGamePage(Game::GamePage page) {
@@ -488,13 +490,13 @@ void MainWindow::doTick() {
         //level 1
         case 1:
             if(tickCheck(220)) {
-                dialogueStart({Dialogue("E-842，聽到請回答。",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("是，長官。",":/res/player.png",QRect(0,0,43,33)),
+                dialogueStart({Dialogue("這裡是塔台，防衛者號，聽到請回答。",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("是的，長官。",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("再複習一次你的任務！",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("收到。本次任務是要到各個星球探查「智多星」的座標位置，並與他們的首領交流。",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("很好，在那之後，向我們回報你們的對話。",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("很好，在那之後，向我們回報你們的對話，然後我們會給你進一步的指示。",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("還有記得，你的駕駛座旁邊有個翻譯裝置，可以用來跟那些外星生物溝通",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("前提是它們本身也要有一定的智力才行，不然就算翻譯出來也只會是一堆雜音而已",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("但前提是它們本身也要有一定的智力才行，不然就算翻譯出來也只會是一堆雜音而已",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("所以你得在這裡先找到能講話的生物談話。",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("收到！",":/res/player.png",QRect(0,0,43,33)),
                               });
@@ -573,10 +575,10 @@ void MainWindow::doTick() {
                     dialogueStart({Dialogue("你是哪個星球來的人啦？",":/res/enemy/1/blue.png",QRect(5,5,35,35)),
                                    Dialogue("(終於出現一個能講話的了...)",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("隨便跑來別人家裡，還把人家都打暈了是想怎樣啦",":/res/enemy/1/blue.png",QRect(5,5,35,35)),
-                                   Dialogue("不是，我只是想跟你們的頭目談個話，可是他們都無法溝通，而且都把我當成入侵者了...",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("不是，我只是想跟你們的頭目談個話，可是其他人都無法溝通，而且都把我當成入侵者了...",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("你是入侵者沒有錯啊，而且我不跟入侵者談話啦",":/res/enemy/1/blue.png",QRect(5,5,35,35)),
                                    Dialogue("我要直接把你打下來啦！",":/res/enemy/1/blue.png",QRect(5,5,35,35)),
-                                   Dialogue("原來你就是他們的頭目啊，不過好像也蠻明顯的就是了...",":/res/player.png",QRect(0,0,43,33))
+                                   Dialogue("原來你就是他們的頭目啊！(其實好像也蠻明顯的就是了...)",":/res/player.png",QRect(0,0,43,33))
                                   });
                 });
                 new_boss->moveTo(Game::FrameWidth/2,200,165);
@@ -799,9 +801,9 @@ void MainWindow::doTick() {
                     dialogueStart({Dialogue("外星人，走開！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
                                    Dialogue("抱歉就這樣隨便闖進來了，但我只是想問你們...",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("外外！討厭！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
-                                   Dialogue("(喔不，他是笨蛋)",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("去去去！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
-                                   Dialogue("好好好，我滾就是了",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("(看來是個無法溝通的笨蛋，問他大概也問不到東西)",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("去去去！去去去！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
+                                   Dialogue("好好好，我走就是了",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("不要走！去死！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
                                    Dialogue("??????",":/res/player.png",QRect(0,0,43,33))
                                   });
@@ -883,7 +885,7 @@ void MainWindow::doTick() {
                 if(player!=nullptr) player->gameEndSetting();
             } else if(tickCheck(7163)) {
                 dialogueStart({Dialogue("啊呀啊嘎嗚...",":/res/enemy/2/blue_3.png",QRect(5,2,25,25)),
-                               Dialogue("(看來是問不到東西了，繼續往這個方向飛看看好了)",":/res/player.png",QRect(0,0,43,33))
+                               Dialogue("(果然問不到東西，反正繼續往這個方向飛看看好了)",":/res/player.png",QRect(0,0,43,33))
                                 });
             } else if(tickCheck(7213)) { //14425, WIN LIST
                 ticking=false;
@@ -907,7 +909,7 @@ void MainWindow::doTick() {
         //level 3
         case 3:
             if(tickCheck(220)) {
-                dialogueStart({Dialogue("剛剛飛到一半，突然被吸到了這個奇怪的空間。",":/res/player.png",QRect(0,0,43,33)),
+                dialogueStart({Dialogue("剛剛飛到一半，突然被像傳送門一樣的東西吸到了這個地方。",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("被吸進來後，儀器突然都失靈了，連塔台的訊號都收不到",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("這裡到底是哪裡啊...",":/res/player.png",QRect(0,0,43,33)),
                               });

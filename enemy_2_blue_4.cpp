@@ -9,6 +9,7 @@ Enemy_2_Blue_4::Enemy_2_Blue_4(Player* player, int health, int radius, int shoot
     is_laser_used=false;
     second_shot=true;
     rainbowSpawnpoint[1]=rainbowSpawnpoint[0]=nullptr;
+    this->setBossHPToSkill();
 }
 void Enemy_2_Blue_4::skill() {
     //second phase
@@ -138,7 +139,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
             for(int i=0;i<2;++i) {
                 double ang = (player->getX()+player->getY()<=150)?-M_PI/5:(phi-M_PI/2+((shoot_count==0)?0:((phi>M_PI/4)?((phi<5*M_PI/16&&player->getY()<Game::FrameHeight/2)?M_PI/15:-M_PI/7):M_PI/6)));
                 ang += M_PI/2;
-                Laser *new_laser_temp = new Laser(":/res/bullet/laser/purple.png",10,ang,0,(shoot_count==0)?263:188,(i==0)?0:150,(i==0)?150:0,(shoot_count==0)?50:150);
+                Laser *new_laser_temp = new Laser(":/res/bullet/laser/purple.png",i==0?this:nullptr,10,ang,0,(shoot_count==0)?233:188,(i==0)?0:150,(i==0)?150:0,(shoot_count==0)?80:150);
                 bullet_angle = new_laser_temp->getAngle();
                 new_laser = new_laser_temp;
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
@@ -154,7 +155,7 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
             for(int i=0;i<2;++i) {
                 double ang = second_shot?phi-M_PI/2:(player->getX()-player->getY()>=Game::FrameWidth-150)?M_PI/5:(phi-M_PI/2+((phi>3*M_PI/4)?-M_PI/6:(phi<11*M_PI/16&&player->getY()<Game::FrameHeight/2)?-M_PI/15:M_PI/7));
                 ang += M_PI/2;
-                Laser *new_laser_temp = new Laser(":/res/bullet/laser/purple.png",10,ang,0,188,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,150);
+                Laser *new_laser_temp = new Laser(":/res/bullet/laser/purple.png",i==0?this:nullptr,10,ang,0,188,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,150);
                 bullet_angle = new_laser_temp->getAngle();
                 new_laser = new_laser_temp;
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));

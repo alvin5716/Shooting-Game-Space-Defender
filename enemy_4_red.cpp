@@ -23,6 +23,7 @@ void Enemy_4_Red::skill() {
             PrepEffectInfo prepInfo(":/res/bullet/4/red.png",50,50);
             prepInfo.setTime(prepTime);
             prepInfo.setScale(2);
+            prepInfo.setSound(false);
             prepEffect(prepInfo);
         }
     } else if(shoot_timer==move_time) {

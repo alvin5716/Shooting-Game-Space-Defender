@@ -63,7 +63,7 @@ void Enemy_4_Blue_3::skill() {
     },
     [this,angle_seed](){
         Enemy_4_Blue::skill();
-        if(small_enemy_timer>0) --small_enemy_timer;
+        if(summon_timer>0) --summon_timer;
         else if(small_enemy==nullptr || small_enemy->isDead()) {
             double angle = ((angle_seed-4.5)/10.0)/5*M_PI;
             angle += (angle>0?M_PI/3:-M_PI/3) - M_PI/2;

@@ -5,7 +5,7 @@ Enemy_4_Blue_6::Enemy_4_Blue_6(Player* player, int health, int radius, int shoot
     :Enemy_4_Blue(player,400,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     this->attackable = false;
-    this->point = 50;
+    this->point = 100;
     this->setBossHPToSkill();
     setDeathImg(":/res/enemy/4/blue_3.png",181,142);
     setDisappearTime(-1);
