@@ -10,7 +10,7 @@ class Flash : public QFrame
 {
     Q_OBJECT
 public:
-    explicit Flash(QWidget *parent = nullptr);
+    explicit Flash(QRect geo, QWidget *parent = nullptr);
     void setOpacity(double opacity);
     void setFlashTime(int fadeinTime=100, int fadeoutTime=100);
 public slots:

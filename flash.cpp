@@ -3,14 +3,15 @@
 #include <QPropertyAnimation>
 #include <QDebug>
 #include <QPalette>
+#include <QGraphicsView>
 #include "game.h"
 
-Flash::Flash(QWidget *parent) : QFrame(parent)
+Flash::Flash(QRect geo, QWidget *parent) : QFrame(parent)
 {
     //color
     this->setStyleSheet("background-color: white;");
     //init
-    setGeometry(51,30,Game::FrameWidth,Game::FrameHeight);
+    this->setGeometry(geo);
     hide();
     //effect
     eff = new QGraphicsOpacityEffect(this);

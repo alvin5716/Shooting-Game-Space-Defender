@@ -70,6 +70,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
+    void resizeEvent(QResizeEvent *e);
     void newMagicEffect(int show_w, int show_h, double x, double y, int lifetime=175, Game::MagicType type=Game::MagicTypeWhite);
     void tickFreeze();
     inline bool tickCheck(unsigned int tick);

@@ -35,7 +35,8 @@ DialogueWidget::DialogueWidget(QRect geometry, double opacity, QWidget* parent)
                                "}");
     dialogueAni->setGeometry(geometry);
     dialogueAni->setOpacity(opacity);
-    dialogueAni->setFadeDir(WidgetAnimationer::FadeDirectionUp);
+    dialogueAni->setFadeDir(WidgetAnimationer::FadeDirectionNone);
+    dialogueAni->setExpandDir(WidgetAnimationer::ExpandDirectionHor);
     dialogueAni->setLength(120);
 }
 

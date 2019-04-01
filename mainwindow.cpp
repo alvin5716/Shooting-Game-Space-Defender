@@ -11,6 +11,7 @@
 #include <ctime>
 #include "game.h"
 #include <QDir>
+#include <QDesktopWidget>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -41,6 +42,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->EndList->hide();
     EndListAni = new WidgetAnimationer(ui->EndList);
     EndListAni->setOpacity(0.6);
+    EndListAni->setFadeDir(WidgetAnimationer::FadeDirectionNone);
+    EndListAni->setExpandDir(WidgetAnimationer::ExpandDirectionHor);
     //button
     connect(ui->startButton,SIGNAL(clicked(bool)),this,SLOT(levelSelect()));
     connect(ui->QuitButton,SIGNAL(clicked(bool)),qApp,SLOT(quit()));
@@ -94,7 +97,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //focus policy
     setFocusPolicy(Qt::NoFocus);
     //flash
-    flash = new Flash(ui->GamePage);
+    flash = new Flash(ui->graphicsView->geometry(),ui->GamePage);
     //boss skill name animation
     bossSkillAni = new WidgetAnimationer(ui->BossSkill);
     bossSkillAni->setFadeDir(WidgetAnimationer::FadeDirectionLeft);
@@ -308,6 +311,32 @@ void MainWindow::warningFadeOut() {
     fadeoutAni->setEndValue(0);
     fadeoutAni->setEasingCurve(QEasingCurve::OutQuad);
     fadeoutAni->start(QPropertyAnimation::DeleteWhenStopped);
+}
+
+void MainWindow::resizeEvent(QResizeEvent *e) {
+    double central_h = e->size().height();
+    constexpr int margin = 5, border = 6;
+    //frame
+    double frame_h = central_h-2*margin;
+    double frame_w = (frame_h-2*border)*Game::FrameWidth/Game::FrameHeight+2*border;
+    ui->gameFrame->setGeometry(margin,margin,frame_w,frame_h);
+    ui->graphicsView->setGeometry(ui->graphicsView->x(),ui->graphicsView->y(),frame_w-2*border,frame_h-2*border);
+    flash->setGeometry(ui->graphicsView->geometry());
+    //view
+    QTransform zoom;
+    double sc = (double)ui->graphicsView->height()/Game::FrameHeight;
+    zoom.scale(sc,sc);
+    ui->graphicsView->setTransform(zoom);
+    //right
+    QRect geo(ui->rightWidget->geometry());
+    geo.setX(frame_w+2*margin+25);
+    geo.setY(margin-10);
+    geo.setHeight(891/872.0 * frame_h);
+    ui->rightWidget->setGeometry(geo);
+    //stacked
+    double stacked_w = geo.x() + geo.width() + margin;
+    double& stacked_h = central_h;
+    ui->stackedWidget->setGeometry((ui->centralWidget->width()-stacked_w)/2,0,stacked_w,stacked_h);
 }
 
 void MainWindow::doTick() {
@@ -1541,7 +1570,7 @@ void MainWindow::healthColorChange(QString color) {
     ui->gameFrame->setStyleSheet(str2.append(color).append(";"));
 }
 void MainWindow::redFlash() {
-    Flash* red_flash = new Flash(ui->GamePage);
+    Flash* red_flash = new Flash(ui->graphicsView->geometry(),ui->gameFrame);
     red_flash->setStyleSheet("background-color: red;");
     red_flash->setOpacity(0.3);
     red_flash->setFlashTime(400,400);
