@@ -9,7 +9,6 @@ Enemy_2_Blue_4::Enemy_2_Blue_4(Player* player, int health, int radius, int shoot
     is_laser_used=false;
     second_shot=true;
     rainbowSpawnpoint[1]=rainbowSpawnpoint[0]=nullptr;
-    this->setBossHPToSkill();
 }
 void Enemy_2_Blue_4::skill() {
     //second phase

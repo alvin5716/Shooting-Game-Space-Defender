@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     timer(nullptr),freezeTimer(nullptr),
     ticking(false),left(false),right(false),up(false),down(false),use_skill(false),
+    cur_left(false),cur_up(false),
     player(nullptr),dot(nullptr),secret(0),
     oriImg2(nullptr),cutImg(nullptr),oriImg(nullptr),
     bossHealthOpacityEff(this), bossLivesOpacityEff(this),
@@ -315,6 +316,10 @@ void MainWindow::warningFadeOut() {
 
 void MainWindow::resizeEvent(QResizeEvent *e) {
     double central_h = e->size().height();
+    this->triggerResize(central_h);
+}
+
+void MainWindow::triggerResize(double central_h) {
     constexpr int margin = 5, border = 6;
     //frame
     double frame_h = central_h-2*margin;
@@ -332,11 +337,28 @@ void MainWindow::resizeEvent(QResizeEvent *e) {
     geo.setX(frame_w+2*margin+25);
     geo.setY(margin-10);
     geo.setHeight(891/872.0 * frame_h);
+    geo.setWidth(311);
     ui->rightWidget->setGeometry(geo);
     //stacked
     double stacked_w = geo.x() + geo.width() + margin;
     double& stacked_h = central_h;
     ui->stackedWidget->setGeometry((ui->centralWidget->width()-stacked_w)/2,0,stacked_w,stacked_h);
+}
+
+inline bool MainWindow::playerLeft() {
+    return left&&right ? cur_left : left;
+}
+
+inline bool MainWindow::playerRight() {
+    return left&&right ? !cur_left : right;
+}
+
+inline bool MainWindow::playerUp() {
+    return up&&down ? cur_up : up;
+}
+
+inline bool MainWindow::playerDown() {
+    return up&&down ? !cur_up : down;
 }
 
 void MainWindow::doTick() {
@@ -388,14 +410,14 @@ void MainWindow::doTick() {
     //game
     if((gamestate==Game::GameStatePlaying && !dialogueProcessing)||gamestate==Game::GameStateWon) {
         //player speed
-        if(left && up) player->setSpeed(-Player::speed/sqrt(2),-Player::speed/sqrt(2));
-        else if(left && down) player->setSpeed(-Player::speed/sqrt(2),Player::speed/sqrt(2));
-        else if(right && up) player->setSpeed(Player::speed/sqrt(2),-Player::speed/sqrt(2));
-        else if(right && down) player->setSpeed(Player::speed/sqrt(2),Player::speed/sqrt(2));
-        else if(left) player->setSpeed(-Player::speed,0);
-        else if(right) player->setSpeed(Player::speed,0);
-        else if(up) player->setSpeed(0,-Player::speed);
-        else if(down) player->setSpeed(0,Player::speed);
+        if(playerLeft() && playerUp()) player->setSpeed(-Player::speed/sqrt(2),-Player::speed/sqrt(2));
+        else if(playerLeft() && playerDown()) player->setSpeed(-Player::speed/sqrt(2),Player::speed/sqrt(2));
+        else if(playerRight() && playerUp()) player->setSpeed(Player::speed/sqrt(2),-Player::speed/sqrt(2));
+        else if(playerRight() && playerDown()) player->setSpeed(Player::speed/sqrt(2),Player::speed/sqrt(2));
+        else if(playerLeft()) player->setSpeed(-Player::speed,0);
+        else if(playerRight()) player->setSpeed(Player::speed,0);
+        else if(playerUp()) player->setSpeed(0,-Player::speed);
+        else if(playerDown()) player->setSpeed(0,Player::speed);
         else player->setSpeed(0,0);
         //move
         emit doMove();
@@ -830,7 +852,7 @@ void MainWindow::doTick() {
                     dialogueStart({Dialogue("外星人，走開！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
                                    Dialogue("抱歉就這樣隨便闖進來了，但我只是想問你們...",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("外外！討厭！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
-                                   Dialogue("(看來是個無法溝通的笨蛋，問他大概也問不到東西)",":/res/player.png",QRect(0,0,43,33)),
+                                   Dialogue("(...看來是個笨蛋)",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("去去去！去去去！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
                                    Dialogue("好好好，我走就是了",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("不要走！去死！",":/res/enemy/2/blue.png",QRect(5,2,25,25)),
@@ -1194,7 +1216,7 @@ void MainWindow::doTick() {
                                Dialogue("你們星球的人真沒禮貌...",":/res/enemy/4/green.png",QRect(87,39,58,58)),
                                Dialogue("對...對不起，可以帶我去見他嗎？",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("沒那麼簡單，首領說要我們先測試你一下",":/res/enemy/4/green.png",QRect(87,39,58,58)),
-                               Dialogue("怎麼這麼麻煩？",":/res/player.png",QRect(0,0,43,33))
+                               Dialogue("不是你們自己要求我們來的嗎！？",":/res/player.png",QRect(0,0,43,33))
                               });
             } else if(tickCheck(1100,500,3)) {
                 const int t = timesCount(1100,500);
@@ -1635,22 +1657,22 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
         switch (e->key()) {
         case Qt::Key_A:
         case Qt::Key_Left:
-            right=false;
+            cur_left = true;
             left=true;
             break;
         case Qt::Key_D:
         case Qt::Key_Right:
-            left=false;
+            cur_left = false;
             right=true;
             break;
         case Qt::Key_W:
         case Qt::Key_Up:
-            down=false;
+            cur_up = true;
             up=true;
             break;
         case Qt::Key_S:
         case Qt::Key_Down:
-            up=false;
+            cur_up = false;
             down=true;
             break;
         case Qt::Key_Z:
@@ -1665,8 +1687,10 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
             if(gamestate==Game::GameStatePlaying) pauseAndResume();
             break;
         case Qt::Key_F11:
-            if(!(this->windowState()==Qt::WindowFullScreen)) this->setWindowState(Qt::WindowFullScreen);
-            else this->setWindowState(Qt::WindowMaximized);
+            if(!(this->windowState()==Qt::WindowFullScreen)) {
+                this->setWindowState(Qt::WindowFullScreen);
+                this->triggerResize(ui->centralWidget->height());
+            } else this->setWindowState(Qt::WindowMaximized);
             break;
         }
     }

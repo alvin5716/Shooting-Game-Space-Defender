@@ -82,6 +82,11 @@ public:
     void warningFadeOut();
     void redFlash();
     void dialogueStart(std::initializer_list<Dialogue> list);
+    void triggerResize(double central_h);
+    inline bool playerLeft();
+    inline bool playerRight();
+    inline bool playerUp();
+    inline bool playerDown();
     ~MainWindow();
 
 private:
@@ -92,6 +97,7 @@ private:
     unsigned int tick, gametime, boss_tick;
     bool ticking;
     bool left, right, up, down, use_skill;
+    bool cur_left, cur_up;
     Player *player;
     QGraphicsPixmapItem *background;
     std::vector<Bullet*> player_bullets;

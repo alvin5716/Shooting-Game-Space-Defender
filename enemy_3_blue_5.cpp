@@ -16,7 +16,6 @@ Enemy_3_Blue_5::Enemy_3_Blue_5(Player* player, int health, int radius, int shoot
     centerball=nullptr;
     randSeed=0;
     count=4;
-    this->setBossHPToSkill();
 }
 void Enemy_3_Blue_5::skill() {
     //second phase
