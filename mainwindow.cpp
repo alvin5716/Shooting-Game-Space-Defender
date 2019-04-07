@@ -22,7 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
     player(nullptr),dot(nullptr),secret(0),
     oriImg2(nullptr),cutImg(nullptr),oriImg(nullptr),
     bossHealthOpacityEff(this), bossLivesOpacityEff(this),
-    dialogueProcessing(false), dialogueWidget(nullptr)
+    dialogueProcessing(false), bossHPShortened(false),
+    dialogueWidget(nullptr),
+    gameFrameContentGeo()
 {
     ui->setupUi(this);
     this->setGamePage(Game::GamePageMenu);
@@ -132,6 +134,36 @@ MainWindow::MainWindow(QWidget *parent) :
     soundSet(Game::SoundMagicShield,40,"res/sound/magic_shield.wav");
     soundSet(Game::SoundMagicSmite,40,"res/sound/magic_smite.wav");
     soundSet(Game::SoundLaser,40,"res/sound/laser.wav");
+    //frame content geometry set
+    gameFrameContentGeo.resize(18);
+    gameFrameContentGeo.at(Game::UIBaseGeometryDialogue) = QRect(60,669,731,211);
+    gameFrameContentGeo.at(Game::UIBaseGeometryHP) = QRect(20,20,720,30);
+    gameFrameContentGeo.at(Game::UIBaseGeometryHPShort) = QRect(50,20,690,30);
+    std::initializer_list<QRect> geos = {
+        ui->EndList->geometry(),
+        ui->WarningBar->geometry(),
+        ui->levelIntro->geometry(),
+        ui->BossSkill->geometry(),
+        ui->BossLives->geometry(),
+        ui->WinWidget->geometry(),
+        ui->restartButton_3->geometry(),
+        ui->menuButton_3->geometry(),
+        ui->LoseLabel->geometry(),
+        ui->restartButton_2->geometry(),
+        ui->menuButton_2->geometry(),
+        ui->PauseLabel->geometry(),
+        ui->restartButton->geometry(),
+        ui->menuButton->geometry(),
+        ui->continueButton->geometry()
+    };
+    {
+        unsigned int i=3;
+        for(const QRect& geo: geos) {
+            gameFrameContentGeo.at(i) = geo;
+            if(++i==UINT_MAX) break;
+        }
+    }
+    this->triggerResize(ui->centralWidget->height());
 }
 
 void MainWindow::setGamePage(Game::GamePage page) {
@@ -218,7 +250,7 @@ void MainWindow::start() {
     bossSkillAni->setOpacity(0.7);
     //boss health bar
     ui->BossHealth->hide();
-    ui->BossHealth->setGeometry(70,40,720,30);
+    this->bossHPShortened = false;
     ui->BossHealth->setFormat("");
     ui->BossHealth->setValue(0);
     bossHealthOpacityEff.setOpacity(0.7);
@@ -289,6 +321,8 @@ void MainWindow::start() {
     timer->start(16); //62.5 tick per sec
     connect(timer,SIGNAL(timeout()),this,SLOT(doTick()));
     connect(timer,SIGNAL(timeout()),ui->graphicsView,SLOT(update()));
+    //resize
+    this->triggerResize(ui->centralWidget->height());
 }
 void MainWindow::warningFadeIn() {
     soundPlay(Game::SoundWarning);
@@ -321,28 +355,65 @@ void MainWindow::resizeEvent(QResizeEvent *e) {
 
 void MainWindow::triggerResize(double central_h) {
     constexpr int margin = 5, border = 6;
-    //frame
-    double frame_h = central_h-2*margin;
-    double frame_w = (frame_h-2*border)*Game::FrameWidth/Game::FrameHeight+2*border;
-    ui->gameFrame->setGeometry(margin,margin,frame_w,frame_h);
-    ui->graphicsView->setGeometry(ui->graphicsView->x(),ui->graphicsView->y(),frame_w-2*border,frame_h-2*border);
-    flash->setGeometry(ui->graphicsView->geometry());
-    //view
-    QTransform zoom;
-    double sc = (double)ui->graphicsView->height()/Game::FrameHeight;
-    zoom.scale(sc,sc);
-    ui->graphicsView->setTransform(zoom);
-    //right
-    QRect geo(ui->rightWidget->geometry());
-    geo.setX(frame_w+2*margin+25);
-    geo.setY(margin-10);
-    geo.setHeight(891/872.0 * frame_h);
-    geo.setWidth(311);
-    ui->rightWidget->setGeometry(geo);
-    //stacked
-    double stacked_w = geo.x() + geo.width() + margin;
-    double& stacked_h = central_h;
-    ui->stackedWidget->setGeometry((ui->centralWidget->width()-stacked_w)/2,0,stacked_w,stacked_h);
+    if(gamestate==Game::GameStateMenu) {
+        ui->stackedWidget->setGeometry((ui->centralWidget->width()-1150)/2,(central_h-940)/2,1150,940);
+    } else {
+        //frame
+        double frame_h = central_h-2*margin;
+        double frame_w = (frame_h-2*border)*Game::FrameWidth/Game::FrameHeight+2*border;
+        ui->gameFrame->setGeometry(margin,margin,frame_w,frame_h);
+        ui->graphicsView->setGeometry(ui->graphicsView->x(),ui->graphicsView->y(),frame_w-2*border,frame_h-2*border);
+        flash->setGeometry(ui->graphicsView->geometry());
+        //frame content
+        QSize frameBaseSize(Game::FrameWidth+2*border,Game::FrameHeight+2*border);
+        double frame_sc = frame_h/frameBaseSize.height();
+        auto scaleAsFrame = [frame_sc](QWidget* uiItem, QRect baseGeo){
+            QRect scaledGeo(baseGeo.x()*frame_sc,baseGeo.y()*frame_sc,baseGeo.width()*frame_sc,baseGeo.height()*frame_sc);
+            uiItem->setGeometry(scaledGeo);
+        };
+        auto scaleAsFrame_Ani = [frame_sc](WidgetAnimationer* uiItem_Ani, QRect baseGeo){
+            QRect scaledGeo(baseGeo.x()*frame_sc,baseGeo.y()*frame_sc,baseGeo.width()*frame_sc,baseGeo.height()*frame_sc);
+            uiItem_Ani->setGeometry(scaledGeo);
+        };
+        auto scaleAsFrame_Dia = [frame_sc](DialogueWidget* uiItem_Dia, QRect baseGeo){
+            QRect scaledGeo(baseGeo.x()*frame_sc,baseGeo.y()*frame_sc,baseGeo.width()*frame_sc,baseGeo.height()*frame_sc);
+            uiItem_Dia->setAniGeometry(scaledGeo);
+        };
+        scaleAsFrame(ui->WarningBar,gameFrameContentGeo.at(Game::UIBaseGeometryWarning));
+        scaleAsFrame(ui->levelIntro,gameFrameContentGeo.at(Game::UIBaseGeometryIntro));
+        scaleAsFrame_Ani(EndListAni,gameFrameContentGeo.at(Game::UIBaseGeometryEndList));
+        if(dialogueWidget!=nullptr) scaleAsFrame_Dia(dialogueWidget,gameFrameContentGeo.at(Game::UIBaseGeometryDialogue));
+        scaleAsFrame_Ani(bossSkillAni,gameFrameContentGeo.at(Game::UIBaseGeometrySkill));
+        scaleAsFrame(ui->BossHealth,gameFrameContentGeo.at(this->bossHPShortened?Game::UIBaseGeometryHPShort:Game::UIBaseGeometryHP));
+        scaleAsFrame(ui->BossLives,gameFrameContentGeo.at(Game::UIBaseGeometryLife));
+        //end list
+        scaleAsFrame(ui->WinWidget,gameFrameContentGeo.at(Game::UIBaseGeometryWinWidget));
+        scaleAsFrame(ui->restartButton_3,gameFrameContentGeo.at(Game::UIBaseGeometryRestartButton_3));
+        scaleAsFrame(ui->menuButton_3,gameFrameContentGeo.at(Game::UIBaseGeometryMenuButton_3));
+        scaleAsFrame(ui->LoseLabel,gameFrameContentGeo.at(Game::UIBaseGeometryLoseLabel));
+        scaleAsFrame(ui->restartButton_2,gameFrameContentGeo.at(Game::UIBaseGeometryRestartButton_2));
+        scaleAsFrame(ui->menuButton_2,gameFrameContentGeo.at(Game::UIBaseGeometryMenuButton_2));
+        scaleAsFrame(ui->PauseLabel,gameFrameContentGeo.at(Game::UIBaseGeometryPauseLabel));
+        scaleAsFrame(ui->restartButton,gameFrameContentGeo.at(Game::UIBaseGeometryRestartButton));
+        scaleAsFrame(ui->menuButton,gameFrameContentGeo.at(Game::UIBaseGeometryMenuButton));
+        scaleAsFrame(ui->continueButton,gameFrameContentGeo.at(Game::UIBaseGeometryContinueButton));
+        //view
+        QTransform zoom;
+        double sc = (double)ui->graphicsView->height()/Game::FrameHeight;
+        zoom.scale(sc,sc);
+        ui->graphicsView->setTransform(zoom);
+        //right
+        QRect geo(ui->rightWidget->geometry());
+        geo.setX(frame_w+2*margin+25);
+        geo.setY(margin-10);
+        geo.setHeight(891/872.0 * frame_h);
+        geo.setWidth(311);
+        ui->rightWidget->setGeometry(geo);
+        //stacked
+        double stacked_w = geo.x() + geo.width() + margin;
+        double& stacked_h = central_h;
+        ui->stackedWidget->setGeometry((ui->centralWidget->width()-stacked_w)/2,0,stacked_w,stacked_h);
+    }
 }
 
 inline bool MainWindow::playerLeft() {
@@ -619,7 +690,7 @@ void MainWindow::doTick() {
                 this->warningFadeOut();
             } else if(tickCheck(3925)) { //7850, BOSS 1
                 ui->BossLives->show();
-                ui->BossHealth->setGeometry(100,40,690,30);
+                this->bossHPShortened = true;
                 new_boss = new Enemy_Blue_2(player,240,60,175,200,Game::FrameWidth/2,-59,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 connect(new_boss,&Enemy::dialogueStart,[this](){
@@ -845,7 +916,7 @@ void MainWindow::doTick() {
                 this->warningFadeOut();
             } else if(tickCheck(6374)) { //12748, BOSS 1
                 ui->BossLives->show();
-                ui->BossHealth->setGeometry(100,40,690,30);
+                this->bossHPShortened = true;
                 new_boss = new Enemy_2_Blue_1(player,340,60,50,200,Game::FrameWidth/2,-59,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 connect(new_boss,&Enemy::dialogueStart,[this](){
@@ -1072,7 +1143,7 @@ void MainWindow::doTick() {
                 newMagicEffect(256,256,Game::FrameWidth/2,200,175,Game::MagicTypeBlue);
             } else if(tickCheck(5463)) {  //10925, BOSS 1
                 ui->BossLives->show();
-                ui->BossHealth->setGeometry(100,40,690,30);
+                this->bossHPShortened = true;
                 new_boss = new Enemy_3_Blue_1(player,250,80,18,200,Game::FrameWidth/2,200,0,0,0,0,0,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 connect(new_boss,&Enemy::dialogueStart,[this](){
@@ -1263,7 +1334,7 @@ void MainWindow::doTick() {
                 this->warningFadeOut();
             } else if(tickCheck(7824)) { //14048, BOSS 1
                 ui->BossLives->show();
-                ui->BossHealth->setGeometry(100,40,690,30);
+                this->bossHPShortened = true;
                 new_boss = new Enemy_4_Blue_1(player,270,60,36,200,Game::FrameWidth/2,-60,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 connect(new_boss,&Enemy::dialogueStart,[this](){
@@ -1319,7 +1390,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(8326)) { //8326
                 ui->BossLives->hide();
                 ui->BossSkill->hide();
-                ui->BossHealth->setGeometry(70,40,720,30);
+                this->bossHPShortened = false;
                 if(player!=nullptr) player->gameEndSetting();
             } else if(tickCheck(8590) && !player->isMaxHealth()) {
                 dialogueStart({Dialogue("嗚，雖然我有放水，不過好久沒動了，好累。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
@@ -1424,10 +1495,13 @@ void MainWindow::backToMenu() {
     this->setGamePage(Game::GamePageMenu);
     //game state
     gamestate=Game::GameStateMenu;
+    //resize
+    this->triggerResize(ui->centralWidget->height());
 }
 void MainWindow::dialogueStart(std::initializer_list<Dialogue> list) {
     if(dialogueWidget!=nullptr) delete dialogueWidget;
-    dialogueWidget = new DialogueWidget(QRect(60,669,731,211),0.8,ui->GamePage);
+    dialogueWidget = new DialogueWidget(gameFrameContentGeo.at(Game::UIBaseGeometryDialogue),0.8,ui->GamePage);
+    this->triggerResize(ui->centralWidget->height());
     connect(dialogueWidget,SIGNAL(soundPlay(Game::Sound)),this,SLOT(soundPlay(Game::Sound)));
     connect(dialogueWidget,SIGNAL(end()),this,SLOT(dialogueEnd()));
     this->dialogueProcessing = true;
@@ -1465,6 +1539,7 @@ void MainWindow::newEnemyInit(Enemy* new_enemy) {
 void MainWindow::newBossInit(Enemy* new_boss) {
     newEnemyInit(new_boss);
     //boss bar and lives
+    this->triggerResize(ui->centralWidget->height());
     ui->BossHealth->show();
     ui->BossHealth->setMaximum(new_boss->getHealth());
     ui->BossHealth->setValue(new_boss->getHealth());

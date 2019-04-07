@@ -79,3 +79,7 @@ bool BulletDataTime::skill() {
     }
     return false;
 }
+BulletDataTime::~BulletDataTime()
+{
+
+}

@@ -14,6 +14,7 @@ public:
     BulletDataWall(Bullet* bullet, Player* player, double v);
     BulletDataWall(Bullet* bullet, Player* player, double v, double a);
     bool skill() override;
+    ~BulletDataWall() override;
 private:
     bool already_enter;
     BulletDataWallType type;

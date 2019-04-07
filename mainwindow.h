@@ -116,9 +116,10 @@ private:
     QGraphicsOpacityEffect bossHealthOpacityEff, bossLivesOpacityEff;
     std::vector<QMediaPlayer*> audioers;
     WidgetAnimationer* EndListAni, *levelSelectAni, *bossSkillAni;
-    bool dialogueProcessing;
+    bool dialogueProcessing, bossHPShortened;
     static const int StartTick = 0;
     DialogueWidget* dialogueWidget;
+    std::vector<QRect> gameFrameContentGeo;
 
 private slots:
     void newEnemyInit(Enemy* new_enemy);

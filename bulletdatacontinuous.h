@@ -15,6 +15,7 @@ public:
     BulletDataContinuous(Bullet* bullet, int T, int r, bool sin_or_cos);
     BulletDataContinuous(Bullet* bullet, int T, int r, double (*periodic_func)(double));
     bool skill() override;
+    ~BulletDataContinuous() override;
 private:
     BulletDataContinuousType type;
     union {

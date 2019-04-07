@@ -50,6 +50,11 @@ void DialogueWidget::start(std::initializer_list<Dialogue> dialogues) {
     current_dia = -1;
     showNextDialogue();
 }
+
+void DialogueWidget::setAniGeometry(QRect geometry) {
+    this->dialogueAni->setGeometry(geometry);
+}
+
 void DialogueWidget::showNextDialogue() {
     //sound
     if(current_dia!=-1) emit soundPlay(Game::SoundSnare);

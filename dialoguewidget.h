@@ -23,6 +23,7 @@ public:
     void start(std::initializer_list<Dialogue> dialogues);
     void showNextDialogue();
     void keyPressEvent(QKeyEvent *event);
+    void setAniGeometry(QRect geometry);
 signals:
     void end();
     void soundPlay(Game::Sound);

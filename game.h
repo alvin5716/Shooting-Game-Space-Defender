@@ -50,6 +50,27 @@ namespace Game {
         MagicTypeBlue
     };
 
+    enum UIBaseGeometry {
+        UIBaseGeometryDialogue,
+        UIBaseGeometryHP,
+        UIBaseGeometryHPShort,
+        UIBaseGeometryEndList,
+        UIBaseGeometryWarning,
+        UIBaseGeometryIntro,
+        UIBaseGeometrySkill,
+        UIBaseGeometryLife,
+        UIBaseGeometryWinWidget,
+        UIBaseGeometryRestartButton_3,
+        UIBaseGeometryMenuButton_3,
+        UIBaseGeometryLoseLabel,
+        UIBaseGeometryRestartButton_2,
+        UIBaseGeometryMenuButton_2,
+        UIBaseGeometryPauseLabel,
+        UIBaseGeometryRestartButton,
+        UIBaseGeometryMenuButton,
+        UIBaseGeometryContinueButton
+    };
+
 }
 
 #endif // GAME_H
