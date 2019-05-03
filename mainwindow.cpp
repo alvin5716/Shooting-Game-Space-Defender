@@ -612,14 +612,14 @@ void MainWindow::doTick() {
         //level 1
         case 1:
             if(tickCheck(220)) {
-                dialogueStart({Dialogue("這裡是塔台，防衛者號，聽到請回答。",":/res/player.png",QRect(0,0,43,33)),
+                dialogueStart({Dialogue("這裡是塔台，防衛者號，聽到請回答。","",QRect(0,0,43,33)),
                                Dialogue("是的，長官。",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("再複習一次你的任務！",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("再複習一次你的任務！","",QRect(0,0,43,33)),
                                Dialogue("收到。本次任務是要到各個星球探查「智多星」的座標位置，並與他們的首領交流。",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("很好，在那之後，向我們回報你們的對話，然後我們會給你進一步的指示。",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("還有記得，你的駕駛座旁邊有個翻譯裝置，可以用來跟那些外星生物溝通",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("但前提是它們本身也要有一定的智力才行，不然就算翻譯出來也只會是一堆雜音而已",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("所以你得在這裡先找到能講話的生物談話。",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("很好，在那之後，向我們回報你們的對話，然後我們會給你進一步的指示。","",QRect(0,0,43,33)),
+                               Dialogue("還有記得，你的駕駛座旁邊有個翻譯裝置，可以用來跟那些外星生物溝通","",QRect(0,0,43,33)),
+                               Dialogue("但前提是它們本身也要有一定的智力才行，不然就算翻譯出來也只會是一堆雜音而已","",QRect(0,0,43,33)),
+                               Dialogue("所以你得在這裡先找到能講話的生物談話。","",QRect(0,0,43,33)),
                                Dialogue("收到！",":/res/player.png",QRect(0,0,43,33)),
                               });
             } if(tickCheck(250,63,7)) {
@@ -1278,7 +1278,7 @@ void MainWindow::doTick() {
         case 4:
             if(tickCheck(250,225,3)) {
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_4_Green(player,5,40,40,63,i?-40:Game::FrameWidth+40,-40,i?3.4:-3.4,3.4,i?-0.028:0.028,-0.028,false,true);
+                    new_enemy = new Enemy_4_Green(player,5,40,40,63,i?-40:Game::FrameWidth+40,-40,i?3.4:-3.4,3.4,i?-0.028:0.028,-0.028,false);
                     newEnemyInit(new_enemy);
                 }
             } else if(tickCheck(310)) {
@@ -1303,7 +1303,7 @@ void MainWindow::doTick() {
                 tickFreeze();
             } else if(tickCheck(2750,150,10)) {
                 const int t = timesCount(5500,200);
-                new_enemy = new Enemy_4_Green(player,7,40,40,63,(t%2==0)?-40:Game::FrameWidth+40,-40,(t%2==0)?3.4:-3.4,3.4,(t%2==0)?-0.028:0.028,-0.028,false,true);
+                new_enemy = new Enemy_4_Green(player,7,40,40,63,(t%2==0)?-40:Game::FrameWidth+40,-40,(t%2==0)?3.4:-3.4,3.4,(t%2==0)?-0.028:0.028,-0.028,false);
                 newEnemyInit(new_enemy);
                 if(tickCheck(2750+150*9)) tickFreeze();
             } else if(tickCheck(3075)) {
@@ -1569,7 +1569,9 @@ void MainWindow::killOtherEnemies(Enemy* this_enemy) {
 }
 void MainWindow::bossSkillLengthSetting(QString skill) {
     int length=skill.length();
-    bossSkillAni->setGeometry(QRect(790-length*50,80,length*50,50));
+    QRect new_geo(740-length*50,60,length*50,50);
+    gameFrameContentGeo.at(Game::UIBaseGeometrySkill) = new_geo;
+    this->triggerResize(ui->centralWidget->height());
 }
 void MainWindow::newMagicEffect(int show_w, int show_h, double x, double y, int lifetime, Game::MagicType type) {
     bool white = type==Game::MagicTypeWhite;

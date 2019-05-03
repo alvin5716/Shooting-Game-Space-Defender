@@ -1,11 +1,12 @@
 #include "enemy_4_red.h"
 #include "game.h"
+#include <QDebug>
 
 Enemy_4_Red::Enemy_4_Red(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool single_attack)
 :Enemy_4(QString(":/res/enemy/4/red.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,true,true)
     ,single_attack(single_attack),leaving(false)
 {
-    move_speed=3.2;
+    max_speed = 3.2;
     invulnerable = true;
 }
 
@@ -16,8 +17,14 @@ void Enemy_4_Red::skill() {
     }
     if(!invulnerable_after_init) invulnerable = false;
     if(shoot_timer<move_time) {
+        if(shoot_timer==0) stopable = false;
         double angle = angleofvector(player->getX()-x,player->getY()-y);
-        setSpeed(move_speed*std::cos(angle),move_speed*std::sin(angle));
+        setAcceleration(max_acceleration*std::cos(angle),max_acceleration*std::sin(angle));
+        double speed = std::sqrt(std::pow(xv,2)+std::pow(yv,2));
+        if(speed>max_speed) {
+            xv *= max_speed / speed;
+            yv *= max_speed / speed;
+        }
         const int prepTime = 50;
         if(shoot_timer==move_time-prepTime) {
             PrepEffectInfo prepInfo(":/res/bullet/4/red.png",50,50);
@@ -27,6 +34,7 @@ void Enemy_4_Red::skill() {
             prepEffect(prepInfo);
         }
     } else if(shoot_timer==move_time) {
+        stopable = true;
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         constexpr int back=300;
         moveTo(x-back*std::cos(angle),y-back*std::sin(angle));

@@ -11,7 +11,8 @@ public:
     std::vector<Bullet*>* shoot() override;
 private:
     bool single_attack, leaving;
-    static const int move_time=130;
+    static const int move_time = 130;
+    static constexpr double max_acceleration = 0.16;
 };
 
 #endif // ENEMY_4_RED_H

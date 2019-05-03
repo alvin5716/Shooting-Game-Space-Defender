@@ -4,23 +4,34 @@
 Enemy_4_Yellow::Enemy_4_Yellow(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
 :Enemy_4(QString(":/res/enemy/4/yellow.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
-    move_speed=0.8;
+    max_speed=0.8;
     invulnerable = true;
     interval = 90;
+
+    player_poses.reserve(63);
+    for(unsigned int i=0; i<player_poses.capacity(); ++i) player_poses.push_back(QPoint(-1,-1));
 }
 
 void Enemy_4_Yellow::skill() {
+    for(std::vector<QPoint>::iterator i=player_poses.begin(); i!=(player_poses.end()-1); ++i) {
+        (i+1)->setX(i->x());
+        (i+1)->setY(i->y());
+    }
+    player_poses.begin()->setX(player->getX());
+    player_poses.begin()->setY(player->getY());
     if(prep_timer>0) {
         --prep_timer;
         return;
     }
     if(!invulnerable_after_init) invulnerable = false;
+    double player_past_x = (player_poses.end()-1)->x();
+    if(player_past_x == -1) return;
     constexpr int safe=40;
-    if(x>player->getX()-radius-safe && x<player->getX()+radius+safe) {
+    if(x>player_past_x-radius-safe && x<player_past_x+radius+safe) {
         double speed;
-        if(player->getX()<safe+radius) speed=move_speed;
-        else if(player->getX()>Game::FrameWidth-safe-radius) speed=-move_speed;
-        else speed=(x>player->getX()?1:-1)*move_speed*std::cos((x-player->getX())/(radius+safe)*M_PI/2);
+        if(player_past_x<safe+radius) speed=max_speed;
+        else if(player_past_x>Game::FrameWidth-safe-radius) speed=-max_speed;
+        else speed=(x>player_past_x?1:-1)*max_speed*std::cos((x-player_past_x)/(radius+safe)*M_PI/2);
         setSpeed(speed,0);
     } else {
         setSpeed(0,0);

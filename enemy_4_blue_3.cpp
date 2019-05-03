@@ -112,7 +112,7 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
         Bullet* new_bullet;
         if(shoot_timer2<=shoot_cd2+24) ++shoot_timer2;
         if(shoot_timer2>=shoot_cd2 && (shoot_timer2-shoot_cd2)%8==0) {
-            const int bullet_count = 30;
+            const int bullet_count = 36;
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                 double angle = qrand()%100/100.0*M_PI/(bullet_count/2);
                 double cos = std::cos(angle+i*M_PI/(bullet_count/2));

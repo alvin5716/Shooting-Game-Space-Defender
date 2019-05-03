@@ -5,7 +5,7 @@ Enemy_4::Enemy_4(QString img, int img_w, int img_h, int show_w, int show_h, Play
     invulnerable_after_init(false)
 {
     setCanBeMirrored();
-    move_speed = 1;
+    max_speed = 1;
     prep_timer = 75;
 }
 void Enemy_4::setInvulnerable() {

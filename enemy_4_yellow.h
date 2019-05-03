@@ -12,6 +12,7 @@ public:
     void setInterval(int interval = 90);
 private:
     int interval;
+    std::vector<QPoint> player_poses;
 };
 
 

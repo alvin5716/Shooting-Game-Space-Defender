@@ -64,17 +64,38 @@ void DialogueWidget::showNextDialogue() {
         return;
     }
     Dialogue dialogue(dialogues.at(this->current_dia));
-    QRect cutFrame(dialogue.img_frame);
-    QPixmap oriImg(dialogue.img);
-    QPixmap cutImg = oriImg.copy(cutFrame);
-    if(cutImg.width()>=cutImg.height()) {
-        int w=dialogueImg->width();
-        int h=cutImg.height()*dialogueImg->width()/cutImg.width();
-        dialogueImg->setPixmap(cutImg.scaled(w,h));
+    if(QString(dialogue.img).compare("") != 0) {
+        dialogueImg->setGeometry(0,0,220,210);
+        dialogueText->setGeometry(220,30,511,180);
+        dialogueText->setStyleSheet("QLabel {"
+                                   "    border-style: solid;"
+                                   "    border-color: white;"
+                                   "    border-width: 5px 5px 5px 0px;"
+                                   "    color: white;"
+                                   "    border-radius: 5px;"
+                                   "}");
+        QRect cutFrame(dialogue.img_frame);
+        QPixmap oriImg(dialogue.img);
+        QPixmap cutImg = oriImg.copy(cutFrame);
+        if(cutImg.width()>=cutImg.height()) {
+            int w=dialogueImg->width();
+            int h=cutImg.height()*dialogueImg->width()/cutImg.width();
+            dialogueImg->setPixmap(cutImg.scaled(w,h));
+        } else {
+            int w=cutImg.width()*dialogueImg->height()/cutImg.height();
+            int h=dialogueImg->height();
+            dialogueImg->setPixmap(cutImg.scaled(w,h));
+        }
     } else {
-        int w=cutImg.width()*dialogueImg->height()/cutImg.height();
-        int h=dialogueImg->height();
-        dialogueImg->setPixmap(cutImg.scaled(w,h));
+        dialogueImg->setGeometry(0,0,0,0);
+        dialogueText->setGeometry(0,30,726,180);
+        dialogueText->setStyleSheet("QLabel {"
+                                   "    border-style: solid;"
+                                   "    border-color: white;"
+                                   "    border-width: 5px 5px 5px 5px;"
+                                   "    color: white;"
+                                   "    border-radius: 5px;"
+                                   "}");
     }
     dialogueText->setText(dialogue.content);
 }
