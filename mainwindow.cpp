@@ -39,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
+    ui->graphicsView->setRenderHints(QPainter::SmoothPixmapTransform);
+    ui->graphicsView->setOptimizationFlag(QGraphicsView::DontAdjustForAntialiasing);
     //qrand
     qsrand(time(nullptr));
     //endlist
@@ -100,7 +102,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //focus policy
     setFocusPolicy(Qt::NoFocus);
     //flash
-    flash = new Flash(ui->graphicsView->geometry(),ui->GamePage);
+    flash = new Flash(QRect(-50,-50,Game::FrameWidth+100,Game::FrameHeight+100));
+    scene->addItem(flash);
     //boss skill name animation
     bossSkillAni = new WidgetAnimationer(ui->BossSkill);
     bossSkillAni->setFadeDir(WidgetAnimationer::FadeDirectionLeft);
@@ -363,7 +366,6 @@ void MainWindow::triggerResize(double central_h) {
         double frame_w = (frame_h-2*border)*Game::FrameWidth/Game::FrameHeight+2*border;
         ui->gameFrame->setGeometry(margin,margin,frame_w,frame_h);
         ui->graphicsView->setGeometry(ui->graphicsView->x(),ui->graphicsView->y(),frame_w-2*border,frame_h-2*border);
-        flash->setGeometry(ui->graphicsView->geometry());
         //frame content
         QSize frameBaseSize(Game::FrameWidth+2*border,Game::FrameHeight+2*border);
         double frame_sc = frame_h/frameBaseSize.height();
@@ -1669,11 +1671,12 @@ void MainWindow::healthColorChange(QString color) {
     ui->gameFrame->setStyleSheet(str2.append(color).append(";"));
 }
 void MainWindow::redFlash() {
-    Flash* red_flash = new Flash(ui->graphicsView->geometry(),ui->gameFrame);
-    red_flash->setStyleSheet("background-color: red;");
+    Flash* red_flash = new Flash(QRect(-50,-50,Game::FrameWidth+100,Game::FrameHeight+100));
+    red_flash->setBrush(QBrush(Qt::red));
     red_flash->setOpacity(0.3);
     red_flash->setFlashTime(400,400);
     red_flash->flash(true);
+    scene->addItem(red_flash);
 }
 void MainWindow::sceneVibrate(short vibrate_count, bool withSound) {
     static QPropertyAnimation* vibrateAni=nullptr;

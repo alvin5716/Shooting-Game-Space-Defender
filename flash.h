@@ -1,22 +1,23 @@
 #ifndef FLASH_H
 #define FLASH_H
 
-#include <QWidget>
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>
 #include <QTextBrowser>
+#include <QGraphicsRectItem>
 
-class Flash : public QFrame
+class Flash : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 public:
-    explicit Flash(QRect geo, QWidget *parent = nullptr);
+    explicit Flash(QRect geo);
     void setOpacity(double opacity);
     void setFlashTime(int fadeinTime=100, int fadeoutTime=100);
 public slots:
     void flash(bool deleteWhenStopped=false);
     void flashover();
     void killItself();
+    void hide();
 private:
     QGraphicsOpacityEffect *eff;
     QPropertyAnimation *fadeinAni;

@@ -5,14 +5,15 @@
 #include <QPalette>
 #include <QGraphicsView>
 #include "game.h"
+#include <QGraphicsRectItem>
 
-Flash::Flash(QRect geo, QWidget *parent) : QFrame(parent)
+Flash::Flash(QRect geo) : QGraphicsRectItem(geo)
 {
     //color
-    this->setStyleSheet("background-color: white;");
+    this->setBrush(QBrush(Qt::white));
     //init
-    this->setGeometry(geo);
-    hide();
+    this->hide();
+    this->setZValue(99);
     //effect
     eff = new QGraphicsOpacityEffect(this);
     this->setGraphicsEffect(eff);
@@ -32,6 +33,9 @@ Flash::Flash(QRect geo, QWidget *parent) : QFrame(parent)
     connect(fadeinAni,SIGNAL(finished()),this,SLOT(flashover()));
     //hide after fadeout
     connect(fadeoutAni,SIGNAL(finished()),this,SLOT(hide()));
+}
+void Flash::hide() {
+    this->QGraphicsRectItem::hide();
 }
 void Flash::flash(bool deleteWhenStopped) {
     if(deleteWhenStopped) connect(fadeoutAni,SIGNAL(finished()),this,SLOT(killItself()));

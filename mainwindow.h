@@ -117,7 +117,7 @@ private:
     std::vector<QMediaPlayer*> audioers;
     WidgetAnimationer* EndListAni, *levelSelectAni, *bossSkillAni;
     bool dialogueProcessing, bossHPShortened;
-    static const int StartTick = 0;
+    static const int StartTick = 6373;
     DialogueWidget* dialogueWidget;
     std::vector<QRect> gameFrameContentGeo;
 
