@@ -91,7 +91,8 @@ SOURCES += \
     flashlabel.cpp \
     dialoguewidget.cpp \
     enemy_4_blue_6.cpp \
-    widgetanimationer.cpp
+    widgetanimationer.cpp \
+    teammate.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -162,7 +163,8 @@ HEADERS += \
     flashlabel.h \
     dialoguewidget.h \
     widgetanimationer.h \
-    enemy_4_blue_6.h
+    enemy_4_blue_6.h \
+    teammate.h
 
 FORMS += \
         mainwindow.ui

@@ -222,6 +222,12 @@ double Character::getX() const {
 double Character::getY() const {
     return y;
 }
+double Character::getXV() const {
+    return xv;
+}
+double Character::getYV() const {
+    return yv;
+}
 double Character::getRadius() const {
     return radius;
 }
@@ -249,6 +255,14 @@ double Character::angleofvector(double x, double y) const {
     if(x<0) return std::atan(y/x)+M_PI; //2,3
     if(y>0) return std::atan(y/x); //1
     return std::atan(y/x)+2*M_PI; //4
+}
+double Character::distanceTo(QPoint another_pos) {
+    double x_dif = another_pos.x() - this->x;
+    double y_dif = another_pos.y() - this->y;
+    return std::sqrt(x_dif*x_dif + y_dif*y_dif);
+}
+double Character::distanceTo(Character* another_chara) {
+    return distanceTo(QPoint(another_chara->getX(), another_chara->getY()));
 }
 void Character::setCanBeMirrored(bool canBeMirrored) {
     this->canBeMirrored=canBeMirrored;

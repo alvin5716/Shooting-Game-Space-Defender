@@ -12,6 +12,7 @@
 #include "game.h"
 #include <QDir>
 #include <QDesktopWidget>
+#include <float.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     timer(nullptr),freezeTimer(nullptr),
     ticking(false),left(false),right(false),up(false),down(false),use_skill(false),
     cur_left(false),cur_up(false),
-    player(nullptr),dot(nullptr),secret(0),
+    player(nullptr),teammate(nullptr),dot(nullptr),secret(0),
     oriImg2(nullptr),cutImg(nullptr),oriImg(nullptr),
     bossHealthOpacityEff(this), bossLivesOpacityEff(this),
     dialogueProcessing(false), bossHPShortened(false),
@@ -56,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->LevelButton_2,SIGNAL(clicked(bool)),this,SLOT(start2()));
     connect(ui->LevelButton_3,SIGNAL(clicked(bool)),this,SLOT(start3()));
     connect(ui->LevelButton_4,SIGNAL(clicked(bool)),this,SLOT(start4()));
+    connect(ui->LevelButton_5,SIGNAL(clicked(bool)),this,SLOT(start5()));
     auto buttonsConnect = [this](std::vector<KeyControlButton*>& buttons, const char* slot) {
         for(KeyControlButton* button: buttons) {
             connect(button,SIGNAL(clicked()),this,slot);
@@ -87,7 +89,8 @@ MainWindow::MainWindow(QWidget *parent) :
     std::vector<KeyControlButton*> levelButtons({ui->LevelButton_1,
                                                  ui->LevelButton_2,
                                                  ui->LevelButton_3,
-                                                 ui->LevelButton_4});
+                                                 ui->LevelButton_4,
+                                                 ui->LevelButton_5});
     keyControlButtonsConnect(levelButtons,KeyControlButton::ArrowPosDown);
     std::vector<KeyControlButton*> pauseListButtons({ui->menuButton,
                                                 ui->restartButton,
@@ -226,6 +229,10 @@ void MainWindow::start4() {
     level=4;
     start();
 }
+void MainWindow::start5() {
+    level=5;
+    start();
+}
 void MainWindow::start() {
     //dialogue
     if(dialogueProcessing) dialogueEnd();
@@ -284,6 +291,15 @@ void MainWindow::start() {
     connect(this,SIGNAL(doImgMove()),player,SLOT(img_move()));
     connect(player,SIGNAL(healthColorChange(QString)),this,SLOT(healthColorChange(QString)));
     player->healthColorChange("white");
+    //teammate
+    if(level>=5) {
+        if(teammate!=nullptr) delete teammate;
+        teammate = new Teammate(":/res/enemy/4/blue.png",200,153,120,92,player,20,player->getX()-120,player->getY());
+        scene->addItem(teammate);
+        teammate->setCanBeMirrored();
+        connect(this,SIGNAL(doMove()),teammate,SLOT(move()));
+        connect(this,SIGNAL(doImgMove()),teammate,SLOT(img_move()));
+    }
     //dot
     if(dot!=nullptr) delete dot;
     dot = new Shield(":/res/effect/dot.png",50,50,10,10,player,-1,player->getX(),player->getY());
@@ -310,6 +326,10 @@ void MainWindow::start() {
     case 4:
         boss_tick=Game::BossTick4;
         strBossBG=":/res/bg/boss_4.png";
+        break;
+    case 5:
+        boss_tick=Game::BossTick5;
+        strBossBG=":/res/bg/boss_5.png";
         break;
     default:
         boss_tick=Game::BossTick1;
@@ -535,6 +555,32 @@ void MainWindow::doTick() {
                 connect(this,SIGNAL(doImgMove()),new_player_bullet,SLOT(img_move()));
             }
         }
+        //teammate nearestEnemyPos
+        if(teammate!=nullptr) {
+            double min_dis = DBL_MAX;
+            std::vector<Enemy*>::iterator i;
+            for (std::vector<Enemy*>::iterator j=enemies.begin();j!=enemies.end();++j) {
+                if(min_dis > teammate->distanceTo(*j)) {
+                    min_dis = teammate->distanceTo(*j);
+                    i = j;
+                }
+            }
+            if(min_dis==DBL_MAX) teammate->sendNearestEnemyPos(false);
+            else teammate->sendNearestEnemyPos(true,QPoint((*i)->getX(),(*i)->getY()),QPoint((*i)->getXV(),(*i)->getYV()));
+            if(teammate->isShooting()) { //teammate shoot
+                //shoot
+                std::vector<Bullet*>* new_mate_bullets;
+                new_mate_bullets = teammate->shoot();
+                if(new_mate_bullets!=nullptr) {
+                    for(std::vector<Bullet*>::iterator j=(*new_mate_bullets).begin();j!=(*new_mate_bullets).end();++j) {
+                        scene->addItem(*j);
+                        connect(this,SIGNAL(doMove()),*j,SLOT(move()));
+                        connect(this,SIGNAL(doImgMove()),*j,SLOT(img_move()));
+                        player_bullets.push_back(*j);
+                    }
+                }
+            }
+        }
         //damaged
         std::vector<Character*> attackers(enemies.begin(),enemies.end());
         Character* real_attacker = player->testAttackedBy(attackers);
@@ -614,14 +660,14 @@ void MainWindow::doTick() {
         //level 1
         case 1:
             if(tickCheck(220)) {
-                dialogueStart({Dialogue("這裡是塔台，防衛者號，聽到請回答。","",QRect(0,0,43,33)),
+                dialogueStart({Dialogue("這裡是塔台，防衛者號，聽到請回答。"),
                                Dialogue("是的，長官。",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("再複習一次你的任務！","",QRect(0,0,43,33)),
+                               Dialogue("再複習一次你的任務！"),
                                Dialogue("收到。本次任務是要到各個星球探查「智多星」的座標位置，並與他們的首領交流。",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("很好，在那之後，向我們回報你們的對話，然後我們會給你進一步的指示。","",QRect(0,0,43,33)),
-                               Dialogue("還有記得，你的駕駛座旁邊有個翻譯裝置，可以用來跟那些外星生物溝通","",QRect(0,0,43,33)),
-                               Dialogue("但前提是它們本身也要有一定的智力才行，不然就算翻譯出來也只會是一堆雜音而已","",QRect(0,0,43,33)),
-                               Dialogue("所以你得在這裡先找到能講話的生物談話。","",QRect(0,0,43,33)),
+                               Dialogue("很好，在那之後，向我們回報你們的對話，然後我們會給你進一步的指示。"),
+                               Dialogue("還有記得，你的駕駛座旁邊有個翻譯裝置，可以用來跟那些外星生物溝通"),
+                               Dialogue("但前提是它們本身也要有一定的智力才行，不然就算翻譯出來也只會是一堆雜音而已"),
+                               Dialogue("所以你得在這裡先找到能講話的生物談話。"),
                                Dialogue("收到！",":/res/player.png",QRect(0,0,43,33)),
                               });
             } if(tickCheck(250,63,7)) {
@@ -1080,7 +1126,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(2250)) { //4500
                 newMagicEffect(180,180,Game::FrameWidth/2,250);
             } else if(tickCheck(2350)) { //4700
-                new_enemy = new Enemy_3_Yellow(player,30,60,125,60,Game::FrameWidth/2,250);
+                new_enemy = new Enemy_3_Yellow(player,45,60,125,60,Game::FrameWidth/2,250);
                 new_enemy->fadein();
                 newEnemyInit(new_enemy);
                 tickFreeze();
@@ -1109,7 +1155,7 @@ void MainWindow::doTick() {
             } else if(tickCheck(3750)) { //7500
                 newMagicEffect(180,180,Game::FrameWidth/2,250);
             } else if(tickCheck(3850)) {  //7700
-                new_enemy = new Enemy_3_Pink(player,40,60,60,50,Game::FrameWidth/2,250);
+                new_enemy = new Enemy_3_Pink(player,45,60,60,50,Game::FrameWidth/2,250);
                 new_enemy->fadein();
                 newEnemyInit(new_enemy);
                 tickFreeze();
@@ -1284,11 +1330,11 @@ void MainWindow::doTick() {
                     newEnemyInit(new_enemy);
                 }
             } else if(tickCheck(310)) {
-                dialogueStart({Dialogue("慢著，你是來見我們首領的地球人嗎？",":/res/enemy/4/green.png",QRect(87,39,58,58)),
+                dialogueStart({Dialogue("慢著，你是來見我們首領的地球人嗎？",":/res/enemy/4/green.png",QRect(60,30,88,77)),
                                Dialogue("哇，雜魚說話了！",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("你們星球的人真沒禮貌...",":/res/enemy/4/green.png",QRect(87,39,58,58)),
+                               Dialogue("你們星球的人真沒禮貌...",":/res/enemy/4/green.png",QRect(60,30,88,77)),
                                Dialogue("對...對不起，可以帶我去見他嗎？",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("沒那麼簡單，首領說要我們先測試你一下",":/res/enemy/4/green.png",QRect(87,39,58,58)),
+                               Dialogue("沒那麼簡單，首領說要我們先測試你一下",":/res/enemy/4/green.png",QRect(60,30,88,77)),
                                Dialogue("不是你們自己要求我們來的嗎！？",":/res/player.png",QRect(0,0,43,33))
                               });
             } else if(tickCheck(1100,500,3)) {
@@ -1341,16 +1387,16 @@ void MainWindow::doTick() {
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 connect(new_boss,&Enemy::dialogueStart,[this](){
                     dialogueStart({Dialogue("你是首領嗎？怎麼好像只是其他隻的放大版而已...",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("我所嚮往的是如我們的母星一般，外表黯淡，但內心的光芒隱隱透出。大智若愚，曖曖含光。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                   Dialogue("我所嚮往的是如我們的母星一般，外表黯淡，但內心的光芒隱隱透出。大智若愚，曖曖含光。",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
                                    Dialogue("......",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("重點不是這個，你會在這裡是因為我向你們星球傳了無線電訊號，我需要有人幫忙。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                   Dialogue("重點不是這個，你會在這裡是因為我向你們星球傳了無線電訊號，我需要有人幫忙。",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
                                    Dialogue("幫忙？",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("其實說起來有點不好意思...",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
-                                   Dialogue("我們之前開發的機械智慧因為不明原因開始暴走了。沒弄好的話，這幾十光年內的星球可能都有危險。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                   Dialogue("其實說起來有點不好意思...",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
+                                   Dialogue("我們之前開發的機械智慧因為不明原因開始暴走了。沒弄好的話，這幾十光年內的星球可能都有危險。",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
                                    Dialogue("幾十光年的話不是也包括我們嗎？那麼那東西在哪裡？",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("這個我們留到我打累了以後再說吧。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                   Dialogue("這個我們留到我打累了以後再說吧。",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
                                    Dialogue("等...等一下，又要打？",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("當然啊，如果你沒有一定的能力，帶你去只會扯後腿而已。",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
+                                   Dialogue("當然啊，如果你沒有一定的能力，帶你去只會扯後腿而已。",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
                                    Dialogue("這問題不是你們搞出來的嗎！",":/res/player.png",QRect(0,0,43,33))
                                   });
                 });
@@ -1406,8 +1452,8 @@ void MainWindow::doTick() {
                                Dialogue("那裡的大氣很糟，我們可以躲在那裡觀察他們而不容易被發現。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58))
                                });
             } else if(tickCheck(8590) && player->isMaxHealth()) {
-                dialogueStart({Dialogue("你比我想像的還要強好多喔...竟然完全沒被打到過...",":/res/enemy/4/blue.png",QRect(87,39,58,58)),
-                               Dialogue("不認真打一下好像太失禮了，對吧？",":/res/enemy/4/blue.png",QRect(87,39,58,58))
+                dialogueStart({Dialogue("你比我想像的還要強好多喔...竟然完全沒被打到過...",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
+                               Dialogue("不認真打一下好像太失禮了，對吧？",":/res/enemy/4/blue.png",QRect(60,30,88,77))
                                });
                 tick = 8645;
             } else if(tickCheck(8640) || tickCheck(8963)) { //8640, WIN LIST
@@ -1446,7 +1492,23 @@ void MainWindow::doTick() {
                                });
             }
             break;
+        //level 5
         case 5:
+            if(tickCheck(220)) {
+                dialogueStart({Dialogue("呼叫塔台，這裡是防衛者號，聽到請回答。",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("收到，你找到智多星的首領了嗎？"),
+                               Dialogue("是的，我們現在正要前往機械智慧所在地旁的星球，迷霧星。",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("我們會在那裡靜觀其變、研擬對策。",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("迷霧星是大氣活動非常劇烈的星球，沒有複雜生物存在，雖然危險但是個很好的藏身之處。",":/res/enemy/4/blue.png",QRect(60,30,88,77))
+                              });
+            } else if(tickCheck(250,131,5)) { //500+262i, 5 times
+                /*
+                for(int i=0;i<2;++i) {
+                    new_enemy = new Enemy_2_Green(player,3,35,150,100,(i==0)?-35:Game::FrameWidth+35,250,(i==0)?2.4:-2.4,-1,0,0.004);
+                    newEnemyInit(new_enemy);
+                }
+                */
+            }
             break;
         default:
             qDebug() << "error: can't get what level is selected";
@@ -1493,6 +1555,8 @@ void MainWindow::backToMenu() {
     player=nullptr;
     emit killEffects();
     dot=nullptr;
+    delete teammate;
+    teammate=nullptr;
     //menu
     this->setGamePage(Game::GamePageMenu);
     //game state
@@ -1756,7 +1820,10 @@ void MainWindow::keyPressEvent(QKeyEvent *e) {
             down=true;
             break;
         case Qt::Key_Z:
-            if(gamestate!=Game::GameStateMenu) player->setShooting(true);
+            if(gamestate!=Game::GameStateMenu) {
+                player->setShooting(true);
+                if(teammate!=nullptr) teammate->setShooting(true);
+            }
             Player::speed=Player::shootingSpeed;
             break;
         case Qt::Key_X:
@@ -1836,7 +1903,10 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e) {
             down=false;
             break;
         case Qt::Key_Z:
-            if(gamestate!=Game::GameStateMenu) player->setShooting(false);
+            if(gamestate!=Game::GameStateMenu) {
+                player->setShooting(false);
+                if(teammate!=nullptr) teammate->setShooting(false);
+            }
             Player::speed=Player::nonShootingSpeed;
             break;
         case Qt::Key_X:

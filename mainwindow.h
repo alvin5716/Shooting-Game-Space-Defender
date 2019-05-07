@@ -48,6 +48,7 @@
 #include "enemy_4_blue_4.h"
 #include "enemy_4_blue_5.h"
 #include "enemy_4_blue_6.h"
+#include "teammate.h"
 #include <QKeyEvent>
 #include <vector>
 #include <list>
@@ -99,6 +100,7 @@ private:
     bool left, right, up, down, use_skill;
     bool cur_left, cur_up;
     Player *player;
+    Teammate *teammate;
     QGraphicsPixmapItem *background;
     std::vector<Bullet*> player_bullets;
     std::vector<Enemy*> enemies;
@@ -117,7 +119,7 @@ private:
     std::vector<QMediaPlayer*> audioers;
     WidgetAnimationer* EndListAni, *levelSelectAni, *bossSkillAni;
     bool dialogueProcessing, bossHPShortened;
-    static const int StartTick = 6373;
+    static const int StartTick = 0;
     DialogueWidget* dialogueWidget;
     std::vector<QRect> gameFrameContentGeo;
 
@@ -131,6 +133,7 @@ private slots:
     void start2();
     void start3();
     void start4();
+    void start5();
     void doTick();
     void restart();
     void pauseAndResume();
