@@ -28,7 +28,7 @@ bool Teammate::isShooting() {
 std::vector<Bullet*>* Teammate::shoot() {
     if(++shoot_timer>=shoot_cd) {
         shoot_timer = 0;
-        const int bullet_v = 10;
+        const int bullet_v = 8;
         double angle;
         if(!hasEnemy) angle = M_PI*1.5;
         else {
@@ -54,10 +54,19 @@ std::vector<Bullet*>* Teammate::shoot() {
         double cos = std::cos(angle);
         double sin = std::sin(angle);
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
-        Bullet *new_bullet = new Bullet(QString(":/res/bullet/4/blue.png"),3,x,y,bullet_v*cos,bullet_v*sin);
-        new_bullet->setOpacity(0.8);
-        new_bullet->setZValue(-5);
-        new_bullets->push_back(new_bullet);
+        for(int j=0;j<2;++j) {
+            for(int i=0;i<3;++i) {
+                if(i==0 && j==0) continue;
+                double cos_rotate = std::cos(angle+(j?M_PI/2:-M_PI/2));
+                double sin_rotate = std::sin(angle+(j?M_PI/2:-M_PI/2));
+                double bullet_x = x + (-25*i+30)*cos + 25*i*cos_rotate;
+                double bullet_y = y + (-25*i+30)*sin + 25*i*sin_rotate;
+                Bullet *new_bullet = new Bullet(QString(":/res/bullet/4/blue.png"),3,bullet_x,bullet_y,bullet_v*cos,bullet_v*sin);
+                new_bullet->setOpacity(0.8);
+                new_bullet->setZValue(-5);
+                new_bullets->push_back(new_bullet);
+            }
+        }
         return new_bullets;
     }
     return nullptr;

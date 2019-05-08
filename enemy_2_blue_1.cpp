@@ -5,7 +5,6 @@ Enemy_2_Blue_1::Enemy_2_Blue_1(Player* player, int health, int radius, int shoot
     :Enemy_2_Blue(player,180,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     mode=false;
-    this->setBossHPToSkill();
 }
 void Enemy_2_Blue_1::skill() {
     //second phase

@@ -294,7 +294,7 @@ void MainWindow::start() {
     //teammate
     if(level>=5) {
         if(teammate!=nullptr) delete teammate;
-        teammate = new Teammate(":/res/enemy/4/blue.png",200,153,120,92,player,20,player->getX()-120,player->getY());
+        teammate = new Teammate(":/res/enemy/4/blue.png",200,153,120,92,player,50,player->getX()-120,player->getY());
         scene->addItem(teammate);
         teammate->setCanBeMirrored();
         connect(this,SIGNAL(doMove()),teammate,SLOT(move()));
@@ -560,7 +560,7 @@ void MainWindow::doTick() {
             double min_dis = DBL_MAX;
             std::vector<Enemy*>::iterator i;
             for (std::vector<Enemy*>::iterator j=enemies.begin();j!=enemies.end();++j) {
-                if(min_dis > teammate->distanceTo(*j)) {
+                if((!(*j)->isInvulnerable() || (*j)->isBoss()) && min_dis > teammate->distanceTo(*j)) {
                     min_dis = teammate->distanceTo(*j);
                     i = j;
                 }
