@@ -92,7 +92,11 @@ SOURCES += \
     dialoguewidget.cpp \
     enemy_4_blue_6.cpp \
     widgetanimationer.cpp \
-    teammate.cpp
+    teammate.cpp \
+    environment.cpp \
+    effect_attachment.cpp \
+    bullet_effect.cpp \
+    environment_1.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -164,7 +168,11 @@ HEADERS += \
     dialoguewidget.h \
     widgetanimationer.h \
     enemy_4_blue_6.h \
-    teammate.h
+    teammate.h \
+    environment.h \
+    effect_attachment.h \
+    bullet_effect.h \
+    environment_1.h
 
 FORMS += \
         mainwindow.ui

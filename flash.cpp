@@ -13,7 +13,7 @@ Flash::Flash(QRect geo) : QGraphicsRectItem(geo)
     this->setBrush(QBrush(Qt::white));
     //init
     this->hide();
-    this->setZValue(99);
+    this->setZValue(Game::ZValueFlash);
     //effect
     eff = new QGraphicsOpacityEffect(this);
     this->setGraphicsEffect(eff);

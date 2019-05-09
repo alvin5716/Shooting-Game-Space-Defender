@@ -19,6 +19,7 @@ Laser::Laser(QString img, Enemy* shooter, int radius, double angle, double omega
     this->img_w=38;
     this->img_h=500;
     this->show_h=1150;
+    this->setZValue(Game::ZValueLaser);
     setOpacity(0.3);
     fadein();
     this->prepare_timer=prepare_time;

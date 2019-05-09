@@ -12,10 +12,10 @@ public:
     void move() override;
     void setShooting(bool shooting=true);
     bool isShooting();
-    void sendNearestEnemyPos(bool hasEnemy, QPoint nearestEnemyPos = QPoint(-1,-1), QPoint speed = QPoint(-1,-1));
+    void sendNearestEnemyPos(bool hasEnemy, QPointF nearestEnemyPos = QPointF(-1,-1), QPointF speed = QPointF(-1,-1));
 private:
     bool hasEnemy, shooting;
-    QPoint aim_pos, aim_speed;
+    QPointF aim_pos, aim_speed;
 };
 
 #endif // TEAMMATE_H

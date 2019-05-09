@@ -9,11 +9,11 @@ Enemy_4_Yellow::Enemy_4_Yellow(Player* player, int health, int radius, int shoot
     interval = 90;
 
     player_poses.reserve(63);
-    for(unsigned int i=0; i<player_poses.capacity(); ++i) player_poses.push_back(QPoint(-1,-1));
+    for(unsigned int i=0; i<player_poses.capacity(); ++i) player_poses.push_back(QPointF(-1,-1));
 }
 
 void Enemy_4_Yellow::skill() {
-    for(std::vector<QPoint>::iterator i=player_poses.begin(); i!=(player_poses.end()-1); ++i) {
+    for(std::vector<QPointF>::iterator i=player_poses.begin(); i!=(player_poses.end()-1); ++i) {
         (i+1)->setX(i->x());
         (i+1)->setY(i->y());
     }

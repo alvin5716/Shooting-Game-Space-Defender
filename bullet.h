@@ -21,6 +21,7 @@ public:
     void setLookForward(bool lookForward=true);
     void rotateStart();
     void setImg(QString img) override;
+    void waitUntilInFrame(int max_waitting_time=625);
     // time data
     Bullet* addTimeData(int wait_time);
     Bullet* addTimeData(int wait_time, int aim_radius);
@@ -51,6 +52,7 @@ signals:
     void triggered();
 protected:
     void addData(BulletData* bullet_data);
+    short enter_timer;
     double terminal_v;
     bool setPositionByData, lookForward, rotating;
     BulletData* data_head;

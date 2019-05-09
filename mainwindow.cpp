@@ -84,6 +84,7 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     };
     std::vector<KeyControlButton*> menuButtons({ui->startButton,
+                                                ui->settingsButton,
                                                 ui->QuitButton});
     keyControlButtonsConnect(menuButtons,KeyControlButton::ArrowPosLeft);
     std::vector<KeyControlButton*> levelButtons({ui->LevelButton_1,
@@ -277,7 +278,7 @@ void MainWindow::start() {
     background = new QGraphicsPixmapItem;
     scene->addItem(background);
     background->setPos(0,0);
-    background->setZValue(-100);
+    background->setZValue(Game::ZValueBackground);
     cutImg = new QPixmap(150,172);
     oriImg = new QPixmap(":/res/bg/normal.png");
     //player
@@ -303,7 +304,7 @@ void MainWindow::start() {
     //dot
     if(dot!=nullptr) delete dot;
     dot = new Shield(":/res/effect/dot.png",50,50,10,10,player,-1,player->getX(),player->getY());
-    dot->setZValue(100);
+    dot->setZValue(Game::ZValueDot);
     newEffectInit(dot);
     //page
     this->setGamePage(Game::GamePagePlaying);
@@ -566,7 +567,7 @@ void MainWindow::doTick() {
                 }
             }
             if(min_dis==DBL_MAX) teammate->sendNearestEnemyPos(false);
-            else teammate->sendNearestEnemyPos(true,QPoint((*i)->getX(),(*i)->getY()),QPoint((*i)->getXV(),(*i)->getYV()));
+            else teammate->sendNearestEnemyPos(true,QPointF((*i)->getX(),(*i)->getY()),QPointF((*i)->getXV(),(*i)->getYV()));
             if(teammate->isShooting()) { //teammate shoot
                 //shoot
                 std::vector<Bullet*>* new_mate_bullets;
@@ -1330,11 +1331,11 @@ void MainWindow::doTick() {
                     newEnemyInit(new_enemy);
                 }
             } else if(tickCheck(310)) {
-                dialogueStart({Dialogue("慢著，你是來見我們首領的地球人嗎？",":/res/enemy/4/green.png",QRect(60,30,88,77)),
+                dialogueStart({Dialogue("慢著，你是來見我們首領的地球人嗎？",":/res/enemy/4/green.png",QRect(60,25,88,88)),
                                Dialogue("哇，雜魚說話了！",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("你們星球的人真沒禮貌...",":/res/enemy/4/green.png",QRect(60,30,88,77)),
+                               Dialogue("你們星球的人真沒禮貌...",":/res/enemy/4/green.png",QRect(60,25,88,88)),
                                Dialogue("對...對不起，可以帶我去見他嗎？",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("沒那麼簡單，首領說要我們先測試你一下",":/res/enemy/4/green.png",QRect(60,30,88,77)),
+                               Dialogue("沒那麼簡單，首領說要我們先測試你一下",":/res/enemy/4/green.png",QRect(60,25,88,88)),
                                Dialogue("不是你們自己要求我們來的嗎！？",":/res/player.png",QRect(0,0,43,33))
                               });
             } else if(tickCheck(1100,500,3)) {
@@ -1387,16 +1388,16 @@ void MainWindow::doTick() {
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 connect(new_boss,&Enemy::dialogueStart,[this](){
                     dialogueStart({Dialogue("你是首領嗎？怎麼好像只是其他隻的放大版而已...",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("我所嚮往的是如我們的母星一般，外表黯淡，但內心的光芒隱隱透出。大智若愚，曖曖含光。",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
+                                   Dialogue("我所嚮往的是如我們的母星一般，外表黯淡，但內心的光芒隱隱透出。大智若愚，曖曖含光。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
                                    Dialogue("......",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("重點不是這個，你會在這裡是因為我向你們星球傳了無線電訊號，我需要有人幫忙。",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
+                                   Dialogue("重點不是這個，你會在這裡是因為我向你們星球傳了無線電訊號，我需要有人幫忙。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
                                    Dialogue("幫忙？",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("其實說起來有點不好意思...",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
-                                   Dialogue("我們之前開發的機械智慧因為不明原因開始暴走了。沒弄好的話，這幾十光年內的星球可能都有危險。",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
+                                   Dialogue("其實說起來有點不好意思...",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
+                                   Dialogue("我們之前開發的機械智慧因為不明原因開始暴走了。沒弄好的話，這幾十光年內的星球可能都有危險。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
                                    Dialogue("幾十光年的話不是也包括我們嗎？那麼那東西在哪裡？",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("這個我們留到我打累了以後再說吧。",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
+                                   Dialogue("這個我們留到我打累了以後再說吧。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
                                    Dialogue("等...等一下，又要打？",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("當然啊，如果你沒有一定的能力，帶你去只會扯後腿而已。",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
+                                   Dialogue("當然啊，如果你沒有一定的能力，帶你去只會扯後腿而已。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
                                    Dialogue("這問題不是你們搞出來的嗎！",":/res/player.png",QRect(0,0,43,33))
                                   });
                 });
@@ -1441,19 +1442,19 @@ void MainWindow::doTick() {
                 this->bossHPShortened = false;
                 if(player!=nullptr) player->gameEndSetting();
             } else if(tickCheck(8590) && !player->isMaxHealth()) {
-                dialogueStart({Dialogue("嗚，雖然我有放水，不過好久沒動了，好累。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("你還真行耶，看來我找對人了。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
+                dialogueStart({Dialogue("嗚，雖然我有放水，不過好久沒動了，好累。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("你還真行耶，看來我找對人了。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
                                Dialogue("這是當然的了！所以那個機械智慧在哪裡？到底發生了什麼事？",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("我們之前嘗試開發機械智慧，但是最後失敗了。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("最後我們把失敗品丟到了另一顆無生命的星球上。但最近呢，有很多鄰近的星球卻說他們受到了這些機械的攻擊。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("我不清楚它們是怎麼重獲新生的，別說是自主行動了，他們理論上根本已經沒有能源能執行任何動作了。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("一開始我也不相信，但受害星球的描述真的都與它們相似。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("總之我建議先到他們的據點星球旁的那顆星球，迷霧星。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("那裡的大氣很糟，我們可以躲在那裡觀察他們而不容易被發現。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58))
+                               Dialogue("我們之前嘗試開發機械智慧，但是最後失敗了。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("最後我們把失敗品丟到了另一顆無生命的星球上。但最近呢，有很多鄰近的星球卻說他們受到了這些機械的攻擊。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("我不清楚它們是怎麼重獲新生的，別說是自主行動了，他們理論上根本已經沒有能源能執行任何動作了。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("一開始我也不相信，但受害星球的描述真的都與它們相似。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("總之我建議先到他們的據點星球旁的那顆星球，迷霧星。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("那裡的大氣很糟，我們可以躲在那裡觀察他們而不容易被發現。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90))
                                });
             } else if(tickCheck(8590) && player->isMaxHealth()) {
-                dialogueStart({Dialogue("你比我想像的還要強好多喔...竟然完全沒被打到過...",":/res/enemy/4/blue.png",QRect(60,30,88,77)),
-                               Dialogue("不認真打一下好像太失禮了，對吧？",":/res/enemy/4/blue.png",QRect(60,30,88,77))
+                dialogueStart({Dialogue("你比我想像的還要強好多喔...竟然完全沒被打到過...",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
+                               Dialogue("不認真打一下好像太失禮了，對吧？",":/res/enemy/4/blue.png",QRect(60,25,88,88))
                                });
                 tick = 8645;
             } else if(tickCheck(8640) || tickCheck(8963)) { //8640, WIN LIST
@@ -1474,21 +1475,21 @@ void MainWindow::doTick() {
                 //game state
                 gamestate=Game::GameStateWon;
             } else if(tickCheck(8650)) { //8600, BOSS 6
-                QPoint pos = Enemy_4_Blue_5::getCorpsePos();
+                QPointF pos = Enemy_4_Blue_5::getCorpsePos();
                 emit killEffectsWithoutDot();
                 new_boss = new Enemy_4_Blue_6(player,300,60,55,200,pos.x(),pos.y(),0,0,0,0,false,true);
                 newBossInit(new_boss);
                 tickFreeze();
             } else if(tickCheck(8913)) {
-                dialogueStart({Dialogue("嗚，真好玩，不過好久沒動了，好累。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("你還真行耶，看來我找對人了。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
+                dialogueStart({Dialogue("嗚，真好玩，不過好久沒動了，好累。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("你還真行耶，看來我找對人了。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
                                Dialogue("這是當然的了！所以那個機械智慧在哪裡？到底發生了什麼事？",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("我們之前嘗試開發機械智慧，但是最後失敗了。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("最後我們把失敗品丟到了另一顆無生命的星球上。但最近呢，有很多鄰近的星球卻說他們受到了這些機械的攻擊。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("我不清楚它們是怎麼重獲新生的，別說是自主行動了，他們理論上根本已經沒有能源能執行任何動作了。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("一開始我也不相信，但受害星球的描述真的都與它們相似。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("總之我建議先到他們的據點星球旁的那顆星球，迷霧星。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58)),
-                               Dialogue("那裡的大氣很糟，我們可以躲在那裡觀察他們而不容易被發現。",":/res/enemy/4/blue_3.png",QRect(74,17,58,58))
+                               Dialogue("我們之前嘗試開發機械智慧，但是最後失敗了。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("最後我們把失敗品丟到了另一顆無生命的星球上。但最近呢，有很多鄰近的星球卻說他們受到了這些機械的攻擊。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("我不清楚它們是怎麼重獲新生的，別說是自主行動了，他們理論上根本已經沒有能源能執行任何動作了。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("一開始我也不相信，但受害星球的描述真的都與它們相似。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("總之我建議先到他們的據點星球旁的那顆星球，迷霧星。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("那裡的大氣很糟，我們可以躲在那裡觀察他們而不容易被發現。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90))
                                });
             }
             break;
@@ -1499,15 +1500,13 @@ void MainWindow::doTick() {
                                Dialogue("收到，你找到智多星的首領了嗎？"),
                                Dialogue("是的，我們現在正要前往機械智慧所在地旁的星球，迷霧星。",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("我們會在那裡靜觀其變、研擬對策。",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("迷霧星是大氣活動非常劇烈的星球，沒有複雜生物存在，雖然危險但是個很好的藏身之處。",":/res/enemy/4/blue.png",QRect(60,30,88,77))
+                               Dialogue("迷霧星是大氣活動非常劇烈的星球，沒有複雜生物存在，雖然危險但是個很好的藏身之處。",":/res/enemy/4/blue.png",QRect(60,25,88,88))
                               });
             } else if(tickCheck(250,131,5)) { //500+262i, 5 times
-                /*
                 for(int i=0;i<2;++i) {
-                    new_enemy = new Enemy_2_Green(player,3,35,150,100,(i==0)?-35:Game::FrameWidth+35,250,(i==0)?2.4:-2.4,-1,0,0.004);
+                    new_enemy = new Environment_1(player,40);
                     newEnemyInit(new_enemy);
                 }
-                */
             }
             break;
         default:

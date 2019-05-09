@@ -72,6 +72,20 @@ namespace Game {
         UIBaseGeometryContinueButton
     };
 
+    enum ZValue{
+        ZValueUI = 5,
+        ZValueFlash = 4,
+        ZValueDot = 3,
+        ZValueForeEffect = 2,
+        ZValueInFrontOfStandard = 1,
+        ZValueStandard = 0,
+        ZValueBehindStandard = -1,
+        ZValueLaser = -2,
+        ZValueImportantBackEffect = -3,
+        ZValueTeammate = -4,
+        ZValueBackEffect = -5,
+        ZValueBackground = -6,
+    };
 }
 
 #endif // GAME_H

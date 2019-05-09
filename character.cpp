@@ -35,7 +35,7 @@ void Character::setPosition(double x, double y) {
     this->x=x;
     this->y=y;
 }
-void Character::setPosition(QPoint pos) {
+void Character::setPosition(QPointF pos) {
     this->x=pos.x();
     this->y=pos.y();
 }
@@ -118,7 +118,7 @@ void Character::moveTo(double x, double y, double t) {
     setAcceleration((2*(this->x-x))/(t*t),(2*(this->y-y))/(t*t));
     setSpeed(((x>this->x)?1:-1) * sqrt(2*(-this->xa)*(x-this->x)),((y>this->y)?1:-1) * sqrt(2*(-this->ya)*(y-this->y)));
 }
-void Character::moveTo(QPoint pos, double t) {
+void Character::moveTo(QPointF pos, double t) {
     double xp = pos.x(), yp = pos.y();
     this->moveTo(xp,yp,t);
 }
@@ -256,13 +256,13 @@ double Character::angleofvector(double x, double y) const {
     if(y>0) return std::atan(y/x); //1
     return std::atan(y/x)+2*M_PI; //4
 }
-double Character::distanceTo(QPoint another_pos) {
+double Character::distanceTo(QPointF another_pos) {
     double x_dif = another_pos.x() - this->x;
     double y_dif = another_pos.y() - this->y;
     return std::sqrt(x_dif*x_dif + y_dif*y_dif);
 }
 double Character::distanceTo(Character* another_chara) {
-    return distanceTo(QPoint(another_chara->getX(), another_chara->getY()));
+    return distanceTo(QPointF(another_chara->getX(), another_chara->getY()));
 }
 void Character::setCanBeMirrored(bool canBeMirrored) {
     this->canBeMirrored=canBeMirrored;

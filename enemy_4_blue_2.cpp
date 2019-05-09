@@ -31,7 +31,7 @@ void Enemy_4_Blue_2::skill() {
             bang->rotateStart();
             bang->setOpacity(0.85);
             bang->fadein(500);
-            bang->setZValue(-2);
+            bang->setZValue(Game::ZValueBackEffect);
             emit summonEffect(bang);
             emit shakeScreen(static_cast<short>(shakeLevel::largeShake));
         }

@@ -71,48 +71,25 @@ background-color:  black;
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="StartPage">
      <widget class="KeyControlButton" name="startButton">
       <property name="geometry">
        <rect>
-        <x>480</x>
+        <x>500</x>
         <y>540</y>
-        <width>211</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Tw Cen MT</family>
-        <pointsize>48</pointsize>
-       </font>
-      </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border: 0;
-background-color: transparent;</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="KeyControlButton" name="QuitButton">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>680</y>
         <width>161</width>
         <height>51</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Tw Cen MT</family>
-        <pointsize>48</pointsize>
+        <family>Agency FB</family>
+        <pointsize>36</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
        </font>
       </property>
       <property name="cursor">
@@ -120,10 +97,39 @@ background-color: transparent;</string>
       </property>
       <property name="styleSheet">
        <string notr="true">border: 0;
-background-color: transparent;</string>
+background-color: transparent; color:white;</string>
       </property>
       <property name="text">
-       <string/>
+       <string>START</string>
+      </property>
+     </widget>
+     <widget class="KeyControlButton" name="QuitButton">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>720</y>
+        <width>131</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Agency FB</family>
+        <pointsize>36</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 0;
+background-color: transparent; color:white;</string>
+      </property>
+      <property name="text">
+       <string>QUIT</string>
       </property>
      </widget>
      <widget class="QLabel" name="label">
@@ -143,9 +149,39 @@ background-color: transparent;</string>
        <string/>
       </property>
      </widget>
+     <widget class="KeyControlButton" name="settingsButton">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>630</y>
+        <width>221</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Agency FB</family>
+        <pointsize>36</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">border: 0;
+background-color: transparent; color:white;</string>
+      </property>
+      <property name="text">
+       <string>SETTINGS</string>
+      </property>
+     </widget>
      <zorder>label</zorder>
      <zorder>startButton</zorder>
      <zorder>QuitButton</zorder>
+     <zorder>settingsButton</zorder>
     </widget>
     <widget class="QWidget" name="GamePage">
      <widget class="QFrame" name="gameFrame">

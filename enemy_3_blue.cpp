@@ -71,7 +71,7 @@ void Enemy_3_Blue::redMagicShield() {
     this->showShield(":/res/effect/magic_red.png",120,120);
     shield->setOpacity(0.6);
     shield->fadein(2500);
-    shield->setZValue(-2);
+    shield->setZValue(Game::ZValueBackEffect);
     shield->rotateStart();
     emit summonEffect(shield);
 }

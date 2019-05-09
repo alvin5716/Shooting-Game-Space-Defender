@@ -193,7 +193,7 @@ Effect* Enemy::disappear() {
                                 death_img_w,death_img_h,
                                 show_w * death_img_w / img_w, show_h * death_img_h / img_h,
                                 disappearTime==-1?-1:disappearTime/8,imgX()+show_w/2,imgY()+show_h/2,(death_img=="")?xv:0,(death_img=="")?yv:0,(death_img=="")?xa:0,(death_img=="")?ya:0);
-    corpse->setZValue(-1);
+    corpse->setZValue(Game::ZValueBackEffect);
     //if needed, face to left
     if(canBeMirrored&&face_to_left) {
         corpse->setCanBeMirrored();

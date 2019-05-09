@@ -143,7 +143,6 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                 new_laser = new_laser_temp;
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
                 connect(new_laser,SIGNAL(deadSignal()),stick[i],SLOT(killItself()));
-                new_laser->setZValue(-1);
                 new_bullets->push_back(new_laser);
             }
             shoot_count=1;
@@ -159,7 +158,6 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                 new_laser = new_laser_temp;
                 connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
                 connect(new_laser,SIGNAL(deadSignal()),stick[i],SLOT(killItself()));
-                new_laser->setZValue(-1);
                 new_bullets->push_back(new_laser);
             }
             second_shot=false;

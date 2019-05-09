@@ -11,7 +11,8 @@ Enemy_Temp::Enemy_Temp(Enemy* real_shooter, shoot_func shoot_func_ptr, Player* p
 }
 
 std::vector<Bullet*>* Enemy_Temp::shoot() {
-    return (this->*shoot_func_ptr)();
+    if(shoot_func_ptr!=nullptr) return (this->*shoot_func_ptr)();
+    return nullptr;
 }
 
 Effect* Enemy_Temp::disappear(){

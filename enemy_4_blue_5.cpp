@@ -3,7 +3,7 @@
 #include <cfloat>
 #include "enemy_4_pink.h"
 
-QPoint Enemy_4_Blue_5::corpse_pos(Game::FrameWidth/2,120);
+QPointF Enemy_4_Blue_5::corpse_pos(Game::FrameWidth/2,120);
 
 Enemy_4_Blue_5::Enemy_4_Blue_5(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4_Blue(player,150,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
@@ -61,14 +61,14 @@ std::vector<Bullet*>* Enemy_4_Blue_5::shoot2() {
         double sin, cos;
         const double angle=angleofvector(player->getX()-x,player->getY()-y) + (snipe?0:M_PI/bullet_count);
         const int bullet_radius = 10;
-        std::vector<QPoint> shoot_points = {
-            QPoint(14,-9), //head
-            QPoint(-12,27), //body 1
-            QPoint(16,27), //body 2
-            QPoint(56,11), //wing 1
-            QPoint(-58,14) //wing 2
+        std::vector<QPointF> shoot_points = {
+            QPointF(14,-9), //head
+            QPointF(-12,27), //body 1
+            QPointF(16,27), //body 2
+            QPointF(56,11), //wing 1
+            QPointF(-58,14) //wing 2
         };
-        for(QPoint shoot_point: shoot_points) {
+        for(QPointF shoot_point: shoot_points) {
             const int rand_seed = qrand()%8;
             const double bullet_a = 0.003+rand_seed/8000.0, bullet_v_t = 1.8+rand_seed/10.0;
             for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
@@ -125,6 +125,6 @@ Effect* Enemy_4_Blue_5::disappear() {
     corpse_pos.setY(corpse->getY());
     return corpse;
 }
-QPoint Enemy_4_Blue_5::getCorpsePos() {
+QPointF Enemy_4_Blue_5::getCorpsePos() {
     return corpse_pos;
 }

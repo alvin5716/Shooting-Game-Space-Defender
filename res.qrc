@@ -97,5 +97,7 @@
         <file>res/sound/magic_smite.wav</file>
         <file>res/sound/laser.wav</file>
         <file>res/bg/boss_5.png</file>
+        <file>res/bullet/5/white.png</file>
+        <file>res/bullet/5/yellow.png</file>
     </qresource>
 </RCC>

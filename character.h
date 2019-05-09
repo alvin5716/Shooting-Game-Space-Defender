@@ -18,7 +18,7 @@ public:
     Character() = delete;
     Character(QString img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya);
     void setPosition(double x, double y);
-    void setPosition(QPoint pos);
+    void setPosition(QPointF pos);
     void setSpeed(double xv, double yv);
     void setAcceleration(double xa, double ya);
     double getX() const;
@@ -33,13 +33,13 @@ public:
     bool isAttackable() const;
     double angleofsincos(double sin, double cos) const;
     double angleofvector(double x, double y) const;
-    double distanceTo(QPoint another_pos);
+    double distanceTo(QPointF another_pos);
     double distanceTo(Character* another_chara);
     virtual Character* testAttackedBy(std::vector<Character*> & attackers);
     virtual Character* testAttackedBy(Character* attacker);
     virtual void attacked();
     void moveTo(double x, double y, double t=63);
-    void moveTo(QPoint pos, double t=63);
+    void moveTo(QPointF pos, double t=63);
     void moveWith(Character* origin);
     void whiteize(int time=30);
     void setCanBeMirrored(bool canBeMirrored=true);

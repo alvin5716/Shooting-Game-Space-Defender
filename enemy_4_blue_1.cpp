@@ -37,27 +37,27 @@ void Enemy_4_Blue_1::skill() {
     });
 }
 
-QPoint Enemy_4_Blue_1::bulletPos(int bulletNum) const {
+QPointF Enemy_4_Blue_1::bulletPos(int bulletNum) const {
     if(bulletNum<16) {
         double br = bulletNum-7.5;
         double xr = br*40;
         double yr = -1.6*br*br-55;
-        return QPoint(xr+this->x,yr+this->y);
+        return QPointF(xr+this->x,yr+this->y);
     } if(bulletNum<27) {
         double br = bulletNum-21;
         double xr = br*40;
         double yr = -1.5*1.6*br*br;
-        return QPoint(xr+this->x,yr+this->y);
+        return QPointF(xr+this->x,yr+this->y);
     } if(bulletNum<37) {
         double br = bulletNum-31.5;
         double xr = br*40;
         double yr = -1.8*1.6*br*br+55;
-        return QPoint(xr+this->x,yr+this->y);
+        return QPointF(xr+this->x,yr+this->y);
     }
     double angr = (bulletNum-37)*M_PI/21;
     double xr = 260*std::cos(angr);
     double yr = 220*std::sin(angr)-120;
-    return QPoint(xr+this->x,yr+this->y);
+    return QPointF(xr+this->x,yr+this->y);
 }
 
 std::vector<Bullet*>* Enemy_4_Blue_1::shoot2() {

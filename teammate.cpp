@@ -4,14 +4,14 @@ Teammate::Teammate(QString img, int img_w, int img_h, int show_w, int show_h, Pl
     :Enemy(img,img_w,img_h,show_w,show_h,player,100,0,shoot_cd,0,x,y)
 {
     hasEnemy = false;
-    aim_pos = QPoint(-1,-1);
-    aim_speed = QPoint(-1,-1);
+    aim_pos = QPointF(-1,-1);
+    aim_speed = QPointF(-1,-1);
     shooting = false;
-    this->setZValue(-5);
+    this->setZValue(Game::ZValueTeammate);
     this->setOpacity(0.85);
 }
 
-void Teammate::sendNearestEnemyPos(bool hasEnemy, QPoint nearestEnemyPos, QPoint speed) {
+void Teammate::sendNearestEnemyPos(bool hasEnemy, QPointF nearestEnemyPos, QPointF speed) {
     this->hasEnemy = hasEnemy;
     this->aim_pos = nearestEnemyPos;
     this->aim_speed = speed;

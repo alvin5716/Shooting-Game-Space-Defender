@@ -32,7 +32,7 @@ void Enemy_3_Blue_2::skill() {
             if(room==nullptr) {
                 room = new Effect(":/res/effect/magic_red.png",120,120,1,1,-1,player->getX(),player->getY());
                 room->setOpacity(0.6);
-                room->setZValue(-2);
+                room->setZValue(Game::ZValueBackEffect);
                 room->rotateStart();
                 room->zoom(room_radius*2,room_radius*2,63);
                 connect(this,SIGNAL(deadSignal()),room,SLOT(killItself()));

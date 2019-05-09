@@ -10,6 +10,7 @@ Bullet::Bullet(QString img, int radius, double x, double y, double xv, double yv
     :Character(img,50,50,(int)round(radius*2.2),(int)round(radius*2.2),1,radius,x,y,xv,yv,xa,ya)
 {
     terminal_v = 0;
+    enter_timer = -1;
     this->data_head = nullptr;
     this->setPositionByData = false;
     this->lookForward = false;
@@ -22,6 +23,10 @@ Bullet::Bullet(QString img, int radius, double x, double y, double xv, double yv
 
 void Bullet::setVTerminal(double terminal_v) {
     this->terminal_v = terminal_v;
+}
+
+void Bullet::waitUntilInFrame(int max_waitting_time) {
+    enter_timer = max_waitting_time;
 }
 
 void Bullet::setImg(QString img) {
@@ -49,6 +54,13 @@ void Bullet::move() {
         if(!setPositionByData) setPosition(x+xv,y+yv);
         if((sqrt(pow(xv,2)+pow(yv,2))<=terminal_v && sqrt(pow(xv+xa,2)+pow(yv+ya,2))<=terminal_v) || (sqrt(pow(xv,2)+pow(yv,2))>=terminal_v && sqrt(pow(xv+xa,2)+pow(yv+ya,2))>=terminal_v)) setSpeed(xv+xa,yv+ya);
     }
+    //enter_timer
+    /*
+    if(enter_timer!=-1) {
+        if() enter_timer = -1;
+        else if(--enter_timer==0) dead=true;
+    }
+    */
 }
 
 void Bullet::img_move() {
