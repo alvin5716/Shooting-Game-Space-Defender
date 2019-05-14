@@ -18,7 +18,7 @@ std::vector<Bullet*>* Environment_2::shoot() {
         double bias_k = (qrand()%100/100.0)*period;
         double bias_i = qrand()%100/100.0;
         int r = rng->generate();
-        int center_x = qrand()%160+r*160-400+Game::FrameWidth/2, center_y = qrand()%50-130;
+        int center_x = qrand()%160+r*160-400+Game::FrameWidth/2, center_y = qrand()%50-160;
         //shoot
         for(int j=0; j<3; ++j) {
             for(int i=0;i<=25;++i) {
