@@ -1513,7 +1513,10 @@ void MainWindow::doTick() {
                                Dialogue("啊，剛說完就有小型隕石群來了，自己小心",":/res/enemy/4/blue.png",QRect(60,25,88,88))
                               });
             } else if(tickCheck(300)) { //300
-                new_enemy = new Environment_1(player,28,810);
+                new_enemy = new Environment_1(player,28,800);
+                newEnemyInit(new_enemy);
+            } else if(tickCheck(1500)) { //1500
+                new_enemy = new Environment_2(player,65,800);
                 newEnemyInit(new_enemy);
             }
             break;

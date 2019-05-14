@@ -96,7 +96,8 @@ SOURCES += \
     environment.cpp \
     effect_attachment.cpp \
     bullet_effect.cpp \
-    environment_1.cpp
+    environment_1.cpp \
+    environment_2.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -172,7 +173,8 @@ HEADERS += \
     environment.h \
     effect_attachment.h \
     bullet_effect.h \
-    environment_1.h
+    environment_1.h \
+    environment_2.h
 
 FORMS += \
         mainwindow.ui

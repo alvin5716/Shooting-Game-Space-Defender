@@ -21,7 +21,7 @@ public:
     void setLookForward(bool lookForward=true);
     void rotateStart();
     void setImg(QString img) override;
-    void waitUntilInFrame(int max_waitting_time=625);
+    void waitUntilInFrame(int max_waitting_time=313);
     bool outOfFrame() override;
     // time data
     Bullet* addTimeData(int wait_time);

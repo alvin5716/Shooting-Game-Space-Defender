@@ -1,6 +1,5 @@
 #include "environment_1.h"
 #include "bullet_effect.h"
-#include "spreadrng.h"
 
 Environment_1::Environment_1(Player *player, int shoot_cd, int lifetime)
     :Environment(player,shoot_cd,lifetime)
