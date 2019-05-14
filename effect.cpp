@@ -7,6 +7,7 @@ Effect::Effect(QString img, int img_w, int img_h, int show_w, int show_h, int li
     this->autoFadeoutBeforeDie=autoFadeoutBeforeDie;
     setInvulnerable();
     this->lifetimer=lifetime;
+    this->setZValue(Game::ZValueBackEffect);
     //rotate
     rotating=false;
     rotate_t=360;

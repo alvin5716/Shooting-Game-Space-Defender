@@ -27,9 +27,6 @@ Laser::Laser(QString img, Enemy* shooter, int radius, double angle, double omega
 }
 Character* Laser::testAttackedBy(Character* attacker) {
     if(preparing||dying) return nullptr;
-    if(x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius) {
-        dead=true;
-    }
     if(attacker!=nullptr) {
         double x0=attacker->getX(), y0=attacker->getY(), slope=tan(angle), theta;
         theta = angleofvector(x0-x,y0-y);

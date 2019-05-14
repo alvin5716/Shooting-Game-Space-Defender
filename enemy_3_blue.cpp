@@ -9,6 +9,7 @@ Enemy_3_Blue::Enemy_3_Blue(Player* player, int bossSkillHP, int health, int radi
     mode=false;
     setInvulnerable();
     skill_timer=-100-shoot_cd_init;
+    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
     skill_dir = (bool)qrand()%2;
     this->beABoss(bossSkillHP);
     connect(this,SIGNAL(useSkill(QString)),this,SIGNAL(killItsBullets()));

@@ -77,14 +77,15 @@ namespace Game {
         ZValueFlash = 4,
         ZValueDot = 3,
         ZValueForeEffect = 2,
-        ZValueInFrontOfStandard = 1,
-        ZValueStandard = 0,
-        ZValueBehindStandard = -1,
+        ZValueInFrontOfDefault= 1,
+        ZValueDefault = 0,
+        ZValueBehindDefault = -1,
         ZValueLaser = -2,
-        ZValueImportantBackEffect = -3,
-        ZValueTeammate = -4,
-        ZValueBackEffect = -5,
-        ZValueBackground = -6,
+        ZValueEnemy = -3,
+        ZValueImportantBackEffect = -4,
+        ZValueTeammate = -5,
+        ZValueBackEffect = -6,
+        ZValueBackground = -7,
     };
 }
 

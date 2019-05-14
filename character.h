@@ -9,6 +9,7 @@
 #include <QGraphicsOpacityEffect>
 #include <cmath>
 #include <algorithm>
+#include <QTime>
 #include "game.h"
 
 class Character : public QObject, public QGraphicsPixmapItem
@@ -26,6 +27,8 @@ public:
     double getXV() const;
     double getYV() const;
     double getRadius() const;
+    int getShowW() const;
+    int getShowH() const;
     int getHealth() const;
     QString getImg() const;
     bool isDead() const;
@@ -54,6 +57,8 @@ public:
     virtual double imgY() const;
     void bounceAtX();
     void bounceAtY();
+    virtual bool outOfFrame();
+    void deleteIfOutOfFrame();
     ~Character();
 signals:
     void deadSignal();

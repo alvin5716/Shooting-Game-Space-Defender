@@ -149,12 +149,12 @@ background-color: transparent; color:white;</string>
        <string/>
       </property>
      </widget>
-     <widget class="KeyControlButton" name="settingsButton">
+     <widget class="KeyControlButton" name="optionsButton">
       <property name="geometry">
        <rect>
-        <x>470</x>
+        <x>480</x>
         <y>630</y>
-        <width>221</width>
+        <width>201</width>
         <height>51</height>
        </rect>
       </property>
@@ -175,13 +175,13 @@ background-color: transparent; color:white;</string>
 background-color: transparent; color:white;</string>
       </property>
       <property name="text">
-       <string>SETTINGS</string>
+       <string>OPTIONS</string>
       </property>
      </widget>
      <zorder>label</zorder>
      <zorder>startButton</zorder>
      <zorder>QuitButton</zorder>
-     <zorder>settingsButton</zorder>
+     <zorder>optionsButton</zorder>
     </widget>
     <widget class="QWidget" name="GamePage">
      <widget class="QFrame" name="gameFrame">

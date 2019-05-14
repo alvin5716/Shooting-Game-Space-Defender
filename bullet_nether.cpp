@@ -26,21 +26,8 @@ void Bullet_Nether::move() {
     --lifetimer;
     if(lifetimer<=0) dead=true;
 }
-Character* Bullet_Nether::testAttackedBy(std::vector<Character*> & attackers) {
-    for(int i=0;i<(int)attackers.size();++i) {
-        if(sqrt(pow(attackers.at(i)->getX() - x,2)+pow(attackers.at(i)->getY() - y,2)) <= attackers.at(i)->getRadius() + radius) {
-            attacked();
-            return attackers.at(i);
-        }
-    }
-    return nullptr;
-}
-Character* Bullet_Nether::testAttackedBy(Character* attacker) {
-    if(sqrt(pow(attacker->getX() - x,2)+pow(attacker->getY() - y,2)) <= attacker->getRadius() + radius) {
-        attacked();
-        return attacker;
-    }
-    return nullptr;
+bool Bullet_Nether::outOfFrame() {
+    return false;
 }
 void Bullet_Nether::setFadeoutTime(int time) {
     this->fadeout_time=time;

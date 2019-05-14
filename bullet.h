@@ -22,6 +22,7 @@ public:
     void rotateStart();
     void setImg(QString img) override;
     void waitUntilInFrame(int max_waitting_time=625);
+    bool outOfFrame() override;
     // time data
     Bullet* addTimeData(int wait_time);
     Bullet* addTimeData(int wait_time, int aim_radius);

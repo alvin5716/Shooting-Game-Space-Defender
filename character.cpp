@@ -122,10 +122,15 @@ void Character::moveTo(QPointF pos, double t) {
     double xp = pos.x(), yp = pos.y();
     this->moveTo(xp,yp,t);
 }
-Character* Character::testAttackedBy(std::vector<Character*> & attackers) {
-    if(x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius) {
+bool Character::outOfFrame() {
+    return x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius;
+}
+void Character::deleteIfOutOfFrame() {
+    if(this->outOfFrame()) {
         dead=true;
     }
+}
+Character* Character::testAttackedBy(std::vector<Character*> & attackers) {
     for(int i=0;i<(int)attackers.size();++i) {
         if(attackers.at(i)->isAttackable() && (sqrt(pow(attackers.at(i)->getX() - x,2)+pow(attackers.at(i)->getY() - y,2)) <= attackers.at(i)->getRadius() + radius)) {
             attacked();
@@ -135,9 +140,6 @@ Character* Character::testAttackedBy(std::vector<Character*> & attackers) {
     return nullptr;
 }
 Character* Character::testAttackedBy(Character* attacker) {
-    if(x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius) {
-        dead=true;
-    }
     if(attacker!=nullptr) {
         if(attacker->isAttackable() && (sqrt(pow(attacker->getX() - x,2)+pow(attacker->getY() - y,2)) <= attacker->getRadius() + radius)) {
             attacked();
@@ -233,6 +235,12 @@ double Character::getRadius() const {
 }
 int Character::getHealth() const {
     return health;
+}
+int Character::getShowW() const {
+    return show_w;
+}
+int Character::getShowH() const {
+    return show_h;
 }
 QString Character::getImg() const {
     return img;

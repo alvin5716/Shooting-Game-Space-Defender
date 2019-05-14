@@ -110,14 +110,14 @@ std::vector<Bullet*>* Enemy_4_Blue_3::shoot2() {
     }
     if(fall_count>=2) {
         Bullet* new_bullet;
-        if(shoot_timer2<=shoot_cd2+24) ++shoot_timer2;
+        if(shoot_timer2<=shoot_cd2+16) ++shoot_timer2;
         if(shoot_timer2>=shoot_cd2 && (shoot_timer2-shoot_cd2)%8==0) {
             const int bullet_count = 36;
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                 double angle = qrand()%100/100.0*M_PI/(bullet_count/2);
                 double cos = std::cos(angle+i*M_PI/(bullet_count/2));
                 double sin = std::sin(angle+i*M_PI/(bullet_count/2));
-                const double bullet_v = 3, bullet_a = 0.02;
+                const double bullet_v = 2.4, bullet_a = 0.02;
                 new_bullet = new Bullet(QString(":/res/bullet/4/purple.png"),13,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);

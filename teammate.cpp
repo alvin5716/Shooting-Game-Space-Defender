@@ -1,4 +1,5 @@
 #include "teammate.h"
+#include <QDebug>
 
 Teammate::Teammate(QString img, int img_w, int img_h, int show_w, int show_h, Player *player, int shoot_cd, double x, double y)
     :Enemy(img,img_w,img_h,show_w,show_h,player,100,0,shoot_cd,0,x,y)
@@ -8,7 +9,7 @@ Teammate::Teammate(QString img, int img_w, int img_h, int show_w, int show_h, Pl
     aim_speed = QPointF(-1,-1);
     shooting = false;
     this->setZValue(Game::ZValueTeammate);
-    this->setOpacity(0.85);
+    this->setOpacity(0.7);
 }
 
 void Teammate::sendNearestEnemyPos(bool hasEnemy, QPointF nearestEnemyPos, QPointF speed) {
@@ -62,8 +63,9 @@ std::vector<Bullet*>* Teammate::shoot() {
                 double bullet_x = x + (-25*i+30)*cos + 25*i*cos_rotate;
                 double bullet_y = y + (-25*i+30)*sin + 25*i*sin_rotate;
                 Bullet *new_bullet = new Bullet(QString(":/res/bullet/4/blue.png"),3,bullet_x,bullet_y,bullet_v*cos,bullet_v*sin);
-                new_bullet->setOpacity(0.8);
-                new_bullet->setZValue(-5);
+                new_bullet->setOpacity(0.7);
+                new_bullet->setZValue(Game::ZValueTeammate);
+                new_bullet->waitUntilInFrame(63);
                 new_bullets->push_back(new_bullet);
             }
         }
@@ -73,18 +75,45 @@ std::vector<Bullet*>* Teammate::shoot() {
 }
 
 void Teammate::move() {
-    if(this->distanceTo(player) > 150) {
-        const double speed = 1.8;
+    static const double max_speed = 3.0;
+    static const double max_acce = 0.08;
+    static const double force_acce = 0.2;
+    double speed = std::sqrt(std::pow(xv,2)+std::pow(yv,2));
+    if(speed>max_speed) {
+        xv *= max_speed / speed;
+        yv *= max_speed / speed;
+        speed = max_speed;
+    }
+    double dis = this->distanceTo(player);
+    if(dis > 150) {
+        double dis_scale = (std::min(250.0,dis)-150)/100.0;
+        double acce = max_acce*dis_scale*dis_scale;
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         double cos = std::cos(angle);
         double sin = std::sin(angle);
-        setSpeed(speed*cos, speed*sin);
-    } else if(this->distanceTo(player) < 100) {
-        const double speed = 1.8;
+        setAcceleration(acce*cos, acce*sin);
+    } else if(dis < 100) {
+        double dis_scale = (100-dis)/100.0;
+        double acce = max_acce*dis_scale*dis_scale;
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         double cos = -std::cos(angle);
         double sin = -std::sin(angle);
-        setSpeed(speed*cos, speed*sin);
-    } else setSpeed(0,0);
+        setAcceleration(acce*cos, acce*sin);
+    } else if(speed > max_acce) {
+        double angle = angleofvector(xv,yv);
+        double cos = -std::cos(angle);
+        double sin = -std::sin(angle);
+        setAcceleration(max_acce*cos, max_acce*sin);
+    } else {
+        setAcceleration(0,0);
+        setSpeed(0,0);
+    }
+    //always in frame
+    const int half_w = show_w/2;
+    const int half_h = show_h/2;
+    if(x<0+half_w) setAcceleration(xa+force_acce,ya);
+    else if(y<0+half_h) setAcceleration(xa,ya+force_acce);
+    else if(x>Game::FrameWidth-half_w) setAcceleration(xa-force_acce,ya);
+    else if(y>Game::FrameHeight-half_h) setAcceleration(xa,ya-force_acce);
     Enemy::move();
 }

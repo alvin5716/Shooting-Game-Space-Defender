@@ -4,6 +4,7 @@
 Enemy_4_Blue::Enemy_4_Blue(Player* player, int bossSkillHP, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4(QString(":/res/enemy/4/blue.png"),200,153,std::round(3.902*radius),3*radius,player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
+    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
     point=18;
     this->beABoss(bossSkillHP);
     invulnerable=true;

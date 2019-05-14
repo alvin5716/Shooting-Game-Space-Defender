@@ -4,6 +4,7 @@ Enemy_Blue_4::Enemy_Blue_4(Player* player, int health, int radius, int shoot_cd,
     :Enemy_Blue(player,140,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     circle=false;
+    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 }
 void Enemy_Blue_4::skill() {
     //second phase

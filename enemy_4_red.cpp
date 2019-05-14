@@ -13,6 +13,7 @@ Enemy_4_Red::Enemy_4_Red(Player* player, int health, int radius, int shoot_cd, i
 void Enemy_4_Red::skill() {
     if(prep_timer>0) {
         --prep_timer;
+        if(prep_timer==1) stopable = false;
         return;
     }
     if(!invulnerable_after_init) invulnerable = false;

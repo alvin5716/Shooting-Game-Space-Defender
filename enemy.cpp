@@ -45,15 +45,11 @@ Enemy::Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Player* 
     floatable=true;
     bossSkillHP=0;
     death_img="";
+    this->setZValue(Game::ZValueEnemy);
 }
 void Enemy::diedFromPlayer() {
     emit pointGive((int)point);
     emit soundPlay(Game::SoundCymbal);
-}
-void Enemy::outOfFrame() {
-    if(x<0-radius || x>Game::FrameWidth+radius || y<0-radius || y>Game::FrameHeight+radius) {
-        dead=true;
-    }
 }
 
 void Enemy::prepEffect(PrepEffectInfo prepInfo) {
@@ -63,6 +59,7 @@ void Enemy::prepEffect(PrepEffectInfo prepInfo) {
     int show_w = (img_w<img_h)?this->radius*2*scale:this->radius*2*scale/img_h*img_w;
     int show_h = (img_h<img_w)?this->radius*2*scale:this->radius*2*scale/img_w*img_h;
     Effect* new_effect = new Effect(prepInfo.img,img_w,img_h,show_w,show_h,time,this->x,this->y);
+    new_effect->setZValue(Game::ZValueForeEffect);
     new_effect->rotateStart(time);
     new_effect->moveWith(this);
     new_effect->fadein(600);
@@ -193,7 +190,6 @@ Effect* Enemy::disappear() {
                                 death_img_w,death_img_h,
                                 show_w * death_img_w / img_w, show_h * death_img_h / img_h,
                                 disappearTime==-1?-1:disappearTime/8,imgX()+show_w/2,imgY()+show_h/2,(death_img=="")?xv:0,(death_img=="")?yv:0,(death_img=="")?xa:0,(death_img=="")?ya:0);
-    corpse->setZValue(Game::ZValueBackEffect);
     //if needed, face to left
     if(canBeMirrored&&face_to_left) {
         corpse->setCanBeMirrored();

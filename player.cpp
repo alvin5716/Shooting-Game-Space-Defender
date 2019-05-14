@@ -13,6 +13,7 @@ Player::Player(int health, int radius, int shoot_cd, double x, double y, double 
     shoot_timer=0;
     skill_cd=skill_timer=187;
     vulnerable_func_count=0;
+    this->setZValue(Game::ZValueBehindDefault);
 }
 bool Player::isMaxHealth() const {
     return this->health==5;
@@ -93,6 +94,7 @@ Bullet *Player::shoot() {
     if(shoot_timer>=shoot_cd) {
         shoot_timer = 0;
         Bullet *new_bullet = new Bullet(QString(":/res/bullet/1/white.png"),3,x,y-show_h/2,0,-14);
+        new_bullet->setZValue(Game::ZValueTeammate);
         return new_bullet;
     }
     return nullptr;

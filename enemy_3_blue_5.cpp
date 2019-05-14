@@ -116,7 +116,7 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
             sin = std::sin(angle);
             new_bullet = centerball = new Bullet_Nether(QString(":/res/bullet/3/red.png"),bullet_radius,nullptr,1000,shootXPos()-22*cos,shootYPos()-22*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             new_bullet->setVTerminal(3.2);
-            new_bullet->setZValue(Game::ZValueInFrontOfStandard);
+            new_bullet->setZValue(Game::ZValueInFrontOfDefault);
             new_bullet->setInvulnerable();
             new_bullet->fadein(500);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));

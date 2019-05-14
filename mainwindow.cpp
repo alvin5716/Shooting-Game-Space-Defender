@@ -43,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setRenderHints(QPainter::SmoothPixmapTransform);
     ui->graphicsView->setOptimizationFlag(QGraphicsView::DontAdjustForAntialiasing);
     //qrand
-    qsrand(time(nullptr));
+    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
     //endlist
     ui->EndList->hide();
     EndListAni = new WidgetAnimationer(ui->EndList);
@@ -84,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     };
     std::vector<KeyControlButton*> menuButtons({ui->startButton,
-                                                ui->settingsButton,
+                                                ui->optionsButton,
                                                 ui->QuitButton});
     keyControlButtonsConnect(menuButtons,KeyControlButton::ArrowPosLeft);
     std::vector<KeyControlButton*> levelButtons({ui->LevelButton_1,
@@ -590,12 +590,12 @@ void MainWindow::doTick() {
             sceneVibrate(static_cast<short>(Enemy::shakeLevel::mediumShake),false);
             redFlash();
         }
-        for(int i=0;i<(int)enemies.size();++i) { //enemies
-            if(enemies.at(i)->isDead()) continue;
+        for(Enemy* enemy: enemies) { //enemies
+            if(enemy->isDead()) continue;
             //shoot
             std::vector<Bullet*>* new_enemy_bullets;
-            if(!(enemies.at(i)->isBoss() && enemies.at(i)->isSecPhase())) new_enemy_bullets = enemies.at(i)->shoot();
-            else new_enemy_bullets = enemies.at(i)->shoot2();
+            if(!(enemy->isBoss() && enemy->isSecPhase())) new_enemy_bullets = enemy->shoot();
+            else new_enemy_bullets = enemy->shoot2();
             if(new_enemy_bullets!=nullptr) {
                 for (std::vector<Bullet*>::iterator j=(*new_enemy_bullets).begin();j!=(*new_enemy_bullets).end();++j) {
                     scene->addItem(*j);
@@ -608,27 +608,33 @@ void MainWindow::doTick() {
                 delete new_enemy_bullets;
             }
             //skill
-            enemies.at(i)->skill();
+            enemy->skill();
             //out of frame
-            enemies.at(i)->outOfFrame();
+            enemy->deleteIfOutOfFrame();
         }
-        for(int i=0;i<(int)player_bullets.size();++i) { //player bullets
-            //damaged
+        { //player bullets
             std::vector<Character*> attackers(enemies.begin(),enemies.end());
-            Character* real_attacker = player_bullets.at(i)->testAttackedBy(attackers);
-            if(real_attacker!=nullptr) real_attacker->attacked();
+            for(Bullet* player_bullet: player_bullets) {
+                player_bullet->deleteIfOutOfFrame(); //out
+                //damaged
+                Character* real_attacker = player_bullet->testAttackedBy(attackers);
+                if(real_attacker!=nullptr) real_attacker->attacked();
+            }
         }
-        for(Bullet* enemy_bullet: enemy_bullets) { //enemy bullets
-            //damaged
+        {//enemy bullets
             Character* attacker = player;
-            Character* real_attacker = enemy_bullet->testAttackedBy(attacker);
-            if(real_attacker!=nullptr) {
-                if(!player->isInvulnerable()) {
-                    sceneVibrate();
-                    redFlash();
+            for(Bullet* enemy_bullet: enemy_bullets) {
+                enemy_bullet->deleteIfOutOfFrame(); //out
+                //damaged
+                Character* real_attacker = enemy_bullet->testAttackedBy(attacker);
+                if(real_attacker!=nullptr) {
+                    if(!player->isInvulnerable()) {
+                        sceneVibrate();
+                        redFlash();
+                    }
+                    real_attacker->attacked();
+                    ui->PlayerLife->display(player->getHealth());
                 }
-                real_attacker->attacked();
-                ui->PlayerLife->display(player->getHealth());
             }
         }
         //death
@@ -1387,10 +1393,10 @@ void MainWindow::doTick() {
                 new_boss = new Enemy_4_Blue_1(player,270,60,36,200,Game::FrameWidth/2,-60,0,0,0,0,false,true);
                 connect(new_boss,SIGNAL(deadSignal(int,int)),this,SLOT(bossCorpse(int,int)));
                 connect(new_boss,&Enemy::dialogueStart,[this](){
-                    dialogueStart({Dialogue("你是首領嗎？怎麼好像只是其他隻的放大版而已...",":/res/player.png",QRect(0,0,43,33)),
+                    dialogueStart({Dialogue("為什麼每個星球的首領都只是其他隻的放大版而已...",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("我所嚮往的是如我們的母星一般，外表黯淡，但內心的光芒隱隱透出。大智若愚，曖曖含光。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
                                    Dialogue("......",":/res/player.png",QRect(0,0,43,33)),
-                                   Dialogue("重點不是這個，你會在這裡是因為我向你們星球傳了無線電訊號，我需要有人幫忙。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
+                                   Dialogue("來談正事，你會來這裡是因為我向你們星球傳了無線電訊號，我需要有人幫忙。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
                                    Dialogue("幫忙？",":/res/player.png",QRect(0,0,43,33)),
                                    Dialogue("其實說起來有點不好意思...",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
                                    Dialogue("我們之前開發的機械智慧因為不明原因開始暴走了。沒弄好的話，這幾十光年內的星球可能都有危險。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
@@ -1442,7 +1448,7 @@ void MainWindow::doTick() {
                 this->bossHPShortened = false;
                 if(player!=nullptr) player->gameEndSetting();
             } else if(tickCheck(8590) && !player->isMaxHealth()) {
-                dialogueStart({Dialogue("嗚，雖然我有放水，不過好久沒動了，好累。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                dialogueStart({Dialogue("嗚，雖然有放一點水，不過好久沒動了，好累。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
                                Dialogue("你還真行耶，看來我找對人了。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
                                Dialogue("這是當然的了！所以那個機械智慧在哪裡？到底發生了什麼事？",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("我們之前嘗試開發機械智慧，但是最後失敗了。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
@@ -1486,8 +1492,8 @@ void MainWindow::doTick() {
                                Dialogue("這是當然的了！所以那個機械智慧在哪裡？到底發生了什麼事？",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("我們之前嘗試開發機械智慧，但是最後失敗了。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
                                Dialogue("最後我們把失敗品丟到了另一顆無生命的星球上。但最近呢，有很多鄰近的星球卻說他們受到了這些機械的攻擊。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
-                               Dialogue("我不清楚它們是怎麼重獲新生的，別說是自主行動了，他們理論上根本已經沒有能源能執行任何動作了。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
-                               Dialogue("一開始我也不相信，但受害星球的描述真的都與它們相似。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("我不清楚它們是怎麼重新啟動的，別說是自主行動了，他們理論上根本已經沒有能源能執行任何動作了。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
+                               Dialogue("一開始我也不相信，但大家的描述真的都與它們相似。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
                                Dialogue("總之我建議先到他們的據點星球旁的那顆星球，迷霧星。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90)),
                                Dialogue("那裡的大氣很糟，我們可以躲在那裡觀察他們而不容易被發現。",":/res/enemy/4/blue_3.png",QRect(50,0,90,90))
                                });
@@ -1500,13 +1506,15 @@ void MainWindow::doTick() {
                                Dialogue("收到，你找到智多星的首領了嗎？"),
                                Dialogue("是的，我們現在正要前往機械智慧所在地旁的星球，迷霧星。",":/res/player.png",QRect(0,0,43,33)),
                                Dialogue("我們會在那裡靜觀其變、研擬對策。",":/res/player.png",QRect(0,0,43,33)),
-                               Dialogue("迷霧星是大氣活動非常劇烈的星球，沒有複雜生物存在，雖然危險但是個很好的藏身之處。",":/res/enemy/4/blue.png",QRect(60,25,88,88))
+                               Dialogue("迷霧星的引力場詭譎難解，大氣活動氣象萬千，星球表面岈然洼然，若垤若穴。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
+                               Dialogue("......",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("簡單來講就是內營力和外營力都非常劇烈的星球。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
+                               Dialogue("所以沒有複雜生物存在，頂多有微生物吧，雖然危險但是個很好的藏身之處。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
+                               Dialogue("啊，剛說完就有小型隕石群來了，自己小心",":/res/enemy/4/blue.png",QRect(60,25,88,88))
                               });
-            } else if(tickCheck(250,131,5)) { //500+262i, 5 times
-                for(int i=0;i<2;++i) {
-                    new_enemy = new Environment_1(player,40);
-                    newEnemyInit(new_enemy);
-                }
+            } else if(tickCheck(300)) { //300
+                new_enemy = new Environment_1(player,28,810);
+                newEnemyInit(new_enemy);
             }
             break;
         default:

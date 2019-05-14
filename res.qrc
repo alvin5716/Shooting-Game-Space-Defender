@@ -98,6 +98,7 @@
         <file>res/sound/laser.wav</file>
         <file>res/bg/boss_5.png</file>
         <file>res/bullet/5/white.png</file>
-        <file>res/bullet/5/yellow.png</file>
+        <file>res/bullet/5/fire.png</file>
+        <file>res/bullet/5/water.png</file>
     </qresource>
 </RCC>

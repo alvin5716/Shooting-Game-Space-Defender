@@ -33,7 +33,6 @@ public:
     Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Player *player, int health, int radius, int shoot_cd, int shoot_cd_init, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool bounceable=false, bool stopable=false);
     virtual std::vector<Bullet*>* shoot(); //return a pointer to vector, whose elements are pointer to new bullets
     virtual std::vector<Bullet*>* shoot2(); //this is only be used for boss
-    void outOfFrame();
     bool isBoss() const;
     bool isSecPhase() const;
     virtual Effect* disappear();

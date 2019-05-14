@@ -23,6 +23,7 @@ BulletDataWall::BulletDataWall(Bullet* bullet, double vertical_v, double vertica
 BulletDataWall::BulletDataWall(Bullet* bullet, Player* player, double v)
     :BulletData(bullet), type(BulletDataWallType::magicStone)
 {
+    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
     this->infinite = true;
     this->data.magicStone.player=player;
     this->data.magicStone.v=v;
