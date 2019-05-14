@@ -86,19 +86,15 @@ void Teammate::move() {
     }
     double dis = this->distanceTo(player);
     if(dis > 150) {
-        double dis_scale = (std::min(250.0,dis)-150)/100.0;
-        double acce = max_acce*dis_scale*dis_scale;
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         double cos = std::cos(angle);
         double sin = std::sin(angle);
-        setAcceleration(acce*cos, acce*sin);
+        setAcceleration(max_acce*cos, max_acce*sin);
     } else if(dis < 100) {
-        double dis_scale = (100-dis)/100.0;
-        double acce = max_acce*dis_scale*dis_scale;
         double angle = angleofvector(player->getX()-x,player->getY()-y);
         double cos = -std::cos(angle);
         double sin = -std::sin(angle);
-        setAcceleration(acce*cos, acce*sin);
+        setAcceleration(max_acce*cos, max_acce*sin);
     } else if(speed > max_acce) {
         double angle = angleofvector(xv,yv);
         double cos = -std::cos(angle);
