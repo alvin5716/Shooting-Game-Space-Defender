@@ -14,12 +14,12 @@ typedef std::function<void()> skillFunc;
 class PrepEffectInfo {
 public:
     friend class Enemy;
-    PrepEffectInfo(QString img, int img_w, int img_h);
+    PrepEffectInfo(const QString &img, int img_w, int img_h);
     PrepEffectInfo& setTime(int time = 70);
     PrepEffectInfo& setScale(int scale = 2.8);
     PrepEffectInfo& setSound(bool withSound = true);
 private:
-    QString img;
+    const QString &img;
     int img_w, img_h;
     int time, scale;
     bool withSound;
@@ -30,7 +30,7 @@ class Enemy : public Character
     Q_OBJECT
 public:
     enum shakeLevel{smallShake=4,mediumShake=0,largeShake=-4};
-    Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Player *player, int health, int radius, int shoot_cd, int shoot_cd_init, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool bounceable=false, bool stopable=false);
+    Enemy(const QString &img, int img_w, int img_h, int show_w, int show_h, Player *player, int health, int radius, int shoot_cd, int shoot_cd_init, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool bounceable=false, bool stopable=false);
     virtual std::vector<Bullet*>* shoot(); //return a pointer to vector, whose elements are pointer to new bullets
     virtual std::vector<Bullet*>* shoot2(); //this is only be used for boss
     bool isBoss() const;
@@ -42,7 +42,7 @@ public:
     void noPoint();
     void attacked() override;
     void prepEffect(PrepEffectInfo PrepInfo);
-    void prepEffect(QString img, int img_w, int img_h);
+    void prepEffect(const QString &img, int img_w, int img_h);
     ~Enemy();
 public slots:
     virtual void move();

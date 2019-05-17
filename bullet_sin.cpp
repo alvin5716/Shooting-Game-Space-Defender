@@ -1,7 +1,7 @@
 #include "bullet_sin.h"
 #include <QDebug>
 
-Bullet_Sin::Bullet_Sin(QString img, int T, int r, int radius, double x, double y, double xv, double yv, double xa, double ya, bool sin_or_cos)
+Bullet_Sin::Bullet_Sin(const QString &img, int T, int r, int radius, double x, double y, double xv, double yv, double xa, double ya, bool sin_or_cos)
     :Bullet(img,radius,x,y,xv,yv,xa,ya),r(r),T(T),sin_or_cos(sin_or_cos)
 {
     t=0;

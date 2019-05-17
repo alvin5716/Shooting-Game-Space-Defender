@@ -1,7 +1,7 @@
 #include "dialoguewidget.h"
 #include <QKeyEvent>
 
-Dialogue::Dialogue(QString content, QString img, QRect img_frame)
+Dialogue::Dialogue(const QString &content, const QString &img, QRect img_frame)
     :content(content), img(img), img_frame(img_frame)
 {
 

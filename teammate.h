@@ -7,7 +7,7 @@
 class Teammate : public Enemy
 {
 public:
-    Teammate(QString img, int img_w, int img_h, int show_w, int show_h, Player* player, int shoot_cd, double x=0, double y=0);
+    Teammate(const QString &img, int img_w, int img_h, int show_w, int show_h, Player* player, int shoot_cd, double x=0, double y=0);
     std::vector<Bullet*>* shoot() override;
     void move() override;
     void setShooting(bool shooting=true);

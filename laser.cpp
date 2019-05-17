@@ -4,7 +4,7 @@
 #include "game.h"
 #include "enemy.h"
 
-Laser::Laser(QString img, Enemy* shooter, int radius, double angle, double omega, int lifetime, double x, double y, int prepare_time)
+Laser::Laser(const QString &img, Enemy* shooter, int radius, double angle, double omega, int lifetime, double x, double y, int prepare_time)
     :Bullet(img,radius,x,y)
 {
     if(shooter!=nullptr) connect(this,SIGNAL(soundPlay(Game::Sound)),shooter,SIGNAL(soundPlay(Game::Sound)));

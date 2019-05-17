@@ -58,7 +58,6 @@ namespace Game {
         UIBaseGeometryEndList,
         UIBaseGeometryWarning,
         UIBaseGeometryIntro,
-        UIBaseGeometrySkill,
         UIBaseGeometryLife,
         UIBaseGeometryWinWidget,
         UIBaseGeometryRestartButton_3,

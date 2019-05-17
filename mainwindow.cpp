@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     cur_left(false),cur_up(false),
     player(nullptr),teammate(nullptr),dot(nullptr),secret(0),
     oriImg2(nullptr),cutImg(nullptr),oriImg(nullptr),
+    skillName(new TextItem("",nullptr)),
     bossHealthOpacityEff(this), bossLivesOpacityEff(this),
     dialogueProcessing(false), bossHPShortened(false),
     dialogueWidget(nullptr),
@@ -29,9 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setGamePage(Game::GamePageMenu);
-    //boss objects
-    ui->BossHealth->setGraphicsEffect(&bossHealthOpacityEff);
-    ui->BossLives->setGraphicsEffect(&bossLivesOpacityEff);
     //level
     level = 1;
     //scene
@@ -42,6 +40,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
     ui->graphicsView->setRenderHints(QPainter::SmoothPixmapTransform);
     ui->graphicsView->setOptimizationFlag(QGraphicsView::DontAdjustForAntialiasing);
+    //boss objects
+    ui->BossHealth->setGraphicsEffect(&bossHealthOpacityEff);
+    ui->BossLives->setGraphicsEffect(&bossLivesOpacityEff);
+    skillName->setPos(340,80);
+    skillName->setZValue(Game::ZValueUI);
+    scene->addItem(skillName);
     //qrand
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
     //endlist
@@ -109,8 +113,8 @@ MainWindow::MainWindow(QWidget *parent) :
     flash = new Flash(QRect(-50,-50,Game::FrameWidth+100,Game::FrameHeight+100));
     scene->addItem(flash);
     //boss skill name animation
-    bossSkillAni = new WidgetAnimationer(ui->BossSkill);
-    bossSkillAni->setFadeDir(WidgetAnimationer::FadeDirectionLeft);
+    bossSkillAni = new ItemAnimationer(skillName);
+    bossSkillAni->setFadeDir(ItemAnimationer::FadeDirectionLeft);
     //game state
     gamestate=Game::GameStateMenu;
     //level intro
@@ -150,7 +154,6 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->EndList->geometry(),
         ui->WarningBar->geometry(),
         ui->levelIntro->geometry(),
-        ui->BossSkill->geometry(),
         ui->BossLives->geometry(),
         ui->WinWidget->geometry(),
         ui->restartButton_3->geometry(),
@@ -256,8 +259,8 @@ void MainWindow::start() {
     ui->BossLives->setText("");
     bossLivesOpacityEff.setOpacity(0.7);
     //boss skill name
-    ui->BossSkill->hide();
-    ui->BossSkill->setText("");
+    skillName->hide();
+    skillName->setPlainText("");
     bossSkillAni->setOpacity(0.7);
     //boss health bar
     ui->BossHealth->hide();
@@ -406,7 +409,6 @@ void MainWindow::triggerResize(double central_h) {
         scaleAsFrame(ui->levelIntro,gameFrameContentGeo.at(Game::UIBaseGeometryIntro));
         scaleAsFrame_Ani(EndListAni,gameFrameContentGeo.at(Game::UIBaseGeometryEndList));
         if(dialogueWidget!=nullptr) scaleAsFrame_Dia(dialogueWidget,gameFrameContentGeo.at(Game::UIBaseGeometryDialogue));
-        scaleAsFrame_Ani(bossSkillAni,gameFrameContentGeo.at(Game::UIBaseGeometrySkill));
         scaleAsFrame(ui->BossHealth,gameFrameContentGeo.at(this->bossHPShortened?Game::UIBaseGeometryHPShort:Game::UIBaseGeometryHP));
         scaleAsFrame(ui->BossLives,gameFrameContentGeo.at(Game::UIBaseGeometryLife));
         //end list
@@ -827,7 +829,7 @@ void MainWindow::doTick() {
                 tickFreeze();
             } else if(tickCheck(4427)) { //8852, END
                 ui->BossLives->hide();
-                ui->BossSkill->hide();
+                skillName->hide();
                 if(player!=nullptr) player->gameEndSetting();
             } else if(tickCheck(4650)) {
                 dialogueStart({Dialogue("住手，不要再打了啦...",":/res/enemy/1/blue_3.png",QRect(5,5,35,35)),
@@ -1058,7 +1060,7 @@ void MainWindow::doTick() {
                 tickFreeze();
             } else if(tickCheck(6876)) { //13750, END
                 ui->BossLives->hide();
-                ui->BossSkill->hide();
+                skillName->hide();
                 if(player!=nullptr) player->gameEndSetting();
             } else if(tickCheck(7163)) {
                 dialogueStart({Dialogue("啊呀啊嘎嗚...",":/res/enemy/2/blue_3.png",QRect(5,2,25,25)),
@@ -1299,7 +1301,7 @@ void MainWindow::doTick() {
                 tickFreeze();
             } else if(tickCheck(5965)) {  //11927, END
                 ui->BossLives->hide();
-                ui->BossSkill->hide();
+                skillName->hide();
                 if(player!=nullptr) player->gameEndSetting();
             } else if(tickCheck(6250)) {
                 dialogueStart({Dialogue("占卜的結果...不是這樣的啊...",":/res/enemy/3/blue_3.png",QRect(4,3,39,39)),
@@ -1444,7 +1446,7 @@ void MainWindow::doTick() {
                 tickFreeze();
             } else if(tickCheck(8326)) { //8326
                 ui->BossLives->hide();
-                ui->BossSkill->hide();
+                skillName->hide();
                 this->bossHPShortened = false;
                 if(player!=nullptr) player->gameEndSetting();
             } else if(tickCheck(8590) && !player->isMaxHealth()) {
@@ -1619,15 +1621,15 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     ui->BossHealth->show();
     ui->BossHealth->setMaximum(new_boss->getHealth());
     ui->BossHealth->setValue(new_boss->getHealth());
-    ui->BossSkill->setText("");
+    skillName->setPlainText("");
     connect(new_boss,SIGNAL(healthChanged(int)),ui->BossHealth,SLOT(setValue(int)));
     connect(new_boss,SIGNAL(useSkill(QString)),this,SLOT(bossSkillLengthSetting(QString)));
     connect(new_boss,SIGNAL(useSkill(QString)),bossSkillAni,SLOT(animationStart3500()));
-    connect(new_boss,SIGNAL(useSkill(QString)),ui->BossSkill,SLOT(show()));
-    connect(new_boss,SIGNAL(useSkill(QString)),ui->BossSkill,SLOT(setText(QString)));
+    connect(new_boss,SIGNAL(useSkill(QString)),skillName,SLOT(showSlot()));
+    connect(new_boss,SIGNAL(useSkill(QString)),skillName,SLOT(setTextSlot(QString)));
     connect(new_boss,SIGNAL(useSkill(QString)),flash,SLOT(flash()));
     connect(new_boss,SIGNAL(deadSignal()),ui->BossHealth,SLOT(hide()));
-    connect(new_boss,SIGNAL(deadSignal()),ui->BossSkill,SLOT(hide()));
+    connect(new_boss,SIGNAL(deadSignal()),skillName,SLOT(hideSlot()));
     connect(new_boss,SIGNAL(shakeScreen(short)),this,SLOT(sceneVibrate(short)));
     connect(new_boss,SIGNAL(shakeScreenVertical(short)),this,SLOT(sceneVibrateVertical(short)));
     connect(new_boss,SIGNAL(killAllBullets()),this,SLOT(killAllBullets()));
@@ -1646,8 +1648,6 @@ void MainWindow::killOtherEnemies(Enemy* this_enemy) {
 void MainWindow::bossSkillLengthSetting(QString skill) {
     int length=skill.length();
     QRect new_geo(740-length*50,60,length*50,50);
-    gameFrameContentGeo.at(Game::UIBaseGeometrySkill) = new_geo;
-    this->triggerResize(ui->centralWidget->height());
 }
 void MainWindow::newMagicEffect(int show_w, int show_h, double x, double y, int lifetime, Game::MagicType type) {
     bool white = type==Game::MagicTypeWhite;

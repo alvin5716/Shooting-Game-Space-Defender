@@ -1,7 +1,7 @@
 #include "bullet_nether.h"
 #include "effect.h"
 
-Bullet_Nether::Bullet_Nether(QString img, int radius, Character* nether_center, int lifetime, double x, double y, double xv, double yv, double xa, double ya)
+Bullet_Nether::Bullet_Nether(const QString &img, int radius, Character* nether_center, int lifetime, double x, double y, double xv, double yv, double xa, double ya)
     :Bullet(img,radius,x,y,xv,yv,xa,ya)
 {
     lifetimer=lifetime;

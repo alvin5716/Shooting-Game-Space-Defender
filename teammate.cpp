@@ -1,7 +1,7 @@
 #include "teammate.h"
 #include <QDebug>
 
-Teammate::Teammate(QString img, int img_w, int img_h, int show_w, int show_h, Player *player, int shoot_cd, double x, double y)
+Teammate::Teammate(const QString &img, int img_w, int img_h, int show_w, int show_h, Player *player, int shoot_cd, double x, double y)
     :Enemy(img,img_w,img_h,show_w,show_h,player,100,0,shoot_cd,0,x,y)
 {
     hasEnemy = false;

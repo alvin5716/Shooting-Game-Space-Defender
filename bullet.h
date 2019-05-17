@@ -15,12 +15,12 @@ class Bullet : public Character
 {
     Q_OBJECT
 public:
-    Bullet(QString img, int radius, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0);
+    Bullet(const QString &img, int radius, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0);
     void img_move() override;
     void setVTerminal(double terminal_v);
     void setLookForward(bool lookForward=true);
     void rotateStart();
-    void setImg(QString img) override;
+    void setImg(const QString &img) override;
     void waitUntilInFrame(int max_waitting_time=313);
     bool outOfFrame() override;
     // time data

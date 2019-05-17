@@ -4,7 +4,7 @@
 #include <QDebug>
 #include "game.h"
 
-PrepEffectInfo::PrepEffectInfo(QString img, int img_w, int img_h)
+PrepEffectInfo::PrepEffectInfo(const QString &img, int img_w, int img_h)
     :img(img),img_w(img_w),img_h(img_h),time(70),scale(2.8),withSound(true)
 {
 
@@ -25,7 +25,7 @@ PrepEffectInfo& PrepEffectInfo::setSound(bool withSound) {
     return *this;
 }
 
-Enemy::Enemy(QString img, int img_w, int img_h, int show_w, int show_h, Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+Enemy::Enemy(const QString &img, int img_w, int img_h, int show_w, int show_h, Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Character(img,img_w,img_h,show_w,show_h,health,radius,x,y,xv,yv,xa,ya),
       death_img_w(img_w), death_img_h(img_h)
 {
@@ -69,7 +69,7 @@ void Enemy::prepEffect(PrepEffectInfo prepInfo) {
     if(withSound) emit soundPlay(Game::SoundMagicSmite);
 }
 
-void Enemy::prepEffect(QString img, int img_w, int img_h) {
+void Enemy::prepEffect(const QString &img, int img_w, int img_h) {
     PrepEffectInfo prepInfo(img,img_w,img_h);
     prepEffect(prepInfo);
 }

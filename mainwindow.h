@@ -60,6 +60,9 @@
 #include <QMediaPlayer>
 #include "widgetanimationer.h"
 #include "dialoguewidget.h"
+#include <memory>
+#include "textitem.h"
+#include "itemanimationer.h"
 
 namespace Ui {
 class MainWindow;
@@ -117,11 +120,13 @@ private:
     int gamestate, level;
     QString strBossBG;
     bool isPlayerPosHigh, levelIntroShowing;
+    TextItem* skillName;
     QGraphicsOpacityEffect bossHealthOpacityEff, bossLivesOpacityEff;
     std::vector<QMediaPlayer*> audioers;
-    WidgetAnimationer* EndListAni, *levelSelectAni, *bossSkillAni;
+    WidgetAnimationer* EndListAni, *levelSelectAni;
+    ItemAnimationer* bossSkillAni;
     bool dialogueProcessing, bossHPShortened;
-    static const int StartTick = 0;
+    static const int StartTick = 7800;
     DialogueWidget* dialogueWidget;
     std::vector<QRect> gameFrameContentGeo;
 

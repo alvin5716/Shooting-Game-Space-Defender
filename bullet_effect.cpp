@@ -1,6 +1,6 @@
 #include "bullet_effect.h"
 
-Bullet_Effect::Bullet_Effect(QString img, int radius, QGraphicsScene* scene, QString eff_img, double eff_scale, double x, double y, double xv, double yv, double xa, double ya)
+Bullet_Effect::Bullet_Effect(const QString &img, int radius, QGraphicsScene* scene, const QString &eff_img, double eff_scale, double x, double y, double xv, double yv, double xa, double ya)
     :Bullet(img,radius,x,y,xv,yv,xa,ya), Effect_Attachment(scene, eff_img, 120, 120, (int)round(radius*2.2*eff_scale), (int)round(radius*2.2*eff_scale), x, y)
 {
     effect->setZValue(Game::ZValueImportantBackEffect);

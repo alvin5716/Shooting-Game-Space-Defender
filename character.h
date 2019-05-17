@@ -17,7 +17,7 @@ class Character : public QObject, public QGraphicsPixmapItem
     Q_OBJECT
 public:
     Character() = delete;
-    Character(QString img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya);
+    Character(const QString &img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya);
     void setPosition(double x, double y);
     void setPosition(QPointF pos);
     void setSpeed(double xv, double yv);
@@ -47,7 +47,7 @@ public:
     void whiteize(int time=30);
     void setCanBeMirrored(bool canBeMirrored=true);
     void setFaceToLeft(bool face_to_left=true);
-    virtual void setImg(QString img);
+    virtual void setImg(const QString &img);
     void setShowSize(int show_w, int show_h);
     void show_img_set();
     void show_img_force_set();

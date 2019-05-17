@@ -6,7 +6,7 @@
 class Bullet_Sin :public Bullet
 {
 public:
-    Bullet_Sin(QString img, int T, int r, int radius, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool sin_or_cos=true);
+    Bullet_Sin(const QString &img, int T, int r, int radius, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool sin_or_cos=true);
 public slots:
     void move();
 private:

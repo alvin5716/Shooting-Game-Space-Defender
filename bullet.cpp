@@ -6,7 +6,7 @@
 #include <QDebug>
 #include "player.h"
 
-Bullet::Bullet(QString img, int radius, double x, double y, double xv, double yv, double xa, double ya)
+Bullet::Bullet(const QString &img, int radius, double x, double y, double xv, double yv, double xa, double ya)
     :Character(img,50,50,(int)round(radius*2.2),(int)round(radius*2.2),1,radius,x,y,xv,yv,xa,ya)
 {
     terminal_v = 0;
@@ -29,7 +29,7 @@ void Bullet::waitUntilInFrame(int max_waitting_time) {
     enter_timer = max_waitting_time;
 }
 
-void Bullet::setImg(QString img) {
+void Bullet::setImg(const QString &img) {
     Character::setImg(img);
     this->rotating = img.startsWith(":/res/bullet/3/");
     if(img == ":/res/bullet/other/yellow_hex.png") {

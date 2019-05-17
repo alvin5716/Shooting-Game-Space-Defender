@@ -8,7 +8,7 @@
 
 int Character::character_count=0;
 
-Character::Character(QString img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya)
+Character::Character(const QString &img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya)
     :radius(radius), health(health),
       img_w(img_w), img_h(img_h), show_w(show_w), show_h(show_h), img_timer(0),
       x(x), y(y), xv(xv), yv(yv), xa(xa), ya(ya),
@@ -278,7 +278,7 @@ void Character::setCanBeMirrored(bool canBeMirrored) {
 void Character::setFaceToLeft(bool face_to_left) {
     this->face_to_left=face_to_left;
 }
-void Character::setImg(QString img) {
+void Character::setImg(const QString &img) {
     this->img=img;
 }
 void Character::setShowSize(int show_w, int show_h) {

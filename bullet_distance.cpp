@@ -2,7 +2,7 @@
 #include <cmath>
 #include <QDebug>
 
-Bullet_Distance::Bullet_Distance(QString img, int radius, Character* center, int distance, double x,double y,double xv,double yv,double xa,double ya)
+Bullet_Distance::Bullet_Distance(const QString &img, int radius, Character* center, int distance, double x,double y,double xv,double yv,double xa,double ya)
     :Bullet(img,radius,x,y,xv,yv,xa,ya),distance(distance)
 {
     if(center!=nullptr) centers.push_back(center);
