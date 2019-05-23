@@ -1024,37 +1024,6 @@ border:0;</string>
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="BossSkill">
-       <property name="geometry">
-        <rect>
-         <x>457</x>
-         <y>60</y>
-         <width>288</width>
-         <height>48</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>微軟正黑體</family>
-         <pointsize>20</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background:qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 transparent, stop:1 #800050);
-color:rgba(255,255,255,0.7);
-padding-right: 3px;
-border-radius: 8px;
-border-color:transparent;</string>
-       </property>
-       <property name="text">
-        <string>test</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
       <widget class="QProgressBar" name="BossHealth">
        <property name="geometry">
         <rect>
@@ -1120,7 +1089,6 @@ border:0;</string>
       </widget>
       <zorder>graphicsView</zorder>
       <zorder>levelIntro</zorder>
-      <zorder>BossSkill</zorder>
       <zorder>BossHealth</zorder>
       <zorder>BossLives</zorder>
       <zorder>WarningBar</zorder>

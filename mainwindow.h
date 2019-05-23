@@ -126,7 +126,7 @@ private:
     WidgetAnimationer* EndListAni, *levelSelectAni;
     ItemAnimationer* bossSkillAni;
     bool dialogueProcessing, bossHPShortened;
-    static const int StartTick = 7800;
+    static const int StartTick = 0;
     DialogueWidget* dialogueWidget;
     std::vector<QRect> gameFrameContentGeo;
 

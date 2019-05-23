@@ -43,7 +43,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //boss objects
     ui->BossHealth->setGraphicsEffect(&bossHealthOpacityEff);
     ui->BossLives->setGraphicsEffect(&bossLivesOpacityEff);
-    skillName->setPos(340,80);
+    skillName->setPos(20,55);
+    skillName->setFont(QFont("Microsoft Jhenghei", 18, QFont::Bold));
+    skillName->setDefaultTextColor(Qt::white);
     skillName->setZValue(Game::ZValueUI);
     scene->addItem(skillName);
     //qrand
@@ -114,7 +116,7 @@ MainWindow::MainWindow(QWidget *parent) :
     scene->addItem(flash);
     //boss skill name animation
     bossSkillAni = new ItemAnimationer(skillName);
-    bossSkillAni->setFadeDir(ItemAnimationer::FadeDirectionLeft);
+    bossSkillAni->setFadeDir(ItemAnimationer::FadeDirectionRight);
     //game state
     gamestate=Game::GameStateMenu;
     //level intro
@@ -1625,8 +1627,8 @@ void MainWindow::newBossInit(Enemy* new_boss) {
     connect(new_boss,SIGNAL(healthChanged(int)),ui->BossHealth,SLOT(setValue(int)));
     connect(new_boss,SIGNAL(useSkill(QString)),this,SLOT(bossSkillLengthSetting(QString)));
     connect(new_boss,SIGNAL(useSkill(QString)),bossSkillAni,SLOT(animationStart3500()));
-    connect(new_boss,SIGNAL(useSkill(QString)),skillName,SLOT(showSlot()));
     connect(new_boss,SIGNAL(useSkill(QString)),skillName,SLOT(setTextSlot(QString)));
+    connect(new_boss,SIGNAL(useSkill(QString)),skillName,SLOT(showSlot()));
     connect(new_boss,SIGNAL(useSkill(QString)),flash,SLOT(flash()));
     connect(new_boss,SIGNAL(deadSignal()),ui->BossHealth,SLOT(hide()));
     connect(new_boss,SIGNAL(deadSignal()),skillName,SLOT(hideSlot()));

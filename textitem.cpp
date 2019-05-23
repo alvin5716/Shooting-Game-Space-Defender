@@ -1,4 +1,5 @@
 #include "textitem.h"
+#include <QDebug>
 
 TextItem::TextItem(const QString &text, QGraphicsItem *parent)
     :QGraphicsTextItem(text, parent)

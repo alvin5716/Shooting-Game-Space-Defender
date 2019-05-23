@@ -19,7 +19,7 @@ public:
     PrepEffectInfo& setScale(int scale = 2.8);
     PrepEffectInfo& setSound(bool withSound = true);
 private:
-    const QString &img;
+    QString img;
     int img_w, img_h;
     int time, scale;
     bool withSound;
