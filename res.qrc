@@ -100,5 +100,7 @@
         <file>res/bullet/5/white.png</file>
         <file>res/bullet/5/fire.png</file>
         <file>res/bullet/5/water.png</file>
+        <file>res/enemy/5/environment_1.png</file>
+        <file>res/enemy/5/environment_2.png</file>
     </qresource>
 </RCC>

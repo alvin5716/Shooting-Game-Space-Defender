@@ -200,6 +200,8 @@ Effect* Enemy::disappear() {
         corpse->setFloatable(true);
         corpse->float_timer = this->float_timer;
     }
+    //zvalue
+    corpse->setZValue(this->zValue());
     //disappear time
     if(disappearTime!=-1) corpse->fadeout(disappearTime);
     return corpse;

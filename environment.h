@@ -3,12 +3,13 @@
 
 #include "enemy_temp.h"
 
-class Environment : public Enemy_Temp
+class Environment : public Enemy
 {
 public:
-    Environment(Player* player, int shoot_cd, int lifetime=750);
+    Environment(QString img, Player* player, int shoot_cd, int lifetime=750);
 public slots:
     void move() override;
+    void img_move() override;
 protected:
     int lifetimer;
 };

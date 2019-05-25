@@ -3,7 +3,7 @@
 #include "spreadrng.h"
 
 Environment_2::Environment_2(Player *player, int shoot_cd, int lifetime)
-    :Environment(player,shoot_cd,lifetime)
+    :Environment(":/res/enemy/5/environment_2.png",player,shoot_cd,lifetime)
 {
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
     rng = new SpreadRNG(0,4);

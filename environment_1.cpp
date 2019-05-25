@@ -2,7 +2,7 @@
 #include "bullet_effect.h"
 
 Environment_1::Environment_1(Player *player, int shoot_cd, int lifetime)
-    :Environment(player,shoot_cd,lifetime)
+    :Environment(":/res/enemy/5/environment_1.png",player,shoot_cd,lifetime)
 {
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 }
