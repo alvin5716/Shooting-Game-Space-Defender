@@ -37,25 +37,6 @@ void Bullet_Collection::move() {
     }
 }
 
-bool Bullet_Collection::outOfFrame() {
-    for(std::vector<Bullet*>::iterator i=children.begin();i!=children.end();) {
-        if((*i)->enter_timer!=0) {
-            if(!(*i)->Character::outOfFrame()) (*i)->enter_timer=0;
-            ++i;
-        } else if(Character::outOfFrame()) {
-            (*i)->killItself();
-            delete (*i);
-            i = player_bullets.erase(i);
-        } else ++i;
-    }
-    return false;
-}
-
-void Bullet::img_move() {
-    for(Bullet* child: children) {
-        child->img_move();
-    }
-}
-
+//out of frame
 //img_move
 //attacked
