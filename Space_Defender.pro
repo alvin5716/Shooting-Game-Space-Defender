@@ -99,8 +99,7 @@ SOURCES += \
     environment_1.cpp \
     environment_2.cpp \
     textitem.cpp \
-    itemanimationer.cpp \
-    bullet_collection.cpp
+    itemanimationer.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -179,8 +178,7 @@ HEADERS += \
     environment_1.h \
     environment_2.h \
     textitem.h \
-    itemanimationer.h \
-    bullet_collection.h
+    itemanimationer.h
 
 FORMS += \
         mainwindow.ui
