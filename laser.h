@@ -8,6 +8,7 @@ class Enemy;
 class Laser : public Bullet
 {
 public:
+    Laser(int pixmap, Enemy* shooter, int radius, double angle, double omega=0, int lifetime=63, double x=0, double y=0, int prepare_time=75);
     Laser(const QString &img, Enemy* shooter, int radius, double angle, double omega=0, int lifetime=63, double x=0, double y=0, int prepare_time=75);
     Character* testAttackedBy(Character* attacker);
     double getAngle() const;

@@ -4,7 +4,7 @@
 #include <cmath>
 
 Enemy_Blue::Enemy_Blue(Player* player, int bossSkillHP, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
-    :Enemy(QString(":/res/enemy/1/blue.png"),40,47,radius*2,std::round(radius*2.35),player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
+    :Enemy(ImgPixmap::Level1::enemy_1_blue,40,47,radius*2,std::round(radius*2.35),player,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     point=10;
     this->beABoss(bossSkillHP);
@@ -37,7 +37,7 @@ std::vector<Bullet*>* Enemy_Blue::shoot() {
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
             cos = std::cos(angle+i*M_PI/(bullet_count/2)+((t==3)?M_PI/bullet_count:0));
             sin = std::sin(angle+i*M_PI/(bullet_count/2)+((t==3)?M_PI/bullet_count:0));
-            new_bullet = new Bullet(QString(":/res/bullet/1/blue.png"),bullet_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = new Bullet(ImgPixmap::Level1::bullet_1_blue,bullet_radius,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
         }

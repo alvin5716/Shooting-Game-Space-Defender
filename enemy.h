@@ -30,6 +30,7 @@ class Enemy : public Character
     Q_OBJECT
 public:
     enum shakeLevel{smallShake=4,mediumShake=0,largeShake=-4};
+    Enemy(int pixmap, int img_w, int img_h, int show_w, int show_h, Player *player, int health, int radius, int shoot_cd, int shoot_cd_init, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool bounceable=false, bool stopable=false);
     Enemy(const QString &img, int img_w, int img_h, int show_w, int show_h, Player *player, int health, int radius, int shoot_cd, int shoot_cd_init, double x=0, double y=0, double xv=0, double yv=0, double xa=0, double ya=0, bool bounceable=false, bool stopable=false);
     virtual std::vector<Bullet*>* shoot(); //return a pointer to vector, whose elements are pointer to new bullets
     virtual std::vector<Bullet*>* shoot2(); //this is only be used for boss
@@ -68,9 +69,13 @@ protected:
     Player* player;
     int disappearTime;
     QString death_img;
+    int death_pixmap;
+    bool death_usePixmap;
     int death_img_w, death_img_h;
-    void setDeathImg(QString death_img);
-    void setDeathImg(QString death_img, int death_img_w, int death_img_h);
+    void setDeathImg(const QString &death_img);
+    void setDeathImg(int death_pixmap);
+    void setDeathImg(const QString &death_img, int death_img_w, int death_img_h);
+    void setDeathImg(int death_pixmap, int death_img_w, int death_img_h);
     void testIfSecPhase(skillFunc initialize, skillFunc secPhaseSkill);
     void testIfSecPhase(skillFunc initialize, skillFunc secPhaseSkill, skillFunc FirPhaseSkill);
 private:

@@ -7,12 +7,35 @@
 #include "game.h"
 
 int Character::character_count=0;
+ImgPixmap Character::imgPixmap(0);
+
+Character::Character(int pixmap, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya)
+    :radius(radius), health(health),
+      img_w(img_w), img_h(img_h), show_w(show_w), show_h(show_h), img_timer(0),
+      x(x), y(y), xv(xv), yv(yv), xa(xa), ya(ya),
+      dead(false), invulnerable(false), whiteized(false), img(""),
+      usePixmap(true), pixmap(pixmap), origin(nullptr)
+{
+    setPos(x-show_w/2,y-show_h/2);
+    QRect cutFrame(0,0,img_w,img_h);
+    QPixmap *oriImg = imgPixmap.getPixmap(pixmap);
+    setPixmap(oriImg->copy(cutFrame).scaled(show_w,show_h));
+    face_to_left=false;
+    canBeMirrored=false;
+    attackable=true;
+    floatable=false;
+    show_img_setting=false;
+    float_timer=0;
+    ++character_count;
+    //qDebug() << "character count:" << character_count;
+}
 
 Character::Character(const QString &img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya)
     :radius(radius), health(health),
       img_w(img_w), img_h(img_h), show_w(show_w), show_h(show_h), img_timer(0),
       x(x), y(y), xv(xv), yv(yv), xa(xa), ya(ya),
-      dead(false), invulnerable(false), whiteized(false), img(img), origin(nullptr)
+      dead(false), invulnerable(false), whiteized(false), img(img),
+      usePixmap(false), pixmap(-1), origin(nullptr)
 {
     setPos(x-show_w/2,y-show_h/2);
     QRect cutFrame(0,0,img_w,img_h);
@@ -62,9 +85,12 @@ void Character::show_img_set() {
         if(img_timer>=15*4) img_timer=0;
         if(!canBeMirrored) {
             QRect cutFrame(img_w*(img_timer/15),0,img_w,img_h);
-            QPixmap oriImg(img);
-            QPixmap cutImg = oriImg.copy(cutFrame);
-            setPixmap(cutImg.scaled(show_w,show_h));
+            if(usePixmap) {
+                QPixmap *oriImg = imgPixmap.getPixmap(pixmap);
+                this->setPixmap(oriImg->copy(cutFrame).scaled(show_w,show_h));
+            } else {
+                this->setPixmap(QPixmap(img).copy(cutFrame).scaled(show_w,show_h));
+            }
         } else { // image can be mirrored by direction of speed
             if(face_to_left&&xv>0) face_to_left=false;
             else if((!face_to_left)&&xv<0) face_to_left=true;
@@ -242,8 +268,11 @@ int Character::getShowW() const {
 int Character::getShowH() const {
     return show_h;
 }
-QString Character::getImg() const {
+const QString& Character::getImg() const {
     return img;
+}
+int Character::getPixmap() const {
+    return pixmap;
 }
 bool Character::isDead() const {
     return dead;
@@ -280,6 +309,11 @@ void Character::setFaceToLeft(bool face_to_left) {
 }
 void Character::setImg(const QString &img) {
     this->img=img;
+    this->usePixmap = false;
+}
+void Character::setImg(int pixmap) {
+    this->pixmap = pixmap;
+    this->usePixmap = true;
 }
 void Character::setShowSize(int show_w, int show_h) {
     this->show_w=show_w;

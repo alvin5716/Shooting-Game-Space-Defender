@@ -13,7 +13,7 @@ void Enemy_Blue_5::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy/1/blue_2.png";
+        setImg(ImgPixmap::Level1::enemy_1_blue_2);
         shoot_timer = -200;
         shoot_cd = 180;
         skill_timer = -213;
@@ -42,7 +42,7 @@ std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
         for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
             cos = std::cos(2*i*M_PI/bullet_count+phi);
             sin = std::sin(2*i*M_PI/bullet_count+phi);
-            new_bullet = new Bullet(":/res/bullet/1/purple.png",12,x+radius*cos,y+radius*sin,0.01,0.01);
+            new_bullet = new Bullet(ImgPixmap::Level1::bullet_1_purple,12,x+radius*cos,y+radius*sin,0.01,0.01);
             new_bullet->rotateAround(x,y,0.072,clockwise);
             new_bullet->fadein(2000);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -71,7 +71,7 @@ std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
             }
             cos = std::cos(angle+2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0));
             sin = std::sin(angle+2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0));
-            new_bullet = new Bullet_Nether(QString(":/res/bullet/1/black.png"),bullet_radius,this,1000,x+950*cos,y+950*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = new Bullet_Nether(ImgPixmap::Level1::bullet_1_black,bullet_radius,this,1000,x+950*cos,y+950*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             new_bullet->setOpacity(0.7);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

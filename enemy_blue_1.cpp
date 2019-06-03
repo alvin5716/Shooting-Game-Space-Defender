@@ -8,13 +8,13 @@ Enemy_Blue_1::Enemy_Blue_1(Player* player, int health, int radius, int shoot_cd,
     clockwise=false;
     setDisappearTime(-1);
     bullet_fast=false;
-    setDeathImg(":/res/enemy/1/blue_3.png");
+    setDeathImg(ImgPixmap::Level1::enemy_1_blue_3);
 }
 void Enemy_Blue_1::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy/1/blue_2.png";
+        setImg(ImgPixmap::Level1::enemy_1_blue_2);
         shoot_timer = -113;
         shoot_cd = 125;
         skill_timer = -125;
@@ -58,12 +58,12 @@ std::vector<Bullet*>* Enemy_Blue_1::shoot2() {
         for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
             bullet_fast=!bullet_fast;
             bullet_v = (bullet_fast)?1.6:0.6;
-            QString str = (bullet_fast)?":/res/bullet/1/purple.png":":/res/bullet/1/black.png";
             cos = std::cos(angle+2*i*M_PI/bullet_count);
             sin = std::sin(angle+2*i*M_PI/bullet_count);
             cosp = std::cos(5*M_PI/3);
             sinp = std::sin(((clockwise)?1:-1)*5*M_PI/3);
-            new_bullet =  new Bullet(str,bullet_radius,x+(radius-40)*(cos*cosp-sin*sinp)+25*cos*t,y+(radius-40)*(sin*cosp+cos*sinp)+25*sin*t,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet =  new Bullet((bullet_fast)?ImgPixmap::Level1::bullet_1_purple:ImgPixmap::Level1::bullet_1_black,
+                                     bullet_radius,x+(radius-40)*(cos*cosp-sin*sinp)+25*cos*t,y+(radius-40)*(sin*cosp+cos*sinp)+25*sin*t,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
             for(int i=0;i<((bullet_fast)?3:1);++i) new_bullet->addWallData(false);
             new_bullet->fadein((bullet_fast)?1500:3000);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));

@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "imgpixmap.h"
+
 namespace Game {
 
     static constexpr int FrameWidth = 750;

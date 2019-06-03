@@ -25,6 +25,31 @@ PrepEffectInfo& PrepEffectInfo::setSound(bool withSound) {
     return *this;
 }
 
+Enemy::Enemy(int pixmap, int img_w, int img_h, int show_w, int show_h, Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
+    :Character(pixmap,img_w,img_h,show_w,show_h,health,radius,x,y,xv,yv,xa,ya),
+      death_img_w(img_w), death_img_h(img_h)
+{
+    disappearTime=200;
+    point=2;
+    skill_timer=0;
+    shoot_timer=shoot_cd-shoot_cd_init;
+    this->bounceable=bounceable;
+    this->stopable=stopable;
+    this->player=player;
+    this->shoot_cd=shoot_cd;
+    already_enter=false;
+    boss=false;
+    secPhase=false;
+    shield=nullptr;
+    connect(this,SIGNAL(deadSignal()),this,SLOT(diedFromPlayer()));
+    floatable=true;
+    bossSkillHP=0;
+    death_img = img;
+    death_pixmap = pixmap;
+    this->death_usePixmap = true;
+    this->setZValue(Game::ZValueEnemy);
+}
+
 Enemy::Enemy(const QString &img, int img_w, int img_h, int show_w, int show_h, Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Character(img,img_w,img_h,show_w,show_h,health,radius,x,y,xv,yv,xa,ya),
       death_img_w(img_w), death_img_h(img_h)
@@ -44,7 +69,9 @@ Enemy::Enemy(const QString &img, int img_w, int img_h, int show_w, int show_h, P
     connect(this,SIGNAL(deadSignal()),this,SLOT(diedFromPlayer()));
     floatable=true;
     bossSkillHP=0;
-    death_img="";
+    death_img = img;
+    death_pixmap = pixmap;
+    this->death_usePixmap = false;
     this->setZValue(Game::ZValueEnemy);
 }
 void Enemy::diedFromPlayer() {
@@ -177,19 +204,35 @@ bool Enemy::isBoss() const{
 bool Enemy::isSecPhase() const{
     return secPhase;
 }
-void Enemy::setDeathImg(QString death_img) {
+void Enemy::setDeathImg(const QString &death_img) {
     this->death_img = death_img;
+    this->death_usePixmap = false;
 }
-void Enemy::setDeathImg(QString death_img, int death_img_w, int death_img_h) {
-    this->death_img = death_img;
+void Enemy::setDeathImg(int death_pixmap) {
+    this->death_pixmap = death_pixmap;
+    this->death_usePixmap = true;
+}
+void Enemy::setDeathImg(const QString &death_img, int death_img_w, int death_img_h) {
+    this->setDeathImg(death_img);
+    this->death_img_w = death_img_w;
+    this->death_img_h = death_img_h;
+}
+void Enemy::setDeathImg(int death_pixmap, int death_img_w, int death_img_h) {
+    this->setDeathImg(death_pixmap);
     this->death_img_w = death_img_w;
     this->death_img_h = death_img_h;
 }
 Effect* Enemy::disappear() {
-    Effect* corpse = new Effect((death_img=="")?img:death_img,
-                                death_img_w,death_img_h,
-                                show_w * death_img_w / img_w, show_h * death_img_h / img_h,
-                                disappearTime==-1?-1:disappearTime/8,imgX()+show_w/2,imgY()+show_h/2,(death_img=="")?xv:0,(death_img=="")?yv:0,(death_img=="")?xa:0,(death_img=="")?ya:0);
+    Effect* corpse;
+    if(death_usePixmap) {
+        corpse = new Effect(death_pixmap,death_img_w,death_img_h,
+                        show_w * death_img_w / img_w, show_h * death_img_h / img_h,
+                        disappearTime==-1?-1:disappearTime/8,imgX()+show_w/2,imgY()+show_h/2,(death_img=="")?xv:0,(death_img=="")?yv:0,(death_img=="")?xa:0,(death_img=="")?ya:0);
+    } else {
+        corpse = new Effect(death_img,death_img_w,death_img_h,
+                        show_w * death_img_w / img_w, show_h * death_img_h / img_h,
+                        disappearTime==-1?-1:disappearTime/8,imgX()+show_w/2,imgY()+show_h/2,(death_img=="")?xv:0,(death_img=="")?yv:0,(death_img=="")?xa:0,(death_img=="")?ya:0);
+    }
     //if needed, face to left
     if(canBeMirrored&&face_to_left) {
         corpse->setCanBeMirrored();

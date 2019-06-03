@@ -14,11 +14,18 @@ Bullet::Bullet(const QString &img, int radius, double x, double y, double xv, do
     this->data_head = nullptr;
     this->setPositionByData = false;
     this->lookForward = false;
-    this->rotating = img.startsWith(":/res/bullet/3/");
-    if(img == ":/res/bullet/other/yellow_hex.png") {
-        double const sc = (double)2/std::sqrt(3);
-        this->setScale(sc);
-    }
+    this->rotating = false;
+}
+
+Bullet::Bullet(int pixmap, int radius, double x, double y, double xv, double yv, double xa, double ya)
+    :Character(pixmap,50,50,(int)round(radius*2.2),(int)round(radius*2.2),1,radius,x,y,xv,yv,xa,ya)
+{
+    terminal_v = 0;
+    enter_timer = 0;
+    this->data_head = nullptr;
+    this->setPositionByData = false;
+    this->lookForward = false;
+    this->rotating = false;
 }
 
 void Bullet::setVTerminal(double terminal_v) {
@@ -27,15 +34,6 @@ void Bullet::setVTerminal(double terminal_v) {
 
 void Bullet::waitUntilInFrame(int max_waitting_time) {
     enter_timer = max_waitting_time;
-}
-
-void Bullet::setImg(const QString &img) {
-    Character::setImg(img);
-    this->rotating = img.startsWith(":/res/bullet/3/");
-    if(img == ":/res/bullet/other/yellow_hex.png") {
-        double const sc = (double)2/std::sqrt(3);
-        this->setScale(sc);
-    }
 }
 
 void Bullet::move() {

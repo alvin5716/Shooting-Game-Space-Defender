@@ -240,6 +240,8 @@ void MainWindow::start5() {
     start();
 }
 void MainWindow::start() {
+    //pixmap
+    Character::imgPixmap.loadLevel(level);
     //dialogue
     if(dialogueProcessing) dialogueEnd();
     //level intro

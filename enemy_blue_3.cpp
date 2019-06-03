@@ -16,7 +16,7 @@ void Enemy_Blue_3::skill() {
         count=0;
         bullet_count=24;
         invulnerable=true;
-        img=":/res/enemy/1/blue_2.png";
+        setImg(ImgPixmap::Level1::enemy_1_blue_2);
         shoot_timer = -100;
         shoot_cd = 45;
         skill_timer = -200;
@@ -57,7 +57,7 @@ std::vector<Bullet*>* Enemy_Blue_3::shoot2() {
             for(int i=-(bullet_count/2);i<=(bullet_count/2-1);++i) {
                 sin=std::sin(2*i*M_PI/bullet_count);
                 cos=std::cos(2*i*M_PI/bullet_count);
-                new_bullet = new Bullet(":/res/bullet/1/purple.png",8,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new Bullet(ImgPixmap::Level1::bullet_1_purple,8,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 new_bullet->setVTerminal(bullet_v_t);
                 new_bullet->fadein(800);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
@@ -66,13 +66,13 @@ std::vector<Bullet*>* Enemy_Blue_3::shoot2() {
         }
         if(usinglaser && (count==0 || count==3)){
             //laser
-            QString str=(count==0)?":/res/bullet/laser/blue.png":":/res/bullet/laser/black.png";
-            new_laser = new Laser(str,this,30,(count==0?-5*M_PI/8-M_PI/5:5*M_PI/8+M_PI/5)+M_PI/2,(count==0)?M_PI/275:-M_PI/275,168,x,y,70);
+            new_laser = new Laser((count==0)?ImgPixmap::Level1::bullet_laser_blue:ImgPixmap::Level1::bullet_laser_black,
+                                  this,30,(count==0?-5*M_PI/8-M_PI/5:5*M_PI/8+M_PI/5)+M_PI/2,(count==0)?M_PI/275:-M_PI/275,168,x,y,70);
             connect(this,SIGNAL(killItsBullets()),new_laser,SLOT(killItself()));
             new_bullets->push_back(new_laser);
             //bullet
-            QString str2=(count==0)?":/res/bullet/1/blue.png":":/res/bullet/1/black.png";
-            new_bullet = new Bullet(str2,40,x,y);
+            new_bullet = new Bullet((count==0)?ImgPixmap::Level1::bullet_1_blue:ImgPixmap::Level1::bullet_1_black,
+                                    40,x,y);
             new_bullet->setInvulnerable();
             new_bullet->fadein(1200);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));

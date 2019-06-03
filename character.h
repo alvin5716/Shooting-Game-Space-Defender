@@ -11,12 +11,15 @@
 #include <algorithm>
 #include <QTime>
 #include "game.h"
+#include "imgpixmap.h"
 
 class Character : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
+    static ImgPixmap imgPixmap;
     Character() = delete;
+    Character(int pixmap, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya);
     Character(const QString &img, int img_w, int img_h, int show_w, int show_h, int health, int radius, double x, double y, double xv, double yv, double xa, double ya);
     void setPosition(double x, double y);
     void setPosition(QPointF pos);
@@ -30,7 +33,8 @@ public:
     int getShowW() const;
     int getShowH() const;
     int getHealth() const;
-    QString getImg() const;
+    const QString &getImg() const;
+    int getPixmap() const;
     bool isDead() const;
     bool isInvulnerable() const;
     bool isAttackable() const;
@@ -48,6 +52,7 @@ public:
     void setCanBeMirrored(bool canBeMirrored=true);
     void setFaceToLeft(bool face_to_left=true);
     virtual void setImg(const QString &img);
+    virtual void setImg(int pixmap);
     void setShowSize(int show_w, int show_h);
     void show_img_set();
     void show_img_force_set();
@@ -86,6 +91,8 @@ protected:
     double x, y, xv, yv, xa, ya;
     bool dead, invulnerable, whiteized, face_to_left, canBeMirrored, attackable, floatable;
     QString img;
+    bool usePixmap;
+    int pixmap;
 private:
     static int character_count;
     bool show_img_setting;

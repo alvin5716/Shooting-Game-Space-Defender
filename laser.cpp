@@ -4,6 +4,28 @@
 #include "game.h"
 #include "enemy.h"
 
+Laser::Laser(int pixmap, Enemy* shooter, int radius, double angle, double omega, int lifetime, double x, double y, int prepare_time)
+    :Bullet(pixmap,radius,x,y)
+{
+    if(shooter!=nullptr) connect(this,SIGNAL(soundPlay(Game::Sound)),shooter,SIGNAL(soundPlay(Game::Sound)));
+    this->setInvulnerable();
+    this->angle=angle;
+    while(this->angle>=2*M_PI) this->angle-=2*M_PI;
+    while(this->angle<0) this->angle+=2*M_PI;
+    this->omega=omega;
+    this->lifetimer=lifetime;
+    this->dead_timer=-1;
+    this->dying=false;
+    this->img_w=38;
+    this->img_h=500;
+    this->show_h=1150;
+    this->setZValue(Game::ZValueLaser);
+    setOpacity(0.3);
+    fadein();
+    this->prepare_timer=prepare_time;
+    preparing=true;
+}
+
 Laser::Laser(const QString &img, Enemy* shooter, int radius, double angle, double omega, int lifetime, double x, double y, int prepare_time)
     :Bullet(img,radius,x,y)
 {
@@ -88,9 +110,13 @@ void Laser::move() {
 void Laser::img_move() {
     //move image
     setPos(x-show_w/2,y);
-    QPixmap oriImg(img);
-    setPixmap(oriImg.scaled(show_w,show_h));
-
+    if(usePixmap) {
+        QPixmap *oriImg = imgPixmap.getPixmap(pixmap);
+        setPixmap(oriImg->scaled(show_w,show_h));
+    } else {
+        QPixmap oriImg(img);
+        setPixmap(oriImg.scaled(show_w,show_h));
+    }
     //rotate image
     setTransform(QTransform().translate(show_w/2, 0).rotate((angle-M_PI/2)/M_PI*180).translate(-show_w/2, 0));//martrix transform
 }

@@ -10,7 +10,7 @@ void Enemy_Blue_4::skill() {
     //second phase
     testIfSecPhase([this](){
         invulnerable=true;
-        img=":/res/enemy/1/blue_2.png";
+        setImg(ImgPixmap::Level1::enemy_1_blue_2);
         shoot_timer = -113;
         shoot_cd = 1;
         skill_timer = -88;
@@ -54,13 +54,13 @@ std::vector<Bullet*>* Enemy_Blue_4::shoot2() {
                 double angle=angleofvector(((i==0)?0+radius:Game::FrameWidth-radius)-x,-y);
                 sin=std::sin(angle);
                 cos=std::cos(angle);
-                new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),bullet_radius,(i==0)?x-radius:x+radius,y,bullet_v*cos,bullet_v*sin);
+                new_bullet = new Bullet(ImgPixmap::Level1::bullet_1_purple,bullet_radius,(i==0)?x-radius:x+radius,y,bullet_v*cos,bullet_v*sin);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }
             //purple, left and right
             if(t>15) {
-                new_bullet = new Bullet(QString(":/res/bullet/1/purple.png"),bullet_radius,((i==0)?0+bullet_radius:Game::FrameWidth-bullet_radius),-bullet_radius+1,0,bullet_v);
+                new_bullet = new Bullet(ImgPixmap::Level1::bullet_1_purple,bullet_radius,((i==0)?0+bullet_radius:Game::FrameWidth-bullet_radius),-bullet_radius+1,0,bullet_v);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }
@@ -69,7 +69,7 @@ std::vector<Bullet*>* Enemy_Blue_4::shoot2() {
                 if(t==40) invulnerable=false;
                 for(int j=0;j<6;++j) {
                     int init_y = ((t-40)/10*25)%180+60;
-                    new_bullet = new Bullet(QString(":/res/bullet/1/black.png"),bullet_radius,((i==0)?0-bullet_radius+1:Game::FrameWidth+bullet_radius-1),init_y+160*j,(i==0)?0.5:-0.5,0,(i==0)?0.006:-0.006,-0.0004);
+                    new_bullet = new Bullet(ImgPixmap::Level1::bullet_1_black,bullet_radius,((i==0)?0-bullet_radius+1:Game::FrameWidth+bullet_radius-1),init_y+160*j,(i==0)?0.5:-0.5,0,(i==0)?0.006:-0.006,-0.0004);
                     new_bullet->fadein(1500);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
@@ -85,7 +85,7 @@ std::vector<Bullet*>* Enemy_Blue_4::shoot2() {
                     double angle = j*M_PI/6+rand1;
                     double cosa = std::cos(angle);
                     double sina = std::sin(angle);
-                    new_bullet = new Bullet(QString(":/res/bullet/1/black.png"),16,x,y,(3.2+0.2*i)*cosa,(3.2+0.2*i)*sina);
+                    new_bullet = new Bullet(ImgPixmap::Level1::bullet_1_black,16,x,y,(3.2+0.2*i)*cosa,(3.2+0.2*i)*sina);
                     new_bullet->rotateAround(x,y,0.016,clockwise);
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     new_bullets->push_back(new_bullet);
