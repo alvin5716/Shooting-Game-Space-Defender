@@ -11,6 +11,10 @@ public:
     std::vector<Bullet*>* shoot() override;
 private:
     SpreadRNG* rng;
+    double bias_k;
+    double bias_i;
+    int r;
+    int center_x, center_y;
 };
 
 #endif // ENVIRONMENT_2_H
