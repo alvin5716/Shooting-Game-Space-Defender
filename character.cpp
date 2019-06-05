@@ -16,6 +16,7 @@ Character::Character(int pixmap, int img_w, int img_h, int show_w, int show_h, i
       dead(false), invulnerable(false), whiteized(false), img(""),
       usePixmap(true), pixmap(pixmap), origin(nullptr)
 {
+    setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
     setPos(x-show_w/2,y-show_h/2);
     QRect cutFrame(0,0,img_w,img_h);
     QPixmap *oriImg = imgPixmap.getPixmap(pixmap);
@@ -37,6 +38,7 @@ Character::Character(const QString &img, int img_w, int img_h, int show_w, int s
       dead(false), invulnerable(false), whiteized(false), img(img),
       usePixmap(false), pixmap(-1), origin(nullptr)
 {
+    setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
     setPos(x-show_w/2,y-show_h/2);
     QRect cutFrame(0,0,img_w,img_h);
     QPixmap oriImg(img);

@@ -10,6 +10,7 @@ Enemy_3_Blue_5::Enemy_3_Blue_5(Player* player, int health, int radius, int shoot
 {
     point+=10;
     setDeathImg(":/res/enemy/3/blue_3.png");
+    setFreezeWhenDied(true);
     setDisappearTime(-1);
     angle=0;
     for(int i=0;i<7;++i) fireballs[i]=nullptr;

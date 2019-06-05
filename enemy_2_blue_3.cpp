@@ -9,6 +9,7 @@ Enemy_2_Blue_3::Enemy_2_Blue_3(Player* player, int health, int radius, int shoot
     rotater=0;
     setDisappearTime(-1);
     setDeathImg(":/res/enemy/2/blue_3.png");
+    setFreezeWhenDied(true);
 }
 void Enemy_2_Blue_3::skill() {
     //second phase

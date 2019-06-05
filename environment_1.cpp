@@ -2,7 +2,7 @@
 #include "bullet_effect.h"
 
 Environment_1::Environment_1(Player *player, int shoot_cd, int lifetime)
-    :Environment(":/res/enemy/5/environment_1.png",player,shoot_cd,lifetime)
+    :Environment(ImgPixmap::Level5::enemy_5_environment_1,player,shoot_cd,lifetime)
 {
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 }
@@ -35,7 +35,7 @@ std::vector<Bullet*>* Environment_1::shoot() {
             double bullet_x = cos*x_pre - sin*y_pre + Game::FrameWidth/2;
             double bullet_y = sin*x_pre + cos*y_pre + Game::FrameHeight/2;
             Bullet_Effect* new_bullet_effect;
-            new_bullet_effect = new Bullet_Effect(QString(":/res/bullet/5/white.png"),bullet_r,this->scene(),QString(":/res/bullet/5/fire.png"),2.4,
+            new_bullet_effect = new Bullet_Effect(ImgPixmap::Level5::bullet_5_white,bullet_r,this->scene(),ImgPixmap::Level5::bullet_5_fire,2.4,
                                                   bullet_x,bullet_y,bullet_v*-sin,bullet_v*cos,bullet_a*-sin,bullet_a*cos);
             Effect* eff = new_bullet_effect->getEffect();
             if(eff!=nullptr) {

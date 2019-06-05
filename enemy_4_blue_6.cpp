@@ -8,6 +8,7 @@ Enemy_4_Blue_6::Enemy_4_Blue_6(Player* player, int health, int radius, int shoot
     this->point = 100;
     this->setBossHPToSkill();
     setDeathImg(":/res/enemy/4/blue_3.png",181,142);
+    setFreezeWhenDied(true);
     setDisappearTime(-1);
     this->shoot_count = -1;
     this->angle = 0;

@@ -6,6 +6,12 @@ Effect_Attachment::Effect_Attachment(QGraphicsScene* scene, const QString &eff_i
     if(scene!=nullptr) scene->addItem(this->effect);
 }
 
+Effect_Attachment::Effect_Attachment(QGraphicsScene* scene, int eff_pixmap, int img_w, int img_h, int show_w, int show_h, double x, double y)
+    :effect(new Effect(eff_pixmap, img_w, img_h, show_w, show_h,-1,x,y))
+{
+    if(scene!=nullptr) scene->addItem(this->effect);
+}
+
 void Effect_Attachment::move_bg(QPointF pos) {
     this->effect->setPosition(pos);
     this->effect->move();

@@ -76,10 +76,11 @@ protected:
     void setDeathImg(int death_pixmap);
     void setDeathImg(const QString &death_img, int death_img_w, int death_img_h);
     void setDeathImg(int death_pixmap, int death_img_w, int death_img_h);
+    void setFreezeWhenDied(bool freezeWhenDied = true);
     void testIfSecPhase(skillFunc initialize, skillFunc secPhaseSkill);
     void testIfSecPhase(skillFunc initialize, skillFunc secPhaseSkill, skillFunc FirPhaseSkill);
 private:
-    bool boss, secPhase;
+    bool boss, secPhase, freezeWhenDied;
     int bossSkillHP;
 };
 

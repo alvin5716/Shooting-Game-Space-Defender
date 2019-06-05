@@ -12,6 +12,7 @@ Enemy_4_Blue_5::Enemy_4_Blue_5(Player* player, int health, int radius, int shoot
     prep_count=0;
     setDisappearTime(-1);
     setSummonCD(200);
+    setFreezeWhenDied(true);
 }
 void Enemy_4_Blue_5::skill() {
     double angle_seed = qrand()%5;

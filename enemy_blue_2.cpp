@@ -60,7 +60,7 @@ std::vector<Bullet*>* Enemy_Blue_2::shoot2() {
                 int bullet_radius=((i+(bullet_count/2))%4)*5+12;
                 cos = std::cos(angle+2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
                 sin = std::sin(angle+2*i*M_PI/bullet_count+(M_PI*8*t/bullet_count/3));
-                new_bullet = new Bullet(QString(ImgPixmap::Level1::bullet_1_purple),bullet_radius,x+(double)radius*2/3*cos,y+(double)radius*2/3*sin,bullet_v*cos,bullet_v*sin);
+                new_bullet = new Bullet(ImgPixmap::Level1::bullet_1_purple,bullet_radius,x+(double)radius*2/3*cos,y+(double)radius*2/3*sin,bullet_v*cos,bullet_v*sin);
                 new_bullet->rotateAround(x,y,0.04,clockwise);
                 new_bullet->fadein(500);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));

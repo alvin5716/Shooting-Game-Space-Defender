@@ -7,6 +7,13 @@ Bullet_Effect::Bullet_Effect(const QString &img, int radius, QGraphicsScene* sce
     effect->setTransformOriginPoint(effect->getShowW()/2,effect->getShowH()/2);
 }
 
+Bullet_Effect::Bullet_Effect(int pixmap, int radius, QGraphicsScene* scene, int eff_pixmap, double eff_scale, double x, double y, double xv, double yv, double xa, double ya)
+    :Bullet(pixmap,radius,x,y,xv,yv,xa,ya), Effect_Attachment(scene, eff_pixmap, 120, 120, (int)round(radius*2.2*eff_scale), (int)round(radius*2.2*eff_scale), x, y)
+{
+    effect->setZValue(Game::ZValueImportantBackEffect);
+    effect->setTransformOriginPoint(effect->getShowW()/2,effect->getShowH()/2);
+}
+
 void Bullet_Effect::move() {
     Bullet::move();
     this->move_bg(QPointF(this->x,this->y));
