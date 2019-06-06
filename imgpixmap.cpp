@@ -75,11 +75,11 @@ void ImgPixmap::loadLevel(int level) {
 }
 
 QPixmap* ImgPixmap::getPixmap(int pixmap) const{
-    if(pixmap >= global_count) {
+    if(pixmap >= level1_index) {
         if((unsigned int) pixmap >= pixmaps.size()) {
             qDebug() << "Pixmap doesn't exist: " << pixmap;
             return nullptr;
-        } else if(pixmap < global_count+level1_count) {
+        } else if(pixmap < level2_index) {
             if(this->level != 1) {
                 qDebug() << "Level doesn't fit:\n"
                          << "Level now is " << this->level

@@ -17,6 +17,17 @@ private:
     std::vector<QPixmap*> pixmaps;
 public:
     static const int global_count = 6;
+    static const int level1_index = global_count;
+    static const int level1_count = 18;
+    static const int level2_index = level1_index+level1_count;
+    static const int level2_count = 0;
+    static const int level3_index = level2_index+level2_count;
+    static const int level3_count = 0;
+    static const int level4_index = level3_index+level3_count;
+    static const int level4_count = 0;
+    static const int level5_index = level4_index+level4_count;
+    static const int level5_count = 8;
+    static const int all_count = level5_index+level5_count;
     enum Global {
         bg_normal = 0,
         effect_dot,
@@ -25,9 +36,8 @@ public:
         effect_shield1,
         effect_shield2
     };
-    static const int level1_count = 18;
     enum Level1 {
-        bg_boss = global_count,
+        bg_boss = level1_index,
         bullet_1_black,
         bullet_1_blue,
         bullet_1_green,
@@ -46,12 +56,8 @@ public:
         enemy_1_red,
         enemy_1_yellow
     };
-    static const int level2_count = 0;
-    static const int level3_count = 0;
-    static const int level4_count = 0;
-    static const int level5_count = 8;
     enum Level5 {
-        bg_boss_5 = global_count+level1_count+level2_count+level3_count+level4_count,
+        bg_boss_5 = level5_index,
         enemy_4_blue,
         bullet_4_blue,
         bullet_5_white,
@@ -60,7 +66,6 @@ public:
         enemy_5_environment_1,
         enemy_5_environment_2
     };
-    static const int all_count = global_count + level1_count + level2_count + level3_count + level4_count + level5_count;
 };
 
 
