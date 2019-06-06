@@ -64,6 +64,8 @@
 #include "textitem.h"
 #include "itemanimationer.h"
 
+class GameRunner;
+
 namespace Ui {
 class MainWindow;
 }
@@ -73,6 +75,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    friend class GameRunner;
     explicit MainWindow(QWidget *parent = 0);
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
@@ -98,7 +101,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
-    QTimer *timer;
+    QTimer *timer, *timer2;
     QTimer *freezeTimer;
     unsigned int tick, gametime, boss_tick;
     bool ticking;
@@ -129,6 +132,7 @@ private:
     static const int StartTick = 0;
     DialogueWidget* dialogueWidget;
     std::vector<QRect> gameFrameContentGeo;
+    GameRunner* gameRunner;
 
 private slots:
     void newEnemyInit(Enemy* new_enemy);

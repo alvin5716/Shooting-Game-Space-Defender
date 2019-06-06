@@ -100,7 +100,8 @@ SOURCES += \
     environment_2.cpp \
     textitem.cpp \
     itemanimationer.cpp \
-    imgpixmap.cpp
+    imgpixmap.cpp \
+    gamerunner.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -180,7 +181,8 @@ HEADERS += \
     environment_2.h \
     textitem.h \
     itemanimationer.h \
-    imgpixmap.h
+    imgpixmap.h \
+    gamerunner.h
 
 FORMS += \
         mainwindow.ui
