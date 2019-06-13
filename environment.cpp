@@ -1,7 +1,7 @@
 #include "environment.h"
 
 Environment::Environment(const QString &img, Player* player, int shoot_cd, int lifetime)
-    :Enemy(img,375,450,Game::FrameWidth,Game::FrameHeight,player,1,1,shoot_cd,1,Game::FrameWidth/2,Game::FrameHeight/2),
+    :Enemy(img,375,450,0,0,player,1,1,shoot_cd,1,Game::FrameWidth/2,Game::FrameHeight/2),
       lifetimer(lifetime)
 {
     this->attackable=false;
@@ -13,7 +13,7 @@ Environment::Environment(const QString &img, Player* player, int shoot_cd, int l
 }
 
 Environment::Environment(int pixmap, Player* player, int shoot_cd, int lifetime)
-    :Enemy(pixmap,375,450,Game::FrameWidth,Game::FrameHeight,player,1,1,shoot_cd,1,Game::FrameWidth/2,Game::FrameHeight/2),
+    :Enemy(pixmap,375,450,0,0,player,1,1,shoot_cd,1,Game::FrameWidth/2,Game::FrameHeight/2),
       lifetimer(lifetime)
 {
     this->attackable=false;

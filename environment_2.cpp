@@ -53,7 +53,7 @@ std::vector<Bullet*>* Environment_2::shoot() {
             double shoot_y_vec_rotate = sinr * shoot_x_vec + cosr * shoot_y_vec;
             double bullet_x = center_x + shoot_x_vec_rotate;
             double bullet_y = center_y + shoot_y_vec_rotate;
-            //never in frame
+            //delete bullets that will never get in the frame
             if(bullet_y<0 && sin<=0) continue;
             double land_x = bullet_x + (-bullet_y/sin*cos);
             double land_x_2 = bullet_x + ((-bullet_y+Game::FrameHeight)/sin*cos);
