@@ -7,7 +7,7 @@ Enemy_4_Blue_1::Enemy_4_Blue_1(Player* player, int health, int radius, int shoot
     :Enemy_4_Blue(player,150,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)
 {
     first = true;
-    rng = new SpreadRNG(0,bullet_count-1);
+    rng = new SpreadRNG(0,bullet_count/3-1);
     for(int i=0;i<bullet_count;++i) {
         boat_bullets[i]=nullptr;
         img_num[i]=2;
@@ -83,7 +83,8 @@ std::vector<Bullet*>* Enemy_4_Blue_1::shoot2() {
                 //choose 3 launch points
                 bool rechoose;
                 do {
-                    launchPosNum[i] = rng->generate();
+                    int gen = rng->generate();
+                    launchPosNum[i] = gen==bullet_count/3? gen*3+qrand()%(bullet_count-(gen-1)*3) : gen*3+qrand()%3;
                     rechoose=false;
                     for(int j=0;j<i;++j) if(launchPosNum[j] == launchPosNum[i]) rechoose=true;
                 } while(rechoose);
