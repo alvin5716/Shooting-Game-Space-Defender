@@ -139,3 +139,6 @@ QString Enemy_4_Blue_1::rainbowBullet(int i) const{
     }
     return str;
 }
+Enemy_4_Blue_1::~Enemy_4_Blue_1() {
+    delete this->rng;
+}

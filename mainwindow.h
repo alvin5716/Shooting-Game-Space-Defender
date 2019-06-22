@@ -50,6 +50,7 @@
 #include "enemy_4_blue_6.h"
 #include "environment_1.h"
 #include "environment_2.h"
+#include "environment_3.h"
 #include "teammate.h"
 #include <QKeyEvent>
 #include <vector>

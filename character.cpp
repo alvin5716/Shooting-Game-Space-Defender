@@ -28,6 +28,7 @@ Character::Character(int pixmap, int img_w, int img_h, int show_w, int show_h, i
     show_img_setting=false;
     float_timer=0;
     ++character_count;
+    this->setTransformOriginPoint(this->getShowW()/2,this->getShowH()/2);
     //qDebug() << "character count:" << character_count;
 }
 
@@ -284,6 +285,10 @@ bool Character::isInvulnerable() const {
 }
 bool Character::isAttackable() const {
     return attackable;
+}
+void Character::setImgSize(int w, int h) {
+    this->img_w = w;
+    this->img_h = h;
 }
 inline double Character::angleofsincos(double sin, double cos) const {
     return (cos>0)?std::asin(sin):M_PI-std::asin(sin);

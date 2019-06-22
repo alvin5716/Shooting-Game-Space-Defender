@@ -93,3 +93,6 @@ std::vector<Bullet*>* Enemy_4_Blue_2::shoot2() {
     }
     return nullptr;
 }
+Enemy_4_Blue_2::~Enemy_4_Blue_2() {
+    delete this->rng;
+}

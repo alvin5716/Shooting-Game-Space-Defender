@@ -35,12 +35,14 @@ std::vector<Bullet*>* Environment_1::shoot() {
             double bullet_x = cos*x_pre - sin*y_pre + Game::FrameWidth/2;
             double bullet_y = sin*x_pre + cos*y_pre + Game::FrameHeight/2;
             Bullet_Effect* new_bullet_effect;
-            new_bullet_effect = new Bullet_Effect(ImgPixmap::Level5::bullet_5_white,bullet_r,this->scene(),ImgPixmap::Level5::bullet_5_fire,2.4,
+            new_bullet_effect = new Bullet_Effect(ImgPixmap::Level5::bullet_5_white_melt,bullet_r,this->scene(),ImgPixmap::Level5::bullet_5_fire,2.4,
                                                   bullet_x,bullet_y,bullet_v*-sin,bullet_v*cos,bullet_a*-sin,bullet_a*cos);
+            double img_angle = bias_angle/M_PI*180 + 90;
+            new_bullet_effect->setRotation(img_angle);
             Effect* eff = new_bullet_effect->getEffect();
             if(eff!=nullptr) {
                 eff->setOpacity(0.75);
-                eff->setRotation(bias_angle/M_PI*180 + 90);
+                eff->setRotation(img_angle);
             }
             new_bullet = new_bullet_effect;
             new_bullet->waitUntilInFrame();

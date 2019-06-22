@@ -1524,6 +1524,9 @@ void MainWindow::doTick() {
             } else if(tickCheck(1500)) { //1500
                 new_enemy = new Environment_2(player,65,800);
                 newEnemyInit(new_enemy);
+            } else if(tickCheck(2700)) { //300
+                new_enemy = new Environment_3(player,18,1000);
+                newEnemyInit(new_enemy);
             }
             break;
         default:

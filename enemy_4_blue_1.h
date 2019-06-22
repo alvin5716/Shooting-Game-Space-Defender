@@ -12,6 +12,7 @@ public:
     QString rainbowBullet(int i) const;
     void skill() override;
     std::vector<Bullet*>* shoot2() override;
+    ~Enemy_4_Blue_1();
 private:
     static constexpr int bullet_count = 58;
     bool first;

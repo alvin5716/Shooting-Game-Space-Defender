@@ -97,10 +97,16 @@
         <file>res/sound/magic_smite.wav</file>
         <file>res/sound/laser.wav</file>
         <file>res/bg/boss_5.png</file>
-        <file>res/bullet/5/white.png</file>
+        <file>res/bullet/5/white_circle.png</file>
         <file>res/bullet/5/fire.png</file>
         <file>res/bullet/5/water.png</file>
         <file>res/enemy/5/environment_1.png</file>
         <file>res/enemy/5/environment_2.png</file>
+        <file>res/bullet/5/white_melt.png</file>
+        <file>res/bullet/5/white_reflect.png</file>
+        <file>res/bullet/5/seed.png</file>
+        <file>res/bullet/5/white_seed.png</file>
+        <file>res/bullet/5/plant.png</file>
+        <file>res/bullet/5/white_leaf.png</file>
     </qresource>
 </RCC>

@@ -63,9 +63,15 @@ void ImgPixmap::loadLevel(int level) {
         pixmaps.at((int) Level5::bg_boss_5) = new QPixmap(":/res/bg/boss_5.png");
         pixmaps.at((int) Level5::enemy_4_blue) = new QPixmap(":/res/enemy/4/blue.png");
         pixmaps.at((int) Level5::bullet_4_blue) = new QPixmap(":/res/bullet/4/blue.png");
-        pixmaps.at((int) Level5::bullet_5_white) = new QPixmap(":/res/bullet/5/white.png");
         pixmaps.at((int) Level5::bullet_5_fire) = new QPixmap(":/res/bullet/5/fire.png");
         pixmaps.at((int) Level5::bullet_5_water) = new QPixmap(":/res/bullet/5/water.png");
+        pixmaps.at((int) Level5::bullet_5_seed) = new QPixmap(":/res/bullet/5/seed.png");
+        pixmaps.at((int) Level5::bullet_5_plant) = new QPixmap(":/res/bullet/5/plant.png");
+        pixmaps.at((int) Level5::bullet_5_white_circle) = new QPixmap(":/res/bullet/5/white_circle.png");
+        pixmaps.at((int) Level5::bullet_5_white_melt) = new QPixmap(":/res/bullet/5/white_melt.png");
+        pixmaps.at((int) Level5::bullet_5_white_reflect) = new QPixmap(":/res/bullet/5/white_reflect.png");
+        pixmaps.at((int) Level5::bullet_5_white_seed) = new QPixmap(":/res/bullet/5/white_seed.png");
+        pixmaps.at((int) Level5::bullet_5_white_leaf) = new QPixmap(":/res/bullet/5/white_leaf.png");
         pixmaps.at((int) Level5::enemy_5_environment_1) = new QPixmap(":/res/enemy/5/environment_1.png");
         pixmaps.at((int) Level5::enemy_5_environment_2) = new QPixmap(":/res/enemy/5/environment_2.png");
         break;

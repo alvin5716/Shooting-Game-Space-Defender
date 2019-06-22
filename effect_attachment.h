@@ -12,6 +12,7 @@ public:
     void move_bg(QPointF pos);
     void img_move_bg();
     Effect* getEffect();
+    void setEffectImgSize(int w, int h);
 protected:
     Effect* effect;
 };

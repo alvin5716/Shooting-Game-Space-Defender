@@ -24,3 +24,7 @@ void Effect_Attachment::img_move_bg() {
 Effect* Effect_Attachment::getEffect() {
     return effect;
 }
+
+void Effect_Attachment::setEffectImgSize(int w, int h) {
+    effect->setImgSize(w,h);
+}

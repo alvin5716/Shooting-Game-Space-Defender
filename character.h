@@ -64,6 +64,7 @@ public:
     void bounceAtY();
     virtual bool outOfFrame();
     void deleteIfOutOfFrame();
+    void setImgSize(int w, int h);
     ~Character();
 signals:
     void deadSignal();

@@ -61,12 +61,14 @@ std::vector<Bullet*>* Environment_2::shoot() {
                     || (land_x_2>0-bullet_radius && land_x_2<Game::FrameWidth+bullet_radius))) continue;
             //v, a
             Bullet_Effect* new_bullet_effect;
-            new_bullet_effect = new Bullet_Effect(ImgPixmap::Level5::bullet_5_white,bullet_radius,this->scene(),ImgPixmap::Level5::bullet_5_water,2.4,
+            new_bullet_effect = new Bullet_Effect(ImgPixmap::Level5::bullet_5_white_reflect,bullet_radius,this->scene(),ImgPixmap::Level5::bullet_5_water,2.4,
                                                   bullet_x,bullet_y,bullet_v_x,bullet_v_y,bullet_a_x,bullet_a_y);
+            double img_angle = shoot_ang/M_PI*180;
+            new_bullet_effect->setRotation(img_angle);
             Effect* eff = new_bullet_effect->getEffect();
             if(eff!=nullptr) {
                 eff->setOpacity(0.75);
-                eff->setRotation(shoot_ang/M_PI*180);
+                eff->setRotation(img_angle);
             }
             new_bullet = new_bullet_effect;
             new_bullet->waitUntilInFrame(250);
