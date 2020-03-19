@@ -94,6 +94,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 cos = std::cos(angle+i*2*M_PI/bullet_count);
                 Bullet_Distance* new_bullet_distance;
                 new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/3/purple.png",bullet_radius,player,room_radius,shootXPos(),shootYPos());
+                new_bullet->rotateStart();
                 int dis_stop = (8-t)*15;
                 new_bullet->moveTo(shootXPos()+dis_stop*cos,shootYPos()+dis_stop*sin,60);
                 new_bullet->addTimeData(60) //move to initial pos
@@ -146,6 +147,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 cos = std::cos(angle+i*2*M_PI/bullet_count);
                 Bullet_Distance* new_bullet_distance;
                 new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/3/red.png",10,player,room_radius,shootXPos(),shootYPos());
+                new_bullet->rotateStart();
                 int dis_stop = (5-t)*20;
                 new_bullet->moveTo(shootXPos()+dis_stop*cos,shootYPos()+dis_stop*sin,60);
                 new_bullet->addTimeData(60) //move to initial pos
@@ -179,6 +181,7 @@ std::vector<Bullet*>* Enemy_3_Blue_2::shoot2() {
                 cos = std::cos(angle+((i==0)?1:-1)*M_PI/20);
                 Bullet_Distance* new_bullet_distance;
                 new_bullet = new_bullet_distance = new Bullet_Distance(":/res/bullet/3/yellow.png",10,player,room_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet->rotateStart();
                 connect(new_bullet_distance,&Bullet_Distance::enterArea,[=](){
                     new_bullet_distance->setOpacity(0.3);
                 });

@@ -27,6 +27,7 @@ std::vector<Bullet*>* Enemy_3_Pink::shoot() {
             cos = std::cos(shoot_angle);
             sin = std::sin(shoot_angle);
             new_bullet = new Bullet(QString(":/res/bullet/3/pink.png"),12,x,y,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet->rotateStart();
             cos = std::cos(shoot_angle+(mode?M_PI/5:-M_PI/5));
             sin = std::sin(shoot_angle+(mode?M_PI/5:-M_PI/5));
             new_bullet->addTimeData(88,bullet_v_2*cos,bullet_v_2*sin,bullet_a_2*cos,bullet_a_2*sin);

@@ -90,6 +90,7 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
                     sin = std::sin(angle+(i>wings/2?6.5:-6.5)*M_PI/10-(i-wings/2)*M_PI/10);
                 }
                 new_bullet = fireballs[i] = new Bullet(QString(":/res/bullet/3/red.png"),bullet_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet->rotateStart();
                 new_bullet->setLifeTime(250);
                 new_bullet->setCanOutOfFrame();
                 new_bullet->setInvulnerable();
@@ -117,6 +118,7 @@ std::vector<Bullet*>* Enemy_3_Blue_5::shoot2() {
             cos = std::cos(angle);
             sin = std::sin(angle);
             new_bullet = centerball = new Bullet(QString(":/res/bullet/3/red.png"),bullet_radius,shootXPos()-22*cos,shootYPos()-22*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet->rotateStart();
             new_bullet->setVTerminal(3.2);
             new_bullet->setLifeTime(1000);
             new_bullet->setCanOutOfFrame();

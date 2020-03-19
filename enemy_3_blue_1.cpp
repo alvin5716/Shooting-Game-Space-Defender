@@ -112,6 +112,7 @@ std::vector<Bullet*>* Enemy_3_Blue_1::shoot2() {
             bullet_a = 0.1;
             Bullet* new_bullet;
             new_bullet = new Bullet(":/res/bullet/3/yellow.png",bullet_radius,shootXPos(),shootYPos());
+            new_bullet->rotateStart();
             int aim_x, aim_y;
             if(i<=6) {
                 aim_x = this->shootXPos()-i*6;

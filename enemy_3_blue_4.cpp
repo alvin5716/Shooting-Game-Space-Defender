@@ -40,6 +40,7 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
         for(int j=0;j<2;++j) {
             for(int i=0;i<20;++i) {
                 new_bullet = new Bullet(QString(":/res/bullet/3/purple.png"),8,shootXPos(),shootYPos());
+                new_bullet->rotateStart();
                 if(i<5) {
                     aim_x=shootXPos()-40-10*(4-i);
                     aim_y=shootYPos()-15*(2-i);
@@ -76,6 +77,7 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
                 cos = std::cos(angle+i*M_PI/5);
                 sin = std::sin(angle+i*M_PI/5);
                 new_bullet = new Bullet(QString(":/res/bullet/1/red.png"),bullet_radius,j==0?80:Game::FrameWidth-80,170,bullet_v*cos,bullet_v*sin,0,bullet_a);
+                new_bullet->rotateStart();
                 new_bullet->addWallData(player,3.6,0);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 connect(new_bullet,&Bullet::triggered,[=](){ new_bullet->setImg(":/res/bullet/3/red.png"); });
@@ -99,6 +101,7 @@ std::vector<Bullet*>* Enemy_3_Blue_4::shoot2() {
                 sin = std::sin(angle2+(i-1.5)*2*M_PI/15);
                 cos = std::cos(angle2+(i-1.5)*2*M_PI/15);
                 new_bullet = new Bullet_Sin(":/res/bullet/3/yellow.png",150,10,bullet_radius,shootXPos(),shootYPos(),bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet->rotateStart();
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }
