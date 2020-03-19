@@ -13,7 +13,6 @@ Laser::Laser(int pixmap, Enemy* shooter, int radius, double angle, double omega,
     while(this->angle>=2*M_PI) this->angle-=2*M_PI;
     while(this->angle<0) this->angle+=2*M_PI;
     this->omega=omega;
-    this->lifetimer=lifetime;
     this->dead_timer=-1;
     this->dying=false;
     this->img_w=38;
@@ -25,6 +24,7 @@ Laser::Laser(int pixmap, Enemy* shooter, int radius, double angle, double omega,
     this->prepare_timer=prepare_time;
     preparing=true;
     sound_enabled=false;
+    this->setCanOutOfFrame(true, lifetime);
 }
 
 Laser::Laser(const QString &img, Enemy* shooter, int radius, double angle, double omega, int lifetime, double x, double y, int prepare_time)
@@ -36,7 +36,6 @@ Laser::Laser(const QString &img, Enemy* shooter, int radius, double angle, doubl
     while(this->angle>=2*M_PI) this->angle-=2*M_PI;
     while(this->angle<0) this->angle+=2*M_PI;
     this->omega=omega;
-    this->lifetimer=lifetime;
     this->dead_timer=-1;
     this->dying=false;
     this->img_w=38;
@@ -47,6 +46,7 @@ Laser::Laser(const QString &img, Enemy* shooter, int radius, double angle, doubl
     fadein();
     this->prepare_timer=prepare_time;
     preparing=true;
+    this->setCanOutOfFrame(true, lifetime);
 }
 Character* Laser::testAttackedBy(Character* attacker) {
     if(preparing||dying) return nullptr;
@@ -56,7 +56,7 @@ Character* Laser::testAttackedBy(Character* attacker) {
         double angle_dif=angle-theta;
         while(angle_dif>M_PI) angle_dif-=2*M_PI;
         while(angle_dif<-M_PI) angle_dif+=2*M_PI;
-        if(attacker->isAttackable() && (abs((slope*x0-y0-slope*x+y)/sqrt(pow(slope,2)+1)) <= attacker->getRadius() + radius)
+        if(attacker->isAttackable() && (std::abs((slope*x0-y0-slope*x+y)/sqrt(pow(slope,2)+1)) <= attacker->getRadius() + radius)
                 && (angle_dif<=M_PI/2) && (angle_dif>=-M_PI/2))
         {
             if(health>0 && !invulnerable) {
@@ -102,8 +102,8 @@ void Laser::move() {
     while(angle<0) angle+=2*M_PI;
     if(!preparing) {
         //lifetimer
-        if(lifetimer!=0 && lifetimer!=-1) --lifetimer; //if lifetime is -1, it won't die
-        if(lifetimer==0) {
+        if(life_timer!=0 && life_timer!=-1) --life_timer; //if lifetime is -1, it won't die
+        if(life_timer==0) {
             dead_timer=19;
         }
     } else --prepare_timer;
@@ -126,8 +126,4 @@ void Laser::setSoundEnabled(bool sound_enabled) {
 }
 double Laser::getAngle() const{
     return angle;
-}
-
-bool Laser::outOfFrame() {
-    return false;
 }

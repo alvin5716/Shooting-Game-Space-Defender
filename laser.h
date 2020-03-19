@@ -10,16 +10,15 @@ class Laser : public Bullet
 public:
     Laser(int pixmap, Enemy* shooter, int radius, double angle, double omega=0, int lifetime=63, double x=0, double y=0, int prepare_time=75);
     Laser(const QString &img, Enemy* shooter, int radius, double angle, double omega=0, int lifetime=63, double x=0, double y=0, int prepare_time=75);
-    Character* testAttackedBy(Character* attacker);
+    Character* testAttackedBy(Character* attacker) override;
     double getAngle() const;
-    bool outOfFrame() override;
     void setSoundEnabled(bool sound_enabled=true);
 public slots:
-    void move();
-    void img_move();
+    void move() override;
+    void img_move() override;
 private:
     double angle, omega;
-    int lifetimer, prepare_timer, dead_timer;
+    int prepare_timer, dead_timer;
     bool preparing, dying, sound_enabled;
 };
 
