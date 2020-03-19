@@ -26,7 +26,7 @@ public:
     static const int level4_index = level3_index+level3_count;
     static const int level4_count = 0;
     static const int level5_index = level4_index+level4_count;
-    static const int level5_count = 14;
+    static const int level5_count = 18;
     static const int all_count = level5_index+level5_count;
     enum Global {
         bg_normal = 0,
@@ -64,13 +64,18 @@ public:
         bullet_5_water,
         bullet_5_seed,
         bullet_5_plant,
+        bullet_5_magic,
+        bullet_5_star,
         bullet_5_white_circle,
         bullet_5_white_melt,
         bullet_5_white_reflect,
         bullet_5_white_seed,
         bullet_5_white_leaf,
+        bullet_5_white_magic,
+        bullet_5_white_star,
         enemy_5_environment_1,
-        enemy_5_environment_2
+        enemy_5_environment_2,
+
     };
 };
 

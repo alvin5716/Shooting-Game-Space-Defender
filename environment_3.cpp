@@ -16,7 +16,7 @@ std::vector<Bullet*>* Environment_3::shoot() {
     const int area_count = 10, base_x = bullet_radius/2+5;
     const int area_w = (Game::FrameWidth-2*base_x)/area_count;
     const int bullet_v = 4.6, bullet_a = 0.04;
-    const int bullet_count = 16;
+    const int bullet_count = 12;
     const int bullet_y = -bullet_radius*3;
     std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
     Bullet* new_bullet;

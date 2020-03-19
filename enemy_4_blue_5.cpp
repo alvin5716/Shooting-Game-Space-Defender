@@ -23,7 +23,7 @@ void Enemy_4_Blue_5::skill() {
         shoot_timer = -150;
         shoot_cd = 120;
         skill_timer = -210;
-        emit useSkill("「遠距傳送悖論」");
+        emit useSkill("「傳送機悖論」");
         emit killOtherEnemies(this);
         emit killAllBullets();
     },

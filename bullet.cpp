@@ -167,9 +167,9 @@ Bullet* Bullet::gravityFrom(int gravity_xc, int gravity_yc, double gravity_ac) {
     this->addData(bullet_data);
     return this;
 }
-Bullet* Bullet::moveAsTrigFunction(int T, int r, bool sin_or_cos) {
+Bullet* Bullet::moveAsTrigFunction(int T, int r, bool sin_or_cos, int phase) {
     this->setPositionByData=true;
-    BulletData* bullet_data = new BulletDataContinuous(this,T,r,sin_or_cos);
+    BulletData* bullet_data = new BulletDataContinuous(this,T,r,sin_or_cos,phase);
     this->addData(bullet_data);
     return this;
 }

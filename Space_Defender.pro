@@ -26,6 +26,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 RC_ICONS = res/icon.ico
 
 SOURCES += \
+    environment_4.cpp \
+    environment_5.cpp \
         main.cpp \
         mainwindow.cpp \
     character.cpp \
@@ -104,6 +106,8 @@ SOURCES += \
     environment_3.cpp
 
 HEADERS += \
+    environment_4.h \
+    environment_5.h \
         mainwindow.h \
     character.h \
     player.h \

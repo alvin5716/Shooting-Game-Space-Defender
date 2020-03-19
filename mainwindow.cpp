@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setViewportUpdateMode(QGraphicsView::NoViewportUpdate);
+    ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     ui->graphicsView->setRenderHints(QPainter::SmoothPixmapTransform);
     ui->graphicsView->setOptimizationFlag(QGraphicsView::DontAdjustForAntialiasing);
     //boss objects
@@ -1524,9 +1524,28 @@ void MainWindow::doTick() {
             } else if(tickCheck(1500)) { //1500
                 new_enemy = new Environment_2(player,65,800);
                 newEnemyInit(new_enemy);
-            } else if(tickCheck(2700)) { //300
+            } else if(tickCheck(2700)) { //2700
                 new_enemy = new Environment_3(player,18,1000);
                 newEnemyInit(new_enemy);
+            } else if(tickCheck(3950)) { //3950
+               dialogueStart({Dialogue("剛剛那是...植物嗎？你不是說這裡沒有複雜生命嗎？",":/res/player.png",QRect(0,0,43,33)),
+                              Dialogue("...應該...不可能有啊......理論上？",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
+                              });
+            } else if(tickCheck(4000)) { //4000
+                new_enemy = new Environment_4(player,33,1000);
+                newEnemyInit(new_enemy);
+            } else if(tickCheck(5300)) { //5300
+                dialogueStart({Dialogue("那剛剛那些會動的又是什麼鬼東西？？？",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("那些不是生物啦，看起來是大概是魔法粒子。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
+                               Dialogue("你這樣講我也聽不懂啦",":/res/player.png",QRect(0,0,43,33)),
+                               Dialogue("先別說了，又有東西來了，而且速度很快。",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
+                               });
+            } else if(tickCheck(5400)) { //5400
+                new_enemy = new Environment_5(player,36,1300);
+                newEnemyInit(new_enemy);
+            } else if(tickCheck(7000)) { //7000
+                dialogueStart({Dialogue("前面好像有個黑影，肯定是那東西搞出來的！",":/res/enemy/4/blue.png",QRect(60,25,88,88)),
+                               });
             }
             break;
         default:

@@ -51,6 +51,8 @@
 #include "environment_1.h"
 #include "environment_2.h"
 #include "environment_3.h"
+#include "environment_4.h"
+#include "environment_5.h"
 #include "teammate.h"
 #include <QKeyEvent>
 #include <vector>

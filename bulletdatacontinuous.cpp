@@ -32,14 +32,14 @@ BulletDataContinuous::BulletDataContinuous(Bullet* bullet, int gravity_xc, int g
     this->data.gravityFromPoint.gravity_yc=gravity_yc;
     this->data.gravityFromPoint.gravity_ac=gravity_ac;
 }
-BulletDataContinuous::BulletDataContinuous(Bullet* bullet, int T, int r, bool sin_or_cos)
+BulletDataContinuous::BulletDataContinuous(Bullet* bullet, int T, int r, bool sin_or_cos, int phase)
     :BulletData(bullet), type(BulletDataContinuousType::moveAsTrigFunction)
 {
     this->infinite = true;
     this->data.moveAsTrigFunction.T=T;
     this->data.moveAsTrigFunction.r=r;
     this->data.moveAsTrigFunction.sin_or_cos=sin_or_cos;
-    this->data.moveAsTrigFunction.t=0;
+    this->data.moveAsTrigFunction.t=phase;
     this->data.moveAsTrigFunction.xc=bullet->getX();
     this->data.moveAsTrigFunction.yc=bullet->getY();
 }

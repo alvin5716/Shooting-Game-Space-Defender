@@ -24,6 +24,7 @@ Laser::Laser(int pixmap, Enemy* shooter, int radius, double angle, double omega,
     fadein();
     this->prepare_timer=prepare_time;
     preparing=true;
+    sound_enabled=false;
 }
 
 Laser::Laser(const QString &img, Enemy* shooter, int radius, double angle, double omega, int lifetime, double x, double y, int prepare_time)
@@ -89,9 +90,9 @@ void Laser::move() {
         setOpacity(0.8);
         fadein(1);
         preparing=false;
-        emit soundPlay(Game::SoundLaser);
+        if(sound_enabled) emit soundPlay(Game::SoundLaser);
     } else if(prepare_timer == 70) {
-        emit soundPlay(Game::SoundMagicSmite);
+        if(sound_enabled) emit soundPlay(Game::SoundMagicSmite);
     }
     //move object
     setPosition(x+xv,y+yv);
@@ -120,6 +121,13 @@ void Laser::img_move() {
     //rotate image
     setTransform(QTransform().translate(show_w/2, 0).rotate((angle-M_PI/2)/M_PI*180).translate(-show_w/2, 0));//martrix transform
 }
+void Laser::setSoundEnabled(bool sound_enabled) {
+    this->sound_enabled = sound_enabled;
+}
 double Laser::getAngle() const{
     return angle;
+}
+
+bool Laser::outOfFrame() {
+    return false;
 }

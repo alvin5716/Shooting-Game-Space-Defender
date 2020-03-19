@@ -12,7 +12,7 @@ public:
     BulletDataContinuous(Bullet* bullet, int rotate_xc, int rotate_yc, double rotate_ac, bool clockwise);
     BulletDataContinuous(Bullet* bullet, Character* gravity_center, double gravity_ac);
     BulletDataContinuous(Bullet* bullet, int gravity_xc, int gravity_yc, double gravity_ac);
-    BulletDataContinuous(Bullet* bullet, int T, int r, bool sin_or_cos);
+    BulletDataContinuous(Bullet* bullet, int T, int r, bool sin_or_cos, int phase);
     BulletDataContinuous(Bullet* bullet, int T, int r, double (*periodic_func)(double));
     bool skill() override;
     ~BulletDataContinuous() override;

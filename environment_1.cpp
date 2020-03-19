@@ -8,13 +8,13 @@ Environment_1::Environment_1(Player *player, int shoot_cd, int lifetime)
 }
 
 std::vector<Bullet*>* Environment_1::shoot() {
-    const int area_x = 10;
+    const int area_x = 8;
     if(shoot_timer>=shoot_cd) {
         std::vector<Bullet*>* new_bullets=new std::vector<Bullet*>;
         Bullet* new_bullet;
         //bullet v, a and count
         static const double bullet_v = 2.6, bullet_a = 0.025;
-        static const int bullet_r = 14;
+        static const int bullet_r = 18;
         static double bias_angle = M_PI/6;
         static const int sum_x = std::sqrt(Game::FrameWidth*Game::FrameWidth + Game::FrameHeight*Game::FrameHeight)
                 * std::cos(angleofvector(Game::FrameWidth,Game::FrameHeight) - bias_angle);

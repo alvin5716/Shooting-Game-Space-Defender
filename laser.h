@@ -12,13 +12,15 @@ public:
     Laser(const QString &img, Enemy* shooter, int radius, double angle, double omega=0, int lifetime=63, double x=0, double y=0, int prepare_time=75);
     Character* testAttackedBy(Character* attacker);
     double getAngle() const;
+    bool outOfFrame() override;
+    void setSoundEnabled(bool sound_enabled=true);
 public slots:
     void move();
     void img_move();
 private:
     double angle, omega;
     int lifetimer, prepare_timer, dead_timer;
-    bool preparing, dying;
+    bool preparing, dying, sound_enabled;
 };
 
 #endif // LASER_H

@@ -108,5 +108,9 @@
         <file>res/bullet/5/white_seed.png</file>
         <file>res/bullet/5/plant.png</file>
         <file>res/bullet/5/white_leaf.png</file>
+        <file>res/bullet/5/magic.png</file>
+        <file>res/bullet/5/white_magic.png</file>
+        <file>res/bullet/5/star.png</file>
+        <file>res/bullet/5/white_star.png</file>
     </qresource>
 </RCC>
