@@ -1,5 +1,4 @@
 #include "enemy_4_blue_6.h"
-#include "bullet_nether.h"
 
 Enemy_4_Blue_6::Enemy_4_Blue_6(Player* player, int health, int radius, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy_4_Blue(player,400,health,radius,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable)

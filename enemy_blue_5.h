@@ -3,7 +3,6 @@
 
 
 #include "enemy_blue.h"
-#include "bullet_nether.h"
 #include <QString>
 #include <vector>
 

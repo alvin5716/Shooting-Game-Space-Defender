@@ -1,5 +1,4 @@
 #include "enemy_temp.h"
-#include "bullet_nether.h"
 
 Enemy_Temp::Enemy_Temp(Enemy* real_shooter, shoot_func shoot_func_ptr, Player* player, int shoot_cd, int shoot_cd_init, double x, double y, double xv, double yv, double xa, double ya, bool bounceable, bool stopable)
     :Enemy(":/res/bullet/1/black.png",0,0,0,0,player,1,1,shoot_cd,shoot_cd_init,x,y,xv,yv,xa,ya,bounceable,stopable),

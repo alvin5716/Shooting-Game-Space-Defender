@@ -1,5 +1,4 @@
 #include "enemy_3_blue_5.h"
-#include "bullet_nether.h"
 #include "laser.h"
 #include <QDebug>
 #include "game.h"
