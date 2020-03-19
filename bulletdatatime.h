@@ -3,13 +3,14 @@
 
 #include "bulletdata.h"
 
-enum class BulletDataTimeType{freeze, zoom, updateVA, shootAtPlayer, moveTo};
+enum class BulletDataTimeType{freeze, zoom, updateVA, shootAtPlayer, moveTo, fadeOut};
 
 class BulletDataTime : public BulletData
 {
 public:
     BulletDataTime(Bullet* bullet, int wait_time);
     BulletDataTime(Bullet* bullet, int wait_time, int aim_radius);
+    BulletDataTime(Bullet* bullet, int wait_time, int fade_out_time, bool b);
     BulletDataTime(Bullet* bullet, int wait_time, double xv, double yv, double xa, double ya);
     BulletDataTime(Bullet* bullet, int wait_time, Player* player, double v, double a);
     BulletDataTime(Bullet* bullet, int wait_time, double x, double y, int time);
@@ -34,6 +35,10 @@ private:
             double x, y;
             int time;
         } moveTo;
+        struct {
+            int fade_out_time;
+            bool b;
+        } fadeOut;
     } data;
 };
 

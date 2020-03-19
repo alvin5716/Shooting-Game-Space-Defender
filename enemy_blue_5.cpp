@@ -56,10 +56,11 @@ std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
     //black bullets
     if(shoot_timer>=shoot_cd) {
         double bullet_v, bullet_a, angle, cos, sin;
-        int bullet_radius, bullet_count;
+        int bullet_radius, bullet_count, spawnpoint_radius;
         //bullet v, a
-        bullet_v = -0.8;
-        bullet_a = -0.0004;
+        spawnpoint_radius = 950;
+        bullet_v = 0.8;
+        bullet_a = 0.0004;
         bullet_count = 22;
         bullet_radius = 50;
         angle=angleofvector(player->getX()-x,player->getY()-y);
@@ -71,7 +72,9 @@ std::vector<Bullet*>* Enemy_Blue_5::shoot2() {
             }
             cos = std::cos(angle+2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0));
             sin = std::sin(angle+2*i*M_PI/bullet_count+((attack2_count!=0)?M_PI/bullet_count:0));
-            new_bullet = new Bullet_Nether(ImgPixmap::Level1::bullet_1_black,bullet_radius,this,1000,x+950*cos,y+950*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+            new_bullet = new Bullet(ImgPixmap::Level1::bullet_1_black,bullet_radius,x+spawnpoint_radius*cos,y+spawnpoint_radius*sin,bullet_v*-cos,bullet_v*-sin,bullet_a*-cos,bullet_a*-sin);
+            new_bullet->setCanOutOfFrame(true,1500);
+            new_bullet->addTimeData(830,31,true);
             new_bullet->setOpacity(0.7);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);

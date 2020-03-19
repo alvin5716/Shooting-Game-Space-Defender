@@ -14,6 +14,12 @@ BulletDataTime::BulletDataTime(Bullet* bullet, int wait_time, int aim_radius)
     this->data.zoom.now_radius=bullet->getRadius();
     this->data.zoom.increment=((double)aim_radius-bullet->getRadius())/wait_time;
 }
+BulletDataTime::BulletDataTime(Bullet* bullet, int wait_time, int fade_out_time, bool b)
+    :BulletData(bullet), wait_time(wait_time), type(BulletDataTimeType::fadeOut)
+{
+    this->data.fadeOut.fade_out_time=fade_out_time;
+    this->data.fadeOut.b=b;
+}
 BulletDataTime::BulletDataTime(Bullet* bullet, int wait_time, double xv, double yv, double xa, double ya)
     :BulletData(bullet), wait_time(wait_time), type(BulletDataTimeType::updateVA)
 {
@@ -71,6 +77,10 @@ bool BulletDataTime::skill() {
         }
         case BulletDataTimeType::moveTo:
             this->bullet->moveTo(this->data.moveTo.x,this->data.moveTo.y,this->data.moveTo.time);
+            break;
+        case BulletDataTimeType::fadeOut:
+            this->bullet->fadeout(this->data.fadeOut.fade_out_time*16);
+            this->bullet->setLifeTime(this->data.fadeOut.fade_out_time);
             break;
         default:
             break;

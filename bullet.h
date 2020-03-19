@@ -23,12 +23,15 @@ public:
     void rotateStart();
     void waitUntilInFrame(int max_waitting_time=313);
     bool outOfFrame() override;
+    void setLifeTime(int max_life_time=1000);
+    void setCanOutOfFrame(bool can_out_of_frame=true, int max_life_time=1000);
     // time data
     Bullet* addTimeData(int wait_time);
     Bullet* addTimeData(int wait_time, int aim_radius);
     Bullet* addTimeData(int wait_time, double xv, double yv, double xa, double ya);
     Bullet* addTimeData(int wait_time, Player* player, double v, double a);
     Bullet* addTimeData(int wait_time, double x, double y, int time);
+    Bullet* addTimeData(int wait_time, int fade_out_time, bool b);
     // wall data
     Bullet* addWallData();
     Bullet* addWallData(bool infinite_bounce, bool bounce_when_hit_downside=false);
@@ -48,14 +51,14 @@ public:
     friend class BulletDataWall;
     friend class BulletDataContinuous;
 public slots:
-    virtual void move();
+    virtual void move() override;
 signals:
     void triggered();
 protected:
     void addData(BulletData* bullet_data);
-    short enter_timer;
+    short enter_timer, life_timer;
     double terminal_v;
-    bool setPositionByData, lookForward, rotating;
+    bool setPositionByData, lookForward, rotating, can_out_of_frame;
     BulletData* data_head;
 };
 

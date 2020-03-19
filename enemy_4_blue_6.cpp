@@ -58,10 +58,13 @@ std::vector<Bullet*>* Enemy_4_Blue_6::shoot2() {
                 const double bullet_angle = angle + i*M_PI/(bullet_count/2) + (j-1)*M_PI/35;
                 const double cos = std::cos(bullet_angle), sin = std::sin(bullet_angle);
                 const double bullet_op=0.9-j*0.15;
-                const double bullet_v = -1.5, bullet_a = 0;
+                const double bullet_v = 1.5, bullet_a = 0;
                 const double bullet_d = bullet_d_min + j*20;
-                new_bullet = new Bullet_Nether(QString(":/res/bullet/other/yellow_hex.png"),bullet_radius,this,1000,this->x+bullet_d*cos,this->y+bullet_d*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                const double bullet_life_time = (bullet_d - this->radius - bullet_radius) / bullet_v;
+                new_bullet = new Bullet(QString(":/res/bullet/other/yellow_hex.png"),bullet_radius,this->x+bullet_d*cos,this->y+bullet_d*sin,bullet_v*-cos,bullet_v*-sin,bullet_a*-cos,bullet_a*-sin);
                 new_bullet->setOpacity(bullet_op);
+                new_bullet->setCanOutOfFrame();
+                new_bullet->addTimeData(bullet_life_time,31,true);
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
             }

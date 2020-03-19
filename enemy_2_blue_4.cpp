@@ -38,7 +38,9 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
             switch(shoot_count) {
             case 1:
                 for(int i=0;i<2;++i) {
-                    rainbowSpawnpoint[i] = new_bullet = new Bullet_Nether(":/res/bullet/2/purple.png",18,nullptr,300,(i==0)?150:0,(i==0)?0:150,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
+                    rainbowSpawnpoint[i] = new_bullet = new Bullet(":/res/bullet/2/purple.png",18,(i==0)?150:0,(i==0)?0:150,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
+                    new_bullet->setCanOutOfFrame();
+                    new_bullet->addTimeData(300,31,true);
                     new_bullet->setInvulnerable();
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     connect(this,SIGNAL(killSpawnpoints()),new_bullet,SLOT(killItself()));
@@ -47,7 +49,9 @@ std::vector<Bullet*>* Enemy_2_Blue_4::shoot2() {
                 break;
             case 2:
                 for(int i=0;i<2;++i) {
-                    rainbowSpawnpoint[i] = new_bullet = new Bullet_Nether(":/res/bullet/2/purple.png",18,nullptr,300,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
+                    rainbowSpawnpoint[i] = new_bullet = new Bullet(":/res/bullet/2/purple.png",18,Game::FrameWidth-((i==0)?0:150),(i==0)?150:0,bullet_v*std::cos(bullet_angle),bullet_v*sin(bullet_angle));
+                    new_bullet->setCanOutOfFrame();
+                    new_bullet->addTimeData(300,31,true);
                     new_bullet->setInvulnerable();
                     connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                     connect(this,SIGNAL(killSpawnpoints()),new_bullet,SLOT(killItself()));

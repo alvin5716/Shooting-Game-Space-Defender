@@ -9,25 +9,35 @@
 Bullet::Bullet(const QString &img, int radius, double x, double y, double xv, double yv, double xa, double ya)
     :Character(img,50,50,(int)round(radius*2.2),(int)round(radius*2.2),1,radius,x,y,xv,yv,xa,ya)
 {
-    terminal_v = 0;
-    enter_timer = 0;
+    this->terminal_v = 0;
+    this->enter_timer = 0;
+    this->life_timer = -1;
     this->data_head = nullptr;
     this->setPositionByData = false;
     this->lookForward = false;
     this->rotating = false;
+    this->can_out_of_frame = false;
 }
 
 Bullet::Bullet(int pixmap, int radius, double x, double y, double xv, double yv, double xa, double ya)
     :Character(pixmap,50,50,(int)round(radius*2.2),(int)round(radius*2.2),1,radius,x,y,xv,yv,xa,ya)
 {
-    terminal_v = 0;
-    enter_timer = 0;
+    this->terminal_v = 0;
+    this->enter_timer = 0;
+    this->life_timer = -1;
     this->data_head = nullptr;
     this->setPositionByData = false;
     this->lookForward = false;
     this->rotating = false;
+    this->can_out_of_frame = false;
 }
-
+void Bullet::setCanOutOfFrame(bool can_out_of_frame, int max_life_time) {
+    this->can_out_of_frame = can_out_of_frame;
+    this->setLifeTime(max_life_time);
+}
+void Bullet::setLifeTime(int max_life_time) {
+    this->life_timer = max_life_time;
+}
 void Bullet::setVTerminal(double terminal_v) {
     this->terminal_v = terminal_v;
 }
@@ -53,12 +63,18 @@ void Bullet::move() {
         if((sqrt(pow(xv,2)+pow(yv,2))<=terminal_v && sqrt(pow(xv+xa,2)+pow(yv+ya,2))<=terminal_v) || (sqrt(pow(xv,2)+pow(yv,2))>=terminal_v && sqrt(pow(xv+xa,2)+pow(yv+ya,2))>=terminal_v)) setSpeed(xv+xa,yv+ya);
     }
     //enter_timer
-    if(enter_timer>0) --enter_timer;
+    if(enter_timer > 0) --enter_timer;
+    else if(life_timer != -1) {
+        //lifetimer
+        --life_timer;
+        if(life_timer == 0) dead=true;
+    }
 }
 
 bool Bullet::outOfFrame() {
-    if(enter_timer!=0) {
-        if(!Character::outOfFrame()) enter_timer=0;
+    if(can_out_of_frame) return false;
+    if(enter_timer != 0) {
+        if(!Character::outOfFrame()) enter_timer = 0;
         return false;
     }
     return Character::outOfFrame();
@@ -117,6 +133,11 @@ Bullet* Bullet::addTimeData(int wait_time, Player* player, double v, double a) {
 }
 Bullet* Bullet::addTimeData(int wait_time, double x, double y, int time) {
     BulletData* bullet_data = new BulletDataTime(this,wait_time,x,y,time);
+    this->addData(bullet_data);
+    return this;
+}
+Bullet* Bullet::addTimeData(int wait_time, int fade_out_time, bool b) {
+    BulletData* bullet_data = new BulletDataTime(this,wait_time,fade_out_time,b);
     this->addData(bullet_data);
     return this;
 }

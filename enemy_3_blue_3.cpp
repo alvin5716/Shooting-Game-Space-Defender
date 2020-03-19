@@ -1,5 +1,5 @@
 #include "enemy_3_blue_3.h"
-#include "bullet_nether.h"
+#include "bullet_sin.h"
 #include <QDebug>
 #include "game.h"
 #include "laser.h"
@@ -43,8 +43,9 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
     const short interval = 60;
     //center
     if(shoot_timer==-75) {
-        //black
-        new_bullet = center = new Bullet(":/res/bullet/1/purple.png",35,shootXPos(),shootYPos());
+        //purple back
+        new_bullet = new Bullet(":/res/bullet/1/purple.png",35,shootXPos(),shootYPos());
+        new_bullet->setZValue(Game::ZValue::ZValueInFrontOfDefault);
         new_bullet->addTimeData(75);
         new_bullet->moveTo(Game::FrameWidth/2,Game::FrameHeight/2,75);
         new_bullet->setInvulnerable();
@@ -52,6 +53,8 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
         new_bullets->push_back(new_bullet);
         //purple rotate
         new_bullet = new Bullet(":/res/bullet/3/purple.png",25,shootXPos(),shootYPos());
+        new_bullet->setZValue(Game::ZValue::ZValueInFrontOfDefault);
+        new_bullet->rotateStart();
         new_bullet->addTimeData(75);
         new_bullet->moveTo(Game::FrameWidth/2,Game::FrameHeight/2,75);
         new_bullet->setInvulnerable();
@@ -67,7 +70,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
         }
     } else if(shoot_timer==shoot_cd) {
         double cos, sin, bullet_d, bullet_a, bullet_v, angle;
-        int bullet_radius, bullet_count;
+        int bullet_radius, bullet_count, bullet_life_time;
         //circles
         angle = (2+shoot_count_yellow)*M_PI/5;
         if(++shoot_count_yellow>=10) shoot_count_yellow=0;
@@ -75,16 +78,18 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
         bullet_radius = 14;
         bullet_count = 80;
         bullet_v = 0;
-        bullet_a = -0.0048;
+        bullet_a = 0.0048;
         bullet_d = std::sqrt(std::pow(Game::FrameHeight/2,2)+std::pow(Game::FrameWidth/2,2))+bullet_radius;
+        bullet_life_time = (int)std::round(std::sqrt(2*bullet_d/bullet_a));
         //shoot
         for(int i=-(bullet_count/2);i<=(bullet_count/2-((bullet_count%2==0)?1:0));++i) {
             if(i<=3 && i>=-4) continue;
             sin = std::sin(angle+i*2*M_PI/bullet_count);
             cos = std::cos(angle+i*2*M_PI/bullet_count);
-            Bullet_Nether* new_bullet_nether;
-            new_bullet = new_bullet_nether = new Bullet_Nether(":/res/bullet/3/yellow.png",bullet_radius,center,1000,center->getX()+bullet_d*cos,center->getY()+bullet_d*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
-            new_bullet_nether->setFadeoutTime(100);
+            new_bullet = new Bullet(":/res/bullet/3/yellow.png",bullet_radius,Game::FrameWidth/2+bullet_d*cos,Game::FrameHeight/2+bullet_d*sin,bullet_v*cos,bullet_v*sin,bullet_a*-cos,bullet_a*-sin);
+            new_bullet->setCanOutOfFrame();
+            new_bullet->rotateStart();
+            new_bullet->setLifeTime(bullet_life_time);
             new_bullet->moveAsTrigFunction(100,bullet_radius,true);
             connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
             new_bullets->push_back(new_bullet);
@@ -107,7 +112,7 @@ std::vector<Bullet*>* Enemy_3_Blue_3::shoot2() {
                 bullet_v = 0.18+(double)(qrand()%17)/100;
                 sin = std::sin(rand_angle);
                 cos = std::cos(rand_angle);
-                new_bullet = new Bullet(":/res/bullet/1/black.png",bullet_radius,center->getX()+bullet_radius*2*cos,center->getY()+bullet_radius*2*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
+                new_bullet = new Bullet(":/res/bullet/1/black.png",bullet_radius,Game::FrameWidth/2+bullet_radius*2*cos,Game::FrameHeight/2+bullet_radius*2*sin,bullet_v*cos,bullet_v*sin,bullet_a*cos,bullet_a*sin);
                 new_bullet->fadein();
                 connect(this,SIGNAL(killItsBullets()),new_bullet,SLOT(killItself()));
                 new_bullets->push_back(new_bullet);
